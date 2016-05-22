@@ -1,0 +1,247 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="The most concrete lead-in for the introduction of clubs in SHSID">
+<meta name="author" content="Ichiro Tai">
+<title>oClubs! - Website Intro</title>
+
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<script src="js/jquery-2.2.2.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<link href="css/oclubs.css" rel="stylesheet" type="text/css">
+<script src="js/oclubs.js"></script>
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+<style>
+    #sec1, #sec4, #sec7, #secCreators {background-color:#0087a8;}
+    #sec2, #sec5, #sec8 {background-color:#3399ff;}
+    #sec3, #sec6, #sec9 {background-color:#0066cc;}
+    #secCreators img {width:12vw; height:5vw; margin-top:5.5vw;}
+    .intro > div h1 a:link {color:#f2f2f2;}
+    .intro > div h1 a:visited {color:#cccccc;}
+    .intro > div h1 a:hover {color:#e6e6e6;}
+    .intro > div h1 a:active {color:#a6a6a6;}
+
+</style>
+</head>
+
+<body data-spy="scroll" data-target="#webIntro" data-offset="20">
+<!-- Navigation Bar -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#diyNavbar">
+                <span class="sr-only">Toggle navigation</span>
+            </button>
+            <a class="navbar-brand" href="homepage.html">
+                <img src="logo.png" alt="Logo" style="padding-left:15px; padding-right:15px">
+            </a>
+
+        </div>
+        <div class="collapse navbar-collapse" id="diyNavbar" >
+            <ul class="nav navbar-nav" style="font-size:125%">
+
+                <li>
+                    <a href="clublist.html">Club List</a>
+                </li>
+                <li>
+                    <a href="exc.html">Excellent Clubs</a>
+                </li>
+                <li>
+                    <a href="photos.html">Photos</a>
+                </li>
+                <li>
+                    <a href="webintro.html">About this Website</a>
+                </li>
+                <li>
+                    <a href="http://www.shsid.org">SHSID</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" style="font-size:120%">
+                <li><a href="#loginModal" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-user"></span> Login / Register</a></li>
+            </ul>
+        </div> 
+
+    </div>
+</nav>
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Login</h4>
+            </div>
+            <div class="modal-body">
+                <div id="hasaccount" class="radio">
+                    <label><input type="radio" checked="checked" name="hasaccount" value="1">I already have an account.</label>
+                    <label><input type="radio" name="hasaccount" value="0">I don't have an account.</label>
+                </div>
+                <div id="loginform" class="form-group">
+                    <label for="userName">Username:</label>
+                    <input class="form-control" id="userName" type="text" placeholder="Enter username"></input>
+                    <label for="passWord">Password:</label>
+                    <input class="form-control" id="passWord" type="password" placeholder="Enter password"></input>
+                    <p class="text-right"><a href="#">Forgot password?</a></p>
+                </div>
+
+                <div id="registerform" class="form-group" style="display:none">
+                    <label for="newUser">Username:</label>
+                    <input class="form-control" id="newUser" type="text" placeholder="Enter new username"></input>
+                    <label for="newPass">Password:</label>
+                    <input class="form-control" id="newPass" type="password" placeholder="Enter new password"></input>
+                    <label for="rePass">Repeat Password:</label>
+                    <input class="form-control" id="rePass" type="password" placeholder="Repeat new password"></input>
+                    <label for="newEmail">Email Address: (e.g. example@hotmail.com)</label>
+                    <input class="form-control" id="newEmail" type="email" placeholder="Enter email address"></input>
+                    <label for="grade">Current Grade:</label>
+                    <select class="form-control" id="grade">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                        <option>9</option>
+                        <option>10</option>
+                        <option>11</option>
+                        <option>12</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <a href="#" class="btn btn-primary">Login</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Below Navbar -->
+<div>
+
+<nav class="col-sm-2" id="webIntro">
+    <img src="shsidlogo.jpg" alt="SHSID Logo" width="8%" style="border-style:inset; border-color:#0099ff; border-width:1vw; position:fixed; margin-left:3.5vw; float:left;">
+    <ul class="nav nav-pills nav-stacked" style="position:fixed; width:15vw; float:left; margin-top:10%;">
+        <li class="active"><a href="#sec1"><center> - 1 - </center></a></li>
+        <li><a href="#sec2"><center> - 2 - </center></a></li>
+        <li><a href="#sec3"><center> - 3 - </center></a></li>
+        <li><a href="#sec4"><center> - 4 - </center></a></li>
+        <li><a href="#sec5"><center> - 5 - </center></a></li>
+        <li><a href="#sec6"><center> - 6 - </center></a></li>
+        <li><a href="#sec7"><center> - 7 - </center></a></li>
+        <li><a href="#sec8"><center> - 8 - </center></a></li>
+        <li><a href="#sec9"><center> - 9 - </center></a></li>
+        <li><a href="#secCreators"><center> - Creators - </center></a></li>
+    </ul>
+</nav>
+
+<div class="col-sm-10 intro">
+    <div id="sec1">
+        <div class="col-sm-7">
+            <h1>We provide lists of all clubs in SHSID.</h1>
+        </div>
+        <div class="col-sm-5">
+            <img src="intro1.jpg" alt="introPic">
+        </div>
+    </div>
+
+    <div id="sec2">
+        <div class="col-sm-5">
+            <img src="intro2.jpg" alt="introPic">
+        </div>
+        <div class="col-sm-7">
+            <h1>We send newest information to users.</h1>
+        </div>
+    </div>
+
+    <div id="sec3">
+        <div class="col-sm-7">
+            <h1>We encourage more students to participate in activities.</h1>
+        </div>
+        <div class="col-sm-5">
+            <img src="intro3.jpg" alt="introPic">
+        </div>
+    </div>
+
+    <div id="sec4">
+        <div class="col-sm-5">
+            <img src="intro4.jpg" alt="introPic">
+        </div>
+        <div class="col-sm-7">
+            <h1>We provide clubs' individual introduction.</h1>
+        </div>
+    </div>
+
+    <div id="sec5">
+        <div class="col-sm-7">
+            <h1>We provide stages for clubs to show their talents and work.</h1>
+        </div>
+        <div class="col-sm-5">
+            <img src="intro5.jpg" alt="introPic">
+        </div>
+    </div>
+    
+    <div id="sec6">
+        <div class="col-sm-5">
+            <img src="intro6.jpg" alt="introPic">
+        </div>
+        <div class="col-sm-7">
+            <h1>We try to let more people know our school and our clubs.</h1>
+        </div>
+    </div>
+
+    <div id="sec7">
+        <div class="col-sm-7">
+            <h1>We provide chances for students, parents, and teachers to know each other.</h1>
+        </div>
+        <div class="col-sm-5">
+            <img src="intro7.jpg" alt="introPic">
+        </div>
+    </div>
+
+    <div id="sec8">
+        <div class="col-sm-5">
+            <img src="intro8.jpg" alt="introPic">
+        </div>
+        <div class="col-sm-7">
+            <h1>We aim to explore students' creativity.</h1>
+        </div>
+    </div>
+
+    <div id="sec9">
+        <div class="col-sm-7">
+            <h1>We are SHSIDers.</h1>
+        </div>
+        <div class="col-sm-5">
+            <img src="intro9.jpg" alt="introPic">
+        </div>
+    </div>
+
+    <div id="secCreators">
+        <div class="col-sm-3">
+            <img src="logo.png" alt="logo">
+        </div>
+        <div class="col-sm-6">
+            <h1 style="text-decoration:underline;"><a href="creators.html">The Creators of oClubs</a></h1>
+        </div>
+        <div class="col-sm-3">
+            <img src="logo.png" alt="logo">
+        </div>
+    </div>
+</div>
+
+
+</div>
+</body>

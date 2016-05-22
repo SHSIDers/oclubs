@@ -1,0 +1,244 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="The most concrete lead-in for the introduction of clubs in SHSID">
+<meta name="author" content="Ichiro Tai">
+<title>oClubs! - Excellent Clubs</title>
+
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<script src="js/jquery-2.2.2.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<link href="css/oclubs.css" rel="stylesheet" type="text/css">
+<script src="js/oclubs.js"></script>
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+</head>
+
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#diyNavbar">
+                <span class="sr-only">Toggle navigation</span>
+            </button>
+            <a class="navbar-brand" href="homepage.html">
+                <img src="logo.png" alt="Logo" style="padding-left:15px; padding-right:15px">
+            </a>
+
+        </div>
+        <div class="collapse navbar-collapse" id="diyNavbar" >
+            <ul class="nav navbar-nav" style="font-size:125%">
+
+                <li>
+                    <a href="clublist.html">Club List</a>
+                </li>
+                <li>
+                    <a href="exc.html">Excellent Clubs</a>
+                </li>
+                <li>
+                    <a href="photos.html">Photos</a>
+                </li>
+                <li>
+                    <a href="webintro.html">About this Website</a>
+                </li>
+                <li>
+                    <a href="http://www.shsid.org">SHSID</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" style="font-size:120%">
+                <li><a href="#loginModal" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-user"></span> Login / Register</a></li>
+            </ul>
+        </div> 
+
+    </div>
+</nav>
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Login</h4>
+            </div>
+            <div class="modal-body">
+                <div id="hasaccount" class="radio">
+                    <label><input type="radio" checked="checked" name="hasaccount" value="1">I already have an account.</label>
+                    <label><input type="radio" name="hasaccount" value="0">I don't have an account.</label>
+                </div>
+                <div id="loginform" class="form-group">
+                    <label for="userName">Username:</label>
+                    <input class="form-control" id="userName" type="text" placeholder="Enter username"></input>
+                    <label for="passWord">Password:</label>
+                    <input class="form-control" id="passWord" type="password" placeholder="Enter password"></input>
+                    <p class="text-right"><a href="#">Forgot password?</a></p>
+                </div>
+
+                <div id="registerform" class="form-group" style="display:none">
+                    <label for="newUser">Username:</label>
+                    <input class="form-control" id="newUser" type="text" placeholder="Enter new username"></input>
+                    <label for="newPass">Password:</label>
+                    <input class="form-control" id="newPass" type="password" placeholder="Enter new password"></input>
+                    <label for="rePass">Repeat Password:</label>
+                    <input class="form-control" id="rePass" type="password" placeholder="Repeat new password"></input>
+                    <label for="newEmail">Email Address: (e.g. example@hotmail.com)</label>
+                    <input class="form-control" id="newEmail" type="email" placeholder="Enter email address"></input>
+                    <label for="grade">Current Grade:</label>
+                    <select class="form-control" id="grade">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                        <option>9</option>
+                        <option>10</option>
+                        <option>11</option>
+                        <option>12</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <a href="#" class="btn btn-primary">Login</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Below Navbar -->
+<div>
+    <!-- Side Menu -->
+    <div class="col-sm-2" style="padding-left:30px">
+        <div class="list-group" >
+            <li class="list-group-item active">Club Types</li>
+            <a href="#" class="list-group-item">Excellent Clubs</a>
+            <a href="#" class="list-group-item">Academics</a>
+            <a href="#" class="list-group-item">Sports</a>
+            <a href="#" class="list-group-item">The Arts</a>
+            <a href="#" class="list-group-item">Services</a>
+            <a href="#" class="list-group-item">Others</a>
+            <a href="#" class="list-group-item">School Teams</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-sm-10" style="padding-right:50px">
+        <h1>Excellent Club List</h1>
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr style="background-color:#8080ff">
+                    <th>No.</th>
+                    <th>Club Name</th>
+                    <th>Club Type</th>
+                    <th>Club Leader</th>
+                    <th>Activity Time</th>
+                    <th>Location</th>
+                </tr>
+            </thead>
+            <tbody class="diybackground">
+                <tr class="clickable-row" data-href="#" style="cursor:pointer">
+                    <td>1</td>
+                    <td>Website-Creating Club</td>
+                    <td>Services</td>
+                    <td>Derril Tai</td>
+                    <td>FOREVER</td>
+                    <td>Home</td>
+                </tr>
+                <tr class="clickable-row" data-href="#" style="cursor:pointer">
+                    <td>2</td>
+                    <td>Art Club</td>
+                    <td>The Arts</td>
+                    <td>Jasmine Gu</td>
+                    <td>Friday lunchtime</td>
+                    <td>Art Center</td>
+                </tr>
+                <tr class="clickable-row" data-href="#" style="cursor:pointer">
+                    <td>3</td>
+                    <td>Photography Club</td>
+                    <td>The Arts</td>
+                    <td>Mark Wu</td>
+                    <td>Adipiscing Elit</td>
+                    <td>deserunt mollit</td>
+                </tr>
+                <tr class="clickable-row" data-href="#" style="cursor:pointer">
+                    <td>4</td>
+                    <td>Lorem ipsum</td>
+                    <td>consectetur</td>
+                    <td>Minim Veniam</td>
+                    <td>Adipiscing Elit</td>
+                    <td>deserunt mollit</td>
+                </tr>
+                <tr class="clickable-row" data-href="#" style="cursor:pointer">
+                    <td>5</td>
+                    <td>Lorem ipsum</td>
+                    <td>consectetur</td>
+                    <td>Minim Veniam</td>
+                    <td>Adipiscing Elit</td>
+                    <td>deserunt mollit</td>
+                </tr>
+                <tr class="clickable-row" data-href="#" style="cursor:pointer">
+                    <td>6</td>
+                    <td>Lorem ipsum</td>
+                    <td>consectetur</td>
+                    <td>Minim Veniam</td>
+                    <td>Adipiscing Elit</td>
+                    <td>deserunt mollit</td>
+                </tr>
+                <tr class="clickable-row" data-href="#" style="cursor:pointer">
+                    <td>7</td>
+                    <td>Lorem ipsum</td>
+                    <td>consectetur</td>
+                    <td>Minim Veniam</td>
+                    <td>Adipiscing Elit</td>
+                    <td>deserunt mollit</td>
+                </tr>
+                <tr class="clickable-row" data-href="#" style="cursor:pointer">
+                    <td>8</td>
+                    <td>Lorem ipsum</td>
+                    <td>consectetur</td>
+                    <td>Minim Veniam</td>
+                    <td>Adipiscing Elit</td>
+                    <td>deserunt mollit</td>
+                </tr>
+                <tr class="clickable-row" data-href="#" style="cursor:pointer">
+                    <td>9</td>
+                    <td>Lorem ipsum</td>
+                    <td>consectetur</td>
+                    <td>Minim Veniam</td>
+                    <td>Adipiscing Elit</td>
+                    <td>deserunt mollit</td>
+                </tr>
+                <tr class="clickable-row" data-href="#" style="cursor:pointer">
+                    <td>10</td>
+                    <td>Lorem ipsum</td>
+                    <td>consectetur</td>
+                    <td>Minim Veniam</td>
+                    <td>Adipiscing Elit</td>
+                    <td>deserunt mollit</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+$(document).ready(function($) {
+    $(".clickable-row").click(function() {
+        window.document.location = $(this).data("href");
+    });
+});
+</script>
+
+</body>

@@ -1,0 +1,175 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="The most concrete lead-in for the introduction of clubs in SHSID">
+<meta name="author" content="Ichiro Tai">
+<title>oClubs! - Creators' Intro</title>
+
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<script src="js/jquery-2.2.2.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<link href="css/oclubs.css" rel="stylesheet" type="text/css">
+<script src="js/oclubs.js"></script>
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+</head>
+
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#diyNavbar">
+                <span class="sr-only">Toggle navigation</span>
+            </button>
+            <a class="navbar-brand" href="homepage.html">
+                <img src="logo.png" alt="Logo" style="padding-left:15px; padding-right:15px">
+            </a>
+
+        </div>
+        <div class="collapse navbar-collapse" id="diyNavbar" >
+            <ul class="nav navbar-nav" style="font-size:125%">
+
+                <li>
+                    <a href="clublist.html">Club List</a>
+                </li>
+                <li>
+                    <a href="exc.html">Excellent Clubs</a>
+                </li>
+                <li>
+                    <a href="photos.html">Photos</a>
+                </li>
+                <li>
+                    <a href="webintro.html">About this Website</a>
+                </li>
+                <li>
+                    <a href="http://www.shsid.org">SHSID</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" style="font-size:120%">
+                <li><a href="#loginModal" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-user"></span> Login / Register</a></li>
+            </ul>
+        </div> 
+
+    </div>
+</nav>
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Login</h4>
+            </div>
+            <div class="modal-body">
+                <div id="hasaccount" class="radio">
+                    <label><input type="radio" checked="checked" name="hasaccount" value="1">I already have an account.</label>
+                    <label><input type="radio" name="hasaccount" value="0">I don't have an account.</label>
+                </div>
+                <div id="loginform" class="form-group">
+                    <label for="userName">Username:</label>
+                    <input class="form-control" id="userName" type="text" placeholder="Enter username"></input>
+                    <label for="passWord">Password:</label>
+                    <input class="form-control" id="passWord" type="password" placeholder="Enter password"></input>
+                    <p class="text-right"><a href="#">Forgot password?</a></p>
+                </div>
+
+                <div id="registerform" class="form-group" style="display:none">
+                    <label for="newUser">Username:</label>
+                    <input class="form-control" id="newUser" type="text" placeholder="Enter new username"></input>
+                    <label for="newPass">Password:</label>
+                    <input class="form-control" id="newPass" type="password" placeholder="Enter new password"></input>
+                    <label for="rePass">Repeat Password:</label>
+                    <input class="form-control" id="rePass" type="password" placeholder="Repeat new password"></input>
+                    <label for="newEmail">Email Address: (e.g. example@hotmail.com)</label>
+                    <input class="form-control" id="newEmail" type="email" placeholder="Enter email address"></input>
+                    <label for="grade">Current Grade:</label>
+                    <select class="form-control" id="grade">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                        <option>9</option>
+                        <option>10</option>
+                        <option>11</option>
+                        <option>12</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <a href="#" class="btn btn-primary">Login</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Below Navbar -->
+<div class="container">
+    <div class="page-header">
+        <h1>Three of us are the creators of this website!</h1>
+        <p>Here are some basic introduction for us.</p>
+    </div>
+    <div class="panel-group">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Ichiro Tai</div>
+            <div class="panel-body">
+                <div class="col-sm-3">
+                    <img class="img-circle img-responsive" src="picture.jpg" alt="Ichiro Tai">
+                </div>
+                <div class="col-sm-9">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-success">
+            <div class="panel-heading">YiFei Zhu</div>
+            <div class="panel-body">
+                <div class="col-sm-9">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </div>
+                <div class="col-sm-3">
+                    <img class="img-circle img-responsive" src="picture.jpg" alt="YiFei Zhu">
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">Frank Lee</div>
+            <div class="panel-body">
+                <div class="col-sm-3">
+                    <img class="img-circle img-responsive" src="picture.jpg" alt="Frank Lee">
+                </div>
+                <div class="col-sm-9">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+<a href="http://www.shsid.org"><button type="button" class="btn btn-info btn-block btn-lg">Check our school! - Shanghai High School International Division</button></a>
+</div>
+
+<br><br><br>
+
+<footer class="container-fluid bg-1 text-center">
+    <p>This is a student-made website.</p>
+    <p>We are always welcoming advice about improving this website.</p>
+    <p>Feel free to contact us and check our school, SHSID.</p>
+    <p>Advice page: <a href="advice.html">http://www.oClubs.shsid.org/advice</a></p>
+</footer>
+</body>
