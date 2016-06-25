@@ -13,6 +13,10 @@ def cond_interpret(cond):
         else:
             return cond[1] + cond[0]+str(cond[2])
     elif cond[0] == "range":
+        if not (isinstance(cond[2][0], int) or isinstance(cond[2][0], float)):
+            raise RuntimeError
+        if not (isinstance(cond[2][1], int) or isinstance(cond[2][1], float)):
+            raise RuntimeError
         return cond[1]+'>='+cond[2][0]+" AND " + cond[1]+'<'+cond[2][1]
 
 
@@ -29,7 +33,7 @@ def fetch_onerow(table, conds, coldict, isand=True):
     cur.execute("SELECT %s FROM %s WHERE %s LIMIT 1" % (st, table, fconds))
     read = cur.fetchall()
     if len(read) == 0:
-        raise RuntimeError
+        return None
     ret = {}
     ret.fromkeys(coldict.values())
     i = 0
@@ -50,7 +54,7 @@ def fetch_oneblock(table, conds, col, isand=True):
     cur.execute("SELECT %s FROM %s WHERE %s LIMIT 1" % (col, table, fconds))
     read = cur.fetchall()
     if len(read) == 0:
-        raise RuntimeError
+        return None
     return read[0][0]
 
 
@@ -67,7 +71,7 @@ def fetch_allrow(table, conds, coldict, isand=True):
     cur.execute("SELECT %s FROM %s WHERE %s" % (st, table, fconds))
     reads = cur.fetchall()
     if len(reads) == 0:
-        raise RuntimeError
+        return None
     rows = []
     for read in reads:
         row = {}
