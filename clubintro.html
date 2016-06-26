@@ -1,0 +1,196 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="The most concrete lead-in for the introduction of clubs in SHSID">
+<meta name="author" content="Ichiro Tai">
+<title>oClubs! - Here you come</title>
+
+<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all">
+<script src="js/jquery-2.2.2.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+<link href="css/oclubs.css" rel="stylesheet" type="text/css" media="all">
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all">
+<script src="js/oclubs.js"></script>
+
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+<!-- header -->
+<div class="header">
+    <div class="container">
+        <div class="logo">
+            <div class="container">
+                <a href="homepage.html"><img src="images/logo.png" class="img-responsive" alt="oClubs"></a>
+            </div>
+        </div>
+            <div class="top-nav">
+                <ul class="nav1">
+                    <li class="hvr-sweep-to-bottom active"><a href="homepage.html">Home</a></li>
+                    <li class="hvr-sweep-to-bottom"><a href="about.html">Club List</a></li>
+                    <li class="hvr-sweep-to-bottom"><a href="contact.html">Photos</a></li>
+                    <li class="hvr-sweep-to-bottom"><a href="index.html">About</a></li>
+                    <li class="hvr-sweep-to-bottom"><a href="about.html">SHSID</a></li>
+     
+                    <div class="clearfix"> </div>
+                </ul>
+                <!-- script-for-menu -->
+                <script>
+                   $( "span.menu" ).click(function() {
+                     $( "ul.nav1" ).slideToggle( 300, function() {
+                     // Animation complete.
+                      });
+                     });
+                </script>
+                <!-- /script-for-menu -->
+            </div>
+                    
+                
+        <div>
+            <a href="#loginModal" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-user"></span> Login / Register</a>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Login</h4>
+            </div>
+            <div class="modal-body">
+                <div id="hasaccount" class="radio">
+                    <label><input type="radio" checked="checked" name="hasaccount" value="1">I already have an account.</label>
+                    <label><input type="radio" name="hasaccount" value="0">I don't have an account.</label>
+                </div>
+                <div id="loginform" class="form-group">
+                    <label for="userName">Username:</label>
+                    <input class="form-control" id="userName" type="text" placeholder="Enter username"></input>
+                    <label for="passWord">Password:</label>
+                    <input class="form-control" id="passWord" type="password" placeholder="Enter password"></input>
+                    <p class="text-right"><a href="#">Forgot password?</a></p>
+                </div>
+
+                <div id="registerform" class="form-group" style="display:none">
+                    <label for="newUser">Username:</label>
+                    <input class="form-control" id="newUser" type="text" placeholder="Enter new username"></input>
+                    <label for="newPass">Password:</label>
+                    <input class="form-control" id="newPass" type="password" placeholder="Enter new password"></input>
+                    <label for="rePass">Repeat Password:</label>
+                    <input class="form-control" id="rePass" type="password" placeholder="Repeat new password"></input>
+                    <label for="newEmail">Email Address: (e.g. example@hotmail.com)</label>
+                    <input class="form-control" id="newEmail" type="email" placeholder="Enter email address"></input>
+                    <label for="grade">Current Grade:</label>
+                    <select class="form-control" id="grade">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                        <option>9</option>
+                        <option>10</option>
+                        <option>11</option>
+                        <option>12</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <a href="#" class="btn btn-primary">Login</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Below Navbar -->
+<div>
+    <!-- Side Menu -->
+	<div class="col-sm-2" style="padding-left:30px">
+        <div class="list-group">
+            <li class="list-group-item active">Club Types</li>
+            <a href="#" class="list-group-item">Academics</a>
+            <a href="#" class="list-group-item">Sports</a>
+            <a href="#" class="list-group-item">The Arts</a>
+            <a href="#" class="list-group-item">Services</a>
+            <a href="#" class="list-group-item">Others</a>
+            <a href="#" class="list-group-item">School Teams</a>
+        </div>
+        <div class="list-group">
+            <li class="list-group-item active">This Club's</li>
+            <a href="#" class="list-group-item">Activities</a>
+            <a href="#" class="list-group-item">Photos</a>
+        </div>
+    </div>
+    <!-- Main Content -->
+    <div class="col-sm-10" style="padding-right:50px">
+        <div class="container">
+            <div class="jumbotron">
+                <h1>Club Name</h1>
+                <p>Here's one-sentence introduction of the club.</p>
+            </div>
+            <p class="text-right">Written by: Club Leader</p>
+            <blockquote>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                <footer>Teacher's/Student's name</footer>
+            </blockquote>
+            <center><img src="images/picture.jpg" class="img-thumbnail" alt="Club Photo"></center>
+            <br><br>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <br>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <br>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <br>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <br><br><br>
+        </div>
+    </div>
+</div>
+
+
+<center><button type="button" class="btn btn-primary"><a href="#" style="color:#fff">Back to the top</a></button></center>
+
+<br><br><br>
+
+<!-- footer -->
+<div class="footer">
+    <div class="container">
+        <div class="col-md-4 soci">
+            <h3>Join Clubs</h3>
+            <a href="#"><p style="text-decoration:underline">Fill out application form.</p></a>
+        </div>
+        <div class="col-md-4 footer-left">
+            <h3>Notes</h3>
+            <p>This is a student-made website. We are always welcoming advice about improving this website. Feel free to contact us and check our school, SHSID.</p>
+        </div>
+        <div class="col-md-4 footer-left">
+            <h3>Contact Us</h3>
+            <p>oclubs@outlook.com</p>
+            <div class="clearfix"> </div>
+            <h3>Advice/Opinion</h3>
+            <a href="#"><p style="text-decoration:underline">Click Here</p></a>
+        </div>
+    </div>
+</div>
+<a href="#" id="toTop" style="display: block;"><span id="toTopHover" style="opacity: 0;"></span> <span id="toTopHover" style="opacity: 0;"> </span></a>
+
+
+</body>
+</html>

@@ -1,0 +1,129 @@
+
+
+body {
+    padding-top: 70px;
+}
+
+.navbar-fixed-top .nav {
+    padding: 10px 0;
+}
+
+.navbar-fixed-top .navbar-brand {
+    padding: 0 5px;
+}
+
+footer.bg-1 {
+    padding: 15px;
+	background-color: #222;
+	color: white;
+    display: block;
+}
+
+table.homepage {
+    width: 100%;
+    table-layout: fixed;
+}
+
+td.square {
+    width: 13.89vw;
+    height: 13.89vw;
+}
+
+img.square {
+    width: 100%;
+    height: 14.5vw;
+}
+
+td.tTt {
+    width: 41.67vw;
+    height: 27.78vw;
+}
+
+.homepage td {
+    border-style: solid;
+    border-width: 3px;
+    border-color: white;
+}
+
+
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img {
+    width: 70%;
+    margin: auto;
+}
+
+.carousel .item {
+    height: 100%;
+}
+
+p.diyFont {
+    font-family: "MV Boli";
+    font-size: 2.2vw;
+    font-weight: bold;
+    font-style: italic;
+    color: white;
+}
+
+td.shsid {
+    background-color:#e6f3ff;
+    color: #000066;
+    font-family: Arial;
+    font-size: 400%;
+    font-weight: bold;
+    text-align: center;
+}
+
+.intro > div {
+    width: 100%;
+    height: 18.75vw;
+    display: block;
+    text-align: center;
+    margin-bottom: 2vw;
+    border-style: outset;
+    border-width: 0.5vw;
+    border-color: #669999;
+}
+
+.intro > div img {
+    width: 25vw;
+    height: 17.75vw;
+}
+
+.intro > div h1 {
+    padding-top: 15%;
+    color: #f2f2f2;
+    font-family: "MV Boli";
+    font-size: 2.25vw;
+    font-weight: bold;
+}
+
+.diybackground > tr {
+    background-color: #ccccff;
+}
+
+.diybackground > tr:hover {
+    background-color: #b3b3ff !important;
+}
+
+div.slantedBG {
+    width: 100%;
+    position:absolute;
+    border-top: 50vw solid #00cc66;
+    border-right: 50vw solid transparent;
+}
+
+h1.slantedBG {
+    color: #e6e6e6;
+    position: relative;
+    margin-bottom: 50vw;
+}
+
+@media(min-width:768px) {
+    body {
+        padding-top: 100px;
+    }
+
+    .navbar-fixed-top .navbar-brand {
+        padding: 10px 0;
+    }
+}
