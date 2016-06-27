@@ -10,7 +10,7 @@
             <a href="#" class="list-group-item selected">All Clubs</a>
             <a href="#" class="list-group-item">Excellent Clubs</a>
         </div>
-        <div class="list-group" >
+        <div class="list-group">
             <li class="list-group-item active">Club Types</li>
             <a href="#" class="list-group-item selected">All</a>
             <a href="#" class="list-group-item">Academics</a>
@@ -33,7 +33,7 @@
         <h1 class="title">All Clubs</h1>
         <div class="clubBlock">
             {% for club in clubs}
-            <a href="#"><div><img src="images/{{club.photo}}.jpg" class="img-responsive" alt="">{{club.name}}</div></a>
+            <a href="#"><div><img src="images/{{ club.photo }}.jpg" class="img-responsive" alt="">{{ club.name }}</div></a>
             {% endfor %}
         </div>
         <center><ul class="pagination center">

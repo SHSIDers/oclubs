@@ -7,31 +7,36 @@ from flask import (
 
 app = Flask(__name__)
 
+
 @app.route('/')
 def home():
     '''Homepage'''
-    loggedin = False;
+    loggedin = False
     return render_template('homepage.html',
-                            title = 'Here you come'
-                            loggedin = loggedin);
+                           title='Here you come',
+                           loggedin=loggedin)
+
 
 @app.route('/clublist')
 def clublist():
     '''Club List'''
-    loggedin = False;
-    clubs = {{'name':'art_club', 'photo':'picture'},{'name':'photo_club', 'photo':'picture'} }
+    loggedin = False
+    clubs = {{'name': 'art_club', 'photo': 'picture'},
+             {'name': 'photo_club', 'photo': 'picture'}}
     return render_template('clublist.html',
-                            title = 'Club List'
-                            loggedin = loggedin,
-                            clubs = clubs);
+                           title='Club List',
+                           loggedin=loggedin,
+                           clubs=clubs)
+
 
 def login():
     '''Attempt to login'''
-    return ;
+    return
+
 
 @app.route('/clubintro')
 def clubintro():
-    return render_template();
+    return render_template()
 
 if __name__ == '__main__':
-    app.run();
+    app.run()
