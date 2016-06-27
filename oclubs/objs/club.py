@@ -2,20 +2,20 @@
 # -*- coding: UTF-8 -*-
 #
 
-"""oclubs.shsid.org Users."""
+"""oclubs.shsid.org Clubs."""
 
 from __future__ import absolute_import
 
 from oclubs.access import database
 
 
-class User(object):
-    """User class."""
+class Club(object):
+    """Club class."""
 
-    def __init__(self, uid):
+    def __init__(self, cid):
         """Initializer."""
-        super(User, self).__init__()
-        self.uid = uid
+        super(Club, self).__init__()
+        self.cid = cid
         self.data = {}
 
     def load_db(self):
@@ -31,8 +31,19 @@ class User(object):
             }
         )
 
-    def attempt_login(self, pw):
+    def reg_hm(student, time, comments):
         pass
-
-    def count_cas(club, time):
+    def reg_act(student, activity):
+        pass
+    def change_leader(student):
+        pass
+    def attend(student, time):
+        pass
+    def evaluate(student):
+        pass
+    def memberinfo():
+        pass
+    def join_club(student):
+        pass
+    def quit_club(student, comments):
         pass
