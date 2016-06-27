@@ -5,13 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="The most concrete lead-in for the introduction of clubs in SHSID">
 <meta name="author" content="Ichiro Tai">
-<title>oClubs! - Club Intro</title>
+<title>oClubs! - Here you come</title>
 
-<link rel="stylesheet" href="css/bootstrap.min.css">
+<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all">
 <script src="js/jquery-2.2.2.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
-<link href="css/oclubs.css" rel="stylesheet" type="text/css">
+
+<link href="css/oclubs.css" rel="stylesheet" type="text/css" media="all">
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all">
 <script src="js/oclubs.js"></script>
+
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -19,48 +22,45 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    
+
 </head>
-
 <body>
-<!-- Navigation Bar -->
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#diyNavbar">
-                <span class="sr-only">Toggle navigation</span>
-            </button>
-            <a class="navbar-brand" href="homepage.html">
-                <img src="logo.png" alt="Logo" style="padding-left:15px; padding-right:15px">
-            </a>
-
+<!-- header -->
+<div class="header">
+    <div class="container">
+        <div class="logo">
+            <div class="container">
+                <a href="homepage.html"><img src="images/logo.png" class="img-responsive" alt="oClubs"></a>
+            </div>
         </div>
-        <div class="collapse navbar-collapse" id="diyNavbar" >
-            <ul class="nav navbar-nav" style="font-size:125%">
-
-                <li>
-                    <a href="clublist.html">Club List</a>
-                </li>
-                <li>
-                    <a href="exc.html">Excellent Clubs</a>
-                </li>
-                <li>
-                    <a href="photos.html">Photos</a>
-                </li>
-                <li>
-                    <a href="webintro.html">About this Website</a>
-                </li>
-                <li>
-                    <a href="http://www.shsid.org">SHSID</a>
-                </li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right" style="font-size:120%">
-                <li><a href="#loginModal" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-user"></span> Login / Register</a></li>
-            </ul>
-        </div> 
-
+            <div class="top-nav">
+                <ul class="nav1">
+                    <li class="hvr-sweep-to-bottom active"><a href="homepage.html">Home</a></li>
+                    <li class="hvr-sweep-to-bottom"><a href="about.html">Club List</a></li>
+                    <li class="hvr-sweep-to-bottom"><a href="contact.html">Photos</a></li>
+                    <li class="hvr-sweep-to-bottom"><a href="index.html">About</a></li>
+                    <li class="hvr-sweep-to-bottom"><a href="about.html">SHSID</a></li>
+     
+                    <div class="clearfix"> </div>
+                </ul>
+                <!-- script-for-menu -->
+                <script>
+                   $( "span.menu" ).click(function() {
+                     $( "ul.nav1" ).slideToggle( 300, function() {
+                     // Animation complete.
+                      });
+                     });
+                </script>
+                <!-- /script-for-menu -->
+            </div>
+                    
+                
+        <div>
+            <a href="#loginModal" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-user"></span> Login / Register</a>
+        </div>
+        <div class="clearfix"></div>
     </div>
-</nav>
+</div>
 
 <!-- Login Modal -->
 <div class="modal fade" id="loginModal">
@@ -117,7 +117,6 @@
     </div>
 </div>
 
-
 <!-- Below Navbar -->
 <div>
     <!-- Side Menu -->
@@ -149,7 +148,7 @@
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                 <footer>Teacher's/Student's name</footer>
             </blockquote>
-            <center><img src="picture.jpg" class="img-thumbnail" alt="Club Photo"></center>
+            <center><img src="images/picture.jpg" class="img-thumbnail" alt="Club Photo"></center>
             <br><br>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
             <br>
@@ -170,12 +169,27 @@
 
 <br><br><br>
 
-<footer class="container-fluid bg-1 text-center">
-    <p>This is a student-made website.</p>
-    <p>We are always welcoming advice about improving this website.</p>
-    <p>Feel free to contact us and check our school, SHSID.</p>
-    <p>Advice page: <a href="advice.html">http://www.oClubs.shsid.org/advice</a></p>
-</footer>
+<!-- footer -->
+<div class="footer">
+    <div class="container">
+        <div class="col-md-4 soci">
+            <h3>Join Clubs</h3>
+            <a href="#"><p style="text-decoration:underline">Fill out application form.</p></a>
+        </div>
+        <div class="col-md-4 footer-left">
+            <h3>Notes</h3>
+            <p>This is a student-made website. We are always welcoming advice about improving this website. Feel free to contact us and check our school, SHSID.</p>
+        </div>
+        <div class="col-md-4 footer-left">
+            <h3>Contact Us</h3>
+            <p>oclubs@outlook.com</p>
+            <div class="clearfix"> </div>
+            <h3>Advice/Opinion</h3>
+            <a href="#"><p style="text-decoration:underline">Click Here</p></a>
+        </div>
+    </div>
+</div>
+<a href="#" id="toTop" style="display: block;"><span id="toTopHover" style="opacity: 0;"></span> <span id="toTopHover" style="opacity: 0;"> </span></a>
 
 
 </body>
