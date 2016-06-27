@@ -17,41 +17,43 @@
 
 <body>
 <div class="header">
-	<div class="container">
-		<div class="logo">
-			<div class="container">
-				<a href="index.html"><img src="images/logo.png" class="img-responsive" alt=""></a>
-			</div>
-		</div>
-			<div class="top-nav">
-				<span class="menu"><img src="images/menu.png" alt=""></span>
-				<ul class="nav1">
-					<li class="sweep active"><a href="index.html">Home</a></li>
-					<li class="sweep"><a href="about.html">Club Lists</a></li>
-					<li class="sweep"><a href="lessons.html">Photos</a></li>
-					<li class="sweep"><a href="contact.html">About</a></li>
-					<li class="sweep"><a href="www.shsid.com">SHSID</a></li>
-				</ul>
-			</div>
-					
-		<div class="search">
-			<form>
-				<input type="text" value="Search" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search';}">
-				<input type="submit" value>
-			</form>
-		</div>
-		<div class="login">
-			<span id="loginanimation" onmouseenter="swing(this)" onmouseleave="this.className=''" style="display: block;">
-			<a href="#loginModal" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-user"></span> Login </a>
-			</span>
-		</div>
-	</div>
+    <div class="container">
+        <div class="logo">
+            <div class="container">
+                <a href="index.html"><img src="images/logo.png" class="img-responsive" alt=""></a>
+            </div>
+        </div>
+            <div class="top-nav">
+                <span class="menu"><img src="images/menu.png" alt=""></span>
+                <ul class="nav1">
+                    <li class="sweep active"><a href="index.html">Home</a></li>
+                    <li class="sweep"><a href="about.html">Club Lists</a></li>
+                    <li class="sweep"><a href="lessons.html">Photos</a></li>
+                    <li class="sweep"><a href="contact.html">About</a></li>
+                    <li class="sweep"><a href="www.shsid.com">SHSID</a></li>
+                </ul>
+            </div>
+                    
+        <div class="search">
+            <form>
+                <input type="text" value="Search" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search';}">
+                <input type="submit" value>
+            </form>
+        </div>
+        <div class="login">
+            <span id="loginanimation" onmouseenter="swing(this)" onmouseleave="this.className=''" style="display: block;">
+            <a href="#loginModal" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-user"></span> Login </a>
+            </span>
+        </div>
+    </div>
 </div>
+
+{% block content %}{% endblock %}
 
 <script>  
 
 function swing(x){
-  	x.className ='swing animated'
+      x.className ='swing animated'
 }
 </script>
 
