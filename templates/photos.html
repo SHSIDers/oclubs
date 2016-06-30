@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Below Navbar -->
+<div class="large_container">
+    <h1 class="text-center title">All Photos</h1>
+    <div class="col-sm-6 blockpic view1 view-eighth" style="float:left; margin:2%">
+        <img src="static/images/{{ top.image1 }}.jpg" class="img-responsive img-thumbnail" alt="Image 1">
+        <div class="mask">
+            <h2>{{ top.image1_actname }}</h2>
+            <p>{{ top.image1_club }}</p>
+        </div>
+    </div>
+    <div class="col-sm-6 blockpic view1 view-eighth" style="float:right; margin:2%">
+        <img src="static/images/{{ top.image2 }}.jpg" class="img-responsive img-thumbnail" alt="Image 2">
+        <div class="mask">
+            <h2>{{ top.image2_actname }}</h2>
+            <p>{{ top.image2_club }}</p>
+        </div>
+    </div>
+    <br>
+    <div class="clearfix"></div>
+    {% for photo in photos %}
+    <div class="photo">
+        <img src="static/images/{{ photo.image }}.jpg" class="img-responsive" alt="{{ photo.act_name }}">
+        <h4>{{ photo.actname }}</h4>
+        <p>{{ photo.club }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

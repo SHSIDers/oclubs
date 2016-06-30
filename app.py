@@ -105,6 +105,32 @@ def clubactivities():
                            activities=activities)
 
 
+@app.route('/photos')
+def allphotos():
+    loggedin = False
+    top = {'image1': 'picture', 'image1_actname': 'Making Website', 'image1_club': 'Website Club', 'image2': 'picture', 'image2_actname': 'Painting', 'image2_club': 'Art Club'}
+    photos = [{'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
+              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
+              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
+              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
+              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
+              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
+              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
+              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
+              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
+              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
+              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
+              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
+              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
+              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
+              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'}]
+    return render_template('photos.html',
+                           title='All Photos',
+                           loggedin=loggedin,
+                           top=top,
+                           photos=photos)
+
+
 def login():
     '''Attempt to login'''
     return
