@@ -27,7 +27,7 @@ h1.title {
 }
 
 .clubBlock a:hover > div {
-	background-color: black;
+	background-color: #cccccc;
 }
 
 .clubBlock img {
