@@ -16,8 +16,8 @@ app = Flask(__name__)
 def exception_handler(e):
     '''Handle an exception and show the traceback'''
     try:
-        return render_template('clublist.html',
-                               title='Here you come',
+        return render_template('clubintro.html',
+                               title='Club Intro',
                                loggedin=False)
     except:
         return traceback.format_exc()
@@ -27,7 +27,7 @@ def exception_handler(e):
 def home():
     '''Homepage'''
     loggedin = False
-    return render_template('clublist.html',
+    return render_template('homepage.html',
                            title='Here you come',
                            loggedin=loggedin)
 
@@ -37,6 +37,14 @@ def clublist():
     '''Club List'''
     loggedin = False
     clubs = [{'name': 'art_club', 'photo': 'picture'},
+             {'name': 'photo_club', 'photo': 'picture'},
+             {'name': 'art_club', 'photo': 'picture'},
+             {'name': 'photo_club', 'photo': 'picture'},
+             {'name': 'art_club', 'photo': 'picture'},
+             {'name': 'photo_club', 'photo': 'picture'},
+             {'name': 'art_club', 'photo': 'picture'},
+             {'name': 'photo_club', 'photo': 'picture'},
+             {'name': 'art_club', 'photo': 'picture'},
              {'name': 'photo_club', 'photo': 'picture'}]
     return render_template('clublist.html',
                            title='Club List',
@@ -44,14 +52,19 @@ def clublist():
                            clubs=clubs)
 
 
+@app.route('/clubintro')
+def clubintro():
+    '''Club Intro'''
+    loggedin = False
+    return render_template('clubintro.html',
+                           title='Club Intro',
+                           loggedin=loggedin)
+
+
 def login():
     '''Attempt to login'''
     return
 
-
-@app.route('/clubintro')
-def clubintro():
-    return render_template()
 
 if __name__ == '__main__':
     app.run()
