@@ -7,7 +7,7 @@ h1.title {
 	margin-bottom:50px;
 	font-family:'Times New Roman';
 	font-weight: bold;
-	font-size: 500%;
+	font-size: 300%;
 }
 
 .clubBlock > div,
@@ -43,21 +43,21 @@ h1.title {
   width: 15%;
   margin: 2em 0 0;
 }
-.top-nav{
+.top-nav {
   float: left;
   width: 48%;
 }
-.top-nav ul{
+.top-nav ul {
 	padding:0;
 	margin:0;
 }
-.top-nav ul  li{
+.top-nav ul  li {
   display: inline-block;
   width: 16.66%;
   float: left;
   padding: 3em 0em 1.5em 0em;
 }
-.top-nav ul  li.active{
+.top-nav ul  li.active {
 	background:#66a3ff;
 }
 .top-nav ul li a {
@@ -69,7 +69,7 @@ h1.title {
   width: 100%;
   font-family: 'Alegreya', serif;
 }
-.top-nav ul li a:hover{
+.top-nav ul li a:hover {
 	text-decoration:none;
 	color: #fff;
 }
@@ -162,7 +162,7 @@ h1.title {
   width: 20%;
   margin: 2.5em 0 0 0;
 }
-.search input[type="text"]{
+.search input[type="text"] {
   width: 80%;
   outline: none;
   padding: 0em 0.6em;
@@ -171,7 +171,7 @@ h1.title {
   position: relative;
   border: none;
 }
-.search input[type="submit"]{
+.search input[type="submit"] {
   background: url(../images/search-icon.png) no-repeat 0px 2px;
   border: none;
   height: 26px;
@@ -191,10 +191,26 @@ h1.title {
 	animation-name: swing;
 }
 
-#loginanimation{
+#loginanimation {
 	animation-duration: 1s;
 			animation-delay: .2s;
 			animation-timing-function: ease;
 			animation-fill-mode: both;
 }
-/*till here is former header.css*/
+
+thead.list {
+    background-color: #f2f2f2;
+}
+
+thead.darklist {
+    background-color: #595959;
+    color: white;
+}
+
+.large_container {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    width: 80%;
+}
