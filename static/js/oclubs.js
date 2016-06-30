@@ -19,3 +19,8 @@
 	    });
 	});
 })(jQuery);
+
+
+function swing(x){
+      x.className ='swing animated'
+}

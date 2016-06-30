@@ -16,9 +16,7 @@ app = Flask(__name__)
 def exception_handler(e):
     '''Handle an exception and show the traceback'''
     try:
-        return render_template('clubintro.html',
-                               title='Club Intro',
-                               loggedin=False)
+        clubactivities()
     except:
         return traceback.format_exc()
 
@@ -59,6 +57,52 @@ def clubintro():
     return render_template('clubintro.html',
                            title='Club Intro',
                            loggedin=loggedin)
+
+
+@app.route('/allact')
+def allactivities():
+    '''All Activities'''
+    loggedin = False
+    activities = [{'club_name': 'Art Club', 'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
+                  {'club_name': 'Photo Club', 'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'},
+                  {'club_name': 'Art Club', 'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
+                  {'club_name': 'Photo Club', 'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'},
+                  {'club_name': 'Art Club', 'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
+                  {'club_name': 'Photo Club', 'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'},
+                  {'club_name': 'Art Club', 'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
+                  {'club_name': 'Photo Club', 'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'},
+                  {'club_name': 'Art Club', 'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
+                  {'club_name': 'Photo Club', 'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'},
+                  {'club_name': 'Art Club', 'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
+                  {'club_name': 'Photo Club', 'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'}]
+    return render_template('allact.html',
+                           title='All Activities',
+                           loggedin=loggedin,
+                           activities=activities)
+
+
+@app.route('/clubact')
+def clubactivities():
+    '''One Club's Activities'''
+    loggedin = False
+    club = {'image1': 'picture', 'image2': 'picture', 'image3': 'picture', 'club_name': 'Art Club'}
+    activities = [{'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
+                  {'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'},
+                  {'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
+                  {'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'},
+                  {'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
+                  {'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'},
+                  {'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
+                  {'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'},
+                  {'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
+                  {'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'},
+                  {'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
+                  {'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'}]
+    return render_template('clubact.html',
+                           title=club['club_name'],
+                           loggedin=loggedin,
+                           club=club,
+                           activities=activities)
 
 
 def login():
