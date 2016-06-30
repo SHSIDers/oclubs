@@ -36,16 +36,16 @@ def home():
 def clublist():
     '''Club List'''
     loggedin = False
-    clubs = [{'name': 'art_club', 'photo': 'picture'},
-             {'name': 'photo_club', 'photo': 'picture'},
-             {'name': 'art_club', 'photo': 'picture'},
-             {'name': 'photo_club', 'photo': 'picture'},
-             {'name': 'art_club', 'photo': 'picture'},
-             {'name': 'photo_club', 'photo': 'picture'},
-             {'name': 'art_club', 'photo': 'picture'},
-             {'name': 'photo_club', 'photo': 'picture'},
-             {'name': 'art_club', 'photo': 'picture'},
-             {'name': 'photo_club', 'photo': 'picture'}]
+    clubs = [{'name': 'art club', 'photo': 'picture'},
+             {'name': 'photo club', 'photo': 'picture'},
+             {'name': 'art club', 'photo': 'picture'},
+             {'name': 'photo club', 'photo': 'picture'},
+             {'name': 'art club', 'photo': 'picture'},
+             {'name': 'photo club', 'photo': 'picture'},
+             {'name': 'art club', 'photo': 'picture'},
+             {'name': 'photo club', 'photo': 'picture'},
+             {'name': 'art club', 'photo': 'picture'},
+             {'name': 'photo club', 'photo': 'picture'}]
     return render_template('clublist.html',
                            title='Club List',
                            loggedin=loggedin,

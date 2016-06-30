@@ -184,11 +184,6 @@ h1.title {
   right: 2px;
 }
 
-
-body {
-  line-height: 0.8em;
-}
-
 #loginanimation.swing {
 	-webkit-animation-name: swing;
 	-moz-animation-name: swing;
