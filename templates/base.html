@@ -25,23 +25,29 @@
             <div class="top-nav">
                 <ul class="nav1">
                     <li class="sweep active"><a href="/">Home</a></li>
-                    <li class="sweep"><a href="clublist">Club Lists</a></li>
+                    <li class="sweep"><a href="clublist">Club List</a></li>
                     <li class="sweep"><a href="photos">Photos</a></li>
                     <li class="sweep"><a href="about">About</a></li>
                     <li class="sweep"><a href="www.shsid.com">SHSID</a></li>
                 </ul>
             </div>
         <div class="search">
-            <form>
+            <form style="display:inline-block">
                 <input type="text" value="Search" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search';}">
-                <input type="submit" value><span class="glyphicon glyphicon-search"></span></input>
+                <span class="glyphicon glyphicon-search"><input type="submit" value=""></span>
             </form>
         </div>
         
         <div class="login">
+            {% if user %}
             <span id="loginanimation" onmouseenter="swing(this)" onmouseleave="this.className=''" style="display: block;">
-                <a href="#loginModal" data-toggle="modal" data-target="#loginModal"> <span class="glyphicon glyphicon-user"></span>Login</a>
+                <a href="#loginModal" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-info-sign"></span>{ user }}</a>
             </span>
+            {% else %}
+            <span id="loginanimation" onmouseenter="swing(this)" onmouseleave="this.className=''" style="display: block;">
+                <a href="#loginModal" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-user"></span>Login</a>
+            </span>
+            {% endif %}
         </div>
     </div>
 </div>

@@ -24,16 +24,16 @@ def exception_handler(e):
 @app.route('/')
 def home():
     '''Homepage'''
-    loggedin = False
+    user = ''
     return render_template('homepage.html',
                            title='Here you come',
-                           loggedin=loggedin)
+                           user=user)
 
 
 @app.route('/clublist')
 def clublist():
     '''Club List'''
-    loggedin = False
+    user = ''
     clubs = [{'name': 'art club', 'photo': 'intro1'},
              {'name': 'photo club', 'photo': 'intro2'},
              {'name': 'art club', 'photo': 'intro3'},
@@ -46,23 +46,23 @@ def clublist():
              {'name': 'photo club', 'photo': 'intro9'}]
     return render_template('clublist.html',
                            title='Club List',
-                           loggedin=loggedin,
+                           user=user,
                            clubs=clubs)
 
 
 @app.route('/clubintro')
 def clubintro():
     '''Club Intro'''
-    loggedin = False
+    user = ''
     return render_template('clubintro.html',
                            title='Club Intro',
-                           loggedin=loggedin)
+                           user=user)
 
 
 @app.route('/allact')
 def allactivities():
     '''All Activities'''
-    loggedin = False
+    user = ''
     activities = [{'club_name': 'Art Club', 'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
                   {'club_name': 'Photo Club', 'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'},
                   {'club_name': 'Art Club', 'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
@@ -77,14 +77,14 @@ def allactivities():
                   {'club_name': 'Photo Club', 'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'}]
     return render_template('allact.html',
                            title='All Activities',
-                           loggedin=loggedin,
+                           user=user,
                            activities=activities)
 
 
 @app.route('/clubact')
 def clubactivities():
     '''One Club's Activities'''
-    loggedin = False
+    user = ''
     club = {'image1': 'picture', 'image2': 'picture', 'image3': 'picture', 'club_name': 'Art Club'}
     activities = [{'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
                   {'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'},
@@ -100,14 +100,14 @@ def clubactivities():
                   {'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'}]
     return render_template('clubact.html',
                            title=club['club_name'],
-                           loggedin=loggedin,
+                           user=user,
                            club=club,
                            activities=activities)
 
 
 @app.route('/photos')
 def allphotos():
-    loggedin = False
+    user = ''
     top = {'image': 'picture', 'actname': 'Making Website', 'club': 'Website Club'}
     photos = [{'image1': 'intro1', 'actname1': 'Random Activity', 'club1': 'Random Club', 'image2': 'intro2', 'actname2': 'Random Activity', 'club2': 'Random Club'},
               {'image1': 'intro1', 'actname1': 'Random Activity', 'club1': 'Random Club', 'image2': 'intro2', 'actname2': 'Random Activity', 'club2': 'Random Club'},
@@ -121,7 +121,7 @@ def allphotos():
               {'image1': 'intro1', 'actname1': 'Random Activity', 'club1': 'Random Club', 'image2': 'intro2', 'actname2': 'Random Activity', 'club2': 'Random Club'}]
     return render_template('photos.html',
                            title='All Photos',
-                           loggedin=loggedin,
+                           user=user,
                            top=top,
                            photos=photos)
 
@@ -134,10 +134,10 @@ def login():
 @app.route('/about')
 def about():
     '''About This Website'''
-    loggedin = False
+    user = ''
     return render_template('about.html',
                            title='About',
-                           loggedin=loggedin)
+                           user=user)
 
 if __name__ == '__main__':
     app.run()
