@@ -131,5 +131,13 @@ def login():
     return
 
 
+@app.route('/about')
+def about():
+    '''About This Website'''
+    loggedin = False
+    return render_template('about.html',
+                           title='About',
+                           loggedin=loggedin)
+
 if __name__ == '__main__':
     app.run()
