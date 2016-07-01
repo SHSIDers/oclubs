@@ -1,118 +1,147 @@
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+#
+
+from __future__ import unicode_literals
+
+from flask import g
 import MySQLdb
-db = MySQLdb.connect(host="localhost", user="root", db="oclubs")
-cur = db.cursor()
-
-# cond: a tuple, like: "=","user_id",self.uid
-# for range: lower bound included, higher bound excluded
 
 
-def cond_interpret(cond):
-    if cond[0] in ['>', '<', '=', '<=', '>=', '<>']:
-        if isinstance(cond[2], basestring):
-            return cond[1] + cond[0]+"\""+cond[2]+"\""
-        else:
-            return cond[1] + cond[0]+str(cond[2])
-    elif cond[0] == "range":
-        assert (isinstance(cond[2][0], int) or isinstance(cond[2][0], float))
-        assert (isinstance(cond[2][1], int) or isinstance(cond[2][1], float))
-        return cond[1]+'>='+cond[2][0]+" AND " + cond[1]+'<'+cond[2][1]
+def _parse_cond(conds):
+    return ' OR '.join([__parse_cond(one_cond) for one_cond in conds])
 
 
-def fetch_onerow(table, conds, coldict, isand=True):
-    cols = coldict.keys()
-    st = ','.join(cols)
-    fconds = []
-    for cond in conds:
-        fconds.append(cond_interpret(cond))
-    if isand:
-        fconds = " AND ".join(fconds)
+def __parse_cond(cond):
+    return '(%s)' % __parse_cond(cond)
+
+
+def ___parse_cond(cond):
+    op, conds = cond[0], cond[1:]
+    if op in ['>', '<', '=', '<=', '>=', '!=']:
+        var, const = conds
+        if const is None:
+            op = {'=': 'IS', '!=': 'IS NOT'}.get(op, op)
+        return ' '.join([var, op, _encode(const)])
+    elif op == "and":
+        return ' AND '.join([__parse_cond(one_cond) for one_cond in conds])
+    elif op == "range":
+        # (lo, hi]
+        var, (lo, hi) = conds
+        return __parse_cond('and', ('>=', var, lo), ('<', var, hi))
+
+
+def _encode(obj):
+    if obj is None:
+        return 'NULL'
+    elif isinstance(obj, (bool, int, long, float)):
+        return str(obj)
+    elif isinstance(obj, basestring):
+        return '"%s"' % MySQLdb.escape_string(obj)
     else:
-        fconds = " OR ".join(fconds)
-    cur.execute("SELECT %s FROM %s WHERE %s LIMIT 1" % (st, table, fconds))
-    read = cur.fetchall()
-    if len(read) == 0:
-        raise RuntimeError
+        import json
+        return _encode(json.dumps, obj)
+
+
+def _mk_multi_return(row, cols, coldict):
     ret = {}
-    ret.fromkeys(coldict.values())
     i = 0
-    for val in read[0]:
+    for val in row:
         ret[coldict[cols[i]]] = val
         i += 1
     return ret
 
 
-def fetch_oneblock(table, conds, col, isand=True):
-    fconds = []
-    for cond in conds:
-        fconds.append(cond_interpret(cond))
-    if isand:
-        fconds = " AND ".join(fconds)
-    else:
-        fconds = " OR ".join(fconds)
-    cur.execute("SELECT %s FROM %s WHERE %s LIMIT 1" % (col, table, fconds))
-    read = cur.fetchall()
-    if len(read) == 0:
-        raise RuntimeError
-    return read[0][0]
+def _execute(sql, iswrite=False):
+    """
+    Internal sql execution handling for each request.
+
+    MySQLdb is not thread-safe.
+    """
+    db = g.get('dbconnection', None)
+    if not db:
+        db = MySQLdb.connect(
+            host="localhost",
+            user="root",
+            db="oclubs",
+            charset='utf8',
+            use_unicode=True
+        )
+        g.dbconnection = db
+    cur = db.cursor()
+
+    if iswrite and not g.get('dbtransaction', False):
+        cur.execute("START TRANSACTION;")
+        g.dbtransaction = True
+
+    cur.execute(sql)
+
+    return cur.fetchall()
 
 
-def fetch_allrow(table, conds, coldict, isand=True):
+# FIXME
+def finish_transaction(commit=True):
+    """Exported function for flask."""
+    if g.get('dbconnection', None) and g.get('dbtransaction', False):
+        g.dbconnection.cursor().execute('COMMIT;' if commit else 'ROLLBACK;')
+        g.dbtransaction = False
+
+
+def fetch_onerow(table, conds, coldict):
     cols = coldict.keys()
     st = ','.join(cols)
-    fconds = []
-    for cond in conds:
-        fconds.append(cond_interpret(cond))
-    if isand:
-        fconds = " AND ".join(fconds)
-    else:
-        fconds = " OR ".join(fconds)
-    cur.execute("SELECT %s FROM %s WHERE %s" % (st, table, fconds))
-    reads = cur.fetchall()
-    if len(reads) == 0:
+    conds = _parse_cond(conds)
+
+    rows = _execute("SELECT %s FROM %s WHERE %s LIMIT 1;"
+                    % (st, table, conds))
+    if not rows:
         raise RuntimeError
-    rows = []
-    for read in reads:
-        row = {}
-        row.fromkeys(coldict.values)
-        i = 0
-        for val in read:
-            row[coldict[cols[i]]] = val
-            i += 1
-        rows.append(row)
-    return rows
+
+    return _mk_multi_return(rows[0], cols, coldict)
 
 
-# dictrow: a dictionary, containing info about the new row
-def insert_onerow(table, dictrow):
-    keys = ','.join(dictrow.keys())
-    values = []
-    for value in dictrow.values():
-        if isinstance(value, basestring):
-            values.append("\"%s\"" % (value))
-        else:
-            values.append(value)
-    strval = ','.join(values)
-    cur.execute("START TRANSACTION")
-    cur.execute("INSERT INTO %s (%s) VALUES (%s)" % (table, keys, strval))
-    cur.execute("COMMIT")
-    return cur.fetchall()
+def fetch_oneentry(table, conds, col):
+    conds = _parse_cond(conds)
+
+    rows = _execute("SELECT %s FROM %s WHERE %s LIMIT 1;"
+                    % (col, table, conds))
+    if not rows:
+        raise RuntimeError
+
+    return rows[0][0]
 
 
-# dictup: a dictionary, containing info about which row should be updated
-def update_allrow(table, conds, dictupdate, isand=True):
-    fconds = []
-    for cond in conds:
-        fconds.append(cond_interpret(cond))
-    if isand:
-        fconds = " AND ".join(fconds)
-    else:
-        fconds = " OR ".join(fconds)
-    items = dictupdate.items()
-    setto = []
-    for item in items:
-        setto.append("%s=%s" % (item[0], item[1]))
-    setto = ', '.join(setto)
-    cur.execute("START TRANSACTION")
-    cur.execute('UPDATE %s SET %s WHERE %s' % (table, setto, fconds))
-    cur.execute("COMMIT")
-    return cur.fetchall()
+def fetch_onecol(table, conds, col):
+    conds = _parse_cond(conds)
+
+    rows = _execute("SELECT %s FROM %s WHERE %s;"
+                    % (col, table, conds))
+
+    return [val for val, in rows]
+
+
+def fetch_multirow(table, conds, coldict):
+    cols = coldict.keys()
+    st = ','.join(cols)
+    conds = _parse_cond(conds)
+
+    rows = _execute("SELECT %s FROM %s WHERE %s;" % (st, table, conds))
+
+    return [_mk_multi_return(row, cols, coldict) for row in rows]
+
+
+def insert_onerow(table, row):
+    keys = ','.join(row.keys())
+    values = ','.join([_encode(value) for value in row.values()])
+
+    return _execute("INSERT INTO %s (%s) VALUES (%s);" % (table, keys, values),
+                    write=True)
+
+
+def update_allrow(table, conds, update):
+    conds = _parse_cond(conds)
+    setto = ["%s=%s" % (key, _encode(val)) for key, val in update.items()]
+    setto = ','.join(setto)
+
+    return _execute('UPDATE %s SET %s WHERE %s;' % (table, setto, conds),
+                    write=True)
