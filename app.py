@@ -34,16 +34,16 @@ def home():
 def clublist():
     '''Club List'''
     loggedin = False
-    clubs = [{'name': 'art club', 'photo': 'picture'},
-             {'name': 'photo club', 'photo': 'picture'},
-             {'name': 'art club', 'photo': 'picture'},
-             {'name': 'photo club', 'photo': 'picture'},
-             {'name': 'art club', 'photo': 'picture'},
-             {'name': 'photo club', 'photo': 'picture'},
-             {'name': 'art club', 'photo': 'picture'},
-             {'name': 'photo club', 'photo': 'picture'},
-             {'name': 'art club', 'photo': 'picture'},
-             {'name': 'photo club', 'photo': 'picture'}]
+    clubs = [{'name': 'art club', 'photo': 'intro1'},
+             {'name': 'photo club', 'photo': 'intro2'},
+             {'name': 'art club', 'photo': 'intro3'},
+             {'name': 'photo club', 'photo': 'intro3'},
+             {'name': 'art club', 'photo': 'intro4'},
+             {'name': 'photo club', 'photo': 'intro5'},
+             {'name': 'art club', 'photo': 'intro6'},
+             {'name': 'photo club', 'photo': 'intro7'},
+             {'name': 'art club', 'photo': 'intro8'},
+             {'name': 'photo club', 'photo': 'intro9'}]
     return render_template('clublist.html',
                            title='Club List',
                            loggedin=loggedin,
@@ -108,22 +108,17 @@ def clubactivities():
 @app.route('/photos')
 def allphotos():
     loggedin = False
-    top = {'image1': 'picture', 'image1_actname': 'Making Website', 'image1_club': 'Website Club', 'image2': 'picture', 'image2_actname': 'Painting', 'image2_club': 'Art Club'}
-    photos = [{'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
-              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
-              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
-              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
-              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
-              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
-              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
-              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
-              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
-              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
-              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
-              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
-              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
-              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'},
-              {'image': 'picture', 'actname': 'Random Activity', 'club': 'Random Club'}]
+    top = {'image': 'picture', 'actname': 'Making Website', 'club': 'Website Club'}
+    photos = [{'image1': 'intro1', 'actname1': 'Random Activity', 'club1': 'Random Club', 'image2': 'intro2', 'actname2': 'Random Activity', 'club2': 'Random Club'},
+              {'image1': 'intro1', 'actname1': 'Random Activity', 'club1': 'Random Club', 'image2': 'intro2', 'actname2': 'Random Activity', 'club2': 'Random Club'},
+              {'image1': 'intro1', 'actname1': 'Random Activity', 'club1': 'Random Club', 'image2': 'intro2', 'actname2': 'Random Activity', 'club2': 'Random Club'},
+              {'image1': 'intro1', 'actname1': 'Random Activity', 'club1': 'Random Club', 'image2': 'intro2', 'actname2': 'Random Activity', 'club2': 'Random Club'},
+              {'image1': 'intro1', 'actname1': 'Random Activity', 'club1': 'Random Club', 'image2': 'intro2', 'actname2': 'Random Activity', 'club2': 'Random Club'},
+              {'image1': 'intro1', 'actname1': 'Random Activity', 'club1': 'Random Club', 'image2': 'intro2', 'actname2': 'Random Activity', 'club2': 'Random Club'},
+              {'image1': 'intro1', 'actname1': 'Random Activity', 'club1': 'Random Club', 'image2': 'intro2', 'actname2': 'Random Activity', 'club2': 'Random Club'},
+              {'image1': 'intro1', 'actname1': 'Random Activity', 'club1': 'Random Club', 'image2': 'intro2', 'actname2': 'Random Activity', 'club2': 'Random Club'},
+              {'image1': 'intro1', 'actname1': 'Random Activity', 'club1': 'Random Club', 'image2': 'intro2', 'actname2': 'Random Activity', 'club2': 'Random Club'},
+              {'image1': 'intro1', 'actname1': 'Random Activity', 'club1': 'Random Club', 'image2': 'intro2', 'actname2': 'Random Activity', 'club2': 'Random Club'}]
     return render_template('photos.html',
                            title='All Photos',
                            loggedin=loggedin,

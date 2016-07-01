@@ -4,29 +4,38 @@
 <!-- Below Navbar -->
 <div class="large_container">
     <h1 class="text-center title">All Photos</h1>
-    <div class="col-sm-6 blockpic view1 view-eighth" style="float:left; margin:2%">
-        <img src="static/images/{{ top.image1 }}.jpg" class="img-responsive img-thumbnail" alt="Image 1">
-        <div class="mask">
-            <h2>{{ top.image1_actname }}</h2>
-            <p>{{ top.image1_club }}</p>
-        </div>
-    </div>
-    <div class="col-sm-6 blockpic view1 view-eighth" style="float:right; margin:2%">
-        <img src="static/images/{{ top.image2 }}.jpg" class="img-responsive img-thumbnail" alt="Image 2">
-        <div class="mask">
-            <h2>{{ top.image2_actname }}</h2>
-            <p>{{ top.image2_club }}</p>
-        </div>
+    <div class="jumbotron">
+        <img src="static/images/{{ top.image }}.jpg" class="img-responsive img-thumbnail" alt="Image" style="float:left;width:35%;margin-left:5%;margin-right:5%">
+        <h1>{{ top.club }}</h1>
+        <h1>{{ top.actname }}</h1>
+        <h3>Lucky Pick! - The activity is chosen randomly.</h3>
+        <h3>Feel free to click it to check the activity.</h3>
+        <h3>Below are other fantastic photos from clubs with random order.</h3>
     </div>
     <br>
     <div class="clearfix"></div>
     {% for photo in photos %}
-    <div class="photo">
-        <img src="static/images/{{ photo.image }}.jpg" class="img-responsive" alt="{{ photo.act_name }}">
-        <h4>{{ photo.actname }}</h4>
-        <p>{{ photo.club }}</p>
+    <div class="photo clickable bright" data-href="#" style="cursor:pointer">
+        <img src="static/images/{{ photo.image1 }}.jpg" class="img-responsive" alt="{{ photo.actname1 }}">
+        <h4>{{ photo.actname1 }}</h4>
+        <p>{{ photo.club1 }}</p>
+    </div>
+    <div class="photo clickable dark" data-href="#" style="cursor:pointer">
+        <img src="static/images/{{ photo.image2 }}.jpg" class="img-responsive" alt="{{ photo.actname2 }}">
+        <h4>{{ photo.actname2 }}</h4>
+        <p>{{ photo.club2 }}</p>
     </div>
     {% endfor %}
+    <br>
+    <center><ul class="pagination center">
+        <li><a href="#">&laquo;</a></li>
+        <li class="active"><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">5</a></li>
+        <li><a href="#">&raquo;</a></li>
+    </ul></center>
 </div>
 
 {% endblock %}
