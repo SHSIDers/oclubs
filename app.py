@@ -1,7 +1,6 @@
-# coding=gbk
-
 #! /usr/bin/env python
 # -*- coding: UTF-8 -*-
+#
 
 from flask import (
     Flask, redirect, request, render_template, url_for
@@ -27,6 +26,7 @@ def home():
     user = ''
     return render_template('homepage.html',
                            title='Here you come',
+                           is_home=True,
                            user=user)
 
 
@@ -46,6 +46,7 @@ def clublist():
              {'name': 'photo club', 'photo': 'intro9'}]
     return render_template('clublist.html',
                            title='Club List',
+                           is_list=True,
                            user=user,
                            clubs=clubs)
 
@@ -121,6 +122,7 @@ def allphotos():
               {'image1': 'intro1', 'actname1': 'Random Activity', 'club1': 'Random Club', 'image2': 'intro2', 'actname2': 'Random Activity', 'club2': 'Random Club'}]
     return render_template('photos.html',
                            title='All Photos',
+                           is_photos=True,
                            user=user,
                            top=top,
                            photos=photos)
@@ -137,6 +139,7 @@ def about():
     user = ''
     return render_template('about.html',
                            title='About',
+                           is_about=True,
                            user=user)
 
 if __name__ == '__main__':

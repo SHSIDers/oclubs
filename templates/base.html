@@ -16,7 +16,7 @@
 
 </head>
 
-<body>
+<body style="background-color:#ccddff">
 <div class="header">
     <div class="container">
         <div class="logo">
@@ -24,11 +24,11 @@
         </div>
             <div class="top-nav">
                 <ul class="nav1">
-                    <li class="sweep active"><a href="/">Home</a></li>
-                    <li class="sweep"><a href="clublist">Club List</a></li>
-                    <li class="sweep"><a href="photos">Photos</a></li>
-                    <li class="sweep"><a href="about">About</a></li>
-                    <li class="sweep"><a href="www.shsid.com">SHSID</a></li>
+                    <li class="sweep {% if is_home %}active{% endif %}"><a href="/">Home</a></li>
+                    <li class="sweep {% if is_list %}active{% endif %}"><a href="clublist">Club List</a></li>
+                    <li class="sweep {% if is_photos %}active{% endif %}"><a href="photos">Photos</a></li>
+                    <li class="sweep {% if is_about %}active{% endif %}"><a href="about">About</a></li>
+                    <li class="sweep"><a href="http://www.shsid.org">SHSID</a></li>
                 </ul>
             </div>
         <div class="search">
@@ -41,7 +41,7 @@
         <div class="login">
             {% if user %}
             <span id="loginanimation" onmouseenter="swing(this)" onmouseleave="this.className=''" style="display: block;">
-                <a href="#loginModal" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-info-sign"></span>{ user }}</a>
+                <a href="#"><span class="glyphicon glyphicon-info-sign"></span> {{ user }}</a>
             </span>
             {% else %}
             <span id="loginanimation" onmouseenter="swing(this)" onmouseleave="this.className=''" style="display: block;">
