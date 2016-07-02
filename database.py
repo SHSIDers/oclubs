@@ -9,7 +9,7 @@ import MySQLdb
 
 
 def _parse_cond(conds):
-    return ' OR '.join([__parse_cond(one_cond) for one_cond in conds])
+    return ' AND '.join([__parse_cond(one_cond) for one_cond in conds])
 
 
 def __parse_cond(cond):
@@ -23,9 +23,10 @@ def ___parse_cond(cond):
         if const is None:
             op = {'=': 'IS', '!=': 'IS NOT'}.get(op, op)
         return ' '.join([var, op, _encode(const)])
-    elif op == "and":
-        return ' AND '.join([__parse_cond(one_cond) for one_cond in conds])
-    elif op == "range":
+    elif op.lower() in ["and", "or"]:
+        return (' %s ' % op.upper()).join(
+            [__parse_cond(one_cond) for one_cond in conds])
+    elif op.lower() == "range":
         # (lo, hi]
         var, (lo, hi) = conds
         return __parse_cond('and', ('>=', var, lo), ('<', var, hi))
