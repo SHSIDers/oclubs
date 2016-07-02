@@ -13,7 +13,7 @@ def _parse_cond(conds):
 
 
 def __parse_cond(cond):
-    return '(%s)' % __parse_cond(cond)
+    return '(%s)' % ___parse_cond(cond)
 
 
 def ___parse_cond(cond):
@@ -41,7 +41,7 @@ def _encode(obj):
         return '"%s"' % MySQLdb.escape_string(obj)
     else:
         import json
-        return _encode(json.dumps, obj)
+        return _encode(json.dumps(obj))
 
 
 def _mk_multi_return(row, cols, coldict):
