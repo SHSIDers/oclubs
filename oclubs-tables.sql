@@ -29,13 +29,13 @@ CREATE INDEX club_name ON club (club_name);
 CREATE INDEX club_teacher ON club (club_teacher);
 
 CREATE TABLE club_member (
-	member_club int NOT NULL, # Foreign key to club.club_id
-	member_user int NOT NULL # Foreign key to user.user_id
+	cm_club int NOT NULL, # Foreign key to club.club_id
+	cm_user int NOT NULL # Foreign key to user.user_id
 );
 
-CREATE UNIQUE INDEX club_member_club_user ON club_member (member_club,member_user);
-CREATE INDEX club_member_club ON club_member (member_club);
-CREATE INDEX club_member_user ON club_member (member_user);
+CREATE UNIQUE INDEX cm_club_user ON club_member (cm_club,cm_user);
+CREATE INDEX cm_club ON club_member (cm_club);
+CREATE INDEX cm_user ON club_member (cm_user);
 
 
 CREATE TABLE activity (
@@ -51,20 +51,20 @@ CREATE TABLE activity (
 );
 
 CREATE TABLE activity_pic (
-	pic_act int NOT NULL, # Foreign key to activity.act_id
-	pic_upload int NOT NULL # Foreign key to upload.upload_id
+	ap_act int NOT NULL, # Foreign key to activity.act_id
+	ap_upload int NOT NULL # Foreign key to upload.upload_id
 );
 
-CREATE INDEX activity_pic_act ON activity_pic (pic_act);
+CREATE INDEX ap_act ON activity_pic (ap_act);
 
 CREATE TABLE attendance (
-	attendance_act int NOT NULL, # Foreign key to activity.activity_id
-	attendance_user int NOT NULL # Foreign key to user.user_id
+	att_act int NOT NULL, # Foreign key to activity.activity_id
+	att_user int NOT NULL # Foreign key to user.user_id
 );
 
-CREATE UNIQUE INDEX attendance_act_user ON attendance (attendance_act, attendance_user);
-CREATE INDEX attendance_act ON attendance (attendance_act);
-CREATE INDEX attendance_user ON attendance (attendance_user);
+CREATE UNIQUE INDEX att_act_user ON attendance (att_act, att_user);
+CREATE INDEX att_act ON attendance (att_act);
+CREATE INDEX att_user ON attendance (att_user);
 
 
 CREATE TABLE clubpost (
@@ -80,11 +80,11 @@ CREATE TABLE clubpost (
 CREATE INDEX clubpost_club ON clubpost (cp_club);
 
 CREATE TABLE clubpost_pic (
-	pic_post int NOT NULL, # Foreign key to clubpost.cp_id
-	pic_upload int NOT NULL # Foreign key to upload.upload_id
+	cp_post int NOT NULL, # Foreign key to clubpost.cp_id
+	cp_upload int NOT NULL # Foreign key to upload.upload_id
 );
 
-CREATE INDEX clubpost_pic_post ON clubpost_pic (pic_post);
+CREATE INDEX cp_post ON clubpost_pic (cp_post);
 
 
 CREATE TABLE text (
