@@ -26,8 +26,16 @@ function swing(x) {
 
 function updatecheck(){
     if($('input[type=radio]:checked').size() > 0) {
-        $(".modal fade modal-body").html() = "<p>" + document.getElementById('leader_radio').value + "</p>";
+        $(".modal modal-body").html("<p>" + document.getElementById('leader_radio').value + "</p>");
     }else{
-        $(".modal fade modal-body").html() = "<p>Please select one memeber as next club leader!</p>";
+        $(".modal modal-body").html("<p>Please select one memeber as next club leader!</p>");
     }
 }
+
+$("#updatecheck").click(function() {
+	if($('input[type=radio]:checked').size() > 0) {
+        $(".modal .modal-body").html("<p>" + document.getElementById('leader_radio').value + "</p>");
+    }else{
+        $(".modal .modal-body").html("<p>Please select one memeber as next club leader!</p>");
+    }
+})

@@ -19,10 +19,10 @@
         <img src="static/images/{{ member.photo }}.jpg" class="img-responsive" alt="">
         <p>{{ member.official_name }}</p>
         <p>{{ member.nick_name }}</p>
-        <center><input type="radio" name="leader_radio"></center>
+        <center><input type="radio" id="leader_radio"></center>
     </label>
     {% endfor %}
-    <center><button class="btn btn-info" data-toggle="modal" data-target="#confirmation" onclick="updatechecked();">Submit</button>
+    <center><button class="btn btn-info" data-toggle="modal" data-target="#confirmation" id="updatecheck">Submit</button>
 </div>
 
 <div id="confirmation" class="modal fade" role="dialog">
