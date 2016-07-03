@@ -33,7 +33,7 @@ CREATE TABLE club (
 	club_inactive boolean NOT NULL, # !!!
 	club_isexcellent boolean NOT NULL
 );
-
+CREATE INDEX club_isexcellent ON club (club_isexcellent);
 CREATE INDEX club_name ON club (club_name);
 CREATE INDEX club_teacher ON club (club_teacher);
 
@@ -83,12 +83,13 @@ CREATE TABLE quit_club_request (
 	quit_reason int NOT NULL, # Foreign key to text.text_id
 );
 
-CREATE TABLE comment (
-	comment_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	comment_act int NOT NULL, # Foreign key to act.act_id
-	comment_user int NOT NULL, # Foreign key to user.user_id
-	comment_text int NOT NULL, # Foreign key to text.text_id
-	comment_time int NOT NULL
+CREATE TABLE signup (
+	signup_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	signup_act int NOT NULL, # Foreign key to act.act_id
+	signup_user int NOT NULL, # Foreign key to user.user_id
+	signup_comment int NOT NULL, # Foreign key to text.text_id
+	signup_time int NOT NULL,
+	signup_consentform boolean NOT NULL
 );
 
 CREATE INDEX upload_club ON upload (upload_club);
