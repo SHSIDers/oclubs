@@ -46,7 +46,7 @@ CREATE TABLE activity (
 	act_pic int(255), # Foreign key to upload.upload_id
 	act_date int(2) NOT NULL, # Year/Month/Date
 	act_time int NOT NULL, # Uploaded time
-	act_location int NOT NULL, #XMT,ZXB, basketball court, Hongmei,...
+	act_location mediumblob NOT NULL, #XMT,ZXB, basketball court, Hongmei,...
 	act_CAS int NOT NULL # CAS hours
 );
 
@@ -76,7 +76,7 @@ CREATE TABLE upload (
 	upload_mime varchar(255) binary NOT NULL # MIME type
 );
 
-CREATE TABLE quit_club_request (
+CREATE TABLE quit_request (
 	quit_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	quit_club int NOT NULL, # Foreign key to club.club_id
 	quit_user int NOT NULL, # Foreign key to user.user_id
@@ -91,6 +91,8 @@ CREATE TABLE signup (
 	signup_time int NOT NULL,
 	signup_consentform boolean NOT NULL
 );
+
+
 
 CREATE INDEX upload_club ON upload (upload_club);
 CREATE INDEX upload_user ON upload (upload_user); 
