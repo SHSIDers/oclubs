@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Below Navbar -->
+<div class="container">
+    <div class="col-sm-3">
+        <img src="static/images/areyousure1.jpg" class="img-responsive img-thumbnail" alt="Are you sure?">
+    </div>
+    <div class="col-sm-6">
+    	<div class="form-group" style="margin-left:auto; margin-right:auto">
+            <h1>Quitting Club</h1>
+            <p style="font-style:italic; font-size:150%">If you really want to quit a club, then please select the club and state your reason. You request for quitting will be emailed to the club leader</p>
+            <br>
+    		<label for="clubs">The club:</label>
+        	<select id="clubs" type="dropdown">
+                {% for club in clubs %}
+                <option value="{{ club }}">{{ club }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <label for="reason">Reason:</label>
+        	<textarea class="form-control" rows="10" id="reason"></textarea>
+            <br>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#confirmation" id="updatequit">Submit</button>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <img src="static/images/areyousure2.jpg" class="img-responsive img-thumbnail" alt="Are you sure?">
+    </div>
+</div>
+
+<div id="confirmation" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Confirmation</h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type='button' class='btn btn-default' data-dismiss='modal'>No!</button>
+                <button type='submit' class='btn btn-primary'>Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

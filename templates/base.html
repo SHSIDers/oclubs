@@ -22,15 +22,15 @@
         <div class="logo">
             <a href="/"><img src="static/images/logo.png" class="img-responsive" alt=""></a>
         </div>
-            <div class="top-nav">
-                <ul class="nav1">
-                    <li class="sweep {% if is_home %}active{% endif %}"><a href="/">Home</a></li>
-                    <li class="sweep {% if is_list %}active{% endif %}"><a href="clublist">Club List</a></li>
-                    <li class="sweep {% if is_photos %}active{% endif %}"><a href="photos">Photos</a></li>
-                    <li class="sweep {% if is_about %}active{% endif %}"><a href="about">About</a></li>
-                    <li class="sweep"><a href="http://www.shsid.org">SHSID</a></li>
-                </ul>
-            </div>
+        <div class="top-nav">
+            <ul>
+                <li class="sweep {% if is_home %}active{% endif %}"><a href="/">Home</a></li>
+                <li class="sweep {% if is_list %}active{% endif %}"><a href="clublist">Club List</a></li>
+                <li class="sweep {% if is_photos %}active{% endif %}"><a href="photos">Photos</a></li>
+                <li class="sweep {% if is_about %}active{% endif %}"><a href="about">About</a></li>
+                <li class="sweep"><a href="http://www.shsid.org">SHSID</a></li>
+            </ul>
+        </div>
         <div class="search">
             <form style="display:inline-block">
                 <input type="text" value="Search" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search';}">

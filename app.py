@@ -188,5 +188,15 @@ def newleader():
                            members=members)
 
 
+@app.route('/quit')
+def quitclub():
+    '''Quit Club Page'''
+    user = ''
+    clubs = ['Art Club', 'Photo Club', 'MUN', 'Art Club', 'Photo Club', 'MUN', 'Art Club', 'Photo Club', 'MUN']
+    return render_template('quitclub.html',
+                           title='Quit Club',
+                           user=user,
+                           clubs=clubs)
+
 if __name__ == '__main__':
     app.run()
