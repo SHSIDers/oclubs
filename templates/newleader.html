@@ -14,14 +14,16 @@
 <br><br>
 
 <div class="container">
-    {% for member in members %}
-    <label class="radio_block">
-        <img src="static/images/{{ member.photo }}.jpg" class="img-responsive" alt="">
-        <p>{{ member.official_name }}</p>
-        <p>{{ member.nick_name }}</p>
-        <center><input type="radio" id="leader_radio" name="leader"></center>
-    </label>
-    {% endfor %}
+    <div id="leader_radio">
+        {% for member in members %}
+        <label class="radio_block">
+            <img src="static/images/{{ member.photo }}.jpg" class="img-responsive" alt="">
+            <p>{{ member.official_name }}</p>
+            <p>{{ member.nick_name }}</p>
+            <center><input type="radio" name="leader" value="{{ member.official_name }}"></center>
+        </label>
+        {% endfor %}
+    </div>
     <center><button class="btn btn-info" data-toggle="modal" data-target="#confirmation" id="updatecheck">Submit</button>
 </div>
 
