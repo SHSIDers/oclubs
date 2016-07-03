@@ -161,5 +161,32 @@ def creators():
                            user=user)
 
 
+@app.route('/newleader')
+def newleader():
+    '''Selecting New Club Leader'''
+    user = ''
+    leader = {'official_name': 'Feng Ma', 'nick_name': 'Principal Ma', 'photo': '4'}
+    members = [{'official_name': 'Ichiro Tai', 'nick_name': 'Derril', 'photo': '1'},
+               {'official_name': 'YiFei Zhu', 'nick_name': 'YiFei', 'photo': '2'},
+               {'official_name': 'Frank Lee', 'nick_name': 'Frank', 'photo': '3'},
+               {'official_name': 'Ichiro Tai', 'nick_name': 'Derril', 'photo': '1'},
+               {'official_name': 'YiFei Zhu', 'nick_name': 'YiFei', 'photo': '2'},
+               {'official_name': 'Frank Lee', 'nick_name': 'Frank', 'photo': '3'},
+               {'official_name': 'Ichiro Tai', 'nick_name': 'Derril', 'photo': '1'},
+               {'official_name': 'YiFei Zhu', 'nick_name': 'YiFei', 'photo': '2'},
+               {'official_name': 'Frank Lee', 'nick_name': 'Frank', 'photo': '3'},
+               {'official_name': 'Ichiro Tai', 'nick_name': 'Derril', 'photo': '1'},
+               {'official_name': 'YiFei Zhu', 'nick_name': 'YiFei', 'photo': '2'},
+               {'official_name': 'Frank Lee', 'nick_name': 'Frank', 'photo': '3'},
+               {'official_name': 'Ichiro Tai', 'nick_name': 'Derril', 'photo': '1'},
+               {'official_name': 'YiFei Zhu', 'nick_name': 'YiFei', 'photo': '2'},
+               {'official_name': 'Frank Lee', 'nick_name': 'Frank', 'photo': '3'}]
+    return render_template('newleader.html',
+                           title='New Leader',
+                           user=user,
+                           leader=leader,
+                           members=members)
+
+
 if __name__ == '__main__':
     app.run()

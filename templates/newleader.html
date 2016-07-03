@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Below Navbar -->
+<div class="huge_block">
+    <h1>Current Club Leader</h1>
+    <img src="static/images/{{ leader.photo }}.jpg" class="img-responsive img-circle" alt="{{ leader.nick_name }}">
+    <h2>{{ leader.nick_name }}</h2>
+    <h3>{{ leader.official_name }}</h3>
+</div>
+
+<div class="clearfix"></div>
+
+<br><br>
+
+<div class="container">
+    {% for member in members %}
+    <label class="radio_block">
+        <img src="static/images/{{ member.photo }}.jpg" class="img-responsive" alt="">
+        <p>{{ member.official_name }}</p>
+        <p>{{ member.nick_name }}</p>
+        <center><input type="radio" name="leader_radio"></center>
+    </label>
+    {% endfor %}
+    <center><button class="btn btn-info" data-toggle="modal" data-target="#confirmation" onclick="updatechecked();">Submit</button>
+</div>
+
+<div id="confirmation" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Confirmation</h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

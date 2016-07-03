@@ -31,9 +31,11 @@
     <!-- Main Content -->
     <div class="col-sm-10" style="padding-right:50px">
         <h1 class="title">All Clubs</h1>
-        <div class="clubBlock">
+        <div class="smallBlock">
             {% for club in clubs %}
-            <a href="#"><div><img src="static/images/{{ club.photo }}.jpg" class="img-responsive" alt="">{{ club.name }}</div></a>
+            <a href="#"><img src="static/images/{{ club.photo }}.jpg" class="img-responsive" alt="">
+                <p>{{ club.name }}</p>
+            </a>
             {% endfor %}
         </div>
         <center><ul class="pagination center">

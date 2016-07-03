@@ -20,7 +20,14 @@
 	});
 })(jQuery);
 
-
-function swing(x){
+function swing(x) {
       x.className ='swing animated'
+}
+
+function updatecheck(){
+    if($('input[type=radio]:checked').size() > 0) {
+        $(".modal fade modal-body").html() = "<p>" + document.getElementById('leader_radio').value + "</p>";
+    }else{
+        $(".modal fade modal-body").html() = "<p>Please select one memeber as next club leader!</p>";
+    }
 }
