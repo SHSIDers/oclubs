@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Below Navbar -->
+<div class="container">
+    <div class="col-sm-4" style="vertical-align:middle">
+        <img src="static/images/advice.jpg" class="img-responsive img-thumbnail" alt="Advice">
+    </div>
+    <div class="col-sm-8">
+    	<div class="form-group">
+            <h1>Your advice is important to us</h1>
+            <p>*Name and contact can be left blank if you want to stay anonymous.</p>
+    		<label for="name">Your Name:</label>
+        	<input type="text" class="form-control" id="name">
+            <br>
+            <label for="cont">Contact (email/wechat):</label>
+        	<input type="text" class="form-control" id="cont">
+            <br>
+            <label for="adv">*Advice:</label>
+        	<textarea class="form-control" rows="10" id="adv"></textarea>
+            <br>
+            <input type="submit" class="btn btn-primary" value="Submit">
+        </div>
+    </div>
+</div>
+
+{% endblock %}

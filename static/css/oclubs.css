@@ -4,10 +4,16 @@
 }
 
 h1.title {
-	margin-bottom:50px;
+	margin-bottom: 2.5%;
 	font-family:'Times New Roman';
 	font-weight: bold;
 	font-size: 300%;
+}
+
+h2.title_next {
+    margin-bottom: 1.25%;
+    font-family: 'Times New Roman';
+    font-size:150%;
 }
 
 .clubBlock > div,

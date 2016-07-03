@@ -142,5 +142,24 @@ def about():
                            is_about=True,
                            user=user)
 
+
+@app.route('/advice')
+def advice():
+    '''Advice Page'''
+    user = ''
+    return render_template('advice.html',
+                           title='Advice',
+                           user=user)
+
+
+@app.route('/creators')
+def creators():
+    '''Introduction Page about Us'''
+    user = ''
+    return render_template('creators.html',
+                           title='Creators',
+                           user=user)
+
+
 if __name__ == '__main__':
     app.run()
