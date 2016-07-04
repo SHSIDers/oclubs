@@ -11,9 +11,9 @@ from oclubs.objs import User, Club
 from oclubs.objs.base import BaseObject
 
 
-class FormattedText(BaseObject):
+class Upload(BaseObject):
     def __init__(self, uid):
-        super(FormattedText, self).__init__(uid)
+        super(Upload, self).__init__(uid)
         self._location_local = self._location_external = None
 
     @property
@@ -48,7 +48,7 @@ class FormattedText(BaseObject):
 
     @property
     def _data(self):
-        return super(FormattedText, self)._data(
+        return super(Upload, self)._data(
                 'upload',
                 [('=', 'upload_id', self.id)],
                 {

@@ -9,7 +9,6 @@ from __future__ import absolute_import
 
 from oclubs.access import database
 
-from oclubs.objs import User, Club
 
 class BaseObject(object):
     def __init__(self, oid):
