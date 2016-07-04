@@ -18,13 +18,10 @@ CREATE TABLE club (
 	club_teacher int NOT NULL, # Foreign key to user.user_id
 	club_leader int NOT NULL, # Foreign key to user.user_id
 	club_desc int NOT NULL, # Foreign key to text.text_id
-	club_tips int NOT NULL, # Foreign key to text.text_id
-	club_location int NOT NULL, # XMT,ZXB, basketball court,...
-	club_inactive boolean NOT NULL,
-	club_isexcellent boolean NOT NULL
+	club_location tinyblob NOT NULL, # stores object in JSON
+	club_inactive boolean NOT NULL
 );
 
-CREATE INDEX club_isexcellent ON club (club_isexcellent);
 CREATE INDEX club_name ON club (club_name);
 CREATE INDEX club_teacher ON club (club_teacher);
 
@@ -46,9 +43,11 @@ CREATE TABLE activity (
 	act_date unsigned int NOT NULL,
 	act_time int NOT NULL, # Uploaded time
 	act_location mediumblob NOT NULL, #XMT,ZXB, basketball court, Hongmei,...
-	act_CAS int NOT NULL # CAS hours
+	act_cas int NOT NULL # CAS hours
 	act_cp int # Foreign key to clubpost.cp_act
 );
+
+CREATE INDEX act_club ON activity (act_club);
 
 CREATE TABLE activity_pic (
 	ap_act int NOT NULL, # Foreign key to activity.act_id
@@ -90,7 +89,7 @@ CREATE INDEX cp_post ON clubpost_pic (cp_post);
 CREATE TABLE text (
 	text_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	text_data mediumblob NOT NULL, # data depends on flags
-	text_flags tinyblob NOT NULL # comma-separated list of gzip,utf-8,object,external
+	text_flags tinyblob NOT NULL # comma-separated list of gzip,external
 );
 
 

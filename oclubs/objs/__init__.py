@@ -6,6 +6,7 @@
 
 from __future__ import absolute_import
 
-from oclubs.objs import user, club
+from oclubs.objs.user import User
+from oclubs.objs.club import Club
 
-__all__ = ['user', 'club']
+__all__ = ['User', 'Club']

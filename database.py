@@ -80,7 +80,7 @@ def _execute(sql, iswrite=False):
     return cur.fetchall()
 
 
-# FIXME
+# TODO
 def finish_transaction(commit=True):
     """Exported function for flask."""
     if g.get('dbconnection', None) and g.get('dbtransaction', False):
