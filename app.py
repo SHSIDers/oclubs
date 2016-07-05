@@ -10,6 +10,8 @@ import traceback
 
 app = Flask(__name__)
 
+#Remember to use blueprint
+
 
 @app.errorhandler(Exception)
 def exception_handler(e):
@@ -197,6 +199,25 @@ def quitclub():
                            title='Quit Club',
                            user=user,
                            clubs=clubs)
+
+
+@app.route('/club')
+def clubmanage():
+    '''Club Management Page'''
+    user = ''
+    return render_template('club.html',
+                           title='Club',
+                           user=user)
+
+
+@app.route('/newact')
+def newact():
+    '''Hosting New Activity'''
+    user = ''
+    return render_template('newact.html',
+                           title='New Activity',
+                           user=user)
+
 
 if __name__ == '__main__':
     app.run()

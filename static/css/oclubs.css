@@ -594,3 +594,33 @@ thead.darklist {
 
 .radio_block p {
     text-align: center;
+}
+
+.function {
+    display: block;
+    width: 20%;
+    height: 20%;
+    margin: 5%;
+    border-style: solid;
+    border-radius: 5%;
+    border-color: #b3cce6;
+}
+
+.function h1 {
+    display: inline;
+    margin-top: 1200%;
+    padding: 2.5%;
+    background-color: #b3b3cc;
+    width: 80%;
+    font-size: 125%;
+    font-weight: bold;
+    border-style: solid;
+    border-radius: 5%;
+}
+
+.function img {
+    position: absolute;
+    width: 100%;
+    max-width: 100%;
+    z-index: -1;
+}

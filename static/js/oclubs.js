@@ -48,9 +48,8 @@
 			$( "#updatequit" )
 				.click( function() {
 					var selected = $( '.form-group select option:selected' );
-					$( "#confirmation .modal-body" )
-						.html( "<p>Your choice is " + selected.text + ".</p>" );
-					}
+					$( ".modal .modal-body" )
+						.html( "<p>Your choice is " + selected.text() + ".</p>" );
 				} );
 		} );
 } )( jQuery );
