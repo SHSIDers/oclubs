@@ -3,14 +3,14 @@
 	background-color: #eee;
 }
 
-h1.title {
+.title {
 	margin-bottom: 2.5%;
 	font-family:'Times New Roman';
 	font-weight: bold;
 	font-size: 300%;
 }
 
-h2.title_next {
+.title_next {
     margin-bottom: 1.25%;
     font-family: 'Times New Roman';
     font-size:150%;
@@ -561,9 +561,7 @@ thead.darklist {
     width: 20%;
 }
 
-.huge_block h1,
-.huge_block h2,
-.huge_block h3 {
+.huge_block {
     text-align: center;
     color: #e6e6e6;
     text-shadow: -1px 0 #666699, 0 1px #666699, 1px 0 #666699, 0 -1px #666699;
@@ -606,8 +604,7 @@ thead.darklist {
     border-color: #b3cce6;
 }
 
-.function h1 {
-    display: inline;
+.function {
     margin-top: 1200%;
     padding: 2.5%;
     background-color: #b3b3cc;
@@ -624,3 +621,13 @@ thead.darklist {
     max-width: 100%;
     z-index: -1;
 }
+
+.homepage_block {
+    display: block;
+    margin: 5%;
+    border-style: solid;
+    border-radius: 3%;
+    border-color: #b3cce6;
+    background-color: #ccccff;
+}
+

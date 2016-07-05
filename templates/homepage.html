@@ -44,4 +44,44 @@
 		</div>
 	 </div>
 </div>
+
+<br><br>
+
+<div class="container">
+	<div class="col-sm-4">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h2>Excellent Clubs</h2>
+			</div>
+			<div class="panel-body" style="background-color:#ccccff">
+				<div class="list-group">
+					{% for club in ex_clubs %}
+					<a href="#" class="list-group-item">
+						<img src="static/images/{{ club.picture }}.jpg" class="img-responsive img-thumbnail" alt="Excellent Club" style="float:left; margin-right:2%" width="100px" height="100px">
+						<h3>{{ club.name }}</h3>
+						<p>{{ club.intro }}</p>
+					</a>
+					{% endfor %}
+					<a href="#" class="list-group-item">
+						<h3 class="text-center">More</h3>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-8">
+		<div class="homepage_block">
+			<div class="col-sm-3">
+				<img src="static/images/cover.jpg" class="img-responsive img-thumbnail" alt="SHSID|Times Cover">
+			</div>
+			<div class="col-sm-9">
+				<h1>Clubs in SHSID</h1>
+				<h3>Student-led, creative, and surprising</h3>
+				<p>In SHSID, many of students participate in club activities. In academics, sports, and many other fields, students can always find what they are interested and join these clubs. All clubs are led by students, and yet they often give out surprising achievements. Let's explore the world of clubs on this website, oClubs!</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+
 {% endblock %}

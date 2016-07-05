@@ -26,10 +26,15 @@ def exception_handler(e):
 def home():
     '''Homepage'''
     user = ''
+    '''Three excellent clubs'''
+    ex_clubs = [{'name': 'Website Club', 'picture': '1', 'intro': 'We create platform for SHSID.'},
+                {'name': 'Art Club', 'picture': '2', 'intro': 'We invite people to the world of arts.'},
+                {'name': 'Photo Club', 'picture': '3', 'intro': 'We search for the beauty in this world.'}]
     return render_template('homepage.html',
                            title='Here you come',
                            is_home=True,
-                           user=user)
+                           user=user,
+                           ex_clubs=ex_clubs)
 
 
 @app.route('/clublist')
