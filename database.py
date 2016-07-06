@@ -71,21 +71,31 @@ def _execute(sql, iswrite=False):
         g.dbconnection = db
     cur = db.cursor()
 
-    if iswrite and not g.get('dbtransaction', False):
-        cur.execute("START TRANSACTION;")
-        g.dbtransaction = True
+    try:
+        if iswrite and not g.get('dbtransaction', False):
+            cur.execute("START TRANSACTION;")
+            g.dbtransaction = True
 
-    cur.execute(sql)
+        cur.execute(sql)
 
-    return cur.fetchall()
+        return cur.fetchall()
+    finally:
+        cur.close()
 
 
 # TODO
-def finish_transaction(commit=True):
+def done(commit=True):
     """Exported function for flask."""
-    if g.get('dbconnection', None) and g.get('dbtransaction', False):
-        g.dbconnection.cursor().execute('COMMIT;' if commit else 'ROLLBACK;')
-        g.dbtransaction = False
+    if g.get('dbconnection', None):
+        try:
+            if g.get('dbtransaction', False):
+                if commit:
+                    g.dbconnection.commit()
+                else:
+                    g.dbconnection.rollback()
+        finally:
+            g.dbconnection.close()
+            g.dbtransaction = False
 
 
 def fetch_onerow(table, conds, coldict):
