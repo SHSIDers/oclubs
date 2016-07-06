@@ -2,42 +2,42 @@
 {% block content %}
 <div class="container">
 	<div class="col-md-3 blockpic">
-		<img src="static/images/shsid1.jpg" class="img-responsive" alt="" />
+		<img src="static/images/1.jpg" class="img-responsive" alt="" />
 		<div class="mask">
 			<h2>Letraset sheets</h2>
 			<p>with the release Letraset sheets Lorem</p>
 		</div>
 	</div>
 	<div class="col-md-6 blockpic">
-		<img src="static/images/shsid2.jpg" class="img-responsive" alt="" />
+		<img src="static/images/2.jpg" class="img-responsive" alt="" />
 		<div class="mask">
 			<h2>sheets Lorem Ipsum containing</h2>
 			<p> Letraset sheets with the release Letraset</p>
 		</div>
 	 </div>
 	<div class="col-md-3 blockpic">
-		<img src="static/images/shsid3.jpg" class="img-responsive" alt="" />
+		<img src="static/images/3.jpg" class="img-responsive" alt="" />
 		<div class="mask">
 			<h2>sheets release</h2>
 			<p>with the release Letraset sheets Lorem </p>
 		</div>
 	 </div>
 	<div class="col-md-6 blockpic">
-		<img src="static/images/shsid4.jpg" class="img-responsive" alt="" />
+		<img src="static/images/4.jpg" class="img-responsive" alt="" />
 		<div class="mask">
 			<h2>Letraset sheets with</h2>
 			<p>Lorem Ipsum containing Lorem Ipsum passages</p>
 		</div>
 	 </div>
 	 <div class="col-md-3 blockpic">
-		<img src="static/images/shsid5.jpg" class="img-responsive" alt="" />
+		<img src="static/images/1.jpg" class="img-responsive" alt="" />
 		<div class="mask">
 			<h2>containing Lorem</h2>
 			<p> sheets Lorem Ipsum containing Lorem passages</p>
 		</div>
 	 </div>
 	 <div class="col-md-3 blockpic">
-		<img src="static/images/shsid1.jpg" class="img-responsive" alt="" />
+		<img src="static/images/2.jpg" class="img-responsive" alt="" />
 		<div class="mask">
 			<h2>with the release</h2>
 			<p> Letraset sheets with the release Letraset sheets</p>
@@ -48,40 +48,91 @@
 <br><br>
 
 <div class="container">
-	<div class="col-sm-4">
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				<h2>Excellent Clubs</h2>
-			</div>
-			<div class="panel-body" style="background-color:#ccccff">
-				<div class="list-group">
-					{% for club in ex_clubs %}
-					<a href="#" class="list-group-item">
-						<img src="static/images/{{ club.picture }}.jpg" class="img-responsive img-thumbnail" alt="Excellent Club" style="float:left; margin-right:2%" width="100px" height="100px">
-						<h3>{{ club.name }}</h3>
-						<p>{{ club.intro }}</p>
-					</a>
-					{% endfor %}
-					<a href="#" class="list-group-item">
-						<h3 class="text-center">More</h3>
-					</a>
+	<div style="border-top-style:dotted">
+		<br>
+		<div class="col-sm-4">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h2>Excellent Clubs</h2>
+				</div>
+				<div class="panel-body" style="background-color:#ccccff">
+					<div class="list-group">
+						{% for club in ex_clubs %}
+						<a href="#" class="list-group-item">
+							<img src="static/images/{{ club.picture }}.jpg" class="img-responsive img-thumbnail" alt="Excellent Club" style="float:left; margin-right:2%" width="35%" height="35%">
+							<h3>{{ club.name }}</h3>
+							<p>{{ club.intro }}</p>
+						</a>
+						{% endfor %}
+						<a href="#" class="list-group-item">
+							<h3 class="text-center">More</h3>
+						</a>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="col-sm-8">
-		<div class="homepage_block">
-			<div class="col-sm-3">
-				<img src="static/images/cover.jpg" class="img-responsive img-thumbnail" alt="SHSID|Times Cover">
+		<div class="col-sm-8">
+			<div class="homepage_block">
+				<div class="col-sm-3">
+					<img src="static/images/cover.jpg" class="img-responsive img-thumbnail" alt="SHSID|Times Cover">
+				</div>
+				<div class="col-sm-9">
+					<div class="col-sm-10" style="padding-left:0">
+						<h1>Clubs in SHSID</h1>
+					</div>
+					<div class="col-sm-2">
+						<a href="#"><h1><span class="glyphicon glyphicon-list text-right"></span></h1></a>
+					</div>
+					<h3>Student-led, creative, and surprising</h3>
+					<p>In SHSID, many of students participate in club activities. In academics, sports, and many other fields, students can always find what they are interested and join these clubs. All clubs are led by students, and yet they often give out surprising achievements. Let's explore the world of clubs on this website, oClubs!</p>
+				</div>
+				<div class="clearfix"></div>
 			</div>
-			<div class="col-sm-9">
-				<h1>Clubs in SHSID</h1>
-				<h3>Student-led, creative, and surprising</h3>
-				<p>In SHSID, many of students participate in club activities. In academics, sports, and many other fields, students can always find what they are interested and join these clubs. All clubs are led by students, and yet they often give out surprising achievements. Let's explore the world of clubs on this website, oClubs!</p>
+			<br>
+			<div class="homepage_block">
+				<h1 class="text-center">Club Photos</h1>
+				<div class="col-sm-4">
+					<a href="#"><img src="static/images/intro8.jpg" class="img-responsive img-thumbnail" alt="Club Photo"></a>
+				</div>
+				<div class="col-sm-4">
+					<a href="#"><img src="static/images/intro7.jpg" class="img-responsive img-thumbnail" alt="Club Photo"></a>
+				</div>
+				<div class="col-sm-4">
+					<a href="#"><img src="static/images/intro1.jpg" class="img-responsive img-thumbnail" alt="Club Photo"></a>
+				</div>
+				<div class="clearfix"></div>
+				<br>
+				<a href="#"><button class="btn btn-info btn-block">All Club Photos</button></a>
 			</div>
 		</div>
+		<br>
+	</div>
+	<div class="clearfix"></div>
+	<div class="homepage_function">
+		<br>
+		<div class="col-sm-3">
+			<h1><span class="glyphicon glyphicon-cd"></span></h1>
+			<h2>Club Members</h2>
+			<h4>Online application</h4>
+		</div>
+		<div class="col-sm-3">
+			<h1><span class="glyphicon glyphicon-apple"></span></h1>
+			<h2>Club Leaders</h2>
+			<h4>Online management</h4>
+		</div>
+		<div class="col-sm-3">
+			<h1><span class="glyphicon glyphicon-globe"></span></h1>
+			<h2>Club Teachers</h2>
+			<h4>Online operation</h4>
+		</div>
+		<a href="#">
+			<div class="col-sm-3">
+				<center><img src="static/images/more.jpg" class="img-responsive img-circle" alt="More"></center>
+				<h2>Learn more</h2>
+			</div>
+		</a>
+		<br>
 	</div>
 </div>
-
 
 {% endblock %}
