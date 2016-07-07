@@ -648,8 +648,9 @@ thead.darklist {
 
 .homepage_function div {
 	border-style: outset;
-	background-color: #e6f2ff;
+	background-color: #1a1aff;
 	border-radius: 5%;
+	color: white;
 }
 
 .homepage_function span {
@@ -662,5 +663,5 @@ thead.darklist {
 }
 
 .homepage_function > a > div:hover {
-	background-color: #cce2ff;
+	background-color: #0000cc;
 }
