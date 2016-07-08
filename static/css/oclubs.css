@@ -159,7 +159,7 @@
 	float: right;
 	background: #0000b3;
 	width: 15%;
-	margin: 2.3333em 0 0;
+	margin: 1.6em 0 0;
 	font-size: 18px;
 	background-color: #222;
 	font-family: "MV Boli";
@@ -172,11 +172,11 @@
 .search {
 	position: relative;
 	border: 1px solid #a6a6a6;
-	padding: 0.5em 0;
+	padding: 0.25em 0;
 	background: #0000b3;
 	float: left;
 	width: 16%;
-	margin: 2.5em 0 0 0;
+	margin: 2em 0 0 0;
 	background-color: #222;
 }
 .search input[type="text"] {
@@ -440,7 +440,7 @@
 .footer h3 {
   color:#2c2f32;
   font-size: 1.7em;
-  margin: 0 0 1em;
+  margin: 0 0 0.5em;
   font-weight:600;
   font-family: 'MV Boli';
 }
@@ -628,7 +628,8 @@ thead.darklist {
 	border-style: solid;
 	border-radius: 3%;
 	border-color: #b3cce6;
-	background-color: #ccccff;
+	background-color: #b3ccff;
+	color: #1a1a1a;
 }
 
 .homepage_block > div > img {
@@ -648,9 +649,9 @@ thead.darklist {
 
 .homepage_function div {
 	border-style: outset;
-	background-color: #1a1aff;
+	background-color: #3366ff;
 	border-radius: 5%;
-	color: white;
+	color: #e6e6e6;
 }
 
 .homepage_function span {
@@ -663,5 +664,21 @@ thead.darklist {
 }
 
 .homepage_function > a > div:hover {
-	background-color: #0000cc;
+	background-color: #1a53ff;
+}
+
+.intro_function {
+	text-align: center;
+}
+
+.intro_function div {
+	border-style: outset;
+	background-color: #3366ff;
+	border-radius: 5%;
+	color: #e6e6e6;
+	margin: 0 2% 0 2%;
+}
+
+.intro_function > a > div:hover {
+	background-color: #1a53ff;
 }

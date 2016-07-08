@@ -85,6 +85,7 @@ def allactivities():
                   {'club_name': 'Photo Club', 'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'}]
     return render_template('allact.html',
                            title='All Activities',
+                           is_allact=True,
                            user=user,
                            activities=activities)
 
