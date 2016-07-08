@@ -41,16 +41,16 @@ def home():
 def clublist():
     '''Club List'''
     user = ''
-    clubs = [{'name': 'art club', 'photo': 'intro1'},
-             {'name': 'photo club', 'photo': 'intro2'},
-             {'name': 'art club', 'photo': 'intro3'},
-             {'name': 'photo club', 'photo': 'intro3'},
-             {'name': 'art club', 'photo': 'intro4'},
-             {'name': 'photo club', 'photo': 'intro5'},
-             {'name': 'art club', 'photo': 'intro6'},
-             {'name': 'photo club', 'photo': 'intro7'},
-             {'name': 'art club', 'photo': 'intro8'},
-             {'name': 'photo club', 'photo': 'intro9'}]
+    clubs = [{'name': 'Art Club', 'photo': 'intro1', 'intro': 'Here is where birth of arts happens'},
+             {'name': 'Photo Club', 'photo': 'intro2', 'intro': 'Place for photography!'},
+             {'name': 'Art Club', 'photo': 'intro3', 'intro': 'Here is where birth of arts happens'},
+             {'name': 'Photo Club', 'photo': 'intro3', 'intro': 'Place for photography!'},
+             {'name': 'Art Club', 'photo': 'intro4', 'intro': 'Here is where birth of arts happens'},
+             {'name': 'Photo Club', 'photo': 'intro5', 'intro': 'Place for photography!'},
+             {'name': 'Art Club', 'photo': 'intro6', 'intro': 'Here is where birth of arts happens'},
+             {'name': 'Photo Club', 'photo': 'intro7', 'intro': 'Place for photography!'},
+             {'name': 'Art Club', 'photo': 'intro8', 'intro': 'Here is where birth of arts happens'},
+             {'name': 'Photo Club', 'photo': 'intro9', 'intro': 'Place for photography!'}]
     return render_template('clublist.html',
                            title='Club List',
                            is_list=True,
@@ -94,7 +94,7 @@ def allactivities():
 def clubactivities():
     '''One Club's Activities'''
     user = ''
-    club = {'image1': 'picture', 'image2': 'picture', 'image3': 'picture', 'club_name': 'Art Club'}
+    club = {'image1': '1', 'image2': '2', 'image3': '3', 'club_name': 'Art Club'}
     activities = [{'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
                   {'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'},
                   {'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
@@ -117,7 +117,7 @@ def clubactivities():
 @app.route('/photos')
 def allphotos():
     user = ''
-    top = {'image': 'picture', 'actname': 'Making Website', 'club': 'Website Club'}
+    top = {'image': 'intro5', 'actname': 'Making Website', 'club': 'Website Club'}
     photos = [{'image1': 'intro1', 'actname1': 'Random Activity', 'club1': 'Random Club', 'image2': 'intro2', 'actname2': 'Random Activity', 'club2': 'Random Club'},
               {'image1': 'intro1', 'actname1': 'Random Activity', 'club1': 'Random Club', 'image2': 'intro2', 'actname2': 'Random Activity', 'club2': 'Random Club'},
               {'image1': 'intro1', 'actname1': 'Random Activity', 'club1': 'Random Club', 'image2': 'intro2', 'actname2': 'Random Activity', 'club2': 'Random Club'},
@@ -224,6 +224,23 @@ def newact():
                            title='New Activity',
                            user=user)
 
+
+@app.route('/reghm')
+def registerhm():
+    '''Register Page for HongMei Activites'''
+    user = ''
+    club = 'Website Club'
+    schedule = [{'date': 'June 6 2016', 'plan': 'Finish homepage design'},
+                {'date': 'June 6 2016', 'plan': 'Finish homepage design'},
+                {'date': 'June 6 2016', 'plan': 'Finish homepage design'},
+                {'date': 'June 6 2016', 'plan': 'Finish homepage design'},
+                {'date': 'June 6 2016', 'plan': 'Finish homepage design'},
+                {'date': 'June 6 2016', 'plan': 'Finish homepage design'}]
+    return render_template('registerhm.html',
+                           title='Register for HongMei',
+                           user=user,
+                           club=club,
+                           schedule=schedule)
 
 if __name__ == '__main__':
     app.run()

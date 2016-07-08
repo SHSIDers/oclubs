@@ -34,7 +34,8 @@
         <div class="smallBlock">
             {% for club in clubs %}
             <a href="#"><img src="static/images/{{ club.photo }}.jpg" class="img-responsive" alt="">
-                <p>{{ club.name }}</p>
+                <p style="font-size:150%">{{ club.name }}</p>
+                <p>{{ club.intro }}</p>
             </a>
             {% endfor %}
         </div>

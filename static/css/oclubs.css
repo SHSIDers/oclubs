@@ -4,10 +4,16 @@
 }
 
 .title {
+	width: 100%;
 	margin-bottom: 2.5%;
 	font-family:'Times New Roman';
 	font-weight: bold;
 	font-size: 300%;
+	background-color: #4d4dff;
+	color: #f2f2f2;
+	border-style: double;
+	border-color: #000099;
+	padding: 4% 0 4% 4%;
 }
 
 .title_next {
@@ -19,13 +25,12 @@
 .smallBlock > div,
 .smallBlock > a {
 	width: 30%;
-	padding: 2%;
+	padding: 3%;
 	background-color: #f5f5f5;
 	border: 1px solid #e3e3e3;
 	border-radius: 3%;
 	margin-right: 3%;
 	margin-bottom: 3%;
-	font-size: 150%;
 	font-weight: bold;
 	display: inline-block;
 	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
@@ -41,10 +46,10 @@
 	width: 6vw;
 	height: 4vw;
 	vertical-align: middle;
-	padding-right: 2%;
-	display: inline-block;
+	margin-right: 10%;
 	float: left;
 }
+
 /*till here is former oclubs.css*/
 .logo {
 	float: left;
