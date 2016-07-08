@@ -25,7 +25,7 @@
         <h1 class="title">All Activites</h1>
         <table class="table table-hover table-bordered">
             <thead class="list">
-                <tr>
+                <tr style="background-color:#bfbfbf">
                     <th>Club</th>
                     <th>Contents</th>
                     <th>Time</th>
@@ -34,7 +34,7 @@
             </thead>
             <tbody>
                 {% for activity in activities %}
-                <tr class="clickable" data-href="#" style="cursor:pointer">
+                <tr class="clickable allact" data-href="#">
                     <td>{{ activity.club_name }}</td>
                     <td>{{ activity.act_name}}</td>
                     <td>{{ activity.time }}</td>
