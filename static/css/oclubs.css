@@ -5,7 +5,7 @@
 
 .title {
 	width: 100%;
-	margin-bottom: 2.5%;
+	margin-bottom: 1%;
 	font-family:'Times New Roman';
 	font-weight: bold;
 	font-size: 300%;
@@ -13,13 +13,19 @@
 	color: #f2f2f2;
 	border-style: double;
 	border-color: #000099;
-	padding: 4% 0 4% 4%;
+	padding: 4%;
 }
 
 .title_next {
-	margin-bottom: 1.25%;
+	width: 50%;
+	margin-bottom: 1%;
 	font-family: 'Times New Roman';
 	font-size:150%;
+	background-color: #6666ff;
+	color: #f2f2f2;
+	border-style: double;
+	border-color: #0000b3;
+	padding: 2%;
 }
 
 .smallBlock > div,
@@ -686,4 +692,25 @@ thead.darklist {
 
 .intro_function > a > div:hover {
 	background-color: #1a53ff;
+}
+
+.reghm  > div {
+	width: 24%;
+	padding: 2%;
+	margin-bottom: 3px;
+	border-style: solid;
+	border-color: #e6e6e6;
+	background-color: #f5f5f5;
+	font-weight: bold;
+	display: inline-block;
+}
+
+.reghm input[type=checkbox] {
+	transform: scale(2);
+	padding: 10%;
+}
+
+.reghm div:hover {
+	background-color: #cccccc;
+	text-decoration: none;
 }

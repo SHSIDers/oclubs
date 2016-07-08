@@ -51,6 +51,19 @@
 					$( ".modal .modal-body" )
 						.html( "<p>Your choice is " + selected.text() + ".</p>" );
 				} );
+
+			$( ".checkbox_block" )
+				.click( function() {
+					if (!$( this ).find( "input[type=checkbox]" ).prop("checked")){
+						$( this )
+							.find( "input[type=checkbox]" )
+								.prop("checked", true);
+					} else {
+						$( this )
+							.find( "input[type=checkbox]" )
+								.prop("checked", false);
+					}
+				} );
 		} );
 } )( jQuery );
 
