@@ -13,6 +13,7 @@
 	<div class="col-sm-9 personal_info">
 		<h2>Official Name: {{ info.name }}</h2>
 		<h2>Email Address: {{ info.email }}</h2>
+		<h2>Phone Number: {{ info.phone }}</h2>
 		<br>
 		<a href="#changeInfo" data-toggle="modal" data-target="#changeInfo">
 			<button class="btn btn-info">Click here to edit your basic information</button>
@@ -145,6 +146,9 @@
 					<br>
 					<label for="email">Email:</label>
 					<input class="form-control" id="email" type="email" placeholder="{{ info.email }}">
+					<br>
+					<label for="phone">Phone Number:</label>
+					<input class="form-control" id="phone" type="text" placeholder="{{ info.phone }}">
 					<br>
 					<label for="photo">Profile Photo:</label>
 					<div class="clearfix"></div>

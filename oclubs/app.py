@@ -278,7 +278,7 @@ def personal():
     pictures = []
     for num in range(1, 21):
         pictures.append(num)
-    info = {'name': 'Ichiro Tai', 'email': 'lolol@outlook.com', 'photo': '1', 'ID': 'G2986510295'}
+    info = {'name': 'Ichiro Tai', 'email': 'lolol@outlook.com', 'photo': '1', 'ID': 'G2986510295', 'phone': '18918181818'}
     clubs = [{'name': 'Website Club', 'photo': 'intro1', 'intro': 'We are the best club', 'cas': 110},
              {'name': 'Math Club', 'photo': 'intro2', 'intro': 'We learn math together', 'cas': 5},
              {'name': 'Chess Club', 'photo': 'intro3', 'intro': 'We enjoy playing chess', 'cas': 3}]
@@ -310,13 +310,15 @@ def hongmei():
     '''Check HongMei Status'''
     user = ''
     club = 'Website Club'
-    schedule = [{'date': 'June 6, 2016', 'members': ['Derril', 'Frank', 'YiFei']},
-                {'date': 'June 6, 2016', 'members': ['Derril', 'Frank', 'YiFei']},
-                {'date': 'June 6, 2016', 'members': ['Derril', 'Frank', 'YiFei']},
-                {'date': 'June 6, 2016', 'members': ['Derril', 'Frank', 'YiFei']},
-                {'date': 'June 6, 2016', 'members': ['Derril', 'Frank', 'YiFei']},
-                {'date': 'June 6, 2016', 'members': ['Derril', 'Frank', 'YiFei']},
-                {'date': 'June 6, 2016', 'members': ['Derril', 'Frank', 'YiFei']}]
+    schedule = [{'date': 'June 6, 2016', 'members': [{'name': 'Derril', 'phone': '18918181818'},
+                                                     {'name': 'Frank', 'phone': '18918181818'},
+                                                     {'name': 'YiFei', 'phone': '18918181818'}]},
+                {'date': 'June 6, 2016', 'members': [{'name': 'Derril', 'phone': '18918181818'},
+                                                     {'name': 'Frank', 'phone': '18918181818'},
+                                                     {'name': 'YiFei', 'phone': '18918181818'}]},
+                {'date': 'June 6, 2016', 'members': [{'name': 'Derril', 'phone': '18918181818'},
+                                                     {'name': 'Frank', 'phone': '18918181818'},
+                                                     {'name': 'YiFei', 'phone': '18918181818'}]}]
     return render_template('hongmei.html',
                            title='HongMei',
                            user=user,
@@ -351,6 +353,33 @@ def teacher():
                            myclubs=myclubs,
                            pictures=pictures,
                            info=info)
+
+
+@app.route('/actstatus')
+def actstatus():
+    '''Check Activity Status'''
+    user = ''
+    club = 'Website Club'
+    actname = 'Create oClubs!'
+    date = 'June 6, 2016'
+    intro = 'We tend to create a platform for SHSID clubs so that students and teachers can enjoy more convenient club activities.'
+    members = [{'name': 'Derril', 'email': 'lolol@outlook.com', 'phone': '18918181818'},
+               {'name': 'Frank', 'email': 'lolol@outlook.com', 'phone': '18918181818'},
+               {'name': 'YiFei', 'email': 'lolol@outlook.com', 'phone': '18918181818'}]
+    members_num = 0
+    for member in members:
+        members_num += 1
+    planned_num = 20
+    return render_template('actstatus.html',
+                           title=actname,
+                           user=user,
+                           club=club,
+                           actname=actname,
+                           date=date,
+                           intro=intro,
+                           members=members,
+                           members_num=members_num,
+                           planned_num=planned_num)
 
 
 if __name__ == '__main__':
