@@ -7,12 +7,12 @@
         <img src="static/images/areyousure1.jpg" class="img-responsive img-thumbnail" alt="Are you sure?">
     </div>
     <div class="col-sm-6">
-    	<div class="form-group" style="margin-left:auto; margin-right:auto">
+    	<div class="form-group" style="margin-left:auto; margin-right:auto; color:#f2f2f2">
             <h1>Quitting Club</h1>
             <p style="font-style:italic; font-size:150%">If you really want to quit a club, then please select the club and state your reason. You request for quitting will be emailed to the club leader</p>
             <br>
     		<label for="clubs">The club:</label>
-        	<select id="clubs" type="dropdown">
+        	<select id="clubs" type="dropdown" style="color:black">
                 {% for club in clubs %}
                 <option value="{{ club }}">{{ club }}</option>
                 {% endfor %}

@@ -16,7 +16,7 @@
         <h1 class="title">Activites of {{ club.club_name }}</h1>
         <table class="table table-hover table-bordered">
             <thead class="darklist">
-                <tr>
+                <tr style="background-color:#bfbfbf">
                     <th>Contents</th>
                     <th>Time</th>
                     <th>Location</th>
@@ -24,7 +24,7 @@
             </thead>
             <tbody>
                 {% for activity in activities %}
-                <tr class="clickable" data-href="#" style="cursor:pointer">
+                <tr class="clickable act" data-href="#">
                     <td>{{ activity.act_name }}</td>
                     <td>{{ activity.time }}</td>
                     <td>{{ activity.place }}</td>

@@ -4,28 +4,18 @@
 }
 
 .title {
-	width: 100%;
-	margin-bottom: 1%;
-	font-family:'Times New Roman';
+	margin-bottom: 2%;
+	font-family: 'Brush Script MT';
 	font-weight: bold;
-	font-size: 300%;
-	background-color: #4d4dff;
+	font-size: 500%;
 	color: #f2f2f2;
-	border-style: double;
-	border-color: #000099;
-	padding: 4%;
 }
 
 .title_next {
-	width: 50%;
-	margin-bottom: 1%;
-	font-family: 'Times New Roman';
-	font-size:150%;
-	background-color: #6666ff;
+	margin-bottom: 2%;
+	font-family: 'Brush Script MT';
+	font-size: 300%;
 	color: #f2f2f2;
-	border-style: double;
-	border-color: #0000b3;
-	padding: 2%;
 }
 
 .smallBlock > div,
@@ -658,15 +648,14 @@ thead.darklist {
 
 .homepage_function {
 	border-top-style: dotted;
-	border-bottom-style: dotted;
 	border-color: #e4e6e7;
 	text-align: center;
 }
 
 .homepage_function div {
-	border-style: outset;
-	border-radius: 5%;
-	border-color: #cccccc;
+	width: 20%;
+	height: 20%;
+	margin: 2%;
 	background-color: #66a3ff;
 	color: #f2f2f2;
 }
@@ -676,8 +665,9 @@ thead.darklist {
 }
 
 .homepage_function img {
-	width: 10vw;
-	height: 10vw;
+	margin: 1.6em;
+	width: 7vw;
+	height: 7vw;
 }
 
 .homepage_function > a > div:hover {
@@ -725,10 +715,10 @@ thead.darklist {
 	cursor:pointer;
 }
 
-.allact {
+.act {
 	background-color:white;
 }
 
-.allact:hover {
+.act:hover {
 	background-color: #f5f5f5;
 }
