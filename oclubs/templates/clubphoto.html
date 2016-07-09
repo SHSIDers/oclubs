@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Below Navbar -->
+<div class="large_container">
+    <h1 class="text-center title">Photos of {{ club }}</h1>
+    {% for photo in photos %}
+    <div class="photo clickable bright" data-href="#">
+        <img src="static/images/{{ photo.image1 }}.jpg" class="img-responsive" alt="{{ photo.actname1 }}">
+        <h2>{{ photo.actname1 }}</h2>
+    </div>
+    <div class="photo clickable dark" data-href="#" style="cursor:pointer">
+        <img src="static/images/{{ photo.image2 }}.jpg" class="img-responsive" alt="{{ photo.actname2 }}">
+        <h2>{{ photo.actname2 }}</h2>
+    </div>
+    {% endfor %}
+    <br>
+    <center><ul class="pagination center">
+        <li><a href="#">&laquo;</a></li>
+        <li class="active"><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">5</a></li>
+        <li><a href="#">&raquo;</a></li>
+    </ul></center>
+</div>
+
+{% endblock %}
