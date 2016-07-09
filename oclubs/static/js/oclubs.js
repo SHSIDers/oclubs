@@ -51,6 +51,16 @@
 					$( ".modal .modal-body" )
 						.html( "<p>Your choice is " + selected.text() + ".</p>" );
 				} );
+
+			$( ".updatehm " )
+				.click( function() {
+					var date = $( "#date" ).val();
+					var contents = $( "#contents" ).val();
+					if ( date !== '' && contents !== '' ) {
+						$( "#schedule tbody" )
+							.append( "<tr><th>" + date + "</th><th>" + contents + "</th>");
+					}
+				} );
 		} );
 } )( jQuery );
 

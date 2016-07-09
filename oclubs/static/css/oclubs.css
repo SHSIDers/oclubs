@@ -1,3 +1,11 @@
+body {
+	background: rgb(1,39,58);
+	background: -moz-linear-gradient(left,  rgba(1,39,58,1) 0%, rgba(2,103,154,1) 50%, rgba(1,39,58,1) 100%);
+	background: -webkit-linear-gradient(left,  rgba(1,39,58,1) 0%,rgba(2,103,154,1) 50%,rgba(1,39,58,1) 100%);
+	background: linear-gradient(to right,  rgba(1,39,58,1) 0%,rgba(2,103,154,1) 50%,rgba(1,39,58,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#01273a', endColorstr='#01273a',GradientType=1 );
+}
+
 .selected {
 	font-weight: bold;
 	background-color: #eee;

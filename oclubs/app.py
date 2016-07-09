@@ -215,7 +215,7 @@ def clubmanage():
     user = ''
     club = 'Website Club'
     return render_template('club.html',
-                           title='Club',
+                           title=club,
                            user=user,
                            club=club)
 
@@ -303,6 +303,36 @@ def personal():
                            activities=activities,
                            hongmei=hongmei,
                            leader_club=leader_club)
+
+
+@app.route('/hongmei')
+def hongmei():
+    '''Check HongMei Status'''
+    user = ''
+    club = 'Website Club'
+    schedule = [{'date': 'June 6, 2016', 'members': ['Derril', 'Frank', 'YiFei']},
+                {'date': 'June 6, 2016', 'members': ['Derril', 'Frank', 'YiFei']},
+                {'date': 'June 6, 2016', 'members': ['Derril', 'Frank', 'YiFei']},
+                {'date': 'June 6, 2016', 'members': ['Derril', 'Frank', 'YiFei']},
+                {'date': 'June 6, 2016', 'members': ['Derril', 'Frank', 'YiFei']},
+                {'date': 'June 6, 2016', 'members': ['Derril', 'Frank', 'YiFei']},
+                {'date': 'June 6, 2016', 'members': ['Derril', 'Frank', 'YiFei']}]
+    return render_template('hongmei.html',
+                           title='HongMei',
+                           user=user,
+                           club=club,
+                           schedule=schedule)
+
+
+@app.route('/newhm')
+def newhm():
+    '''Input HongMei Plan'''
+    user = ''
+    club = 'Website Club'
+    return render_template('newhm.html',
+                           title='HongMei Schedule',
+                           user=user,
+                           club=club)
 
 
 if __name__ == '__main__':

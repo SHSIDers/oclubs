@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Below Navbar -->
+<div class="container">
+    <h1 class="title">Input HongMei Schedule</h1>
+    <h2 class="title_next">{{ club }}</h2>
+    <br>
+
+    <h2 style="color:#f2f2f2">Schedule</h2>
+    <table class="table table-bordered" id="schedule">
+        <thead class="list">
+            <tr style="background-color:#bfbfbf">
+                <th>Date</th>
+                <th>Contents</th>
+            </tr>
+        </thead>
+        <tbody class="act">
+            
+        </tbody>
+    </table>
+    <br><br><br>
+
+    <div class="container" style="width:50%">
+        <div class="form-group" style="color:#f2f2f2; background-color:#66a3ff; padding:5%; border-style:solid; border-color:#b3cce6">
+            <h1>Input Information</h1>
+            <label for="date">Date:</label>
+            <input type="date" class="form-control" id="date">
+            <br>
+            <label for="contents">Contents:</label>
+            <input type="text" class="form-control" id="contents">
+            <br>
+            <center><input class="btn btn-primary updatehm" value="Append" style="font-size:125%; padding:3%"></center>
+        </div>
+    </div>
+    <br><br><br>
+    <center><button class="btn btn-success" style="padding: 3%; font-size:200%">Submit the Schedule</button></center>
+</div>
+
+{% endblock %}
