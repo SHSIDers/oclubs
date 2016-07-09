@@ -694,7 +694,7 @@ thead.darklist {
 	background-color: #1a53ff;
 }
 
-.reghm  > div {
+.reghm  > label {
 	width: 24%;
 	padding: 2%;
 	margin-bottom: 3px;
@@ -710,9 +710,13 @@ thead.darklist {
 	padding: 10%;
 }
 
-.reghm div:hover {
+.reghm label:hover {
 	background-color: #cccccc;
 	text-decoration: none;
+}
+
+.checkbox_block {
+	cursor: pointer;
 }
 
 .clickable {

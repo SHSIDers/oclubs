@@ -7,15 +7,15 @@
     <h2 class="title_next">{{ club }}</h2>
     <div class="reghm">
         {% for plan in schedule %}
-        <div class="checkbox_block" style="cursor:pointer">
+        <label class="checkbox_block" for="{{ plan.id }}">
             <div class="col-sm-10">
                 <p style="font-size:150%">{{ plan.date }}</p>
                 <p>{{ plan.activity }}</p>
             </div>
             <div class="col-sm-2">
-                <input type="checkbox" value="{{ plan.id }}">
+                <input type="checkbox" value="{{ plan.id }}"" id="{{ plan.id }}">
             </div>
-        </div>
+        </label>
         {% endfor %}
     </div>
     <br>
