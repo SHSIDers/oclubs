@@ -335,5 +335,23 @@ def newhm():
                            club=club)
 
 
+@app.route('/teacher')
+def teacher():
+    '''Teacher Page'''
+    user = 'Derril'
+    myclubs = [{'club': 'Website Club', 'members_num': 3, 'photo': '1', 'intro': 'We are the best club'},
+               {'club': 'Math Club', 'members_num': 20, 'photo': '2', 'intro': 'We learn math together'}]
+    pictures = []
+    for num in range(1, 21):
+        pictures.append(num)
+    info = {'name': 'Ichiro Tai', 'email': 'lolol@outlook.com', 'photo': '1'}
+    return render_template('teacher.html',
+                           title=user,
+                           user=user,
+                           myclubs=myclubs,
+                           pictures=pictures,
+                           info=info)
+
+
 if __name__ == '__main__':
     app.run()
