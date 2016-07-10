@@ -2,15 +2,18 @@
 # -*- coding: UTF-8 -*-
 #
 
+from __future__ import absolute_import
+
 from flask import (
     Flask, redirect, request, render_template, url_for
 )
 
 import traceback
 
-from userblueprint import userblueprint
-from clubblueprint import clubblueprint
-from actblueprint import actblueprint
+import oclubs
+from oclubs.userblueprint import userblueprint
+from oclubs.clubblueprint import clubblueprint
+from oclubs.actblueprint import actblueprint
 
 app = Flask(__name__)
 

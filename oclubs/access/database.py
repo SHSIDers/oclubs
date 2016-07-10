@@ -158,31 +158,3 @@ def update_row(table, conds, update):
 
     return _execute('UPDATE %s SET %s WHERE %s;' % (table, setto, conds),
                     write=True)
-
-
-_r = redis.Redis(
-        host='localhost',
-        port=6379,
-        db=0)
-c = _r
-_pipe = False
-
-
-def startpipe():
-    if _pipe:
-        raise RuntimeError("Pipeline is already started")
-    global c, _pipe
-    _pipe = True
-    c = _r.pipeline()
-
-
-def executepipe():
-    if not _pipe:
-        raise RuntimeError("Pipeline has not been started")
-    ret = c.execute()
-    global c, _pipe
-    c = _r
-    _pipe = False
-    return ret
-
-# use database.c.somemethod(somearg) to call method in python-redis api

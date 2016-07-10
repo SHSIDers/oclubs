@@ -15,6 +15,8 @@ from oclubs.objs.base import BaseObject
 
 class Club(BaseObject):
     """Club class."""
+    table = 'club'
+    identifier = 'club_id'
     _excellentclubs = None
 
     def __init__(self, cid):
@@ -28,12 +30,21 @@ class Club(BaseObject):
     def name(self):
         return self._data['name']
 
+    @name.setter
+    def name(self, value):
+        self._setdata('name', 'club_name', value)
+
     @property
     def teacher(self):
         from oclubs.objs import User
         if self._teacher is None:
             self._teacher = User(self._data['teacher'])
         return self._teacher
+
+    @teacher.setter
+    def teacher(self, value):
+        self._teacher = value
+        self._setdata('teacher', 'club_teacher', value.id)
 
     @property
     def leader(self):
@@ -42,11 +53,21 @@ class Club(BaseObject):
             self._leader = User(self._data['leader'])
         return self._leader
 
+    @leader.setter
+    def leader(self, value):
+        self._leader = value
+        self._setdata('leader', 'club_leader', value.id)
+
     @property
     def description(self):
         if self._description is None:
             self._description = FormattedText(self._data['description'])
         return self._description
+
+    @description.setter
+    def description(self, value):
+        self._description = value
+        self._setdata('description', 'club_desc', value.id)
 
     @property
     def location(self):
@@ -55,9 +76,19 @@ class Club(BaseObject):
             self._location = json.loads(self._data['location'])
         return self._location
 
+    @location.setter
+    def location(self, value):
+        # FIXME: As above
+        self._location = value
+        self._setdata('location', 'club_location', json.dumps(value))
+
     @property
     def is_active(self):
         return not self._data['inactive']
+
+    @is_active.setter
+    def is_active(self, value):
+        self._setdata('inactive', 'club_inactive', not value)
 
     @property
     def is_excellent(self):
@@ -95,8 +126,6 @@ class Club(BaseObject):
     def _data(self):
         """Load data from db."""
         return super(Club, self)._data(
-            'club',
-            [('=', 'club_id', self.id)],
             {
                 'club_name': 'name',
                 'club_teacher': 'teacher',
