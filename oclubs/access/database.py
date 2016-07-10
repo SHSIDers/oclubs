@@ -8,6 +8,7 @@ from flask import g
 import MySQLdb
 import redis
 
+from oclubs.exceptions import NoRow
 
 def _parse_cond(conds):
     return ' AND '.join([__parse_cond(one_cond) for one_cond in conds])
@@ -107,7 +108,7 @@ def fetch_onerow(table, conds, coldict):
     rows = _execute("SELECT %s FROM %s WHERE %s LIMIT 1;"
                     % (st, table, conds))
     if not rows:
-        raise RuntimeError
+        raise NoRow
 
     return _mk_multi_return(rows[0], cols, coldict)
 
@@ -118,7 +119,7 @@ def fetch_oneentry(table, conds, col):
     rows = _execute("SELECT %s FROM %s WHERE %s LIMIT 1;"
                     % (col, table, conds))
     if not rows:
-        raise RuntimeError
+        raise NoRow
 
     return rows[0][0]
 

@@ -24,6 +24,8 @@ CREATE TABLE club (
 
 CREATE INDEX club_name ON club (club_name);
 CREATE INDEX club_teacher ON club (club_teacher);
+CREATE INDEX club_leader ON club (club_leader);
+
 
 CREATE TABLE club_member (
 	cm_club int NOT NULL, # Foreign key to club.club_id
