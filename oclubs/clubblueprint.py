@@ -159,3 +159,26 @@ def changeclubinfo():
                            person=person,
                            photo=photo,
                            intro=intro)
+
+
+@clubblueprint.route('/adjust')
+def adjustmember():
+    '''Adjust Club Members'''
+    user = ''
+    club = 'Website Club'
+    members = [{'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
+               {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
+               {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
+               {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
+               {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
+               {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
+               {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
+               {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
+               {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
+               {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
+               {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'}]
+    return render_template('adjustmember.html',
+                           title='Adjust Members',
+                           user=user,
+                           club=club,
+                           members=members)

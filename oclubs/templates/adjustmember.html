@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Below Navbar -->
+<div class="container">
+    <h1 class="title">Adjust Members</h1>
+    <h2 class="title_next">{{ club }}</h2>
+    <table class="table table-hover table-bordered" style="font-size:150%">
+        <thead class="list">
+            <tr style="background-color:#bfbfbf">
+                <th style="width:5%">Photo</th>
+                <th>Nick Name</th>
+                <th>Official Name</th>
+                <th>Student ID</th>
+                <th>Operation</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in members %}
+            <tr class="act" id="{{ member.official_name }}">
+                <td>
+                    <img src="../static/images/{{ member.photo }}.jpg" class="img-responsive" alt="{{ member.nick_name }}" style="width:3em">
+                </td>
+                <td>{{ member.nick_name }}</td>
+                <td>{{ member.official_name }}</td>
+                <td>{{ member.id }}</td>
+                <td><button class="btn btn-danger">Expel</button>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

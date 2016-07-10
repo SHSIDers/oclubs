@@ -46,7 +46,7 @@
 	</div>
 
 	<div class="col-sm-3"></div>
-	<div class="col-sm-3 function_block clickable" data-href="#" style="cursor:pointer">
+	<div class="col-sm-3 function_block clickable" data-href="#adjust" data-toggle="modal" data-target="#adjust" style="cursor:pointer">
 		<img src="../static/images/club7.jpg" class="img-responsive img-thumbnail" alt="Club7">
 		<div style="background-color:rgba(102, 0, 153, 0.5)">
 			<p>Adjust Leader/Members</p>
@@ -62,6 +62,33 @@
 		<img src="../static/images/club9.jpg" class="img-responsive img-thumbnail" alt="Club9">
 		<div style="background-color:rgba(77, 0, 153, 0.5)">
 			<p>Check Hosted Activites</p>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="adjust">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Select Whether to Adjust Leader/Members</h4>
+			</div>
+			<div class="modal-body">
+				<div class="col-sm-6">
+					<a href="#">
+						<button class="btn btn-danger large_button">Select New Leader</button>
+					</a>
+				</div>
+				<div class="col-sm-6">
+					<a href="#">
+						<button class="btn btn-warning large_button">Adjust Club Members</button>
+					</a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
 		</div>
 	</div>
 </div>

@@ -796,5 +796,10 @@ thead.darklist {
 
 .large_list p {
 	font-size: 1.4em;
-	margin:0;
+	margin: 0;
+}
+
+.large_button {
+	padding: 3%;
+	font-size: 125%;
 }
