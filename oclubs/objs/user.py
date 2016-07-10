@@ -17,18 +17,60 @@ _crypt = CryptContext(schemes=['bcrypt'])  # , 'sha512_crypt', 'pbkdf2_sha512'
 
 class User(BaseObject):
     """User class."""
+    table = 'user'
+    identifier = 'user_id'
 
     def __init__(self, uid):
         """Initializer."""
         super(User, self).__init__(uid)
 
-    def count_cas(club, time):
-        # TODO
-        pass
+    @property
+    def studentid(self):
+        return self._data['studentid']
+
+    @studentid.setter
+    def studentid(self, value):
+        self._setdata('studentid', 'user_login_name', value)
 
     @property
-    def username(self):
-        return self._data['username']
+    def passportname(self):
+        return self._data['passportname']
+
+    @passportname.setter
+    def passportname(self, value):
+        self._setdata('passportname', 'user_passport_name', value)
+
+    @property
+    def nickname(self):
+        return self._data['nickname']
+
+    @nickname.setter
+    def nickname(self, value):
+        self._setdata('nickname', 'user_nick_name', value)
+
+    @property
+    def type(self):
+        return self._data['type']
+
+    @type.setter
+    def type(self, value):
+        self._setdata('type', 'user_type', value)
+
+    @property
+    def gradyear(self):
+        return self._data['gradyear']
+
+    @gradyear.setter
+    def gradyear(self, value):
+        self._setdata('gradyear', 'user_grad_year', value)
+
+    @property
+    def password(self):  # write-only
+        raise NotImplementedError
+
+    @password.setter
+    def password(self, value):
+        self._setdata(None, 'user_password', _crypt.encrypt(value))
 
     @property
     def userpage(self):
@@ -39,22 +81,21 @@ class User(BaseObject):
     def _data(self):
         """Load data from db."""
         return super(User, self)._data(
-            'user',
-            [('=', 'user_id', self.id)],
             {
-                'user_login_name': 'username',
+                'user_login_name': 'studentid',
                 'user_nick_name': 'nickname',
+                'user_passport_name': 'passportname',
                 'user_type': 'type',
                 'user_grad_year': 'gradyear'
             }
         )
 
     @staticmethod
-    def attempt_login(username, password):
+    def attempt_login(studentid, password):
         try:
             data = database.fetch_onerow(
                 'user',
-                [('=', 'user_login_name', username)],
+                [('=', 'user_login_name', studentid)],
                 {
                     'user_id': 'id',
                     'user_password': 'password'

@@ -1,13 +1,14 @@
 CREATE TABLE user (
 	user_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	user_login_name varchar(255) binary NOT NULL,
+	user_login_name varchar(255) binary NOT NULL, # Student ID
 	user_nick_name varchar(255) binary NOT NULL,
+	user_passport_name varchar(255) binary NOT NULL,
 	user_password tinyblob NOT NULL,
 	user_email tinytext NOT NULL,
 	user_photo int NOT NULL, # Foreign key to upload.upload_id
 	user_type int NOT NULL, # 0=student 1=teacher 2=admin
 	user_grad_year int # NULL for teachers
-); 
+);
 
 CREATE UNIQUE INDEX user_login_name ON user (user_login_name);
 

@@ -151,7 +151,7 @@ def insert_onerow(table, row):
                     write=True)
 
 
-def update_allrow(table, conds, update):
+def update_row(table, conds, update):
     conds = _parse_cond(conds)
     setto = ["%s=%s" % (key, _encode(val)) for key, val in update.items()]
     setto = ','.join(setto)
