@@ -31,6 +31,14 @@ def exception_handler(e):
         return traceback.format_exc()
 
 
+def login():
+    '''Attempt to Login'''
+    username = request.form['username']
+    password = request.form['password']
+    user = oclubs.objs.User.attempt_login(username, password)
+    return redirect('/' + user.id)
+
+
 @app.route('/', methods=['GET', 'POST'])
 def home():
     '''Homepage'''
@@ -47,7 +55,7 @@ def home():
                                ex_clubs=ex_clubs)
     if request.method == 'POST':
         if request.form['submist'] == 'Login':
-            user = attempt_login()
+            login()
 
 
 @app.route('/about')

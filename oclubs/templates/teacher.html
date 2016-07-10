@@ -7,7 +7,7 @@
 	<div class="clearfix clearfix-bordered"></div>
 	<br><br>
 	<div class="col-sm-3">
-		<img src="static/images/icons/icon{{ info.photo }}.jpg" class="img-responsive img-thumbnail" alt="Profile Photo">
+		<img src="../static/images/icons/icon{{ info.photo }}.jpg" class="img-responsive img-thumbnail" alt="Profile Photo">
 		<br><br>
 	</div>
 	<div class="col-sm-9 personal_info">
@@ -29,7 +29,7 @@
 		{% for club in myclubs %}
 		<div>
 			<div class="col-sm-3">
-				<img src="static/images/{{ club.photo }}.jpg" class="img-responsive" alt="">
+				<img src="../static/images/{{ club.photo }}.jpg" class="img-responsive" alt="">
 			</div>
 			<div class="col-sm-9">
 				<h1>{{ club.club }}</h1>
@@ -40,10 +40,10 @@
 					<a href="#"><button class="btn btn-primary">Attendance</button></a>
 				</div>
 				<div class="col-sm-4">
-					<a href="#"><button class="btn btn-primary">Activities Status</button></a>
+					<a href="#"><button class="btn btn-primary">Activities ../Status</button></a>
 				</div>
 				<div class="col-sm-4">
-					<a href="#"><button class="btn btn-primary">HongMei Status</button></a>
+					<a href="#"><button class="btn btn-primary">HongMei ../Status</button></a>
 				</div>
 			</div>
 		</div>
@@ -73,7 +73,7 @@
 					<div class="clearfix"></div>
 					{% for pic in pictures %}
 					<label class="radio_block">
-						<img src="static/images/icons/icon{{ pic }}.jpg" class="img-responsive" alt="Icon{{ pic }}">
+						<img src="../static/images/icons/icon{{ pic }}.jpg" class="img-responsive" alt="Icon{{ pic }}">
 						<center><input type="radio" name="picture"></center>
 					</label>
 					{% endfor %}

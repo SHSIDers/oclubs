@@ -11,11 +11,6 @@ import traceback
 userblueprint = Blueprint('userblueprint', __name__)
 
 
-def login():
-    '''Attempt to login'''
-    return
-
-
 @userblueprint.route('/quit')
 def quitclub():
     '''Quit Club Page'''
