@@ -16,7 +16,7 @@ app = Flask(__name__)
 
 app.register_blueprint(userblueprint, url_prefix='/user')
 app.register_blueprint(clubblueprint, url_prefix='/club')
-app.register_blueprint(actblueprint, url_prefix='/activity')
+app.register_blueprint(actblueprint, url_prefix='/act')
 
 
 @app.errorhandler(Exception)

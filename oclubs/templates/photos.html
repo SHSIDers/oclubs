@@ -5,7 +5,7 @@
 <div class="large_container">
     <h1 class="text-center title">All Photos</h1>
     <div class="jumbotron">
-        <img src="static/images/{{ top.image }}.jpg" class="img-responsive img-thumbnail" alt="Image" style="float:left;width:22vw;margin-left:5%;margin-right:5%">
+        <img src="../static/images/{{ top.image }}.jpg" class="img-responsive img-thumbnail" alt="Image" style="float:left;width:22vw;margin-left:5%;margin-right:5%">
         <h1>{{ top.club }}</h1>
         <h1>{{ top.actname }}</h1>
         <h3>Lucky Pick! - The activity is chosen randomly.</h3>
@@ -16,12 +16,12 @@
     <div class="clearfix"></div>
     {% for photo in photos %}
     <div class="photo clickable bright" data-href="#" style="cursor:pointer">
-        <img src="static/images/{{ photo.image1 }}.jpg" class="img-responsive" alt="{{ photo.actname1 }}">
+        <img src="../static/images/{{ photo.image1 }}.jpg" class="img-responsive" alt="{{ photo.actname1 }}">
         <h4>{{ photo.actname1 }}</h4>
         <p>{{ photo.club1 }}</p>
     </div>
     <div class="photo clickable dark" data-href="#" style="cursor:pointer">
-        <img src="static/images/{{ photo.image2 }}.jpg" class="img-responsive" alt="{{ photo.actname2 }}">
+        <img src="../static/images/{{ photo.image2 }}.jpg" class="img-responsive" alt="{{ photo.actname2 }}">
         <h4>{{ photo.actname2 }}</h4>
         <p>{{ photo.club2 }}</p>
     </div>

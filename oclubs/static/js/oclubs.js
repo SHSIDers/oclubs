@@ -58,8 +58,14 @@
 					var contents = $( "#contents" ).val();
 					if ( date !== '' && contents !== '' ) {
 						$( "#schedule tbody" )
-							.append( "<tr><th>" + date + "</th><th>" + contents + "</th>");
+							.append( "<tr id ='" + contents + "'><td>" + date + "</td><td>" + contents + "</td><td><button class='btn btn-primary delete_row'>Delete</button></td></tr>");
 					}
+				} );
+
+			$( ".delete_row" )
+				.click( function() {
+					$( this ).parents("tr").eq(0).remove();
+					console.log("lol");
 				} );
 		} );
 } )( jQuery );

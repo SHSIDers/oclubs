@@ -5,9 +5,9 @@
 <div class="container">
     <h1 class="title">Register for HongMei Activities</h1>
     <h2 class="title_next">{{ club }}</h2>
-    <div class="reghm">
+    <div class="checkbox_block">
         {% for plan in schedule %}
-        <label class="checkbox_block" for="{{ plan.id }}">
+        <label for="{{ plan.id }}">
             <div class="col-sm-10">
                 <p style="font-size:150%">{{ plan.date }}</p>
                 <p>{{ plan.activity }}</p>

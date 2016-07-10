@@ -703,7 +703,7 @@ thead.darklist {
 	background-color: #1a53ff;
 }
 
-.reghm  > label {
+.checkbox_block  > label {
 	width: 24%;
 	padding: 2%;
 	margin-bottom: 3px;
@@ -712,20 +712,17 @@ thead.darklist {
 	background-color: #f5f5f5;
 	font-weight: bold;
 	display: inline-block;
+	cursor: pointer;
 }
 
-.reghm input[type=checkbox] {
+.checkbox_block input[type=checkbox] {
 	transform: scale(2);
 	padding: 10%;
 }
 
-.reghm label:hover {
+.checkbox_block label:hover {
 	background-color: #cccccc;
 	text-decoration: none;
-}
-
-.checkbox_block {
-	cursor: pointer;
 }
 
 .clickable {

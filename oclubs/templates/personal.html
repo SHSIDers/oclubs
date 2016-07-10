@@ -7,7 +7,7 @@
 	<div class="clearfix clearfix-bordered"></div>
 	<br><br>
 	<div class="col-sm-3">
-		<img src="static/images/icons/icon{{ info.photo }}.jpg" class="img-responsive img-thumbnail" alt="Profile Photo">
+		<img src="../static/images/icons/icon{{ info.photo }}.jpg" class="img-responsive img-thumbnail" alt="Profile Photo">
 		<br><br>
 	</div>
 	<div class="col-sm-9 personal_info">
@@ -28,7 +28,7 @@
 	<br>
 	<div class="smallBlock">
 		{% for club in clubs %}
-		<a href="#"><img src="static/images/{{ club.photo }}.jpg" class="img-responsive" alt="">
+		<a href="#"><img src="../static/images/{{ club.photo }}.jpg" class="img-responsive" alt="">
 			<p style="font-size:150%">{{ club.name }}</p>
 			<p>{{ club.intro }}</p>
 		</a>
@@ -154,7 +154,7 @@
 					<div class="clearfix"></div>
 					{% for pic in pictures %}
 					<label class="radio_block">
-						<img src="static/images/icons/icon{{ pic }}.jpg" class="img-responsive" alt="Icon{{ pic }}">
+						<img src="../static/images/icons/icon{{ pic }}.jpg" class="img-responsive" alt="Icon{{ pic }}">
 						<center><input type="radio" name="picture"></center>
 					</label>
 					{% endfor %}

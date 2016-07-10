@@ -70,7 +70,7 @@ def newleader():
                            members=members)
 
 
-@clubblueprint.route('/club')
+@clubblueprint.route('/')
 def clubmanage():
     '''Club Management Page'''
     user = ''
@@ -79,3 +79,50 @@ def clubmanage():
                            title=club,
                            user=user,
                            club=club)
+
+
+@clubblueprint.route('/inputatten')
+def inputatten():
+    '''Input Attendance'''
+    user = ''
+    club = 'Website Club'
+    members = [{'official_name': 'Ichiro Tai', 'nick_name': 'Derril', 'photo': '1'},
+               {'official_name': 'YiFei Zhu', 'nick_name': 'YiFei', 'photo': '2'},
+               {'official_name': 'Frank Lee', 'nick_name': 'Frank', 'photo': '3'},
+               {'official_name': 'Ichiro Tai', 'nick_name': 'Derril', 'photo': '1'},
+               {'official_name': 'YiFei Zhu', 'nick_name': 'YiFei', 'photo': '2'},
+               {'official_name': 'Frank Lee', 'nick_name': 'Frank', 'photo': '3'},
+               {'official_name': 'Ichiro Tai', 'nick_name': 'Derril', 'photo': '1'},
+               {'official_name': 'YiFei Zhu', 'nick_name': 'YiFei', 'photo': '2'},
+               {'official_name': 'Frank Lee', 'nick_name': 'Frank', 'photo': '3'},
+               {'official_name': 'Ichiro Tai', 'nick_name': 'Derril', 'photo': '1'},
+               {'official_name': 'YiFei Zhu', 'nick_name': 'YiFei', 'photo': '2'},
+               {'official_name': 'Frank Lee', 'nick_name': 'Frank', 'photo': '3'},
+               {'official_name': 'Ichiro Tai', 'nick_name': 'Derril', 'photo': '1'},
+               {'official_name': 'YiFei Zhu', 'nick_name': 'YiFei', 'photo': '2'},
+               {'official_name': 'Frank Lee', 'nick_name': 'Frank', 'photo': '3'}]
+    return render_template('inputatten.html',
+                           title='Input Attendance',
+                           user=user,
+                           club=club,
+                           members=members)
+
+
+@clubblueprint.route('/memberinfo')
+def memberinfo():
+    '''Check Members' Info'''
+    user = ''
+    club = 'Website Club'
+    members = [{'nick_name': 'Derril', 'id': 'G1234567890', 'official_name': 'Ichiro Tai', 'email': 'lolol@outlook.com'},
+               {'nick_name': 'Derril', 'id': 'G1234567890', 'official_name': 'Ichiro Tai', 'email': 'lolol@outlook.com'},
+               {'nick_name': 'Derril', 'id': 'G1234567890', 'official_name': 'Ichiro Tai', 'email': 'lolol@outlook.com'},
+               {'nick_name': 'Derril', 'id': 'G1234567890', 'official_name': 'Ichiro Tai', 'email': 'lolol@outlook.com'},
+               {'nick_name': 'Derril', 'id': 'G1234567890', 'official_name': 'Ichiro Tai', 'email': 'lolol@outlook.com'},
+               {'nick_name': 'Derril', 'id': 'G1234567890', 'official_name': 'Ichiro Tai', 'email': 'lolol@outlook.com'},
+               {'nick_name': 'Derril', 'id': 'G1234567890', 'official_name': 'Ichiro Tai', 'email': 'lolol@outlook.com'},
+               {'nick_name': 'Derril', 'id': 'G1234567890', 'official_name': 'Ichiro Tai', 'email': 'lolol@outlook.com'}]
+    return render_template('memberinfo.html',
+                           title='Member Info',
+                           user=user,
+                           club=club,
+                           members=members)
