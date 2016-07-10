@@ -3,7 +3,7 @@
 #
 
 from flask import (
-    Blueprint, render_template, url_for
+    Blueprint, render_template, url_for, request
 )
 
 import traceback
@@ -57,38 +57,39 @@ def registerhm():
                            schedule=schedule)
 
 
-@userblueprint.route('/personal')
+@userblueprint.route('/', methods=['GET', 'POST'])
 def personal():
     '''Student Personal Page'''
-    user = 'Derril'
-    pictures = []
-    for num in range(1, 21):
-        pictures.append(num)
-    info = {'name': 'Ichiro Tai', 'email': 'lolol@outlook.com', 'photo': '1', 'ID': 'G2986510295', 'phone': '18918181818'}
-    clubs = [{'name': 'Website Club', 'photo': 'intro1', 'intro': 'We are the best club', 'cas': 110},
-             {'name': 'Math Club', 'photo': 'intro2', 'intro': 'We learn math together', 'cas': 5},
-             {'name': 'Chess Club', 'photo': 'intro3', 'intro': 'We enjoy playing chess', 'cas': 3}]
-    evaluate = False
-    castotal = 0
-    for club in clubs:
-        castotal += club['cas']
-    activities = [{'club': 'Website Club', 'act': 'Create Club Platform', 'time': 'Forever', 'place': 'Home'},
-                  {'club': 'Chess Club', 'act': 'Chess Tournament', 'time': 'June 1, 2011', 'place': 'XMT 201'},
-                  {'club': 'Math Club', 'act': 'Do Math Homework', 'time': 'July 2, 2012', 'place': 'Home'}]
-    hongmei = [{'club': 'Chess Club', 'act': 'Teach Basic Rules of Chess', 'time': 'March 2, 2012'},
-               {'club': 'Math Club', 'act': 'Teach Multiplication', 'time': 'March 9, 2012'}]
-    leader_club = 'Website Club'
-    return render_template('personal.html',
-                           title=user,
-                           user=user,
-                           pictures=pictures,
-                           info=info,
-                           clubs=clubs,
-                           evaluate=evaluate,
-                           castotal=castotal,
-                           activities=activities,
-                           hongmei=hongmei,
-                           leader_club=leader_club)
+    if request.method == 'GET':
+        user = 'Derril'
+        pictures = []
+        for num in range(1, 21):
+            pictures.append(num)
+        info = {'name': 'Ichiro Tai', 'email': 'lolol@outlook.com', 'photo': '1', 'ID': 'G2986510295', 'phone': '18918181818'}
+        clubs = [{'name': 'Website Club', 'photo': 'intro1', 'intro': 'We are the best club', 'cas': 110},
+                 {'name': 'Math Club', 'photo': 'intro2', 'intro': 'We learn math together', 'cas': 5},
+                 {'name': 'Chess Club', 'photo': 'intro3', 'intro': 'We enjoy playing chess', 'cas': 3}]
+        evaluate = False
+        castotal = 0
+        for club in clubs:
+            castotal += club['cas']
+        activities = [{'club': 'Website Club', 'act': 'Create Club Platform', 'time': 'Forever', 'place': 'Home'},
+                      {'club': 'Chess Club', 'act': 'Chess Tournament', 'time': 'June 1, 2011', 'place': 'XMT 201'},
+                      {'club': 'Math Club', 'act': 'Do Math Homework', 'time': 'July 2, 2012', 'place': 'Home'}]
+        hongmei = [{'club': 'Chess Club', 'act': 'Teach Basic Rules of Chess', 'time': 'March 2, 2012'},
+                   {'club': 'Math Club', 'act': 'Teach Multiplication', 'time': 'March 9, 2012'}]
+        leader_club = 'Website Club'
+        return render_template('personal.html',
+                               title=user,
+                               user=user,
+                               pictures=pictures,
+                               info=info,
+                               clubs=clubs,
+                               evaluate=evaluate,
+                               castotal=castotal,
+                               activities=activities,
+                               hongmei=hongmei,
+                               leader_club=leader_club)
 
 
 @userblueprint.route('/teacher')

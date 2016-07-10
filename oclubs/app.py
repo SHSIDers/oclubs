@@ -28,19 +28,23 @@ def exception_handler(e):
         return traceback.format_exc()
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
     '''Homepage'''
-    user = ''
-    # Three excellent clubs
-    ex_clubs = [{'name': 'Website Club', 'picture': '1', 'intro': 'We create platform for SHSID.'},
-                {'name': 'Art Club', 'picture': '2', 'intro': 'We invite people to the world of arts.'},
-                {'name': 'Photo Club', 'picture': '3', 'intro': 'We search for the beauty in this world.'}]
-    return render_template('homepage.html',
-                           title='Here you come',
-                           is_home=True,
-                           user=user,
-                           ex_clubs=ex_clubs)
+    if request.method == 'GET':
+        user = ''
+        # Three excellent clubs
+        ex_clubs = [{'name': 'Website Club', 'picture': '1', 'intro': 'We create platform for SHSID.'},
+                    {'name': 'Art Club', 'picture': '2', 'intro': 'We invite people to the world of arts.'},
+                    {'name': 'Photo Club', 'picture': '3', 'intro': 'We search for the beauty in this world.'}]
+        return render_template('homepage.html',
+                               title='Here you come',
+                               is_home=True,
+                               user=user,
+                               ex_clubs=ex_clubs)
+    if request.method == 'POST':
+        if request.form['submist'] == 'Login':
+            user = attempt_login()
 
 
 @app.route('/about')
