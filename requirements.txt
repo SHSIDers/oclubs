@@ -1,0 +1,5 @@
+uwsgi
+flask
+redis
+mysql
+passlib
