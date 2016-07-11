@@ -8,19 +8,13 @@
 		<h2 class="title_next">{{ club }}</h2>
 		<p>*Please input below.</p>
 		<label for="one">One sentence intro:</label>
-		<input type="text" class="form-control" id="one" value="{{ one }}">
-		<br>
-		<label for="quote">Quote:</label>
-		<textarea class="form-control" rows="3" id="quote">{{ quote }}</textarea>
-		<br>
-		<label for="person">Person's name who said the quote:</label>
-		<input type="text" class="form-control" id="person" value="{{ person }}">
+		<input type="text" class="form-control" id="one" value="{{ intro }}">
 		<br>
 		<label for="photo">Photo:</label>
 		<!-- way to upload photo -->
 		<br>		
-		<label for="intro">Introduction Paragraphs:</label>
-		<textarea class="form-control" rows="10" id="intro">{{ intro }}</textarea>
+		<label for="desc">Introduction Paragraphs:</label>
+		<textarea class="form-control" rows="10" id="desc">{{ desc }}</textarea>
 		<br>
 		<input type="submit" class="btn btn-primary" value="Submit">
 	</div>

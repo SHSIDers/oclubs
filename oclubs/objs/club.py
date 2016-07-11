@@ -59,6 +59,15 @@ class Club(BaseObject):
         self._setdata('leader', 'club_leader', value.id)
 
     @property
+    def intro(self):
+        return self._intro
+
+    @intro.setter
+    def intro(self, value):
+        self._intro = value
+        self._setdata('intro', 'club_intro', value)
+
+    @property
     def description(self):
         if self._description is None:
             self._description = FormattedText(self._data['description'])

@@ -13,7 +13,7 @@ clubblueprint = Blueprint('clubblueprint', __name__)
 
 
 @clubblueprint.route('/<club_id>')
-@clubblueprint.route('/<club_id><club_name>')
+@clubblueprint.route('/<club_id>_<club_name>')
 def club(club_id, club_name=''):
     '''Club Management Page'''
     if('user_id' in session):
@@ -53,22 +53,18 @@ def clubintro():
     '''Club Intro'''
     user = ''
     club = 'Website Club'
-    one = 'We create oClubs for SHSID clubs.'
+    intro = 'We create oClubs for SHSID clubs.'
     leader = 'Derril'
-    quote = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-    person = 'Lorem'
     photo = 'intro5'
-    intro = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+    desc = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
     return render_template('clubintro.html',
                            title='Club Intro',
                            user=user,
                            club=club,
-                           one=one,
+                           intro=intro,
                            leader=leader,
-                           quote=quote,
-                           person=person,
                            photo=photo,
-                           intro=intro)
+                           desc=desc)
 
 
 @clubblueprint.route('/newleader')
@@ -145,25 +141,25 @@ def memberinfo():
                            members=members)
 
 
-@clubblueprint.route('/changeclubinfo')
-def changeclubinfo():
+@clubblueprint.route('/<club_id>/change_club_info', methods=['GET', 'POST'])
+def changeclubinfo(club_id):
     '''Change Club's Info'''
-    user = ''
-    club = 'Website Club'
-    one = 'We create oClubs for SHSID clubs.'
-    quote = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-    person = 'Lorem'
-    photo = 'intro5'
-    intro = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-    return render_template('changeclubinfo.html',
-                           title='Change Club Info',
-                           user=user,
-                           club=club,
-                           one=one,
-                           quote=quote,
-                           person=person,
-                           photo=photo,
-                           intro=intro)
+    if request.method == 'GET':
+        if('user_id' in session):
+            user = oclubs.objs.User(session['user_id']).nickname
+        else:
+            user = ''
+        club = oclubs.objs.Club(club_id).name
+        intro = oclubs.objs.Club(club_id).intro
+        photo = 'intro5'
+        desc = oclubs.objs.Club(club_id).description
+        return render_template('changeclubinfo.html',
+                               title='Change Club Info',
+                               user=user,
+                               club=club,
+                               intro=intro,
+                               photo=photo,
+                               desc=desc)
 
 
 @clubblueprint.route('/adjust')
