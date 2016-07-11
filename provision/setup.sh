@@ -112,3 +112,5 @@ cat > /etc/sysconfig/iptables << EOF
 COMMIT
 EOF
 service iptables reload
+
+mysql -u root < /vagrant/oclubs-tables.sql
