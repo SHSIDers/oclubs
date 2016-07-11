@@ -73,6 +73,7 @@ package { [
 
 service { 'mysql':
     ensure  => running,
+    name    => 'mysqld', # for mysql only, not mariadb
     enable  => true,
     # require => Package['MariaDB-server'],
     require => Package['mysql-server'],
@@ -108,7 +109,7 @@ package { [
 exec { 'pip-install-requirements':
     command => 'pip install -Ur /vagrant/requirements.txt',
     path    => '/usr/bin',
-#    retries => 5,
+    tries   => 5,
     require => [
         Package['python-pip'],
         Package['python-devel'],
