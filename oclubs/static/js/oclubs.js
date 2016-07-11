@@ -64,10 +64,12 @@
 					}
 				} );
 
-			$.post( '/' , {} )
+			$.post( '/login' , {} )
 				.done( function(data) {
-					if ( $( ".modal .modal-body div p").last().html() !== "<p style='color:red'>Wrong student ID or password. Please input again</p>" ){
+					if ( data.loggedin === false && $( ".modal .modal-body div p").last().html() !== "<p style='color:red'>Wrong student ID or password. Please input again</p>" ){
 						$( ".modal .modal-body div").append("<p style='color:red'>Wrong student ID or password. Please input again</p>");
+					} else if (data.loggedin === true) {
+						$( "#loginModal" ).modal('toggle');
 					}
 			} );
 		} );

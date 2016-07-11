@@ -31,6 +31,7 @@ def exception_handler(e):
         return traceback.format_exc()
 
 
+@app.route('/login', methods=['POST'])
 def login():
     '''Attempt to Login'''
     if 'user_id' in session:
@@ -63,13 +64,13 @@ def homepage():
                                user=user,
                                ex_clubs=ex_clubs)
     if request.method == 'POST':
-        if request.form['submist'] == 'Login':
+        if request.form['submit'] == 'Login':
             user = login()
             if user is None:
                 # Show error message
-                return jsonify()
+                return jsonify(loggedin=False)
             else:
-                return redirect(url_for('homepage'))
+                return jsonify(loggedin=True)
 
 
 @app.route('/about')
