@@ -5,7 +5,7 @@
 from __future__ import absolute_import
 
 from flask import (
-    Flask, redirect, request, render_template, url_for, session
+    Flask, redirect, request, render_template, url_for, session, jsonify
 )
 
 import traceback
@@ -67,7 +67,7 @@ def homepage():
             user = login()
             if user is None:
                 # Show error message
-                pass
+                return jsonify()
             else:
                 return redirect(url_for('homepage'))
 

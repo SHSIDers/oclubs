@@ -23,6 +23,6 @@ Vagrant.configure("2") do |config|
     ]
 
     # Windows's Command Prompt has poor support for ANSI escape sequences.
-    puppet.options << '--color=false' if Vagrant::Util::Platform.windows?
+    # puppet.options << '--color=false' if Vagrant::Util::Platform.windows?
   end
 end

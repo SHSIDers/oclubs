@@ -63,6 +63,13 @@
 							.click( function() {$( this ).parents("tr").eq(0).remove();});
 					}
 				} );
+
+			$.post( '/' , {} )
+				.done( function(data) {
+					if ( $( ".modal .modal-body div p").last().html() !== "<p style='color:red'>Wrong student ID or password. Please input again</p>" ){
+						$( ".modal .modal-body div").append("<p style='color:red'>Wrong student ID or password. Please input again</p>");
+					}
+			} );
 		} );
 } )( jQuery );
 

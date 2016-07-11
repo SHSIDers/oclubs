@@ -11,6 +11,7 @@ import json
 from oclubs.access import database
 from oclubs.objs import FormattedText
 from oclubs.objs.base import BaseObject
+from oclubs.objs import Upload
 
 
 class Club(BaseObject):
@@ -66,6 +67,17 @@ class Club(BaseObject):
     def intro(self, value):
         self._intro = value
         self._setdata('intro', 'club_intro', value)
+
+    @property
+    def picture(self):
+        if self._picture is None:
+            self._picture = Upload(self._data['picture'])
+        return self._picture
+
+    @picture.setter
+    def picture(self, value):
+        self._picture = value
+        self._setdata('picture', 'club_pic', value.id)
 
     @property
     def description(self):
