@@ -14,5 +14,15 @@ Vagrant.configure("2") do |config|
     vb.memory = "1024"
   end
 
-  config.vm.provision :shell, path: "provision/setup.sh"
+  config.vm.provision :puppet do |puppet|
+    puppet.manifests_path = "provision/manifests"
+
+    puppet.options = [
+      '--verbose',
+      '--debug',
+    ]
+
+    # Windows's Command Prompt has poor support for ANSI escape sequences.
+    puppet.options << '--color=false' if Vagrant::Util::Platform.windows?
+  end
 end

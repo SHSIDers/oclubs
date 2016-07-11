@@ -1,5 +1,7 @@
 #!/bin/sh
 #
+# THIS FILE IS MANAGED BY PUPPET!
+#
 # chkconfig: 2345 20 80
 # description: uWSGI
 
