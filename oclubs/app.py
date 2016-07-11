@@ -33,16 +33,16 @@ def exception_handler(e):
 
 def login():
     '''Attempt to Login'''
-    if ('user_id' in session):
-        return ''
-    user_id = request.form['username']
+    if 'user_id' in session:
+        return True
+    username = request.form['username']
     password = request.form['password']
-    user = oclubs.objs.User.attempt_login(user_id, password)
+    user = oclubs.objs.User.attempt_login(username, password)
     if user is not None:
-        session['user_id'] = user_id
+        session['user_id'] = user.id
         return user
     else:
-        return None
+        return
 
 
 @app.route('/', methods=['GET', 'POST'])
