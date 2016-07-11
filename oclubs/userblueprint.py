@@ -103,3 +103,12 @@ def teacher():
                            myclubs=myclubs,
                            pictures=pictures,
                            info=info)
+
+
+@userblueprint.route('/forgotpw')
+def forgotpw():
+    '''Page for retrieving password'''
+    user = ''
+    return render_template('forgotpassword.html',
+                           title='Retrieve Password',
+                           user=user)

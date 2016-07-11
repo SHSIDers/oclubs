@@ -5,7 +5,7 @@
 from __future__ import absolute_import
 
 from flask import (
-    Flask, redirect, request, render_template, url_for
+    Flask, redirect, request, render_template, url_for, session
 )
 
 import traceback
@@ -33,10 +33,16 @@ def exception_handler(e):
 
 def login():
     '''Attempt to Login'''
-    username = request.form['username']
+    if ('user_id' in session):
+        return
+    user_id = request.form['username']
     password = request.form['password']
-    user = oclubs.objs.User.attempt_login(username, password)
-    return redirect('/' + user.id)
+    user = oclubs.objs.User.attempt_login(user_id, password)
+    if user is not None:
+        session['user_id'] = user_id
+        return user
+    else:
+        return None
 
 
 @app.route('/', methods=['GET', 'POST'])
