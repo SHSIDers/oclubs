@@ -3,12 +3,28 @@
 #
 
 from flask import (
-    Blueprint, render_template, url_for, request
+    Blueprint, render_template, url_for, request, session
 )
 
 import traceback
+import oclubs
 
 clubblueprint = Blueprint('clubblueprint', __name__)
+
+
+@clubblueprint.route('/<club_id>')
+@clubblueprint.route('/<club_id><club_name>')
+def club(club_id, club_name=''):
+    '''Club Management Page'''
+    if('user_id' in session):
+        user = oclubs.objs.User(session['user_id']).nickname
+    else:
+        user = ''
+    club = oclubs.objs.Club(club_id).name
+    return render_template('club.html',
+                           title=club,
+                           user=user,
+                           club=club)
 
 
 @clubblueprint.route('/clublist')
@@ -80,17 +96,6 @@ def newleader():
                            user=user,
                            leader=leader,
                            members=members)
-
-
-@clubblueprint.route('/')
-def clubmanage():
-    '''Club Management Page'''
-    user = ''
-    club = 'Website Club'
-    return render_template('club.html',
-                           title=club,
-                           user=user,
-                           club=club)
 
 
 @clubblueprint.route('/inputatten')

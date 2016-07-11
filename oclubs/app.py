@@ -34,7 +34,7 @@ def exception_handler(e):
 def login():
     '''Attempt to Login'''
     if ('user_id' in session):
-        return
+        return ''
     user_id = request.form['username']
     password = request.form['password']
     user = oclubs.objs.User.attempt_login(user_id, password)
@@ -46,10 +46,13 @@ def login():
 
 
 @app.route('/', methods=['GET', 'POST'])
-def home():
+def homepage():
     '''Homepage'''
     if request.method == 'GET':
-        user = ''
+        if('user_id' in session):
+            user = oclubs.objs.User(session['user_id'])
+        else:
+            user = ''
         # Three excellent clubs
         ex_clubs = [{'name': 'Website Club', 'picture': '1', 'intro': 'We create platform for SHSID.'},
                     {'name': 'Art Club', 'picture': '2', 'intro': 'We invite people to the world of arts.'},
@@ -61,13 +64,21 @@ def home():
                                ex_clubs=ex_clubs)
     if request.method == 'POST':
         if request.form['submist'] == 'Login':
-            login()
+            user = login()
+            if user is None:
+                # Show error message
+                pass
+            else:
+                return redirect(url_for('homepage'))
 
 
 @app.route('/about')
 def about():
     '''About This Website'''
-    user = ''
+    if('user_id' in session):
+        user = oclubs.objs.User(session['user_id']).nickname
+    else:
+        user = ''
     return render_template('about.html',
                            title='About',
                            is_about=True,
@@ -77,7 +88,10 @@ def about():
 @app.route('/advice')
 def advice():
     '''Advice Page'''
-    user = ''
+    if('user_id' in session):
+        user = oclubs.objs.User(session['user_id']).nickname
+    else:
+        user = ''
     return render_template('advice.html',
                            title='Advice',
                            user=user)
@@ -86,7 +100,10 @@ def advice():
 @app.route('/creators')
 def creators():
     '''Introduction Page about Us'''
-    user = ''
+    if('user_id' in session):
+        user = oclubs.objs.User(session['user_id']).nickname
+    else:
+        user = ''
     return render_template('creators.html',
                            title='Creators',
                            user=user)
