@@ -42,49 +42,49 @@ file { '/etc/nginx/conf.d/default.conf':
     notify => Service['nginx']
 }
 
-# yumrepo { 'MariaDB':
-#     baseurl  => 'http://yum.mariadb.org/10.1/centos6-amd64',
-#     descr    => 'The name repository',
-#     enabled  => 1,
-#     gpgcheck => 1,
-#     gpgkey   => 'https://yum.mariadb.org/RPM-GPG-KEY-MariaDB',
-# }
-
-# package { [
-#     'MariaDB-server',
-#     'MariaDB-client',
-#     'MariaDB-devel'
-# ]:
-#     ensure  => present,
-#     require => [
-#         Package['epel-release'],
-#         Yumrepo['MariaDB'],
-#     ],
-# }
+yumrepo { 'MariaDB':
+    baseurl  => 'http://yum.mariadb.org/10.1/centos6-amd64',
+    descr    => 'The name repository',
+    enabled  => 1,
+    gpgcheck => 1,
+    gpgkey   => 'https://yum.mariadb.org/RPM-GPG-KEY-MariaDB',
+}
 
 package { [
-    'mysql-server',
-    'mysql',
-    'mysql-devel'
+    'MariaDB-server',
+    'MariaDB-client',
+    'MariaDB-devel'
 ]:
     ensure  => present,
-    require => Package['epel-release'],
+    require => [
+        Package['epel-release'],
+        Yumrepo['MariaDB'],
+    ],
 }
+
+# package { [
+#     'mysql-server',
+#     'mysql',
+#     'mysql-devel'
+# ]:
+#     ensure  => present,
+#     require => Package['epel-release'],
+# }
 
 service { 'mysql':
     ensure  => running,
-    name    => 'mysqld', # for mysql only, not mariadb
+    # name    => 'mysqld', # for mysql only, not mariadb
     enable  => true,
-    # require => Package['MariaDB-server'],
-    require => Package['mysql-server'],
+    require => Package['MariaDB-server'],
+    # require => Package['mysql-server'],
 }
 
 exec { 'sql-import':
     command => '/usr/bin/mysql -u root < /vagrant/oclubs-tables.sql',
     require => [
         Service['mysql'],
-        # Package['MariaDB-client'],
-        Package['mysql'],
+        Package['MariaDB-client'],
+        # Package['mysql'],
     ]
 }
 
