@@ -1,4 +1,7 @@
-CREATE TABLE user (
+CREATE DATABASE IF NOT EXISTS oclubs CHARACTER SET utf8;
+USE oclubs;
+
+CREATE TABLE IF NOT EXISTS user (
 	user_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	user_login_name varchar(255) binary NOT NULL, # Student ID
 	user_nick_name varchar(255) binary NOT NULL,
@@ -10,10 +13,10 @@ CREATE TABLE user (
 	user_grad_year int # NULL for teachers
 );
 
-CREATE UNIQUE INDEX user_login_name ON user (user_login_name);
+CREATE UNIQUE INDEX IF NOT EXISTS user_login_name ON user (user_login_name);
 
 
-CREATE TABLE club (
+CREATE TABLE IF NOT EXISTS club (
 	club_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	club_name varchar(255) binary NOT NULL,
 	club_teacher int NOT NULL, # Foreign key to user.user_id
@@ -23,22 +26,22 @@ CREATE TABLE club (
 	club_inactive boolean NOT NULL
 );
 
-CREATE INDEX club_name ON club (club_name);
-CREATE INDEX club_teacher ON club (club_teacher);
-CREATE INDEX club_leader ON club (club_leader);
+CREATE INDEX IF NOT EXISTS club_name ON club (club_name);
+CREATE INDEX IF NOT EXISTS club_teacher ON club (club_teacher);
+CREATE INDEX IF NOT EXISTS club_leader ON club (club_leader);
 
 
-CREATE TABLE club_member (
+CREATE TABLE IF NOT EXISTS club_member (
 	cm_club int NOT NULL, # Foreign key to club.club_id
 	cm_user int NOT NULL # Foreign key to user.user_id
 );
 
-CREATE UNIQUE INDEX cm_club_user ON club_member (cm_club,cm_user);
-CREATE INDEX cm_club ON club_member (cm_club);
-CREATE INDEX cm_user ON club_member (cm_user);
+CREATE UNIQUE INDEX IF NOT EXISTS cm_club_user ON club_member (cm_club,cm_user);
+CREATE INDEX IF NOT EXISTS cm_club ON club_member (cm_club);
+CREATE INDEX IF NOT EXISTS cm_user ON club_member (cm_user);
 
 
-CREATE TABLE activity (
+CREATE TABLE IF NOT EXISTS activity (
 	act_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	act_name varchar(255) binary NOT NULL,
 	act_club int NOT NULL, # Foreign key to club.club_id
@@ -50,26 +53,26 @@ CREATE TABLE activity (
 	act_cp int # Foreign key to clubpost.cp_act
 );
 
-CREATE INDEX act_club ON activity (act_club);
+CREATE INDEX IF NOT EXISTS act_club ON activity (act_club);
 
-CREATE TABLE activity_pic (
+CREATE TABLE IF NOT EXISTS activity_pic (
 	ap_act int NOT NULL, # Foreign key to activity.act_id
 	ap_upload int NOT NULL # Foreign key to upload.upload_id
 );
 
-CREATE INDEX ap_act ON activity_pic (ap_act);
+CREATE INDEX IF NOT EXISTS ap_act ON activity_pic (ap_act);
 
-CREATE TABLE attendance (
+CREATE TABLE IF NOT EXISTS attendance (
 	att_act int NOT NULL, # Foreign key to activity.activity_id
 	att_user int NOT NULL # Foreign key to user.user_id
 );
 
-CREATE UNIQUE INDEX att_act_user ON attendance (att_act, att_user);
-CREATE INDEX att_act ON attendance (att_act);
-CREATE INDEX att_user ON attendance (att_user);
+CREATE UNIQUE INDEX IF NOT EXISTS att_act_user ON attendance (att_act, att_user);
+CREATE INDEX IF NOT EXISTS att_act ON attendance (att_act);
+CREATE INDEX IF NOT EXISTS att_user ON attendance (att_user);
 
 
-CREATE TABLE clubpost (
+CREATE TABLE IF NOT EXISTS clubpost (
 	cp_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	cp_club int NOT NULL, # Foreign key to club.club_id
 	cp_title varchar(255) binary NOT NULL,
@@ -79,24 +82,24 @@ CREATE TABLE clubpost (
 	cp_act int # Foreign key to activity.act_id
 );
 
-CREATE INDEX clubpost_club ON clubpost (cp_club);
+CREATE INDEX IF NOT EXISTS clubpost_club ON clubpost (cp_club);
 
-CREATE TABLE clubpost_pic (
+CREATE TABLE IF NOT EXISTS clubpost_pic (
 	cp_post int NOT NULL, # Foreign key to clubpost.cp_id
 	cp_upload int NOT NULL # Foreign key to upload.upload_id
 );
 
-CREATE INDEX cp_post ON clubpost_pic (cp_post);
+CREATE INDEX IF NOT EXISTS cp_post ON clubpost_pic (cp_post);
 
 
-CREATE TABLE text (
+CREATE TABLE IF NOT EXISTS text (
 	text_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	text_data mediumblob NOT NULL, # data depends on flags
 	text_flags tinyblob NOT NULL # comma-separated list of gzip,external
 );
 
 
-CREATE TABLE upload (
+CREATE TABLE IF NOT EXISTS upload (
 	upload_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	upload_club int NOT NULL, # Foreign key to club.club_id
 	upload_user int NOT NULL, # Foreign key to user.user_id
@@ -105,7 +108,7 @@ CREATE TABLE upload (
 );
 
 
-CREATE TABLE notification (
+CREATE TABLE IF NOT EXISTS notification (
 	notification_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	notification_club int NOT NULL, # Foreign key to club.club_id
 	notification_user int NOT NULL, # Foreign key to user.user_id
@@ -113,10 +116,10 @@ CREATE TABLE notification (
 	notification_type varchar(255) NOT NULL
 );
 
-CREATE INDEX notification_club ON notification (notification_club);
+CREATE INDEX IF NOT EXISTS notification_club ON notification (notification_club);
 
 
-CREATE TABLE signup (
+CREATE TABLE IF NOT EXISTS signup (
 	signup_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	signup_act int NOT NULL, # Foreign key to act.act_id
 	signup_user int NOT NULL, # Foreign key to user.user_id
@@ -125,5 +128,5 @@ CREATE TABLE signup (
 	signup_consentform boolean NOT NULL
 );
 
-CREATE INDEX upload_club ON upload (upload_club);
-CREATE INDEX upload_user ON upload (upload_user); 
+CREATE INDEX IF NOT EXISTS upload_club ON upload (upload_club);
+CREATE INDEX IF NOT EXISTS upload_user ON upload (upload_user); 
