@@ -42,35 +42,49 @@ file { '/etc/nginx/conf.d/default.conf':
     notify => Service['nginx']
 }
 
-yumrepo { 'MariaDB':
-    baseurl  => 'http://yum.mariadb.org/10.1/centos6-amd64',
-    descr    => 'The name repository',
-    enabled  => 1,
-    gpgcheck => 1,
-    gpgkey   => 'https://yum.mariadb.org/RPM-GPG-KEY-MariaDB',
-}
+# yumrepo { 'MariaDB':
+#     baseurl  => 'http://yum.mariadb.org/10.1/centos6-amd64',
+#     descr    => 'The name repository',
+#     enabled  => 1,
+#     gpgcheck => 1,
+#     gpgkey   => 'https://yum.mariadb.org/RPM-GPG-KEY-MariaDB',
+# }
+
+# package { [
+#     'MariaDB-server',
+#     'MariaDB-client',
+#     'MariaDB-devel'
+# ]:
+#     ensure  => present,
+#     require => [
+#         Package['epel-release'],
+#         Yumrepo['MariaDB'],
+#     ],
+# }
 
 package { [
-    'MariaDB-server',
-    'MariaDB-client',
-    'MariaDB-devel'
+    'mysql-server',
+    'mysql',
+    'mysql-devel'
 ]:
     ensure  => present,
-    require => [
-        Package['epel-release'],
-        Yumrepo['MariaDB'],
-    ],
+    require => Package['epel-release'],
 }
 
 service { 'mysql':
     ensure  => running,
     enable  => true,
-    require => Package['MariaDB-server'],
+    # require => Package['MariaDB-server'],
+    require => Package['mysql-server'],
 }
 
 exec { 'sql-import':
     command => '/usr/bin/mysql -u root < /vagrant/oclubs-tables.sql',
-    require => Service['mysql'],
+    require => [
+        Service['mysql'],
+        # Package['MariaDB-client'],
+        Package['mysql'],
+    ]
 }
 
 file { '/etc/selinux/config':
