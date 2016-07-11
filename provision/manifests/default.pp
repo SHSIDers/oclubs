@@ -62,15 +62,30 @@ package { [
     ],
 }
 
+# package { [
+#     'mysql-server',
+#     'mysql',
+#     'mysql-devel'
+# ]:
+#     ensure  => present,
+#     require => Package['epel-release'],
+# }
+
 service { 'mysql':
     ensure  => running,
+    # name    => 'mysqld', # for mysql only, not mariadb
     enable  => true,
     require => Package['MariaDB-server'],
+    # require => Package['mysql-server'],
 }
 
 exec { 'sql-import':
     command => '/usr/bin/mysql -u root < /vagrant/oclubs-tables.sql',
-    require => Service['mysql'],
+    require => [
+        Service['mysql'],
+        Package['MariaDB-client'],
+        # Package['mysql'],
+    ]
 }
 
 file { '/etc/selinux/config':
@@ -94,7 +109,7 @@ package { [
 exec { 'pip-install-requirements':
     command => 'pip install -Ur /vagrant/requirements.txt',
     path    => '/usr/bin',
-#    retries => 5,
+    tries   => 5,
     require => [
         Package['python-pip'],
         Package['python-devel'],
