@@ -46,10 +46,10 @@ CREATE TABLE IF NOT EXISTS activity (
 	act_name varchar(255) binary NOT NULL,
 	act_club int NOT NULL, # Foreign key to club.club_id
 	act_desc int NOT NULL, # Foreign key to text.text_id
-	act_date unsigned int NOT NULL,
+	act_date int unsigned NOT NULL,
 	act_time int NOT NULL, # Uploaded time
-	act_location mediumblob NOT NULL, #XMT,ZXB, basketball court, Hongmei,...
-	act_cas int NOT NULL # CAS hours
+	act_location mediumblob NOT NULL, # XMT,ZXB, basketball court, Hongmei,...
+	act_cas int NOT NULL, # CAS hours
 	act_cp int # Foreign key to clubpost.cp_act
 );
 
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS clubpost (
 	cp_title varchar(255) binary NOT NULL,
 	cp_text int NOT NULL, # Foreign key to text.text_id
 	cp_editor int NOT NULL, # Foreign key to user.user_id
-	cp_timestamp int, NOT NULL
+	cp_timestamp int NOT NULL,
 	cp_act int # Foreign key to activity.act_id
 );
 
