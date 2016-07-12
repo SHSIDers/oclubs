@@ -7,7 +7,6 @@ from flask import (
 )
 
 import traceback
-import mechanize
 import oclubs
 
 clubblueprint = Blueprint('clubblueprint', __name__)
@@ -153,7 +152,7 @@ def changeclubinfo(club_id):
         club = oclubs.objs.Club(club_id)
         club_name = club.name
         intro = club.intro
-        photo = 'intro5'
+        photo = club.picture
         desc = club.description
         return render_template('changeclubinfo.html',
                                title='Change Club Info',
@@ -170,24 +169,35 @@ def changeclubinfo(club_id):
         return
 
 
-@clubblueprint.route('/adjust')
-def adjustmember():
+@clubblueprint.route('/<club_id>/adjust_member', methods=['GET', 'POST'])
+def adjustmember(club_id):
     '''Adjust Club Members'''
-    user = ''
-    club = 'Website Club'
-    members = [{'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
-               {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
-               {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
-               {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
-               {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
-               {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
-               {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
-               {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
-               {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
-               {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
-               {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'}]
-    return render_template('adjustmember.html',
-                           title='Adjust Members',
-                           user=user,
-                           club=club,
-                           members=members)
+    if request.method == 'GET':
+        if('user_id' in session):
+            user = oclubs.objs.User(session['user_id']).nickname
+        else:
+            user = ''
+        club = oclubs.objs.Club(club_id)
+        members_obj = club.members
+        for member_obj in members_obj:
+            member = {}
+            member['nick_name'] = member_obj.nickname
+            member['passportname'] = member_obj.passportname
+            member['photo'] = member_obj.picture
+
+        members = [{'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
+                   {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
+                   {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
+                   {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
+                   {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
+                   {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
+                   {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
+                   {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
+                   {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
+                   {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
+                   {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'}]
+        return render_template('adjustmember.html',
+                               title='Adjust Members',
+                               user=user,
+                               club=club,
+                               members=members)
