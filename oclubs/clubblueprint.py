@@ -163,11 +163,10 @@ def changeclubinfo(club_id):
                                photo=photo,
                                desc=desc)
     if request.method == 'POST':
-        br = mechanize.Browser()
         club = oclubs.objs.Club(club_id)
-        club.intro = br.form.find_control(id="intro")
-        # club.picture = br.form.find_control(id="photo")
-        club.desc = br.form.find_control(id="desc")
+        club.intro = request.form['intro']
+        club.picture = request.form['photo']
+        club.desc = request.form['desc']
         return
 
 

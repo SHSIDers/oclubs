@@ -3,21 +3,21 @@
 
 <!-- Below Navbar -->
 <div class="large_container">
-	<div class="form-group" style="color:#f2f2f2">
+	<form class="form-group" style="color:#f2f2f2">
 		<h1 class="title">Change Club Info</h1>
 		<h2 class="title_next">{{ club }}</h2>
 		<p>*Please input below.</p>
 		<label for="intro">One sentence intro:</label>
-		<input type="text" class="form-control" id="intro" value="{{ intro }}">
+		<input type="text" class="form-control" name="intro" value="{{ intro }}">
 		<br>
 		<label for="photo">Photo:</label>
 		<!-- way to upload photo -->
 		<br>		
 		<label for="desc">Introduction Paragraphs:</label>
-		<textarea class="form-control" rows="10" id="desc">{{ desc }}</textarea>
+		<textarea class="form-control" rows="10" name="desc">{{ desc }}</textarea>
 		<br>
 		<input type="submit" class="btn btn-primary" value="Submit">
-	</div>
+	</form>
 </div>
 
 <div class="clearfix"></div>

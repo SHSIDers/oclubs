@@ -11,7 +11,6 @@ import json
 from oclubs.access import database
 from oclubs.objs import FormattedText
 from oclubs.objs.base import BaseObject
-# from oclubs.objs import Upload
 
 
 class Club(BaseObject):
@@ -26,6 +25,7 @@ class Club(BaseObject):
         self._teacher = self._leader = None
         self._description = self._location = None
         self._activities = self._members = None
+        self._intro = self._picture = None
 
     @property
     def name(self):
@@ -61,23 +61,23 @@ class Club(BaseObject):
 
     @property
     def intro(self):
-        return self._intro
+        return self._data['intro']
 
     @intro.setter
     def intro(self, value):
-        self._intro = value
         self._setdata('intro', 'club_intro', value)
 
-    # @property
-    # def picture(self):
-    #     if self._picture is None:
-    #         self._picture = Upload(self._data['picture'])
-    #     return self._picture
+    @property
+    def picture(self):
+        from oclubs.objs import Upload
+        if self._picture is None:
+            self._picture = Upload(self._data['picture'])
+        return self._picture
 
-    # @picture.setter
-    # def picture(self, value):
-    #     self._picture = value
-    #     self._setdata('picture', 'club_pic', value.id)
+    @picture.setter
+    def picture(self, value):
+        self._picture = value
+        self._setdata('picture', 'club_pic', value.id)
 
     @property
     def description(self):
@@ -153,7 +153,9 @@ class Club(BaseObject):
                 'club_leader': 'leader',
                 'club_desc': 'description',
                 'club_location': 'location',
-                'club_inactive': 'inactive'
+                'club_inactive': 'inactive',
+                'club_intro': 'intro',
+                'club_pic': 'picture'
             }
         )
 
