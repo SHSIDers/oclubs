@@ -7,6 +7,7 @@ from flask import (
 )
 
 import traceback
+import mechanize
 import oclubs
 
 clubblueprint = Blueprint('clubblueprint', __name__)
@@ -149,17 +150,25 @@ def changeclubinfo(club_id):
             user = oclubs.objs.User(session['user_id']).nickname
         else:
             user = ''
-        club = oclubs.objs.Club(club_id).name
-        intro = oclubs.objs.Club(club_id).intro
+        club = oclubs.objs.Club(club_id)
+        club_name = club.name
+        intro = club.intro
         photo = 'intro5'
-        desc = oclubs.objs.Club(club_id).description
+        desc = club.description
         return render_template('changeclubinfo.html',
                                title='Change Club Info',
                                user=user,
-                               club=club,
+                               club=club_name,
                                intro=intro,
                                photo=photo,
                                desc=desc)
+    if request.method == 'POST':
+        br = mechanize.Browser()
+        club = oclubs.objs.Club(club_id)
+        club.intro = br.form.find_control(id="intro")
+        # club.picture = br.form.find_control(id="photo")
+        club.desc = br.form.find_control(id="desc")
+        return
 
 
 @clubblueprint.route('/adjust')

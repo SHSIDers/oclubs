@@ -33,17 +33,34 @@ def exception_handler(e):
 
 @app.route('/login', methods=['POST'])
 def login():
-    '''Attempt to Login'''
+    '''API to login'''
     if 'user_id' in session:
-        return True
-    username = request.form['username']
-    password = request.form['password']
-    user = oclubs.objs.User.attempt_login(username, password)
-    if user is not None:
-        session['user_id'] = user.id
-        return user
+        status = 'loggedin'
     else:
-        return
+        user = oclubs.objs.User.attempt_login(
+            request.form['username'],
+            request.form['password']
+        )
+        if user is not None:
+            session['user_id'] = user.id
+            status = 'success'
+        else:
+            status = 'failure'
+    return jsonify({'result': status})
+
+
+# def attempt_login():
+#     '''Attempt to Login'''
+#     if 'user_id' in session:
+#         return True
+#     username = request.form['username']
+#     password = request.form['password']
+#     user = oclubs.objs.User.attempt_login(username, password)
+#     if user is not None:
+#         session['user_id'] = user.id
+#         return user
+#     else:
+#         return
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -63,14 +80,6 @@ def homepage():
                                is_home=True,
                                user=user,
                                ex_clubs=ex_clubs)
-    if request.method == 'POST':
-        if request.form['submit'] == 'Login':
-            user = login()
-            if user is None:
-                # Show error message
-                return jsonify(loggedin=False)
-            else:
-                return jsonify(loggedin=True)
 
 
 @app.route('/about')

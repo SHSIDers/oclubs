@@ -64,14 +64,24 @@
 					}
 				} );
 
-			$.post( '/login' , {} )
-				.done( function(data) {
-					if ( data.loggedin === false && $( ".modal .modal-body div p").last().html() !== "<p style='color:red'>Wrong student ID or password. Please input again</p>" ){
-						$( ".modal .modal-body div").append("<p style='color:red'>Wrong student ID or password. Please input again</p>");
-					} else if (data.loggedin === true) {
-						$( "#loginModal" ).modal('toggle');
+			$( "#loginModal .modal-footer #login")
+				.click( function() {
+					if ( $( ".modal .modal-body div p").last().html() == "<p style='color:red'>Wrong student ID or password. Please input again.</p>" ){
+						$( ".modal .modal-body div p").last().remove();
 					}
-			} );
+					username = $( "#loginModal #username" ).val();
+					password = $( "#loginModal #password" ).val();
+					$.post( '/login' , { 'username': username, 'password': password } )
+						.done( function(data) {
+							if ( data.result == 'success' ){
+								location.reload();
+							} else if ( data.result == 'loggedin') {
+								$( ".modal .modal-body div").append( "<p style='color:#ffcc00'>Already logged in.</p>");
+							} else if ( data.result == 'failure' ) {
+								$( ".modal .modal-body div").append( "<p style='color:red'>Wrong student ID or password. Please input again.</p>");
+							}
+					} );
+				} );
 		} );
 } )( jQuery );
 
