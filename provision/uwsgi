@@ -1,36 +1,38 @@
-#!/bin/sh
+#!/bin/bash
 #
 # THIS FILE IS MANAGED BY PUPPET!
 #
-# chkconfig: 2345 20 80
+# chkconfig: 2345 80 20
 # description: uWSGI
 
 # Source function library.
 . /etc/rc.d/init.d/functions
 
-exec="/usr/bin/uwsgi"
-prog="uwsgi"
-config="/etc/uwsgi/uwsgi.ini"
-
-[ -e /etc/sysconfig/$prog ] && . /etc/sysconfig/$prog
-
-lockfile=/var/lock/subsys/$prog
+exec=/usr/bin/uwsgi
+prog=uwsgi
+config=/etc/uwsgi/uwsgi.ini
+lockfile=/var/lock/subsys/uwsgi
 
 start() {
     [ -x $exec ] || exit 5
     [ -f $config ] || exit 6
-    echo -n $"Starting $prog: "
-    cd /srv && daemon $exec --daemonize --ini /etc/uwsgi/uwsgi.ini &
+
+    cd /srv && action "Starting $prog" $exec --daemonize --ini /etc/uwsgi/uwsgi.ini
     retval=$?
-    echo
     [ $retval -eq 0 ] && touch $lockfile
     return $retval
 }
 
 stop() {
-    echo -n $"Stopping $prog: "
-    # stop it here, often "killproc $prog"
-    uwsgi --stop /var/run/uwsgi/uwsgi.pid
+    action "Stopping $prog" uwsgi --stop /var/run/uwsgi/uwsgi.pid
+    retval=$?
+    [ $retval -eq 0 ] && rm -f $lockfile
+    return $retval
+}
+
+brutal-shutdown() {
+    echo -n "Killing $prog"
+    killproc $prog
     retval=$?
     echo
     [ $retval -eq 0 ] && rm -f $lockfile
@@ -43,16 +45,13 @@ restart() {
 }
 
 reload() {
-    echo -n $"Reloading $prog: "
-    uwsgi --reload /var/run/uwsgi/uwsgi.pid
-    retval=$?
-    echo
-    [ $retval -eq 0 ] && rm -f $lockfile
-    return $retval
+    action "Reloading $prog" uwsgi --reload /var/run/uwsgi/uwsgi.pid
+    return $?
 }
 
-force_reload() {
-    kill -TERM `cat /tmp/project-master.pid`
+force-reload() {
+    action "Reloading $prog" kill -TERM "$(cat /var/run/uwsgi/uwsgi.pid)"
+    return $?
 }
 
 rh_status() {
@@ -74,25 +73,30 @@ case "$1" in
         rh_status_q || exit 0
         $1
         ;;
+    kill)
+        rh_status_q || exit 0
+        brutal-shutdown
+        ;;
     restart)
         $1
         ;;
     reload)
-        rh_status_q || exit 7
+        rh_status_q || exit 0
         $1
         ;;
     force-reload)
-        force_reload
-        ;;
-    status)
-        rh_status
+        reload
+        restart
         ;;
     condrestart|try-restart)
         rh_status_q || exit 0
         restart
         ;;
+    status)
+        rh_status
+        ;;
     *)
-        echo $"Usage: $0 {start|stop|status|restart|condrestart|try-restart|reload|force-reload}"
+        echo "Usage: $0 {start|stop|status|restart|kill|condrestart|try-restart|reload|force-reload}"
         exit 2
 esac
 exit $?
