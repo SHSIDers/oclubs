@@ -73,7 +73,7 @@
 					password = $( "#loginModal #password" ).val();
 					$.post( '/login' , { 'username': username, 'password': password } )
 						.done( function(data) {
-							if ( data.result == 'success' ){
+							if ( data.result == 'success' ) {
 								location.reload();
 							} else if ( data.result == 'loggedin') {
 								$( ".modal .modal-body div").append( "<p style='color:#ffcc00'>Already logged in.</p>");

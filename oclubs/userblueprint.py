@@ -3,26 +3,33 @@
 #
 
 from flask import (
-    Blueprint, render_template, url_for, request
+    Blueprint, render_template, url_for, request, session
 )
 
 import traceback
+import oclubs
 
 userblueprint = Blueprint('userblueprint', __name__)
 
 
-@userblueprint.route('/quit')
+@userblueprint.route('/quit_club', methods=['GET', 'POST'])
 def quitclub():
     '''Quit Club Page'''
-    user = ''
-    clubs = ['Art Club', 'Photo Club', 'MUN', 'Art Club', 'Photo Club', 'MUN', 'Art Club', 'Photo Club', 'MUN']
-    return render_template('quitclub.html',
-                           title='Quit Club',
-                           user=user,
-                           clubs=clubs)
+    if request.method == 'GET':
+        user_obj = oclubs.objs.User(session['user_id'])
+        user = user_obj.nickname
+        # get the list of clubs
+        clubs = ['Art Club', 'Photo Club', 'MUN', 'Art Club', 'Photo Club', 'MUN', 'Art Club', 'Photo Club', 'MUN']
+        return render_template('quitclub.html',
+                               title='Quit Club',
+                               user=user,
+                               clubs=clubs)
+    if request.method == 'POST':
+        # delete connection between user and club
+        pass
 
 
-@userblueprint.route('/reghm')
+@userblueprint.route('/register_hongmei')
 def registerhm():
     '''Register Page for HongMei Activites'''
     user = ''
@@ -56,11 +63,17 @@ def registerhm():
 def personal():
     '''Student Personal Page'''
     if request.method == 'GET':
-        user = 'Derril'
+        user_obj = oclubs.objs.User(session['user_id'])
+        user = user_obj.nickname
         pictures = []
         for num in range(1, 21):
             pictures.append(num)
-        info = {'name': 'Ichiro Tai', 'email': 'lolol@outlook.com', 'photo': '1', 'ID': 'G2986510295', 'phone': '18918181818'}
+        info = {}
+        info['name'] = user.nickname
+        info['email'] = user.email
+        info['picture'] = user.picture
+        info['ID'] = user.studentid
+        # info['phone'] = user.phone
         clubs = [{'name': 'Website Club', 'photo': 'intro1', 'intro': 'We are the best club', 'cas': 110},
                  {'name': 'Math Club', 'photo': 'intro2', 'intro': 'We learn math together', 'cas': 5},
                  {'name': 'Chess Club', 'photo': 'intro3', 'intro': 'We enjoy playing chess', 'cas': 3}]
@@ -85,18 +98,26 @@ def personal():
                                activities=activities,
                                hongmei=hongmei,
                                leader_club=leader_club)
+    if request.method == 'POST':
+        # change info
+        pass
 
 
-@userblueprint.route('/teacher')
+@userblueprint.route('/teacher', methods=['GET', 'POST'])
 def teacher():
     '''Teacher Page'''
-    user = 'Derril'
-    myclubs = [{'club': 'Website Club', 'members_num': 3, 'photo': '1', 'intro': 'We are the best club'},
-               {'club': 'Math Club', 'members_num': 20, 'photo': '2', 'intro': 'We learn math together'}]
+    user_obj = oclubs.objs.User(session['user_id'])
+    user = user_obj.nickname
+    # teacher's guiding clubs
+    myclubs = [{'club': 'Website Club', 'members_num': 3, 'picture': '1', 'intro': 'We are the best club'},
+               {'club': 'Math Club', 'members_num': 20, 'picture': '2', 'intro': 'We learn math together'}]
     pictures = []
     for num in range(1, 21):
         pictures.append(num)
-    info = {'name': 'Ichiro Tai', 'email': 'lolol@outlook.com', 'photo': '1'}
+    info = {}
+    info['name'] = user_obj.nickname
+    info['email'] = user_obj.email
+    info['picture'] = user_obj.picture
     return render_template('teacher.html',
                            title=user,
                            user=user,
@@ -105,10 +126,17 @@ def teacher():
                            info=info)
 
 
-@userblueprint.route('/forgotpw')
+@userblueprint.route('/forgot_password', methods=['GET', 'POST'])
 def forgotpw():
     '''Page for retrieving password'''
-    user = ''
-    return render_template('forgotpassword.html',
-                           title='Retrieve Password',
-                           user=user)
+    if request.method == 'GET':
+        if('user_id' in session):
+            user = oclubs.objs.User(session['user_id']).nickname
+        else:
+            user = ''
+        return render_template('forgotpassword.html',
+                               title='Retrieve Password',
+                               user=user)
+    if request.method == 'POST':
+        # accept input to retrieve password
+        pass

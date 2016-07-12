@@ -7,7 +7,7 @@
 	<div class="clearfix clearfix-bordered"></div>
 	<br><br>
 	<div class="col-sm-3">
-		<img src="../static/images/icons/icon{{ info.photo }}.jpg" class="img-responsive img-thumbnail" alt="Profile Photo">
+		<img src="../static/images/icons/icon{{ info.picture }}.jpg" class="img-responsive img-thumbnail" alt="Profile Picture">
 		<br><br>
 	</div>
 	<div class="col-sm-9 personal_info">
@@ -29,7 +29,7 @@
 		{% for club in myclubs %}
 		<div>
 			<div class="col-sm-3">
-				<img src="../static/images/{{ club.photo }}.jpg" class="img-responsive" alt="">
+				<img src="../static/images/{{ club.picture }}.jpg" class="img-responsive" alt="">
 			</div>
 			<div class="col-sm-9">
 				<h1>{{ club.club }}</h1>
@@ -69,7 +69,7 @@
 					<label for="email">Email:</label>
 					<input class="form-control" id="email" type="email" placeholder="{{ info.email }}">
 					<br>
-					<label for="photo">Profile Photo:</label>
+					<label for="picture">Profile Picture:</label>
 					<div class="clearfix"></div>
 					{% for pic in pictures %}
 					<label class="radio_block">
