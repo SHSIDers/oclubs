@@ -20,17 +20,21 @@ def club(club_id, club_name=''):
         user = oclubs.objs.User(session['user_id']).nickname
     else:
         user = ''
-    club = oclubs.objs.Club(club_id).name
+    club = oclubs.objs.Club(club_id)
     return render_template('club.html',
-                           title=club,
+                           title=club.name,
                            user=user,
-                           club=club)
+                           club=club.name)
 
 
 @clubblueprint.route('/clublist')
 def clublist():
     '''Club List'''
-    user = ''
+    if('user_id' in session):
+        user = oclubs.objs.User(session['user_id']).nickname
+    else:
+        user = ''
+    # randomly choose clubs
     clubs = [{'name': 'Art Club', 'photo': 'intro1', 'intro': 'Here is where birth of arts happens'},
              {'name': 'Photo Club', 'photo': 'intro2', 'intro': 'Place for photography!'},
              {'name': 'Art Club', 'photo': 'intro3', 'intro': 'Here is where birth of arts happens'},
@@ -48,96 +52,105 @@ def clublist():
                            clubs=clubs)
 
 
-@clubblueprint.route('/clubintro')
-def clubintro():
+@clubblueprint.route('/<club_id>/introduction')
+def clubintro(club_id):
     '''Club Intro'''
-    user = ''
-    club = 'Website Club'
-    intro = 'We create oClubs for SHSID clubs.'
-    leader = 'Derril'
-    photo = 'intro5'
-    desc = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+    if('user_id' in session):
+        user = oclubs.objs.User(session['user_id']).nickname
+    else:
+        user = ''
+    club = oclubs.objs.Club(club_id)
     return render_template('clubintro.html',
                            title='Club Intro',
                            user=user,
-                           club=club,
-                           intro=intro,
-                           leader=leader,
-                           photo=photo,
-                           desc=desc)
+                           club=club.name,
+                           intro=club.intro,
+                           leader=club.leader.nickname,
+                           picture=club.picture,
+                           desc=club.description)
 
 
-@clubblueprint.route('/newleader')
-def newleader():
+@clubblueprint.route('/<club_id>/new_leader', methods=['GET', 'POST'])
+def newleader(club_id):
     '''Selecting New Club Leader'''
-    user = ''
-    leader = {'official_name': 'Feng Ma', 'nick_name': 'Principal Ma', 'photo': '4'}
-    members = [{'official_name': 'Ichiro Tai', 'nick_name': 'Derril', 'photo': '1'},
-               {'official_name': 'YiFei Zhu', 'nick_name': 'YiFei', 'photo': '2'},
-               {'official_name': 'Frank Lee', 'nick_name': 'Frank', 'photo': '3'},
-               {'official_name': 'Ichiro Tai', 'nick_name': 'Derril', 'photo': '1'},
-               {'official_name': 'YiFei Zhu', 'nick_name': 'YiFei', 'photo': '2'},
-               {'official_name': 'Frank Lee', 'nick_name': 'Frank', 'photo': '3'},
-               {'official_name': 'Ichiro Tai', 'nick_name': 'Derril', 'photo': '1'},
-               {'official_name': 'YiFei Zhu', 'nick_name': 'YiFei', 'photo': '2'},
-               {'official_name': 'Frank Lee', 'nick_name': 'Frank', 'photo': '3'},
-               {'official_name': 'Ichiro Tai', 'nick_name': 'Derril', 'photo': '1'},
-               {'official_name': 'YiFei Zhu', 'nick_name': 'YiFei', 'photo': '2'},
-               {'official_name': 'Frank Lee', 'nick_name': 'Frank', 'photo': '3'},
-               {'official_name': 'Ichiro Tai', 'nick_name': 'Derril', 'photo': '1'},
-               {'official_name': 'YiFei Zhu', 'nick_name': 'YiFei', 'photo': '2'},
-               {'official_name': 'Frank Lee', 'nick_name': 'Frank', 'photo': '3'}]
-    return render_template('newleader.html',
-                           title='New Leader',
-                           user=user,
-                           leader=leader,
-                           members=members)
+    if request.method == 'GET':
+        if('user_id' in session):
+            user = oclubs.objs.User(session['user_id']).nickname
+        else:
+            user = ''
+        club = oclubs.objs.Club(club_id)
+        leader_obj = club.leader
+        leader = {}
+        leader['passportname'] = leader_obj.passportname
+        leader['nick_name'] = leader_obj.nickname
+        leader['picture'] = leader_obj.picture
+        members_obj = club.members
+        members = []
+        for member_obj in members_obj:
+            member = {}
+            member['passportname'] = member_obj.passportname
+            member['nick_name'] = member_obj.nickname
+            member['picture'] = member_obj.picture
+            members.append(member)
+        return render_template('newleader.html',
+                               title='New Leader',
+                               user=user,
+                               club=club.name,
+                               leader=leader,
+                               members=members)
+    if request.method == 'POST':
+        # change club leader
+        pass
 
 
-@clubblueprint.route('/inputatten')
-def inputatten():
+@clubblueprint.route('/<club_id>/input_attendance', methods=['GET', 'POST'])
+def inputatten(club_id):
     '''Input Attendance'''
-    user = ''
-    club = 'Website Club'
-    members = [{'official_name': 'Ichiro Tai', 'nick_name': 'Derril', 'photo': '1'},
-               {'official_name': 'YiFei Zhu', 'nick_name': 'YiFei', 'photo': '2'},
-               {'official_name': 'Frank Lee', 'nick_name': 'Frank', 'photo': '3'},
-               {'official_name': 'Ichiro Tai', 'nick_name': 'Derril', 'photo': '1'},
-               {'official_name': 'YiFei Zhu', 'nick_name': 'YiFei', 'photo': '2'},
-               {'official_name': 'Frank Lee', 'nick_name': 'Frank', 'photo': '3'},
-               {'official_name': 'Ichiro Tai', 'nick_name': 'Derril', 'photo': '1'},
-               {'official_name': 'YiFei Zhu', 'nick_name': 'YiFei', 'photo': '2'},
-               {'official_name': 'Frank Lee', 'nick_name': 'Frank', 'photo': '3'},
-               {'official_name': 'Ichiro Tai', 'nick_name': 'Derril', 'photo': '1'},
-               {'official_name': 'YiFei Zhu', 'nick_name': 'YiFei', 'photo': '2'},
-               {'official_name': 'Frank Lee', 'nick_name': 'Frank', 'photo': '3'},
-               {'official_name': 'Ichiro Tai', 'nick_name': 'Derril', 'photo': '1'},
-               {'official_name': 'YiFei Zhu', 'nick_name': 'YiFei', 'photo': '2'},
-               {'official_name': 'Frank Lee', 'nick_name': 'Frank', 'photo': '3'}]
-    return render_template('inputatten.html',
-                           title='Input Attendance',
-                           user=user,
-                           club=club,
-                           members=members)
+    if request.method == 'GET':
+        if('user_id' in session):
+            user = oclubs.objs.User(session['user_id']).nickname
+        else:
+            user = ''
+        club = oclubs.objs.Club(club_id)
+        members_obj = club.members
+        members = []
+        for member_obj in members_obj:
+            member = {}
+            member['passportname'] = member_obj.passportname
+            member['nick_name'] = member_obj.nickname
+            member['picture'] = member_obj.picture
+            members.append(member)
+        return render_template('inputatten.html',
+                               title='Input Attendance',
+                               user=user,
+                               club=club.name,
+                               members=members)
+    if request.method == 'POST':
+        # input attendance
+        pass
 
 
-@clubblueprint.route('/memberinfo')
-def memberinfo():
+@clubblueprint.route('/<club_id>/member_info')
+def memberinfo(club_id):
     '''Check Members' Info'''
-    user = ''
-    club = 'Website Club'
-    members = [{'nick_name': 'Derril', 'id': 'G1234567890', 'official_name': 'Ichiro Tai', 'email': 'lolol@outlook.com'},
-               {'nick_name': 'Derril', 'id': 'G1234567890', 'official_name': 'Ichiro Tai', 'email': 'lolol@outlook.com'},
-               {'nick_name': 'Derril', 'id': 'G1234567890', 'official_name': 'Ichiro Tai', 'email': 'lolol@outlook.com'},
-               {'nick_name': 'Derril', 'id': 'G1234567890', 'official_name': 'Ichiro Tai', 'email': 'lolol@outlook.com'},
-               {'nick_name': 'Derril', 'id': 'G1234567890', 'official_name': 'Ichiro Tai', 'email': 'lolol@outlook.com'},
-               {'nick_name': 'Derril', 'id': 'G1234567890', 'official_name': 'Ichiro Tai', 'email': 'lolol@outlook.com'},
-               {'nick_name': 'Derril', 'id': 'G1234567890', 'official_name': 'Ichiro Tai', 'email': 'lolol@outlook.com'},
-               {'nick_name': 'Derril', 'id': 'G1234567890', 'official_name': 'Ichiro Tai', 'email': 'lolol@outlook.com'}]
+    if('user_id' in session):
+        user = oclubs.objs.User(session['user_id']).nickname
+    else:
+        user = ''
+    club = oclubs.objs.Club(club_id)
+    members_obj = club.members
+    members = []
+    for member_obj in members_obj:
+        member = {}
+        member['nick_name'] = member_obj.nickname
+        member['id'] = member_obj.studentid
+        member['passportname'] = member_obj.passportname
+        member['email'] = member_obj.email
+        members.append(member)
     return render_template('memberinfo.html',
                            title='Member Info',
                            user=user,
-                           club=club,
+                           club=club.name,
                            members=members)
 
 
@@ -150,17 +163,13 @@ def changeclubinfo(club_id):
         else:
             user = ''
         club = oclubs.objs.Club(club_id)
-        club_name = club.name
-        intro = club.intro
-        photo = club.picture
-        desc = club.description
         return render_template('changeclubinfo.html',
                                title='Change Club Info',
                                user=user,
-                               club=club_name,
-                               intro=intro,
-                               photo=photo,
-                               desc=desc)
+                               club=club.name,
+                               intro=club.intro,
+                               picture=club.picture,
+                               desc=club.description)
     if request.method == 'POST':
         club = oclubs.objs.Club(club_id)
         club.intro = request.form['intro']
@@ -179,25 +188,19 @@ def adjustmember(club_id):
             user = ''
         club = oclubs.objs.Club(club_id)
         members_obj = club.members
+        members = []
         for member_obj in members_obj:
             member = {}
             member['nick_name'] = member_obj.nickname
             member['passportname'] = member_obj.passportname
-            member['photo'] = member_obj.picture
-
-        members = [{'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
-                   {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
-                   {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
-                   {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
-                   {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
-                   {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
-                   {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
-                   {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
-                   {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
-                   {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'},
-                   {'nick_name': 'Derril', 'official_name': 'Ichiro Tai', 'photo': '1', 'id': 'G1234567890'}]
+            member['picture'] = member_obj.picture
+            member['id'] = member_obj.studentid
+            members.append(member)
         return render_template('adjustmember.html',
                                title='Adjust Members',
                                user=user,
-                               club=club,
+                               club=club.name,
                                members=members)
+    if request.method == 'POST':
+        # expel member
+        pass

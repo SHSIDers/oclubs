@@ -2,11 +2,12 @@
 {% block content %}
 
 <!-- Below Navbar -->
+<h1 class="title text-center">{{ club }}</h1>
 <div class="huge_block">
     <h1>Current Club Leader</h1>
-    <img src="../static/images/{{ leader.photo }}.jpg" class="img-responsive img-circle" alt="{{ leader.nick_name }}">
+    <img src="../static/images/{{ leader.picture }}.jpg" class="img-responsive img-circle" alt="{{ leader.nick_name }}">
     <h2>{{ leader.nick_name }}</h2>
-    <h3>{{ leader.official_name }}</h3>
+    <h3>{{ leader.passportname }}</h3>
 </div>
 
 <div class="clearfix"></div>
@@ -17,10 +18,10 @@
     <div id="leader_radio">
         {% for member in members %}
         <label class="radio_block">
-            <img src="../static/images/{{ member.photo }}.jpg" class="img-responsive" alt="">
-            <p>{{ member.official_name }}</p>
+            <img src="../static/images/{{ member.picture }}.jpg" class="img-responsive" alt="">
+            <p>{{ member.passportname }}</p>
             <p>{{ member.nick_name }}</p>
-            <center><input type="radio" name="leader" value="{{ member.official_name }}"></center>
+            <center><input type="radio" name="leader" value="{{ member.passportname }}"></center>
         </label>
         {% endfor %}
     </div>

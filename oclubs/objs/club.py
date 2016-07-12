@@ -77,7 +77,7 @@ class Club(BaseObject):
     @picture.setter
     def picture(self, value):
         self._picture = value
-        self._setdata('picture', 'club_pic', value.id)
+        self._setdata('picture', 'club_picture', value.id)
 
     @property
     def description(self):
@@ -155,7 +155,7 @@ class Club(BaseObject):
                 'club_location': 'location',
                 'club_inactive': 'inactive',
                 'club_intro': 'intro',
-                'club_pic': 'picture'
+                'club_picture': 'picture'
             }
         )
 

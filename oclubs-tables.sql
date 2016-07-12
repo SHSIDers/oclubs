@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS user (
 	user_nick_name varchar(255) binary NOT NULL,
 	user_passport_name varchar(255) binary NOT NULL,
 	user_password tinyblob NOT NULL,
+	user_picture int NOT NULL, # Foreign key to upload.upload_id
 	user_email tinytext NOT NULL,
 	user_photo int NOT NULL, # Foreign key to upload.upload_id
 	user_type int NOT NULL, # 0=student 1=teacher 2=admin
@@ -22,7 +23,7 @@ CREATE TABLE IF NOT EXISTS club (
 	club_teacher int NOT NULL, # Foreign key to user.user_id
 	club_leader int NOT NULL, # Foreign key to user.user_id
 	club_intro tinyblob NOT NULL,
-	club_pic int NOT NULL, # Foreign key to upload.upload_id
+	club_picture int NOT NULL, # Foreign key to upload.upload_id
 	club_desc int NOT NULL, # Foreign key to text.text_id
 	club_location tinyblob NOT NULL, # stores object in JSON
 	club_inactive boolean NOT NULL

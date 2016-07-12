@@ -49,6 +49,26 @@ class User(BaseObject):
         self._setdata('nickname', 'user_nick_name', value)
 
     @property
+    def email(self):
+        return self._data['email']
+
+    @email.setter
+    def email(self, value):
+        self._setdata('email', 'user_email', value)
+
+    @property
+    def picture(self):
+        from oclubs.objs import Upload
+        if self._picture is None:
+            self._picture = Upload(self._data['picture'])
+        return self._picture
+
+    @picture.setter
+    def picture(self, value):
+        self._picture = value
+        self._setdata('picture', 'user_picture', value.id)
+
+    @property
     def type(self):
         return self._data['type']
 
@@ -85,8 +105,10 @@ class User(BaseObject):
                 'user_login_name': 'studentid',
                 'user_nick_name': 'nickname',
                 'user_passport_name': 'passportname',
+                'user_picture': 'picture',
                 'user_type': 'type',
-                'user_grad_year': 'gradyear'
+                'user_grad_year': 'gradyear',
+                'user_email': 'email'
             }
         )
 
