@@ -7,7 +7,7 @@
 
 from __future__ import absolute_import
 
-import os
+import types
 
 from oclubs.access import database
 
@@ -104,7 +104,7 @@ def _get_ie(ie):
         imp = exp = lambda val: val
     elif isinstance(ie, BaseObject):
         imp, exp = ie, lambda val: val.id
-    elif isinstance(ie, type(os)):
+    elif isinstance(ie, types.ModuleType):
         imp, exp = ie, ie.dumps
     elif callable(ie):
         imp = exp = ie
