@@ -101,7 +101,7 @@ class Activity(BaseObject):
                 [('=', 'att_act', self.id)],
                 'att_user'
             )
-            self._attendance = [User(member) for member in self._members]
+            self._attendance = [User(member) for member in self._attendance]
 
         return self._attendance
 

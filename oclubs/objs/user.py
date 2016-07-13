@@ -23,6 +23,7 @@ class User(BaseObject):
     def __init__(self, uid):
         """Initializer."""
         super(User, self).__init__(uid)
+        self._picture = self._clubs = None
 
     @property
     def studentid(self):
@@ -96,6 +97,20 @@ class User(BaseObject):
     def userpage(self):
         # FIXME: BLOCKED-ON-DATABSE
         pass
+
+    @property
+    def clubs(self):
+        if self._clubs is None:
+            from oclubs.objs import Club
+
+            self._clubs = database.fetch_onecol(
+                'club_member',
+                [('=', 'cm_user', self.id)],
+                'cm_club'
+            )
+            self._clubs = [Club(club) for club in self._clubs]
+
+        return self._clubs
 
     @property
     def _data(self):

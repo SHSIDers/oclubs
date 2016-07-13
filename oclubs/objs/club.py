@@ -139,7 +139,7 @@ class Club(BaseObject):
                 [('=', 'act_club', self.id)],
                 'act_id'
             )
-            self._activities = [Activity(member) for member in self._members]
+            self._activities = [Activity(act) for act in self._activities]
 
         return self._activities
 
