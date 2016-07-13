@@ -2,7 +2,6 @@
 # -*- coding: UTF-8 -*-
 #
 
-
 """oclubs.shsid.org Activities."""
 
 from __future__ import absolute_import, unicode_literals

@@ -62,6 +62,7 @@ class BaseObject(object):
                     {dbname: value}
                 )
 
+            getter.__name__ = setter.__name__ = name
             setattr(cls, name, property(getter, setter))
 
     @classmethod
@@ -79,6 +80,8 @@ class BaseObject(object):
                     self._cache[name] = [imp(member) for member in tempdata]
 
                 return self._cache[name]
+
+            getter.__name__ = name
 
             setattr(cls, name, property(getter))
 
