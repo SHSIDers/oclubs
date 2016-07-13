@@ -26,14 +26,14 @@ class User(BaseObject):
         super(User, self).__init__(uid)
 
         from oclubs.objs import Club, Upload
-        self.studentid = self._prop('user_login_name', 'studentid')
-        self.passportname = self._prop('user_passport_name', 'passportname')
-        self.nickname = self._prop('user_nick_name', 'nickname')
-        self.email = self._prop('user_email', 'email')
-        self.picture = self._prop('user_picture', 'picture', Upload)
-        self.type = self._prop('user_type', 'type')
-        self.gradyear = self._prop('user_grad_year', 'gradyear')
-        self.clubs = self._listprop('club_member', 'cm_user', 'cm_club', 'clubs', Club)
+        self._prop('studentid', 'user_login_name')
+        self._prop('passportname', 'user_passport_name')
+        self._prop('nickname', 'user_nick_name')
+        self._prop('email', 'user_email')
+        self._prop('picture', 'user_picture', Upload)
+        self._prop('type', 'user_type')
+        self._prop('gradyear', 'user_grad_year')
+        self._listprop('clubs', 'club_member', 'cm_user', 'cm_club', Club)
 
     @property
     def password(self):  # write-only

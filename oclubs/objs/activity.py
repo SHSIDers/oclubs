@@ -22,13 +22,13 @@ class Activity(BaseObject):
         super(Activity, self).__init__(aid)
 
         from oclubs.objs import Club, FormattedText, User
-        self.club = self._prop('act_club', 'club', Club)
-        self.description = self._prop('act_desc', 'description', FormattedText)
+        self._prop('club', 'act_club', Club)
+        self._prop('description', 'act_desc', FormattedText)
         # FIXME: define date object
-        self.date = self._prop('act_date', 'date')
-        self.time = self._prop('act_time', 'time')
+        self._prop('date', 'act_date')
+        self._prop('time', 'act_time')
         # FIXME: define location syntax
-        self.location = self._prop('act_location', 'location', json)
-        self.cas = self._prop('act_cas', 'cas')
+        self._prop('location', 'act_location', json)
+        self._prop('cas', 'act_cas')
         self.post = None  # FIXME: Post object
-        self.attendance = self._listprop('attendance', 'att_act', 'att_user', 'attendance', User)
+        self._listprop('attendance', 'attendance', 'att_act', 'att_user', User)

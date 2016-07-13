@@ -20,7 +20,7 @@ class BaseObject(object):
         super(BaseObject, self).__init__()
         self.__id = oid
         self.__data = None
-        self.__cache = {}
+        self._cache = {}
 
     @property
     def id(self):
@@ -38,7 +38,7 @@ class BaseObject(object):
         return self.__data
 
     @classmethod
-    def _prop(cls, dbname, name, ie=None):
+    def _prop(cls, name, dbname, ie=None):
         if name not in cls._props:
             cls._propsdb[dbname] = name
 
@@ -67,7 +67,7 @@ class BaseObject(object):
         return cls._props[name]
 
     @classmethod
-    def _listprop(cls, table, this, that, name, ie=None):
+    def _listprop(cls, name, table, this, that, ie=None):
         if name not in cls._props:
             imp, exp = _get_ie(ie)
 
@@ -90,6 +90,25 @@ class BaseObject(object):
 
     def __hash__(self):
         return hash(self.id)
+
+    # HACK: for preperties
+    def __getattr__(self, name):
+        if name not in self._props:
+            raise AttributeError
+
+        return self._props[name].fget(self)
+
+    def __setattr__(self, name, value):
+        if name not in self._props:
+            return super(BaseObject, self).__setattr__(name, value)
+
+        return self._props[name].fset(self, value)
+
+    def __delattr__(self, name):
+        if name not in self._props:
+            return super(BaseObject, self).__delattr__(name)
+
+        return self._props[name].fdel(self)
 
 
 def _get_ie(ie):

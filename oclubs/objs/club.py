@@ -23,17 +23,17 @@ class Club(BaseObject):
         super(Club, self).__init__(cid)
 
         from oclubs.objs import Activity, FormattedText, User, Upload
-        self.name = self._prop('club_name', 'name')
-        self.teacher = self._prop('club_teacher', 'teacher', User)
-        self.leader = self._prop('club_leader', 'leader', User)
-        self.description = self._prop('club_desc', 'description', FormattedText)
+        self._prop('name', 'club_name')
+        self._prop('teacher', 'club_teacher', User)
+        self._prop('leader', 'club_leader', User)
+        self._prop('description', 'club_desc', FormattedText)
         # FIXME: define location syntax
-        self.location = self._prop('club_picture', 'location', json)
-        self.is_active = self._prop('club_inactive', 'inactive', lambda v: not v)
-        self.intro = self._prop('club_intro', 'intro')
-        self.picture = self._prop('club_picture', 'picture', Upload)
-        self.members = self._listprop('club_member', 'cm_club', 'cm_user', 'members', User)
-        self.activities = self._listprop('activities', 'act_club', 'act_id', 'activities', Activity)
+        self._prop('location', 'club_picture', json)
+        self._prop('is_active', 'club_inactive', lambda v: not v)
+        self._prop('intro', 'club_intro')
+        self._prop('picture', 'club_picture', Upload)
+        self._listprop('members', 'club_member', 'cm_club', 'cm_user', User)
+        self._listprop('activities', 'activities', 'act_club', 'act_id', Activity)
 
     @property
     def is_excellent(self):
