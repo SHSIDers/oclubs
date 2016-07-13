@@ -53,6 +53,10 @@ class User(BaseObject):
         # FIXME: BLOCKED-ON-DATABSE
         pass
 
+    def cas_in_club(self, club):
+        # FIXME: BLOCKED-ON-DATABSE: Join required
+        return 0
+
     @staticmethod
     def attempt_login(studentid, password):
         try:
