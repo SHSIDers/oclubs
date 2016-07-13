@@ -5,14 +5,17 @@
 
 """oclubs.shsid.org Base Object."""
 
-import os
-
 from __future__ import absolute_import
+
+import os
 
 from oclubs.access import database
 
 
 class BaseObject(object):
+    _propsdb = None  # subclasses use {}
+    _props = None  # subclasses use {}
+
     def __init__(self, oid):
         super(BaseObject, self).__init__()
         self.__id = oid
@@ -29,7 +32,7 @@ class BaseObject(object):
             self.__data = database.fetch_onerow(
                 self.table,
                 [('=', self.identifier, self.id)],
-                self._dbprops
+                self._propsdb
             )
 
         return self.__data
@@ -37,7 +40,7 @@ class BaseObject(object):
     @classmethod
     def _prop(cls, dbname, name, ie=None):
         if name not in cls._props:
-            cls._dbprops[dbname] = name
+            cls._propsdb[dbname] = name
 
             imp, exp = _get_ie(ie)
 

@@ -13,6 +13,8 @@ from oclubs.objs.base import BaseObject
 
 
 class Activity(BaseObject):
+    _propsdb = {}
+    _props = {}
     table = 'activity'
     identifier = 'act_id'
 

@@ -20,7 +20,7 @@ class Club(BaseObject):
 
     def __init__(self, cid):
         """Initializer."""
-        super(Club, self).__init__()
+        super(Club, self).__init__(cid)
 
         from oclubs.objs import Activity, FormattedText, User, Upload
         self.name = self._prop('club_name', 'name')
