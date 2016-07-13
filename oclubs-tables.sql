@@ -50,20 +50,23 @@ CREATE TABLE IF NOT EXISTS activity (
 	act_club int NOT NULL, # Foreign key to club.club_id
 	act_desc int NOT NULL, # Foreign key to text.text_id
 	act_date int unsigned NOT NULL,
-	act_time int NOT NULL, # Uploaded time
-	act_location mediumblob NOT NULL, # XMT,ZXB, basketball court, Hongmei,...
+	act_time int NOT NULL, # 0 = unknown, 1 = noon, 2 = afterschool, 3 = hongmei
+	act_location mediumblob NOT NULL, # stores object in JSON
 	act_cas int NOT NULL, # CAS hours
 	act_cp int # Foreign key to clubpost.cp_act
 );
 
 CREATE INDEX IF NOT EXISTS act_club ON activity (act_club);
+CREATE INDEX IF NOT EXISTS act_cp ON activity (act_cp);
 
 CREATE TABLE IF NOT EXISTS activity_pic (
 	ap_act int NOT NULL, # Foreign key to activity.act_id
 	ap_upload int NOT NULL # Foreign key to upload.upload_id
 );
 
+CREATE UNIQUE INDEX IF NOT EXISTS ap_act_upload ON activity_pic (ap_act, ap_upload);
 CREATE INDEX IF NOT EXISTS ap_act ON activity_pic (ap_act);
+CREATE INDEX IF NOT EXISTS ap_upload ON activity_pic (ap_upload);
 
 CREATE TABLE IF NOT EXISTS attendance (
 	att_act int NOT NULL, # Foreign key to activity.activity_id
@@ -81,8 +84,7 @@ CREATE TABLE IF NOT EXISTS clubpost (
 	cp_title varchar(255) binary NOT NULL,
 	cp_text int NOT NULL, # Foreign key to text.text_id
 	cp_editor int NOT NULL, # Foreign key to user.user_id
-	cp_timestamp int NOT NULL,
-	cp_act int # Foreign key to activity.act_id
+	cp_timestamp int NOT NULL
 );
 
 CREATE INDEX IF NOT EXISTS clubpost_club ON clubpost (cp_club);
@@ -92,8 +94,9 @@ CREATE TABLE IF NOT EXISTS clubpost_pic (
 	cp_upload int NOT NULL # Foreign key to upload.upload_id
 );
 
+CREATE UNIQUE INDEX IF NOT EXISTS cp_post_upload ON clubpost_pic (cp_post, cp_upload);
 CREATE INDEX IF NOT EXISTS cp_post ON clubpost_pic (cp_post);
-
+CREATE INDEX IF NOT EXISTS cp_upload ON clubpost_pic (cp_upload);
 
 CREATE TABLE IF NOT EXISTS text (
 	text_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,

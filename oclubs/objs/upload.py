@@ -14,6 +14,7 @@ from oclubs.objs.base import BaseObject
 class Upload(BaseObject):
     def __init__(self, uid):
         super(Upload, self).__init__(uid)
+        self._club = self._uploader = None
         self._location_local = self._location_external = None
 
     @property
