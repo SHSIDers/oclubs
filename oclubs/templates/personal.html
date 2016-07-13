@@ -140,7 +140,7 @@
 				<h4 class="modal-title">Change Basic Information</h4>
 			</div>
 			<div class="modal-body">
-				<div class="form-group">
+				<form class="form-group" id="info_form">
 					<label for="name">Nick Name:</label>
 					<input class="form-control" id="name" type="text" placeholder="{{ user }}">
 					<br>
@@ -159,11 +159,11 @@
 					</label>
 					{% endfor %}
 					<div class="clearfix"></div>
-				</div>
+				</form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<a href="#" class="btn btn-primary">Submit</a>
+				<input type="submit" class="btn btn-primary" form="info_form" name="change_info" value="Change Info">
 			</div>
 		</div>
 	</div>
@@ -177,21 +177,18 @@
 				<h4 class="modal-title">Change Password</h4>
 			</div>
 			<div class="modal-body">
-				<div class="form-group">
-					<label for="current">Current Password:</label>
-					<input class="form-control" id="current" type="password">
-					<br>
+				<form class="form-group" id="pass_form">
 					<label for="new">New Password:</label>
 					<input class="form-control" id="new" type="password">
 					<br>
 					<label for="again">Repeat New Password:</label>
 					<input class="form-control" id="again" type="password">
 					<div class="clearfix"></div>
-				</div>
+				</form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<a href="#" class="btn btn-primary">Submit</a>
+				<input type="submit" class="btn btn-primary" form="pass_form" name="change_pass" value="Change Password">
 			</div>
 		</div>
 	</div>

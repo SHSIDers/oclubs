@@ -3,7 +3,7 @@
 #
 
 from flask import (
-    Blueprint, render_template, url_for, request, session
+    Blueprint, render_template, url_for, request, session, redirect
 )
 
 import traceback
@@ -16,13 +16,16 @@ userblueprint = Blueprint('userblueprint', __name__)
 def quitclub():
     '''Quit Club Page'''
     if request.method == 'GET':
+        if 'user_id' not in session:
+            return redirect(url_for('notloggedin'))
         user_obj = oclubs.objs.User(session['user_id'])
-        user = user_obj.nickname
-        # get the list of clubs
-        clubs = ['Art Club', 'Photo Club', 'MUN', 'Art Club', 'Photo Club', 'MUN', 'Art Club', 'Photo Club', 'MUN']
+        clubs_obj = user_obj.clubs
+        clubs = []
+        for club_obj in clubs_obj:
+            clubs.append(club_obj.name)
         return render_template('quitclub.html',
                                title='Quit Club',
-                               user=user,
+                               user=user_obj.nickname,
                                clubs=clubs)
     if request.method == 'POST':
         # delete connection between user and club
@@ -63,20 +66,28 @@ def registerhm():
 def personal():
     '''Student Personal Page'''
     if request.method == 'GET':
+        if 'user_id' not in session:
+            return redirect(url_for('notloggedin'))
         user_obj = oclubs.objs.User(session['user_id'])
-        user = user_obj.nickname
+        if user_obj.type == 1:
+            return redirect(url_for('noaccess'))
         pictures = []
         for num in range(1, 21):
             pictures.append(num)
         info = {}
-        info['name'] = user.nickname
-        info['email'] = user.email
-        info['picture'] = user.picture
-        info['ID'] = user.studentid
-        # info['phone'] = user.phone
-        clubs = [{'name': 'Website Club', 'photo': 'intro1', 'intro': 'We are the best club', 'cas': 110},
-                 {'name': 'Math Club', 'photo': 'intro2', 'intro': 'We learn math together', 'cas': 5},
-                 {'name': 'Chess Club', 'photo': 'intro3', 'intro': 'We enjoy playing chess', 'cas': 3}]
+        info['name'] = user_obj.nickname
+        info['email'] = user_obj.email
+        info['picture'] = user_obj.picture
+        info['ID'] = user_obj.studentid
+        info['phone'] = user_obj.phone
+        clubs_obj = user_obj.clubs
+        clubs = []
+        for club_obj in clubs_obj:
+            club = {}
+            club['name'] = club_obj.name
+            club['picture'] = club.picture
+            club['intro'] = club.intro
+            # club['cas'] = user_obj.
         evaluate = False
         castotal = 0
         for club in clubs:
@@ -86,10 +97,13 @@ def personal():
                       {'club': 'Math Club', 'act': 'Do Math Homework', 'time': 'July 2, 2012', 'place': 'Home'}]
         hongmei = [{'club': 'Chess Club', 'act': 'Teach Basic Rules of Chess', 'time': 'March 2, 2012'},
                    {'club': 'Math Club', 'act': 'Teach Multiplication', 'time': 'March 9, 2012'}]
-        leader_club = 'Website Club'
+        for club_obj in clubs_obj:
+            if user_obj.id == club_obj.leader.id:
+                leader_club = club_obj.name
+                break
         return render_template('personal.html',
-                               title=user,
-                               user=user,
+                               title=user_obj.nickname,
+                               user=user_obj.nickname,
                                pictures=pictures,
                                info=info,
                                clubs=clubs,
@@ -99,31 +113,51 @@ def personal():
                                hongmei=hongmei,
                                leader_club=leader_club)
     if request.method == 'POST':
-        # change info
-        pass
+        user_obj = oclubs.objs.User(session['user_id'])
+        if request.form['change_info'] == 'Change Info':
+            user_obj.nickname = request.form['name']
+            user_obj.email = request.form['email']
+            user_obj.phone = request.form['phone']
+            user_obj.picture = request.form['picture']  # location in html has to be adjusted
+        if request.form['change_pass'] == 'Change Password':
+            if request.form['new'] == request.form['again']:
+                user_obj.password = request.form['new']
 
 
 @userblueprint.route('/teacher', methods=['GET', 'POST'])
 def teacher():
     '''Teacher Page'''
-    user_obj = oclubs.objs.User(session['user_id'])
-    user = user_obj.nickname
-    # teacher's guiding clubs
-    myclubs = [{'club': 'Website Club', 'members_num': 3, 'picture': '1', 'intro': 'We are the best club'},
-               {'club': 'Math Club', 'members_num': 20, 'picture': '2', 'intro': 'We learn math together'}]
-    pictures = []
-    for num in range(1, 21):
-        pictures.append(num)
-    info = {}
-    info['name'] = user_obj.nickname
-    info['email'] = user_obj.email
-    info['picture'] = user_obj.picture
-    return render_template('teacher.html',
-                           title=user,
-                           user=user,
-                           myclubs=myclubs,
-                           pictures=pictures,
-                           info=info)
+    if request.method == 'GET':
+        if 'user_id' not in session:
+            return redirect(url_for('notloggedin'))
+        user_obj = oclubs.objs.User(session['user_id'])
+        if user_obj.type == 0:
+            return redirect(url_for('noaccess'))
+        myclubs = user_obj.clubs
+        pictures = []
+        for num in range(1, 21):
+            pictures.append(num)
+        info = {}
+        info['name'] = user_obj.nickname
+        info['email'] = user_obj.email
+        info['picture'] = user_obj.picture
+        return render_template('teacher.html',
+                               title=user_obj.nickname,
+                               user=user_obj.nickname,
+                               myclubs=myclubs,
+                               pictures=pictures,
+                               info=info)
+    if request.method == 'POST':
+        # change info
+        user_obj = oclubs.objs.User(session['user_id'])
+        if request.form['change_info'] == 'Change Info':
+            user_obj.nickname = request.form['name']
+            user_obj.email = request.form['email']
+            user_obj.phone = request.form['phone']
+            user_obj.picture = request.form['picture']  # location in html has to be adjusted
+        if request.form['change_pass'] == 'Change Password':
+            if request.form['new'] == request.form['again']:
+                user_obj.password = request.form['new']
 
 
 @userblueprint.route('/forgot_password', methods=['GET', 'POST'])

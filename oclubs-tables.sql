@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS user (
 	user_password tinyblob NOT NULL,
 	user_picture int NOT NULL, # Foreign key to upload.upload_id
 	user_email tinytext NOT NULL,
+	user_phone int,
 	user_photo int NOT NULL, # Foreign key to upload.upload_id
 	user_type int NOT NULL, # 0=student 1=teacher 2=admin
 	user_grad_year int # NULL for teachers

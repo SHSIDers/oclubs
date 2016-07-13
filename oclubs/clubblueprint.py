@@ -13,21 +13,6 @@ import re
 clubblueprint = Blueprint('clubblueprint', __name__)
 
 
-@clubblueprint.route('/<club_id>')
-@clubblueprint.route('/<club_id>_<club_name>')
-def club(club_id, club_name=''):
-    '''Club Management Page'''
-    if('user_id' in session):
-        user = oclubs.objs.User(session['user_id']).nickname
-    else:
-        user = ''
-    club = oclubs.objs.Club(club_id)
-    return render_template('club.html',
-                           title=club.name,
-                           user=user,
-                           club=club.name)
-
-
 @clubblueprint.route('/clublist')
 def clublist():
     '''Club List'''
@@ -53,14 +38,37 @@ def clublist():
                            clubs=clubs)
 
 
-@clubblueprint.route('/<club_id>/introduction')
-def clubintro(club_id):
+@clubblueprint.route('/<club_info>')
+def club(club_info):
+    '''Club Management Page'''
+    if 'user_id' not in session:
+        return redirect(url_for('notloggedin'))
+    user_obj = oclubs.objs.User(session['user_id'])
+    try:
+        club_id = int(re.match(r'^\d+', club_info).group(0))
+        club = oclubs.objs.Club(club_id)
+    except:
+        return redirect(url_for('wrongurl'))
+    if user_obj.id != club.leader.id:
+        return redirect(url_for('noaccess'))
+    return render_template('club.html',
+                           title=club.name,
+                           user=user_obj.nickname,
+                           club=club.name)
+
+
+@clubblueprint.route('/<club_info>/introduction')
+def clubintro(club_info):
     '''Club Intro'''
     if('user_id' in session):
         user = oclubs.objs.User(session['user_id']).nickname
     else:
         user = ''
-    club = oclubs.objs.Club(club_id)
+    try:
+        club_id = int(re.match(r'^\d+', club_info).group(0))
+        club = oclubs.objs.Club(club_id)
+    except:
+        return redirect(url_for('wrongurl'))
     return render_template('clubintro.html',
                            title='Club Intro',
                            user=user,
@@ -71,20 +79,24 @@ def clubintro(club_id):
                            desc=club.description)
 
 
-@clubblueprint.route('/<club_id>/new_leader', methods=['GET', 'POST'])
-def newleader(club_id):
+@clubblueprint.route('/<club_info>/new_leader', methods=['GET', 'POST'])
+def newleader(club_info):
     '''Selecting New Club Leader'''
     if request.method == 'GET':
-        if('user_id' in session):
-            user = oclubs.objs.User(session['user_id']).nickname
-        else:
-            user = ''
-        club = oclubs.objs.Club(club_id)
-        leader_obj = club.leader
+        if 'user_id' not in session:
+            return redirect(url_for('notloggedin'))
+        user_obj = oclubs.objs.User(session['user_id'])
+        try:
+            club_id = int(re.match(r'^\d+', club_info).group(0))
+            club = oclubs.objs.Club(club_id)
+        except:
+            return redirect(url_for('wrongurl'))
+        if user_obj.id != club.leader.id:
+            return redirect(url_for('noaccess'))
         leader = {}
-        leader['passportname'] = leader_obj.passportname
-        leader['nick_name'] = leader_obj.nickname
-        leader['picture'] = leader_obj.picture
+        leader['passportname'] = user_obj.passportname
+        leader['nick_name'] = user_obj.nickname
+        leader['picture'] = user_obj.picture
         members_obj = club.members
         members = []
         for member_obj in members_obj:
@@ -95,7 +107,7 @@ def newleader(club_id):
             members.append(member)
         return render_template('newleader.html',
                                title='New Leader',
-                               user=user,
+                               user=user_obj.nickname,
                                club=club.name,
                                leader=leader,
                                members=members)
@@ -104,15 +116,20 @@ def newleader(club_id):
         pass
 
 
-@clubblueprint.route('/<club_id>/input_attendance', methods=['GET', 'POST'])
-def inputatten(club_id):
+@clubblueprint.route('/<club_info>/input_attendance', methods=['GET', 'POST'])
+def inputatten(club_info):
     '''Input Attendance'''
     if request.method == 'GET':
-        if('user_id' in session):
-            user = oclubs.objs.User(session['user_id']).nickname
-        else:
-            user = ''
-        club = oclubs.objs.Club(club_id)
+        if 'user_id' not in session:
+            return redirect(url_for('notloggedin'))
+        user_obj = oclubs.objs.User(session['user_id'])
+        try:
+            club_id = int(re.match(r'^\d+', club_info).group(0))
+            club = oclubs.objs.Club(club_id)
+        except:
+            return redirect(url_for('wrongurl'))
+        if user_obj.id != club.leader.id:
+            return redirect(url_for('noaccess'))
         members_obj = club.members
         members = []
         for member_obj in members_obj:
@@ -123,7 +140,7 @@ def inputatten(club_id):
             members.append(member)
         return render_template('inputatten.html',
                                title='Input Attendance',
-                               user=user,
+                               user=user_obj.nickname,
                                club=club.name,
                                members=members)
     if request.method == 'POST':
@@ -131,14 +148,19 @@ def inputatten(club_id):
         pass
 
 
-@clubblueprint.route('/<club_id>/member_info')
-def memberinfo(club_id):
+@clubblueprint.route('/<club_info>/member_info')
+def memberinfo(club_info):
     '''Check Members' Info'''
-    if('user_id' in session):
-        user = oclubs.objs.User(session['user_id']).nickname
-    else:
-        user = ''
-    club = oclubs.objs.Club(club_id)
+    if 'user_id' not in session:
+        return redirect(url_for('notloggedin'))
+    user_obj = oclubs.objs.User(session['user_id'])
+    try:
+        club_id = int(re.match(r'^\d+', club_info).group(0))
+        club = oclubs.objs.Club(club_id)
+    except:
+        return redirect(url_for('wrongurl'))
+    if user_obj.id != club.leader.id:
+        return redirect(url_for('noaccess'))
     members_obj = club.members
     members = []
     for member_obj in members_obj:
@@ -150,7 +172,7 @@ def memberinfo(club_id):
         members.append(member)
     return render_template('memberinfo.html',
                            title='Member Info',
-                           user=user,
+                           user=user_obj.nickname,
                            club=club.name,
                            members=members)
 
@@ -177,6 +199,7 @@ def changeclubinfo(club_info):
                                picture=club.picture,
                                desc=club.description)
     if request.method == 'POST':
+        club_id = int(re.match(r'^\d+', club_info).group(0))
         club = oclubs.objs.Club(club_id)
         club.intro = request.form['intro']
         club.picture = request.form['photo']

@@ -30,6 +30,7 @@ class User(BaseObject):
         self._prop('passportname', 'user_passport_name')
         self._prop('nickname', 'user_nick_name')
         self._prop('email', 'user_email')
+        self._prop('phone', 'user_phone')
         self._prop('picture', 'user_picture', Upload)
         self._prop('type', 'user_type')
         self._prop('gradyear', 'user_grad_year')

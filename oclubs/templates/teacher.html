@@ -13,6 +13,7 @@
 	<div class="col-sm-9 personal_info">
 		<h2>Official Name: {{ info.name }}</h2>
 		<h2>Email Address: {{ info.email }}</h2>
+		<h2>Phone Number: {{ info.phone }}</h2>
 		<br>
 		<a href="#changeInfo" data-toggle="modal" data-target="#changeInfo">
 			<button class="btn btn-info">Click here to edit your basic information</button>
@@ -40,10 +41,10 @@
 					<a href="#"><button class="btn btn-primary">Attendance</button></a>
 				</div>
 				<div class="col-sm-4">
-					<a href="#"><button class="btn btn-primary">Activities ../Status</button></a>
+					<a href="#"><button class="btn btn-primary">Activities Status</button></a>
 				</div>
 				<div class="col-sm-4">
-					<a href="#"><button class="btn btn-primary">HongMei ../Status</button></a>
+					<a href="#"><button class="btn btn-primary">HongMei Status</button></a>
 				</div>
 			</div>
 		</div>
@@ -68,6 +69,9 @@
 					<br>
 					<label for="email">Email:</label>
 					<input class="form-control" id="email" type="email" placeholder="{{ info.email }}">
+					<br>
+					<label for="phone">Phone Number:</label>
+					<input class="form-control" id="phone" type="text" placeholder="{{ info.phone }}">
 					<br>
 					<label for="picture">Profile Picture:</label>
 					<div class="clearfix"></div>
@@ -97,9 +101,6 @@
 			</div>
 			<div class="modal-body">
 				<div class="form-group">
-					<label for="current">Current Password:</label>
-					<input class="form-control" id="current" type="password">
-					<br>
 					<label for="new">New Password:</label>
 					<input class="form-control" id="new" type="password">
 					<br>
