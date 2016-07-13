@@ -3,11 +3,12 @@
 #
 
 from flask import (
-    Blueprint, render_template, url_for, request, session
+    Blueprint, render_template, url_for, request, session, redirect
 )
 
 import traceback
 import oclubs
+import re
 
 clubblueprint = Blueprint('clubblueprint', __name__)
 
@@ -154,18 +155,23 @@ def memberinfo(club_id):
                            members=members)
 
 
-@clubblueprint.route('/<club_id>/change_club_info', methods=['GET', 'POST'])
-def changeclubinfo(club_id):
+@clubblueprint.route('/<club_info>/change_club_info', methods=['GET', 'POST'])
+def changeclubinfo(club_info):
     '''Change Club's Info'''
     if request.method == 'GET':
-        if('user_id' in session):
-            user = oclubs.objs.User(session['user_id']).nickname
-        else:
-            user = ''
-        club = oclubs.objs.Club(club_id)
+        if 'user_id' not in session:
+            return redirect(url_for('notloggedin'))
+        user_obj = oclubs.objs.User(session['user_id'])
+        try:
+            club_id = int(re.match(r'^\d+', club_info).group(0))
+            club = oclubs.objs.Club(club_id)
+        except:
+            return redirect(url_for('wrongurl'))
+        if user_obj.id != club.leader.id:
+            return redirect(url_for('noaccess'))
         return render_template('changeclubinfo.html',
                                title='Change Club Info',
-                               user=user,
+                               user=user_obj.nickname,
                                club=club.name,
                                intro=club.intro,
                                picture=club.picture,
@@ -175,18 +181,23 @@ def changeclubinfo(club_id):
         club.intro = request.form['intro']
         club.picture = request.form['photo']
         club.desc = request.form['desc']
-        return
+        return render_template('')
 
 
-@clubblueprint.route('/<club_id>/adjust_member', methods=['GET', 'POST'])
-def adjustmember(club_id):
+@clubblueprint.route('/<club_info>/adjust_member', methods=['GET', 'POST'])
+def adjustmember(club_info):
     '''Adjust Club Members'''
     if request.method == 'GET':
-        if('user_id' in session):
-            user = oclubs.objs.User(session['user_id']).nickname
-        else:
-            user = ''
-        club = oclubs.objs.Club(club_id)
+        if 'user_id' not in session:
+            return redirect(url_for('notloggedin'))
+        user_obj = oclubs.objs.User(session['user_id'])
+        try:
+            club_id = int(re.match(r'^\d+', club_info).group(0))
+            club = oclubs.objs.Club(club_id)
+        except:
+            return redirect(url_for('wrongurl'))
+        if user_obj.id != club.leader.id:
+            return redirect(url_for('noaccess'))
         members_obj = club.members
         members = []
         for member_obj in members_obj:
@@ -198,9 +209,35 @@ def adjustmember(club_id):
             members.append(member)
         return render_template('adjustmember.html',
                                title='Adjust Members',
-                               user=user,
+                               user=user_obj.nickname,
                                club=club.name,
                                members=members)
     if request.method == 'POST':
         # expel member
         pass
+
+
+@clubblueprint.route('/no_access')
+def noaccess():
+    user_obj = oclubs.objs.User(session['user_id'])
+    return render_template('noaccess.html',
+                           title='No Access',
+                           user=user_obj.nickname)
+
+
+@clubblueprint.route('/wrong_url')
+def wrongurl():
+    if 'user_id' in session:
+        user = oclubs.objs.User(session['user_id']).nickname
+    else:
+        user = ''
+    return render_template('wrongurl.html',
+                           title='Wrong URL',
+                           user=user)
+
+
+@clubblueprint.route('/not_logged_in')
+def notloggedin():
+    return render_template('notloggedin.html',
+                           title='Not Logged In',
+                           user='')
