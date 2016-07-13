@@ -15,7 +15,6 @@ from oclubs.objs.base import BaseObject
 
 class Activity(BaseObject):
     _propsdb = {}
-    _props = {}
     table = 'activity'
     identifier = 'act_id'
     date_fmtstr = '%Y%m%d'
@@ -23,6 +22,8 @@ class Activity(BaseObject):
     def __init__(self, aid):
         super(Activity, self).__init__(aid)
 
+        if self._static_initialize_once():
+            return
         from oclubs.objs import Club, FormattedText, User
         self._prop('club', 'act_club', Club)
         self._prop('description', 'act_desc', FormattedText)

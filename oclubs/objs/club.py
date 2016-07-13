@@ -13,7 +13,6 @@ from oclubs.objs.base import BaseObject
 
 class Club(BaseObject):
     _propsdb = {}
-    _props = {}
     table = 'club'
     identifier = 'club_id'
     _excellentclubs = None
@@ -22,6 +21,8 @@ class Club(BaseObject):
         """Initializer."""
         super(Club, self).__init__(cid)
 
+        if self._static_initialize_once():
+            return
         from oclubs.objs import Activity, FormattedText, User, Upload
         self._prop('name', 'club_name')
         self._prop('teacher', 'club_teacher', User)

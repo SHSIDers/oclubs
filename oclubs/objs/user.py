@@ -17,7 +17,6 @@ _crypt = CryptContext(schemes=['bcrypt'])  # , 'sha512_crypt', 'pbkdf2_sha512'
 
 class User(BaseObject):
     _propsdb = {}
-    _props = {}
     table = 'user'
     identifier = 'user_id'
 
@@ -25,6 +24,8 @@ class User(BaseObject):
         """Initializer."""
         super(User, self).__init__(uid)
 
+        if self._static_initialize_once():
+            return
         from oclubs.objs import Club, Upload
         self._prop('studentid', 'user_login_name')
         self._prop('passportname', 'user_passport_name')

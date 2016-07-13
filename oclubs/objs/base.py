@@ -14,7 +14,6 @@ from oclubs.access import database
 
 class BaseObject(object):
     _propsdb = None  # subclasses use {}
-    _props = None  # subclasses use {}
 
     def __init__(self, oid):
         super(BaseObject, self).__init__()
@@ -39,7 +38,7 @@ class BaseObject(object):
 
     @classmethod
     def _prop(cls, name, dbname, ie=None):
-        if name not in cls._props:
+        if not hasattr(cls, name):
             cls._propsdb[dbname] = name
 
             imp, exp = _get_ie(ie)
@@ -63,12 +62,11 @@ class BaseObject(object):
                     {dbname: value}
                 )
 
-            cls._props[name] = property(getter, setter)
-        return cls._props[name]
+            setattr(cls, name, property(getter, setter))
 
     @classmethod
     def _listprop(cls, name, table, this, that, ie=None):
-        if name not in cls._props:
+        if not hasattr(cls, name):
             imp, exp = _get_ie(ie)
 
             def getter(self):
@@ -82,33 +80,20 @@ class BaseObject(object):
 
                 return self._cache[name]
 
-            cls._props[name] = property(getter)
-        return cls._props[name]
+            setattr(cls, name, property(getter))
+
+    @classmethod
+    def _static_initialize_once(cls):
+        if hasattr(cls, '_static_initialized'):
+            return True
+        cls._static_initialized = True
+        return False
 
     def __eq__(self, other):
         return self.id == other.id
 
     def __hash__(self):
         return hash(self.id)
-
-    # HACK: for preperties
-    def __getattr__(self, name):
-        if name not in self._props:
-            raise AttributeError
-
-        return self._props[name].fget(self)
-
-    def __setattr__(self, name, value):
-        if name not in self._props:
-            return super(BaseObject, self).__setattr__(name, value)
-
-        return self._props[name].fset(self, value)
-
-    def __delattr__(self, name):
-        if name not in self._props:
-            return super(BaseObject, self).__delattr__(name)
-
-        return self._props[name].fdel(self)
 
 
 def _get_ie(ie):
