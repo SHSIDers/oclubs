@@ -30,8 +30,8 @@ class BaseObject(object):
         if self.__data is None:
             self.__data = database.fetch_onerow(
                 self.table,
-                [('=', self.identifier, self.id)],
-                self._propsdb
+                self._propsdb,
+                [('=', self.identifier, self.id)]
             )
 
         return self.__data
@@ -58,8 +58,8 @@ class BaseObject(object):
 
                 database.update_row(
                     self.table,
-                    [('=', self.identifier, self.id)],
-                    {dbname: value}
+                    {dbname: value},
+                    [('=', self.identifier, self.id)]
                 )
 
             getter.__name__ = setter.__name__ = name
@@ -74,8 +74,8 @@ class BaseObject(object):
                 if name not in self._cache:
                     tempdata = database.fetch_onecol(
                         table,
-                        [('=', this, self.id)],
-                        that
+                        that,
+                        [('=', this, self.id)]
                     )
                     self._cache[name] = [imp(member) for member in tempdata]
 

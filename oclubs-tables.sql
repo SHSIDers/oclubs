@@ -63,6 +63,7 @@ CREATE INDEX IF NOT EXISTS act_cp ON activity (act_cp);
 CREATE INDEX IF NOT EXISTS act_date ON activity (act_date);
 CREATE INDEX IF NOT EXISTS act_time ON activity (act_time);
 
+
 CREATE TABLE IF NOT EXISTS activity_pic (
 	ap_act int NOT NULL, # Foreign key to activity.act_id
 	ap_upload int NOT NULL, # Foreign key to upload.upload_id
@@ -72,6 +73,7 @@ CREATE TABLE IF NOT EXISTS activity_pic (
 #CREATE UNIQUE INDEX IF NOT EXISTS ap_act_upload ON activity_pic (ap_act, ap_upload);
 CREATE INDEX IF NOT EXISTS ap_act ON activity_pic (ap_act);
 CREATE INDEX IF NOT EXISTS ap_upload ON activity_pic (ap_upload);
+
 
 CREATE TABLE IF NOT EXISTS attendance (
 	att_act int NOT NULL, # Foreign key to activity.activity_id
@@ -95,6 +97,7 @@ CREATE TABLE IF NOT EXISTS clubpost (
 
 CREATE INDEX IF NOT EXISTS clubpost_club ON clubpost (cp_club);
 
+
 CREATE TABLE IF NOT EXISTS clubpost_pic (
 	cp_post int NOT NULL, # Foreign key to clubpost.cp_id
 	cp_upload int NOT NULL, # Foreign key to upload.upload_id
@@ -104,6 +107,7 @@ CREATE TABLE IF NOT EXISTS clubpost_pic (
 #CREATE UNIQUE INDEX IF NOT EXISTS cp_post_upload ON clubpost_pic (cp_post, cp_upload);
 CREATE INDEX IF NOT EXISTS cp_post ON clubpost_pic (cp_post);
 CREATE INDEX IF NOT EXISTS cp_upload ON clubpost_pic (cp_upload);
+
 
 CREATE TABLE IF NOT EXISTS text (
 	text_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -120,6 +124,9 @@ CREATE TABLE IF NOT EXISTS upload (
 	upload_mime varchar(255) binary NOT NULL # MIME type
 );
 
+CREATE INDEX IF NOT EXISTS upload_club ON upload (upload_club);
+CREATE INDEX IF NOT EXISTS upload_user ON upload (upload_user); 
+
 
 CREATE TABLE IF NOT EXISTS notification (
 	notification_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -133,13 +140,11 @@ CREATE INDEX IF NOT EXISTS notification_club ON notification (notification_club)
 
 
 CREATE TABLE IF NOT EXISTS signup (
-	signup_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	signup_act int NOT NULL, # Foreign key to act.act_id
 	signup_user int NOT NULL, # Foreign key to user.user_id
-	signup_comment int NOT NULL, # Foreign key to text.text_id
-	signup_time int NOT NULL,
-	signup_consentform boolean NOT NULL
+	signup_consentform boolean NOT NULL,
+	PRIMARY KEY(signup_act, signup_user)
 );
 
-CREATE INDEX IF NOT EXISTS upload_club ON upload (upload_club);
-CREATE INDEX IF NOT EXISTS upload_user ON upload (upload_user); 
+CREATE INDEX IF NOT EXISTS signup_act ON signup (signup_act);
+CREATE INDEX IF NOT EXISTS signup_user ON signup (signup_user); 

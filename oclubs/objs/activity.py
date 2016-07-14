@@ -9,6 +9,7 @@ from __future__ import absolute_import, unicode_literals
 from datetime import datetime, date
 import json
 
+from oclubs.access import database
 from oclubs.objs.base import BaseObject
 
 
@@ -45,3 +46,11 @@ class Activity(BaseObject):
     @staticmethod
     def date_int(dateobj):
         return int(dateobj.strftime(Activity.date_fmtstr))
+
+    def signup(self, user, concentform=False):
+        database.insert_or_update_row(
+            'signup',
+            {'signup_act': self.id, 'signup_user': user.id,
+                'signup_consentform': concentform},
+            {'signup_consentform': concentform}
+        )

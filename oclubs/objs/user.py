@@ -46,18 +46,18 @@ class User(BaseObject):
     def password(self, value):
         database.update_row(
             self.table,
-            [('=', self.identifier, self.id)],
-            {'user_password': _crypt.encrypt(value)}
+            {'user_password': _crypt.encrypt(value)},
+            [('=', self.identifier, self.id)]
         )
 
     def cas_in_club(self, club):
         return database.fetch_oneentry(
             'attendance',
+            'SUM(act_cas)',
             {
                 'join': [('inner', 'activity', [('act_id', 'att_act')])],
                 'where': [('=', 'att_user', self.id)],
-            },
-            'SUM(act_cas)'
+            }
         )
 
     def activities_reminder(self, *args):
@@ -66,6 +66,7 @@ class User(BaseObject):
 
         acts = database.fetch_onecol(
             'activity',
+            'act_id',
             {
                 'join': [('inner', 'club_member', [('act_club', 'cm_club')])],
                 'where': [
@@ -74,8 +75,7 @@ class User(BaseObject):
                     ('in', 'act_time', args)
                 ],
                 'order': [('act_date', True)]
-            },
-            'act_id'
+            }
         )
 
         return [Activity(act) for act in acts]
@@ -85,11 +85,8 @@ class User(BaseObject):
         try:
             data = database.fetch_onerow(
                 'user',
-                [('=', 'user_login_name', studentid)],
-                {
-                    'user_id': 'id',
-                    'user_password': 'password'
-                }
+                {'user_id': 'id', 'user_password': 'password'},
+                [('=', 'user_login_name', studentid)]
             )
         except NoRow:
             return

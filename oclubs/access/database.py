@@ -95,7 +95,7 @@ def _encode(obj):
     elif isinstance(obj, (bool, int, long, float)):
         return str(obj)
     elif isinstance(obj, basestring):
-        return '"%s"' % MySQLdb.escape_string(obj)
+        return "'%s'" % MySQLdb.escape_string(obj)
     else:
         import json
         return _encode(json.dumps(obj))
@@ -155,7 +155,7 @@ def done(commit=True):
             g.dbtransaction = False
 
 
-def fetch_onerow(table, conds, coldict):
+def fetch_onerow(table, coldict, conds):
     cols = coldict.keys()
     st = ','.join(cols)
     conds = _parse_comp_cond(conds, forcelimit=1)
@@ -168,7 +168,7 @@ def fetch_onerow(table, conds, coldict):
     return _mk_multi_return(rows[0], cols, coldict)
 
 
-def fetch_oneentry(table, conds, col):
+def fetch_oneentry(table, col, conds):
     conds = _parse_comp_cond(conds, forcelimit=1)
 
     rows = _execute("SELECT %s FROM %s %s;"
@@ -179,7 +179,7 @@ def fetch_oneentry(table, conds, col):
     return rows[0][0]
 
 
-def fetch_onecol(table, conds, col):
+def fetch_onecol(table, col, conds):
     conds = _parse_comp_cond(conds)
 
     rows = _execute("SELECT %s FROM %s %s;"
@@ -188,7 +188,7 @@ def fetch_onecol(table, conds, col):
     return [val for val, in rows]
 
 
-def fetch_multirow(table, conds, coldict):
+def fetch_multirow(table, coldict, conds):
     cols = coldict.keys()
     st = ','.join(cols)
     conds = _parse_comp_cond(conds)
@@ -198,18 +198,38 @@ def fetch_multirow(table, conds, coldict):
     return [_mk_multi_return(row, cols, coldict) for row in rows]
 
 
-def update_row(table, conds, update):
+def update_row(table, update, conds):
     conds = _parse_comp_cond(conds)
-    setto = ["%s=%s" % (key, _encode(val)) for key, val in update.items()]
-    setto = ','.join(setto)
+    update = ["%s=%s" % (key, _encode(val)) for key, val in update.items()]
+    update = ','.join(update)
 
-    return _execute('UPDATE %s SET %s %s;' % (table, setto, conds),
+    return _execute('UPDATE %s SET %s %s;' % (table, update, conds),
                     write=True)
 
 
-def insert_onerow(table, row):
-    keys = ','.join(row.keys())
-    values = ','.join([_encode(value) for value in row.values()])
+def insert_row(table, insert):
+    keys = ','.join(insert.keys())
+    values = ','.join([_encode(value) for value in insert.values()])
 
     return _execute("INSERT INTO %s (%s) VALUES (%s);" % (table, keys, values),
+                    write=True)
+
+
+def insert_or_update_row(table, insert, update):
+    keys = ','.join(insert.keys())
+    values = ','.join([_encode(value) for value in insert.values()])
+
+    update = ["%s=%s" % (key, _encode(val)) for key, val in update.items()]
+    update = ','.join(update)
+
+    return _execute(
+        "INSERT INTO %s (%s) VALUES (%s) ON DUPLICATE KEY UPDATE %s;"
+        % (table, keys, values, update),
+        write=True)
+
+
+def delete_rows(table, conds):
+    conds = _parse_comp_cond(conds)
+
+    return _execute("SELECT FROM %s %s;" % (table, conds),
                     write=True)
