@@ -148,7 +148,6 @@ def teacher():
                                pictures=pictures,
                                info=info)
     if request.method == 'POST':
-        # change info
         user_obj = oclubs.objs.User(session['user_id'])
         if request.form['change_info'] == 'Change Info':
             user_obj.nickname = request.form['name']

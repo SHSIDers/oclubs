@@ -79,6 +79,29 @@ def clubintro(club_info):
                            desc=club.description)
 
 
+
+@clubblueprint.route('/clubphoto')
+def clubphoto():
+    '''Individual Club's Photo Page'''
+    user = ''
+    club = 'Website Club'
+    photos = [{'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
+              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
+              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
+              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
+              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
+              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
+              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
+              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
+              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
+              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'}]
+    return render_template('clubphoto.html',
+                           title=club,
+                           user=user,
+                           club=club,
+                           photos=photos)
+
+
 @clubblueprint.route('/<club_info>/new_leader', methods=['GET', 'POST'])
 def newleader(club_info):
     '''Selecting New Club Leader'''
@@ -112,8 +135,17 @@ def newleader(club_info):
                                leader=leader,
                                members=members)
     if request.method == 'POST':
-        # change club leader
-        pass
+        club_id = int(re.match(r'^\d+', club_info).group(0))
+        club = oclubs.objs.Club(club_id)
+        members_obj = club.members
+        leader_name = request.form['leader']
+        for member_obj in members_obj:
+            if leader_name == member_obj.passportname:
+                club.leader = member_obj
+                break
+        return render_template('success.html',
+                               title='Success',
+                               user=user_obj.nickname)
 
 
 @clubblueprint.route('/<club_info>/input_attendance', methods=['GET', 'POST'])
@@ -199,12 +231,15 @@ def changeclubinfo(club_info):
                                picture=club.picture,
                                desc=club.description)
     if request.method == 'POST':
+        user_obj = oclubs.objs.User(session['user_id'])
         club_id = int(re.match(r'^\d+', club_info).group(0))
         club = oclubs.objs.Club(club_id)
         club.intro = request.form['intro']
         club.picture = request.form['photo']
         club.desc = request.form['desc']
-        return render_template('')
+        return render_template('success.html',
+                               title='Success',
+                               user=user_obj.nickname)
 
 
 @clubblueprint.route('/<club_info>/adjust_member', methods=['GET', 'POST'])

@@ -15,16 +15,16 @@
 <br><br>
 
 <div class="container">
-    <div id="leader_radio">
+    <form id="leader_radio">
         {% for member in members %}
-        <label class="radio_block">
+        <label class="radio_block" for="leader">
             <img src="../static/images/{{ member.picture }}.jpg" class="img-responsive" alt="">
             <p>{{ member.passportname }}</p>
             <p>{{ member.nick_name }}</p>
-            <center><input type="radio" name="leader" value="{{ member.passportname }}"></center>
+            <center><input type="radio" id="leader" name="leader" value="{{ member.passportname }}"></center>
         </label>
         {% endfor %}
-    </div>
+    </form>
     <center><button class="btn btn-info" data-toggle="modal" data-target="#confirmation" id="updatecheck">Submit</button>
 </div>
 

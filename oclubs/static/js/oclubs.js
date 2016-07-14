@@ -36,7 +36,7 @@
 							.html( "<p>Your choice is " + checked.val() + ".</p>" );
 						$( ".modal .modal-footer" )
 							.html( "<button type='button' class='btn btn-default' data-dismiss='modal'>Reselect</button>" +
-									"<button type='submit' class='btn btn-primary'>Confirm</button>" );
+									'<input type="submit" class="btn btn-primary" form="leader_radio" name="change_leader" value="Confirm">' );
 					} else {
 						$( ".modal .modal-body" )
 							.html( "<p>Please select one memeber as next club leader!</p>" );

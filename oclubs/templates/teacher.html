@@ -63,30 +63,30 @@
 				<h4 class="modal-title">Change Basic Information</h4>
 			</div>
 			<div class="modal-body">
-				<div class="form-group">
+				<form class="form-group" id="info_form">
 					<label for="name">Nick Name:</label>
-					<input class="form-control" id="name" type="text" placeholder="{{ user }}">
+					<input class="form-control" id="name" type="text" name="name" placeholder="{{ user }}">
 					<br>
 					<label for="email">Email:</label>
-					<input class="form-control" id="email" type="email" placeholder="{{ info.email }}">
+					<input class="form-control" id="email" type="email" name="email" placeholder="{{ info.email }}">
 					<br>
 					<label for="phone">Phone Number:</label>
-					<input class="form-control" id="phone" type="text" placeholder="{{ info.phone }}">
+					<input class="form-control" id="phone" type="text" name="phone" placeholder="{{ info.phone }}">
 					<br>
 					<label for="picture">Profile Picture:</label>
 					<div class="clearfix"></div>
 					{% for pic in pictures %}
 					<label class="radio_block">
 						<img src="../static/images/icons/icon{{ pic }}.jpg" class="img-responsive" alt="Icon{{ pic }}">
-						<center><input type="radio" name="picture"></center>
+						<center><input type="radio" name="info" value="{{ pic }}"></center>
 					</label>
 					{% endfor %}
 					<div class="clearfix"></div>
-				</div>
+				</form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<a href="#" class="btn btn-primary">Submit</a>
+				<input type="submit" class="btn btn-primary" form="info_form" name="change_info" value="Change Info">
 			</div>
 		</div>
 	</div>
@@ -100,18 +100,18 @@
 				<h4 class="modal-title">Change Password</h4>
 			</div>
 			<div class="modal-body">
-				<div class="form-group">
+				<form class="form-group" id="pass_form">
 					<label for="new">New Password:</label>
-					<input class="form-control" id="new" type="password">
+					<input class="form-control" id="new" name="new" type="password">
 					<br>
 					<label for="again">Repeat New Password:</label>
-					<input class="form-control" id="again" type="password">
+					<input class="form-control" id="again" name="again" type="password">
 					<div class="clearfix"></div>
-				</div>
+				</form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<a href="#" class="btn btn-primary">Submit</a>
+				<input type="submit" class="btn btn-primary" form="pass_form" name="change_pass" value="Change Password">
 			</div>
 		</div>
 	</div>
