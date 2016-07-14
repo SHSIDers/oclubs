@@ -6,6 +6,7 @@
 
 from __future__ import absolute_import
 
+from datetime import date
 from passlib.context import CryptContext
 
 from oclubs.access import database
@@ -49,14 +50,35 @@ class User(BaseObject):
             {'user_password': _crypt.encrypt(value)}
         )
 
-    @property
-    def userpage(self):
-        # FIXME: BLOCKED-ON-DATABSE
-        pass
-
     def cas_in_club(self, club):
-        # FIXME: BLOCKED-ON-DATABSE: Join required
-        return 0
+        return database.fetch_oneentry(
+            'attendance',
+            {
+                'join': [('inner', 'activity', [('act_id', 'att_act')])],
+                'where': [('=', 'att_user', self.id)],
+            },
+            'SUM(act_cas)'
+        )
+
+    def activities_reminder(self, *args):
+        from oclubs.objs import Activity
+        args = [arg[0] for arg in filter(lambda val: val[1], enumerate(args))]
+
+        acts = database.fetch_onecol(
+            'activity',
+            {
+                'join': [('inner', 'club_member', [('act_club', 'cm_club')])],
+                'where': [
+                    ('=', 'cm_user', self.id),
+                    ('>=', 'act_date', Activity.date_int(date.today())),
+                    ('in', 'act_time', args)
+                ],
+                'order': [('act_date', True)]
+            },
+            'act_id'
+        )
+
+        return [Activity(act) for act in acts]
 
     @staticmethod
     def attempt_login(studentid, password):

@@ -26,10 +26,7 @@ class Activity(BaseObject):
         from oclubs.objs import Club, FormattedText, User
         self._prop('club', 'act_club', Club)
         self._prop('description', 'act_desc', FormattedText)
-        self._prop('date', 'act_date', (
-            lambda val: datetime.strptime(str(val), self.date_fmtstr).date(),
-            lambda val: int(val.strftime(self.date_fmtstr)),
-        ))
+        self._prop('date', 'act_date', (self.int_date, self.date_int))
         self._prop('time', 'act_time')
         # FIXME: define location syntax
         self._prop('location', 'act_location', json)
@@ -40,3 +37,11 @@ class Activity(BaseObject):
     @property
     def ongoing_or_future(self):
         return self.datetime >= date.today()
+
+    @staticmethod
+    def int_date(dateint):
+        return datetime.strptime(str(dateint), Activity.date_fmtstr).date()
+
+    @staticmethod
+    def date_int(dateobj):
+        return int(dateobj.strftime(Activity.date_fmtstr))

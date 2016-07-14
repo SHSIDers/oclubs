@@ -9,6 +9,7 @@ import MySQLdb
 
 from oclubs.exceptions import NoRow
 
+
 def _parse_cond(conds):
     return ' AND '.join([__parse_cond(one_cond) for one_cond in conds])
 
@@ -31,6 +32,10 @@ def ___parse_cond(cond):
         # (lo, hi]
         var, (lo, hi) = conds
         return __parse_cond('and', ('>=', var, lo), ('<', var, hi))
+    elif op.lower() == "in":
+        var, const = conds
+        const = ','.join([_encode(elemt) for elemt in const])
+        return '%s IN (%s)' % (var, const)
 
 
 def _parse_comp_cond(cond, forcelimit=None):
@@ -54,7 +59,7 @@ def _parse_comp_cond(cond, forcelimit=None):
     sql = []
 
     for jointype, table, conds in conddict['JOIN']:
-        sql.append(jointype.upper + ' JOIN ' + table)
+        sql.append(jointype.upper() + ' JOIN ' + table)
         sql.append('ON ' + ' AND '.join(
             [var1 + ' = ' + var2 for var1, var2 in conds]
         ))
