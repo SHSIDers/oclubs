@@ -87,7 +87,7 @@ def personal():
             club['name'] = club_obj.name
             club['picture'] = club.picture
             club['intro'] = club.intro
-            # club['cas'] = user_obj.
+            club['cas'] = user_obj.cas_in_club(club_obj)
         evaluate = False
         castotal = 0
         for club in clubs:
