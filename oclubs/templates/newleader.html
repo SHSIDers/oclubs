@@ -15,7 +15,7 @@
 <br><br>
 
 <div class="container">
-    <form id="leader_radio">
+    <form id="leader_radio" action="{{ url_for('newleader_submit', club_info=club_info)}}">
         {% for member in members %}
         <label class="radio_block" for="leader">
             <img src="../static/images/{{ member.picture }}.jpg" class="img-responsive" alt="">

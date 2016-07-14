@@ -22,13 +22,34 @@ app.register_blueprint(clubblueprint, url_prefix='/club')
 app.register_blueprint(actblueprint, url_prefix='/act')
 
 
-@app.errorhandler(Exception)
-def exception_handler(e):
-    '''Handle an exception and show the traceback'''
-    try:
-        pass
-    except:
-        return traceback.format_exc()
+@app.errorhandler(404)
+@app.route('/404')
+def wrong_url():
+    if 'user_id' in session:
+        user = oclubs.objs.User(session['user_id']).nickname
+    else:
+        user = ''
+    return render_template('wrongurl.html',
+                           title='Wrong URL',
+                           user=user
+                           ), 404
+
+
+@app.errorhandler(403)
+def no_access():
+    user_obj = oclubs.objs.User(session['user_id'])
+    return render_template('noaccess.html',
+                           title='No Access',
+                           user=user_obj.nickname
+                           ), 403
+
+
+@app.errorhandler(401)
+def not_logged_in():
+    return render_template('notloggedin.html',
+                           title='Not Logged In',
+                           user=''
+                           ), 401
 
 
 @app.route('/login', methods=['POST'])

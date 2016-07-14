@@ -3,7 +3,7 @@
 #
 
 from flask import (
-    Blueprint, render_template, url_for, request, session, redirect
+    Blueprint, render_template, url_for, request, session, redirect, abort
 )
 
 import traceback
@@ -12,54 +12,26 @@ import oclubs
 userblueprint = Blueprint('userblueprint', __name__)
 
 
-@userblueprint.route('/quit_club', methods=['GET', 'POST'])
+@userblueprint.route('/quit_club')
 def quitclub():
     '''Quit Club Page'''
-    if request.method == 'GET':
-        if 'user_id' not in session:
-            return redirect(url_for('notloggedin'))
-        user_obj = oclubs.objs.User(session['user_id'])
-        clubs_obj = user_obj.clubs
-        clubs = []
-        for club_obj in clubs_obj:
-            clubs.append(club_obj.name)
-        return render_template('quitclub.html',
-                               title='Quit Club',
-                               user=user_obj.nickname,
-                               clubs=clubs)
-    if request.method == 'POST':
-        # delete connection between user and club
-        pass
+    if 'user_id' not in session:
+        abort(401)
+    user_obj = oclubs.objs.User(session['user_id'])
+    clubs_obj = user_obj.clubs
+    clubs = []
+    for club_obj in clubs_obj:
+        clubs.append(club_obj.name)
+    return render_template('quitclub.html',
+                           title='Quit Club',
+                           user=user_obj.nickname,
+                           clubs=clubs)
 
 
-@userblueprint.route('/register_hongmei')
-def registerhm():
-    '''Register Page for HongMei Activites'''
-    user = ''
-    club = 'Website Club'
-    schedule = [{'id': '1', 'date': 'June 6 2016', 'activity': 'Finish homepage design'},
-                {'id': '2', 'date': 'June 7 2016', 'activity': 'Finish activity page design'},
-                {'id': '3', 'date': 'June 8 2016', 'activity': 'Finish personal page design'},
-                {'id': '4', 'date': 'June 9 2016', 'activity': 'Finish club page design'},
-                {'id': '5', 'date': 'June 10 2016', 'activity': 'Finish photo page design'},
-                {'id': '6', 'date': 'June 11 2016', 'activity': 'Finish about page design'},
-                {'id': '7', 'date': 'June 6 2016', 'activity': 'Finish homepage design'},
-                {'id': '8', 'date': 'June 7 2016', 'activity': 'Finish activity page design'},
-                {'id': '9', 'date': 'June 8 2016', 'activity': 'Finish personal page design'},
-                {'id': '10', 'date': 'June 9 2016', 'activity': 'Finish club page design'},
-                {'id': '11', 'date': 'June 10 2016', 'activity': 'Finish photo page design'},
-                {'id': '12', 'date': 'June 11 2016', 'activity': 'Finish about page design'},
-                {'id': '13', 'date': 'June 6 2016', 'activity': 'Finish homepage design'},
-                {'id': '14', 'date': 'June 7 2016', 'activity': 'Finish activity page design'},
-                {'id': '15', 'date': 'June 8 2016', 'activity': 'Finish personal page design'},
-                {'id': '16', 'date': 'June 9 2016', 'activity': 'Finish club page design'},
-                {'id': '17', 'date': 'June 10 2016', 'activity': 'Finish photo page design'},
-                {'id': '18', 'date': 'June 11 2016', 'activity': 'Finish about page design'}]
-    return render_template('registerhm.html',
-                           title='Register for HongMei',
-                           user=user,
-                           club=club,
-                           schedule=schedule)
+@userblueprint.route('/quit_club/submit', methods=['POST'])
+def quitclub_submit():
+    '''Delete connection between user and club in database'''
+    pass
 
 
 @userblueprint.route('/', methods=['GET', 'POST'])

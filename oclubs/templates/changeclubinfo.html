@@ -1,11 +1,19 @@
 {% extends "base.html" %}
 {% block content %}
+{% with messages = get_flashed_messages(category_filter=["success"]) %}
 
 <!-- Below Navbar -->
 <div class="large_container">
-	<form class="form-group" style="color:#f2f2f2">
+	<form class="form-group" action="{{ url_for('changeclubinfo_submit', club_info=club_info) }}" style="color:#f2f2f2">
 		<h1 class="title">Change Club Info</h1>
 		<h2 class="title_next">{{ club }}</h2>
+		{% if messages %}
+		<ul class="list-group">
+			{% for message in messages %}
+			<li class="list-group-item">{{ message }}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
 		<p>*Please input below.</p>
 		<label for="intro">One sentence intro:</label>
 		<input type="text" class="form-control" name="intro" value="{{ intro }}">
