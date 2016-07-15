@@ -25,6 +25,7 @@ class Activity(BaseObject):
         if self._static_initialize_once():
             return
         from oclubs.objs import Club, FormattedText, User
+        self._prop('name', 'act_name')
         self._prop('club', 'act_club', Club)
         self._prop('description', 'act_desc', FormattedText)
         self._prop('date', 'act_date', (self.int_date, self.date_int))

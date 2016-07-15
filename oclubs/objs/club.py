@@ -56,7 +56,7 @@ class Club(BaseObject):
         # FIXME: BLOCKED-ON-DATABASE: JOIN REQUIRED
         return [Club(0)] * 10
 
-    def activities(self, types, require_future):
+    def activities(self, types, require_future=False):
         from oclubs.objs import Activity
 
         return Activity.get_activities_conditions(
