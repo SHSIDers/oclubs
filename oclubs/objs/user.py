@@ -6,7 +6,6 @@
 
 from __future__ import absolute_import
 
-from datetime import date
 from passlib.context import CryptContext
 
 from oclubs.access import database
