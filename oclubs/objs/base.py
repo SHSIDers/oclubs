@@ -18,7 +18,7 @@ class BaseObject(object):
     def __init__(self, oid):
         super(BaseObject, self).__init__()
         self.__id = oid
-        self.__data = None
+        self._dbdata = None
         self._cache = {}
 
     @property
@@ -27,14 +27,14 @@ class BaseObject(object):
 
     @property
     def _data(self):
-        if self.__data is None:
-            self.__data = database.fetch_onerow(
+        if self._dbdata is None:
+            self._dbdata = database.fetch_onerow(
                 self.table,
                 self._propsdb,
                 [('=', self.identifier, self.id)]
             )
 
-        return self.__data
+        return self._dbdata
 
     @classmethod
     def _prop(cls, name, dbname, ie=None):
@@ -53,8 +53,8 @@ class BaseObject(object):
                     self._cache[name] = value
 
                 value = exp(value)
-                if name and self.__data is not None:
-                    self.__data[name] = value
+                if name and self._dbdata is not None:
+                    self._dbdata[name] = value
 
                 database.update_row(
                     self.table,
@@ -62,8 +62,14 @@ class BaseObject(object):
                     [('=', self.identifier, self.id)]
                 )
 
-            getter.__name__ = setter.__name__ = name
-            setattr(cls, name, property(getter, setter))
+            def deleter(self):
+                if name in self._cache:
+                    del self._cache[name]
+
+                self._dbdata = None
+
+            getter.__name__ = setter.__name__ = deleter.__name__ = name
+            setattr(cls, name, property(getter, setter, deleter))
 
     @classmethod
     def _listprop(cls, name, table, this, that, ie=None):
@@ -81,8 +87,12 @@ class BaseObject(object):
 
                 return self._cache[name]
 
-            getter.__name__ = name
-            setattr(cls, name, property(getter))
+            def deleter(self):
+                if name in self._cache:
+                    del self._cache[name]
+
+            getter.__name__ = deleter.__name__ = name
+            setattr(cls, name, property(getter, None, deleter))
 
     @classmethod
     def _static_initialize_once(cls):
