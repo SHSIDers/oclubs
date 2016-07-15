@@ -10,32 +10,23 @@ from passlib.context import CryptContext
 
 from oclubs.access import database
 from oclubs.exceptions import NoRow
-from oclubs.objs.base import BaseObject
+from oclubs.objs.base import BaseObject, Property, ListProperty
 
 _crypt = CryptContext(schemes=['bcrypt'])  # , 'sha512_crypt', 'pbkdf2_sha512'
 
 
 class User(BaseObject):
-    _propsdb = {}
     table = 'user'
     identifier = 'user_id'
-
-    def __init__(self, uid):
-        """Initializer."""
-        super(User, self).__init__(uid)
-
-        if self._static_initialize_once():
-            return
-        from oclubs.objs import Club, Upload
-        self._prop('studentid', 'user_login_name')
-        self._prop('passportname', 'user_passport_name')
-        self._prop('nickname', 'user_nick_name')
-        self._prop('email', 'user_email')
-        self._prop('phone', 'user_phone')
-        self._prop('picture', 'user_picture', Upload)
-        self._prop('type', 'user_type')
-        self._prop('gradyear', 'user_grad_year')
-        self._listprop('clubs', 'club_member', 'cm_user', 'cm_club', Club)
+    studentid = Property('user_login_name')
+    passportname = Property('user_passport_name')
+    nickname = Property('user_nick_name')
+    email = Property('user_email')
+    phone = Property('user_phone')
+    picture = Property('user_picture', 'Upload')
+    type = Property('user_type')
+    gradyear = Property('user_grad_year')
+    clubs = ListProperty('club_member', 'cm_user', 'cm_club', 'Club')
 
     @property
     def password(self):  # write-only

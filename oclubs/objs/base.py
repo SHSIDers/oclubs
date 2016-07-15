@@ -12,94 +12,118 @@ import types
 from oclubs.access import database
 
 
-class BaseObject(object):
-    _propsdb = None  # subclasses use {}
+class Property(object):
+    def __init__(self, dbname, ie=None):
+        super(Property, self).__init__()
+        self.dbname = dbname
+        self.ie = _get_ie(ie)
 
-    def __init__(self, oid):
-        super(BaseObject, self).__init__()
-        self.__id = oid
-        self._dbdata = None
-        self._cache = {}
 
-    @property
-    def id(self):
-        return self.__id
+class ListProperty(object):
+    """docstring for ListProperty"""
+    def __init__(self, table, this, that, ie=None):
+        super(ListProperty, self).__init__()
+        self.table = table
+        self.this = this
+        self.that = that
+        self.ie = _get_ie(ie)
 
-    @property
-    def _data(self):
-        if self._dbdata is None:
-            self._dbdata = database.fetch_onerow(
-                self.table,
-                self._propsdb,
-                [('=', self.identifier, self.id)]
-            )
 
-        return self._dbdata
+class _BaseMetaclass(type):
+    def __new__(meta, name, bases, dct):
+        _propsdb = {}
+        for key, value in dct.items():
+            if isinstance(value, Property):
+                _propsdb[value.dbname] = key
 
-    @classmethod
-    def _prop(cls, name, dbname, ie=None):
-        if not hasattr(cls, name):
-            cls._propsdb[dbname] = name
+                dct[key] = meta.create_property(key, value)
+            if isinstance(value, ListProperty):
+                dct[key] = meta.create_listproperty(key, value)
 
-            imp, exp = _get_ie(ie)
-
-            def getter(self):
-                if name not in self._cache:
-                    self._cache[name] = imp(self._data[name])
-                return self._cache[name]
-
-            def setter(self, value):
-                if name:
-                    self._cache[name] = value
-
-                value = exp(value)
-                if name and self._dbdata is not None:
-                    self._dbdata[name] = value
-
-                database.update_row(
+        @property
+        def _data(self):
+            if self._dbdata is None:
+                self._dbdata = database.fetch_onerow(
                     self.table,
-                    {dbname: value},
+                    self._propsdb,
                     [('=', self.identifier, self.id)]
                 )
 
-            def deleter(self):
-                if name in self._cache:
-                    del self._cache[name]
+            return self._dbdata
 
-                self._dbdata = None
+        dct['_data'] = _data
 
-            getter.__name__ = setter.__name__ = deleter.__name__ = name
-            setattr(cls, name, property(getter, setter, deleter))
+        @property
+        def id(self):
+            return self._id
+        dct['id'] = id
 
-    @classmethod
-    def _listprop(cls, name, table, this, that, ie=None):
-        if not hasattr(cls, name):
-            imp, exp = _get_ie(ie)
+        return super(_BaseMetaclass, meta).__new__(meta, name, bases, dct)
 
-            def getter(self):
-                if name not in self._cache:
-                    tempdata = database.fetch_onecol(
-                        table,
-                        that,
-                        [('=', this, self.id)]
-                    )
-                    self._cache[name] = [imp(member) for member in tempdata]
+    @staticmethod
+    def create_property(name, value):
+        imp, exp = value.ie
 
-                return self._cache[name]
+        def getter(self):
+            if name not in self._cache:
+                self._cache[name] = imp(self._data[name])
+            return self._cache[name]
 
-            def deleter(self):
-                if name in self._cache:
-                    del self._cache[name]
+        def setter(self, value):
+            if name:
+                self._cache[name] = value
 
-            getter.__name__ = deleter.__name__ = name
-            setattr(cls, name, property(getter, None, deleter))
+            value = exp(value)
+            if name and self._dbdata is not None:
+                self._dbdata[name] = value
 
-    @classmethod
-    def _static_initialize_once(cls):
-        if hasattr(cls, '_static_initialized'):
-            return True
-        cls._static_initialized = True
-        return False
+            database.update_row(
+                self.table,
+                {value.dbname: value},
+                [('=', self.identifier, self.id)]
+            )
+
+        def deleter(self):
+            if name in self._cache:
+                del self._cache[name]
+
+            self._dbdata = None
+
+        getter.__name__ = setter.__name__ = deleter.__name__ = name
+        return property(getter, setter, deleter)
+
+    @staticmethod
+    def create_listproperty(name, value):
+        imp, exp = value.ie
+
+        def getter(self):
+            if name not in self._cache:
+                tempdata = database.fetch_onecol(
+                    value.table,
+                    value.that,
+                    [('=', value.this, self.id)]
+                )
+                self._cache[name] = [imp(member) for member in tempdata]
+
+            return self._cache[name]
+
+        def deleter(self):
+            if name in self._cache:
+                del self._cache[name]
+
+        getter.__name__ = deleter.__name__ = name
+        return property(getter, None, deleter)
+
+    def __call__(cls, oid):
+        self = type.__call__(cls)
+        self._id = oid
+        self._dbdata = None
+        self._cache = {}
+        return self
+
+
+class BaseObject(object):
+    __metaclass__ = _BaseMetaclass
 
     def __eq__(self, other):
         if not isinstance(other, BaseObject):
@@ -110,9 +134,15 @@ class BaseObject(object):
         return hash(self.id)
 
 
+def object_proxy(name):
+    return lambda oid: getattr(__import__('oclubs').objs, name)(oid)
+
+
 def _get_ie(ie):
     if ie is None:
         imp = exp = lambda val: val
+    elif isinstance(ie, basestring):
+        imp, exp = object_proxy(ie), lambda val: val.id
     elif isinstance(ie, BaseObject):
         imp, exp = ie, lambda val: val.id
     elif isinstance(ie, types.ModuleType):

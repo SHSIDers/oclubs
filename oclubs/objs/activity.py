@@ -10,43 +10,36 @@ from datetime import datetime, date
 import json
 
 from oclubs.access import database
-from oclubs.objs.base import BaseObject
+from oclubs.objs.base import BaseObject, Property, ListProperty
+
+
+def int_date(dateint):
+    return datetime.strptime(str(dateint), Activity.date_fmtstr).date()
+
+
+def date_int(dateobj):
+    return int(dateobj.strftime(Activity.date_fmtstr))
 
 
 class Activity(BaseObject):
-    _propsdb = {}
     table = 'activity'
     identifier = 'act_id'
+    name = Property('act_name')
+    club = Property('act_club', 'Club')
+    description = Property('act_desc', 'FormattedText')
+    date = Property('act_date', (int_date, date_int))
+    time = Property('act_time')
+    # FIXME: define location syntax
+    location = Property('act_location', json)
+    cas = Property('act_cas')
+    post = None  # FIXME: Post object
+    attendance = ListProperty('attendance', 'att_act', 'att_user', 'User')
+
     date_fmtstr = '%Y%m%d'
-
-    def __init__(self, aid):
-        super(Activity, self).__init__(aid)
-
-        if self._static_initialize_once():
-            return
-        from oclubs.objs import Club, FormattedText, User
-        self._prop('name', 'act_name')
-        self._prop('club', 'act_club', Club)
-        self._prop('description', 'act_desc', FormattedText)
-        self._prop('date', 'act_date', (self.int_date, self.date_int))
-        self._prop('time', 'act_time')
-        # FIXME: define location syntax
-        self._prop('location', 'act_location', json)
-        self._prop('cas', 'act_cas')
-        self.post = None  # FIXME: Post object
-        self._listprop('attendance', 'attendance', 'att_act', 'att_user', User)
 
     @property
     def ongoing_or_future(self):
         return self.datetime >= date.today()
-
-    @staticmethod
-    def int_date(dateint):
-        return datetime.strptime(str(dateint), Activity.date_fmtstr).date()
-
-    @staticmethod
-    def date_int(dateobj):
-        return int(dateobj.strftime(Activity.date_fmtstr))
 
     def signup(self, user, concentform=False):
         database.insert_or_update_row(
@@ -68,7 +61,7 @@ class Activity(BaseObject):
 
         conds['where'] = conds.get('where', [])
         if require_future:
-            conds['where'].append('>=', 'act_date', cls.date_int(date.today()))
+            conds['where'].append('>=', 'act_date', date_int(date.today()))
         conds['where'].append(('in', 'act_time', times))
 
         acts = database.fetch_onecol(

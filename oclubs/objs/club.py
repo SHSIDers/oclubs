@@ -9,33 +9,25 @@ from __future__ import absolute_import
 import json
 
 from oclubs.access import database
-from oclubs.objs.base import BaseObject
+from oclubs.objs.base import BaseObject, Property, ListProperty
 
 
 class Club(BaseObject):
-    _propsdb = {}
     table = 'club'
     identifier = 'club_id'
+    name = Property('club_name')
+    teacher = Property('club_teacher', 'User')
+    leader = Property('club_leader', 'User')
+    description = Property('club_desc', 'FormattedText')
+    # FIXME: define location syntax
+    location = Property('club_picture', json)
+    is_active = Property('club_inactive', lambda v: not v)
+    intro = Property('club_intro')
+    picture = Property('club_picture', 'Upload')
+    members = ListProperty('club_member', 'cm_club', 'cm_user', 'User')
+    all_act = ListProperty('activities', 'act_club', 'act_id', 'Activity')
+
     _excellentclubs = None
-
-    def __init__(self, cid):
-        """Initializer."""
-        super(Club, self).__init__(cid)
-
-        if self._static_initialize_once():
-            return
-        from oclubs.objs import Activity, FormattedText, User, Upload
-        self._prop('name', 'club_name')
-        self._prop('teacher', 'club_teacher', User)
-        self._prop('leader', 'club_leader', User)
-        self._prop('description', 'club_desc', FormattedText)
-        # FIXME: define location syntax
-        self._prop('location', 'club_picture', json)
-        self._prop('is_active', 'club_inactive', lambda v: not v)
-        self._prop('intro', 'club_intro')
-        self._prop('picture', 'club_picture', Upload)
-        self._listprop('members', 'club_member', 'cm_club', 'cm_user', User)
-        self._listprop('all_activities', 'activities', 'act_club', 'act_id', Activity)
 
     @property
     def is_excellent(self):

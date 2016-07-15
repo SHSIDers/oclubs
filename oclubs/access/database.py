@@ -9,6 +9,9 @@ import MySQLdb
 
 from oclubs.exceptions import NoRow, AlreadyExists
 
+# g = type(b'g', (object,), {'get': lambda self, name, default:
+#                            getattr(self, name, default)})()
+
 
 def _parse_cond(conds):
     return ' AND '.join([__parse_cond(one_cond) for one_cond in conds])
@@ -133,6 +136,8 @@ def _execute(sql, write=False):
             cur.execute("START TRANSACTION;")
             g.dbtransaction = True
 
+        # debugger
+        # print sql
         cur.execute(sql)
 
         return cur.rowcount if write else cur.fetchall()
