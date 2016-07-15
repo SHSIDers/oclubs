@@ -59,19 +59,9 @@ def clubactivities(club_info):
         activity = {}
         activity['act_name'] = activity_obj.name
         activity_date = activity_obj.date
-        activity['time'] = activity_obj.date
-    activities = [{'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
-                  {'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'},
-                  {'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
-                  {'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'},
-                  {'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
-                  {'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'},
-                  {'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
-                  {'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'},
-                  {'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
-                  {'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'},
-                  {'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
-                  {'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'}]
+        activity['time'] = activity_date[0:4] + " - " + activity_date[4:6] + " - " + activity_date[6:8]
+        # activity['place']  = 
+        activities.append(activity)
     return render_template('clubact.html',
                            title=club['club_name'],
                            user=user,
@@ -101,13 +91,26 @@ def allphotos():
                            photos=photos)
 
 
-@actblueprint.route('/newact')
-def newact():
+@actblueprint.route('/<club_info>/newact')
+def newact(club_info):
     '''Hosting New Activity'''
-    user = ''
+    if('user_id' in session):
+        user_obj = oclubs.objs.User(session['user_id'])
+        user = user_obj.nickname
+    else:
+        user = ''
+    try:
+        club_id = int(re.match(r'^\d+', club_info).group(0))
+        club = oclubs.objs.Club(club_id)
+    except:
+        abort(404)
     return render_template('newact.html',
                            title='New Activity',
                            user=user)
+
+
+@actblueprint.route
+wefe
 
 
 @actblueprint.route('/act')
