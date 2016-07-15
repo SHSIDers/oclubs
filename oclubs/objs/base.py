@@ -82,7 +82,6 @@ class BaseObject(object):
                 return self._cache[name]
 
             getter.__name__ = name
-
             setattr(cls, name, property(getter))
 
     @classmethod

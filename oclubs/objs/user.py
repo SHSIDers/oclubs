@@ -62,23 +62,16 @@ class User(BaseObject):
 
     def activities_reminder(self, *args):
         from oclubs.objs import Activity
-        args = [arg[0] for arg in filter(lambda val: val[1], enumerate(args))]
 
-        acts = database.fetch_onecol(
-            'activity',
-            'act_id',
+        return Activity.get_activities_conditions(
+            args,
             {
                 'join': [('inner', 'club_member', [('act_club', 'cm_club')])],
-                'where': [
-                    ('=', 'cm_user', self.id),
-                    ('>=', 'act_date', Activity.date_int(date.today())),
-                    ('in', 'act_time', args)
-                ],
+                'where': [('=', 'cm_user', self.id)],
                 'order': [('act_date', True)]
-            }
+            },
+            require_future=True
         )
-
-        return [Activity(act) for act in acts]
 
     @staticmethod
     def attempt_login(studentid, password):

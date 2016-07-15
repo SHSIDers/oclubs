@@ -34,7 +34,7 @@ class Club(BaseObject):
         self._prop('intro', 'club_intro')
         self._prop('picture', 'club_picture', Upload)
         self._listprop('members', 'club_member', 'cm_club', 'cm_user', User)
-        self._listprop('activities', 'activities', 'act_club', 'act_id', Activity)
+        self._listprop('all_activities', 'activities', 'act_club', 'act_id', Activity)
 
     @property
     def is_excellent(self):
@@ -54,3 +54,15 @@ class Club(BaseObject):
 
         # FIXME: BLOCKED-ON-DATABASE: JOIN REQUIRED
         return [Club(0)] * 10
+
+    def activities(self, types, require_future):
+        from oclubs.objs import Activity
+
+        return Activity.get_activities_conditions(
+            types,
+            {
+                'where': [('=', 'act_club', self.id)],
+                'order': [('act_date', True)]
+            },
+            require_future=require_future
+        )

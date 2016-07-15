@@ -54,3 +54,26 @@ class Activity(BaseObject):
                 'signup_consentform': concentform},
             {'signup_consentform': concentform}
         )
+
+    @classmethod
+    def get_activities_conditions(cls, times, additional_conds=None,
+                                  require_future=False):
+        times = [time[0] for time in filter(
+            lambda val: val[1], enumerate(times))]
+
+        conds = {}
+        if additional_conds:
+            conds.update(additional_conds)
+
+        conds['where'] = conds.get('where', [])
+        if require_future:
+            conds['where'].append('>=', 'act_date', cls.date_int(date.today()))
+        conds['where'].append(('in', 'act_time', times))
+
+        acts = database.fetch_onecol(
+            'activity',
+            'act_id',
+            conds
+        )
+
+        return [cls(act) for act in acts]
