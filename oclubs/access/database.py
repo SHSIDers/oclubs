@@ -7,7 +7,7 @@ from __future__ import unicode_literals
 from flask import g
 import MySQLdb
 
-from oclubs.exceptions import NoRow
+from oclubs.exceptions import NoRow, AlreadyExists
 
 
 def _parse_cond(conds):
@@ -58,7 +58,7 @@ def _parse_comp_cond(cond, forcelimit=None):
 
     sql = []
 
-    for jointype, table, conds in conddict['JOIN']:
+    for jointype, table, conds in conddict['join']:
         sql.append(jointype.upper() + ' JOIN ' + table)
         sql.append('ON ' + ' AND '.join(
             [var1 + ' = ' + var2 for var1, var2 in conds]
@@ -110,7 +110,7 @@ def _mk_multi_return(row, cols, coldict):
     return ret
 
 
-def _execute(sql, iswrite=False):
+def _execute(sql, write=False):
     """
     Internal sql execution handling for each request.
 
@@ -129,18 +129,18 @@ def _execute(sql, iswrite=False):
     cur = db.cursor()
 
     try:
-        if iswrite and not g.get('dbtransaction', False):
+        if write and not g.get('dbtransaction', False):
             cur.execute("START TRANSACTION;")
             g.dbtransaction = True
 
         cur.execute(sql)
 
-        return cur.fetchall()
+        return cur.rowcount if write else cur.fetchall()
     finally:
         cur.close()
 
 
-# TODO
+# TODO: Integrate into flask
 def done(commit=True):
     """Exported function for flask."""
     if g.get('dbconnection', None):
@@ -152,6 +152,7 @@ def done(commit=True):
                     g.dbconnection.rollback()
         finally:
             g.dbconnection.close()
+            g.dbconnection = False
             g.dbtransaction = False
 
 
@@ -203,16 +204,27 @@ def update_row(table, update, conds):
     update = ["%s=%s" % (key, _encode(val)) for key, val in update.items()]
     update = ','.join(update)
 
-    return _execute('UPDATE %s SET %s %s;' % (table, update, conds),
+    rows = _execute('UPDATE %s SET %s %s;' % (table, update, conds),
                     write=True)
+
+    if not rows:
+        raise NoRow
+
+    return rows
 
 
 def insert_row(table, insert):
-    keys = ','.join(insert.keys())
-    values = ','.join([_encode(value) for value in insert.values()])
+    try:
+        keys = ','.join(insert.keys())
+        values = ','.join([_encode(value) for value in insert.values()])
 
-    return _execute("INSERT INTO %s (%s) VALUES (%s);" % (table, keys, values),
-                    write=True)
+        return _execute("INSERT INTO %s (%s) VALUES (%s);"
+                        % (table, keys, values),
+                        write=True)
+    except MySQLdb.IntegrityError as e:
+        if e[0] == 1062:
+            raise AlreadyExists
+        raise
 
 
 def insert_or_update_row(table, insert, update):
@@ -231,5 +243,10 @@ def insert_or_update_row(table, insert, update):
 def delete_rows(table, conds):
     conds = _parse_comp_cond(conds)
 
-    return _execute("SELECT FROM %s %s;" % (table, conds),
+    rows = _execute("DELETE FROM %s %s;" % (table, conds),
                     write=True)
+
+    if not rows:
+        raise NoRow
+
+    return rows

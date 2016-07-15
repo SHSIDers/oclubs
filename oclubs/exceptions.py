@@ -6,8 +6,10 @@
 
 
 class NoRow(Exception):
-    """Exception occuring when no row is fund fron the database."""
+    """Exception occuring when no row is found from the database."""
+    pass
 
-    def __init__(self):
-        """Initialize."""
-        super(NoRow, self).__init__()
+
+class AlreadyExists(Exception):
+    """Exception occuring when a row exists already when inserting."""
+    pass
