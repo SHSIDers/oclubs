@@ -79,11 +79,22 @@ def clubintro(club_info):
                            desc=club.description)
 
 
-@clubblueprint.route('/clubphoto')
-def clubphoto():
+@clubblueprint.route('/<club_info>/club_photo')
+def clubphoto(club_info):
     '''Individual Club's Photo Page'''
-    user = ''
-    club = 'Website Club'
+    if('user_id' in session):
+        user_obj = oclubs.objs.User(session['user_id'])
+        user = user_obj.nickname
+    else:
+        user = ''
+    try:
+        club_id = int(re.match(r'^\d+', club_info).group(0))
+        club = oclubs.objs.Club(club_id)
+    except:
+        abort(404)
+    club_name = club.name
+    photos = []
+    activities_obj = club.activities([True, True, True, False, True])
     photos = [{'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
               {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
               {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
@@ -270,16 +281,23 @@ def adjustmember(club_info):
         member['nick_name'] = member_obj.nickname
         member['passportname'] = member_obj.passportname
         member['picture'] = member_obj.picture
-        member['id'] = member_obj.studentid
+        member['studentid'] = member_obj.studentid
+        member['id'] = member_obj.id
         members.append(member)
     return render_template('adjustmember.html',
                            title='Adjust Members',
                            user=user_obj.nickname,
                            club=club.name,
-                           members=members)
+                           members=members,
+                           club_info=club_info)
 
 
 @clubblueprint.route('/<club_info>/adjust_member/submit', methods=['POST'])
 def adjustmember_submit(club_info):
     '''Input adjustment of club members'''
-    pass
+    club_id = int(re.match(r'^\d+', club_info).group(0))
+    club = oclubs.objs.Club(club_id)
+    member_obj = oclubs.objs.User(request.form['expel'])
+    club.remove_member(member_obj)
+    flash(member_obj.nickname + ' has been expelled.', 'expelled')
+    return redirect(url_for('adjustmember', club_info=club_info))

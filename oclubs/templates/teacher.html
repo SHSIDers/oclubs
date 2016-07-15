@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
+{% with status_info = get_flashed_messages(category_filter=["status_info"]) %}
+{% with status_pw = get_flashed_messages(category_filter=["status_pw"]) %}
 
 <!-- Below Navbar -->
 <div class="container">
@@ -63,7 +65,14 @@
 				<h4 class="modal-title">Change Basic Information</h4>
 			</div>
 			<div class="modal-body">
-				<form class="form-group" id="info_form">
+				<form class="form-group" id="info_form" action="{{ url_for('teacher_submit_info') }}">
+					{% if status_info %}
+					<ul class="list-group">
+						{% for message in status_info %}
+						<li class="list-group-item">{{ message }}</li>
+						{% endfor %}
+					</ul>
+					{% endif %}
 					<label for="name">Nick Name:</label>
 					<input class="form-control" id="name" type="text" name="name" placeholder="{{ user }}">
 					<br>
@@ -100,7 +109,14 @@
 				<h4 class="modal-title">Change Password</h4>
 			</div>
 			<div class="modal-body">
-				<form class="form-group" id="pass_form">
+				<form class="form-group" id="pass_form" action="{{ url_for('teacher_submit_password') }}">
+					{% if status_pw %}
+					<ul class="list-group">
+						{% for message in status_pw %}
+						<li class="list-group-item">{{ message }}</li>
+						{% endfor %}
+					</ul>
+					{% endif %}
 					<label for="new">New Password:</label>
 					<input class="form-control" id="new" name="new" type="password">
 					<br>

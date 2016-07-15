@@ -1,10 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
+{% with messages = get_flashed_messages(category_filter=["expelled"]) %}
 
 <!-- Below Navbar -->
 <div class="container">
     <h1 class="title">Adjust Members</h1>
     <h2 class="title_next">{{ club }}</h2>
+    {% if messages %}
+    <ul class="list-group">
+        {% for message in messages %}
+        <li class="list-group-item">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
     <table class="table table-hover table-bordered" style="font-size:150%">
         <thead class="list">
             <tr style="background-color:#bfbfbf">
@@ -23,8 +31,8 @@
                 </td>
                 <td>{{ member.nick_name }}</td>
                 <td>{{ member.passportname }}</td>
-                <td>{{ member.id }}</td>
-                <td><button class="btn btn-danger">Expel</button>
+                <td>{{ member.studentid }}</td>
+                <td><form action="{{ url_for('adjustmember_submit', club_info=club_info) }}"><input type="submit" class="btn btn-danger" name="expel" value="{{ member.id }}">Expel</button>
             </tr>
             {% endfor %}
         </tbody>

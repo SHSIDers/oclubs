@@ -35,11 +35,31 @@ def allactivities():
                            activities=activities)
 
 
-@actblueprint.route('/clubact')
-def clubactivities():
+@actblueprint.route('/<club_info>/clubact')
+def clubactivities(club_info):
     '''One Club's Activities'''
-    user = ''
-    club = {'image1': '1', 'image2': '2', 'image3': '3', 'club_name': 'Art Club'}
+    if('user_id' in session):
+        user_obj = oclubs.objs.User(session['user_id'])
+        user = user_obj.nickname
+    else:
+        user = ''
+    try:
+        club_id = int(re.match(r'^\d+', club_info).group(0))
+        club = oclubs.objs.Club(club_id)
+    except:
+        abort(404)
+    club_info = {}
+    club_info['club_name'] = club.name
+
+    # get past activities' pictures
+    club_info = {'club_name': 'Art Club', 'image1': '1', 'image2': '2', 'image3': '3'}
+    activities = []
+    activities_obj = club.activities([True, True, True, False, True])
+    for activity_obj in activities_obj:
+        activity = {}
+        activity['act_name'] = activity_obj.name
+        activity_date = activity_obj.date
+        activity['time'] = activity_obj.date
     activities = [{'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
                   {'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'},
                   {'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
@@ -55,7 +75,7 @@ def clubactivities():
     return render_template('clubact.html',
                            title=club['club_name'],
                            user=user,
-                           club=club,
+                           club=club_info,
                            activities=activities)
 
 
@@ -134,31 +154,39 @@ def newhm():
                            club=club)
 
 
-@actblueprint.route('/actstatus')
-def actstatus():
+@actblueprint.route('/<act_info>/actstatus')
+def actstatus(act_info):
     '''Check Activity Status'''
-    user = ''
-    club = 'Website Club'
-    actname = 'Create oClubs!'
-    date = 'June 6, 2016'
-    intro = 'We tend to create a platform for SHSID clubs so that students and teachers can enjoy more convenient club activities.'
+    if 'user_id' not in session:
+        abort(401)
+    user_obj = oclubs.objs.User(session['user_id'])
+    try:
+        act_id = int(re.match(r'^\d+', act_info).group(0))
+        act = oclubs.objs.Activity(act_id)
+        club = act.club
+    except:
+        abort(404)
+    if user_obj.id != club.leader.id:
+        abort(403)
+    actname = act.name
+    date_str = str(act.date)
+    date = date_str[:4] + " - " + date_str[4:6] + " - " + date_str[6:8]
+    intro = act.descriptions
     members = [{'name': 'Derril', 'email': 'lolol@outlook.com', 'phone': '18918181818'},
                {'name': 'Frank', 'email': 'lolol@outlook.com', 'phone': '18918181818'},
                {'name': 'YiFei', 'email': 'lolol@outlook.com', 'phone': '18918181818'}]
     members_num = 0
     for member in members:
         members_num += 1
-    planned_num = 20
     return render_template('actstatus.html',
                            title=actname,
-                           user=user,
-                           club=club,
+                           user=user_obj.nickname,
+                           club=club.name,
                            actname=actname,
                            date=date,
                            intro=intro,
                            members=members,
-                           members_num=members_num,
-                           planned_num=planned_num)
+                           members_num=members_num)
 
 
 @actblueprint.route('/<club_info>/register_hongmei')
