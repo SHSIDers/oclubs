@@ -93,6 +93,8 @@ class BaseObject(object):
         return False
 
     def __eq__(self, other):
+        if not isinstance(other, BaseObject):
+            return NotImplemented
         return self.id == other.id
 
     def __hash__(self):
