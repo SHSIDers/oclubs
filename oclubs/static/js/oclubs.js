@@ -1,27 +1,6 @@
 ( function( $ ) {
 	$( document )
 		.ready( function() {
-			$( "#loginModal input[name='hasaccount'][value='1']" )
-				.click();
-			$( "#loginModal input[name='hasaccount']" )
-				.change( function() {
-					switch ( $( "#loginModal input[name='hasaccount']:checked" )
-						.val() ) {
-						case '0':
-							$( '#loginModal #loginform' )
-								.hide();
-							$( '#loginModal #registerform' )
-								.show();
-							break;
-						default:
-							$( '#loginModal #loginform' )
-								.show();
-							$( '#loginModal #registerform' )
-								.hide();
-							break;
-					}
-				} );
-
 			$( ".clickable" )
 				.click( function() {
 					window.document.location = $( this )
@@ -64,10 +43,11 @@
 					}
 				} );
 
-			$( "#loginModal .modal-footer #login")
-				.click( function() {
-					if ( $( ".modal .modal-body div p").last().html() == "<p style='color:red'>Wrong student ID or password. Please input again.</p>" ){
-						$( ".modal .modal-body div p").last().remove();
+			$( "#loginModal #loginform" )
+				.submit( function(event) {
+					event.preventDefault();
+					if ( $( "#loginModal .modal-body div p").last().html() == "<p style='color:red'>Wrong student ID or password. Please input again.</p>" ){
+						$( "#loginModal .modal-body div p").last().remove();
 					}
 					username = $( "#loginModal #username" ).val();
 					password = $( "#loginModal #password" ).val();
@@ -76,9 +56,9 @@
 							if ( data.result == 'success' ) {
 								location.reload();
 							} else if ( data.result == 'loggedin') {
-								$( ".modal .modal-body div").append( "<p style='color:#ffcc00'>Already logged in.</p>");
+								$( "#loginModal .modal-body div").append( "<p style='color:#ffcc00'>Already logged in.</p>");
 							} else if ( data.result == 'failure' ) {
-								$( ".modal .modal-body div").append( "<p style='color:red'>Wrong student ID or password. Please input again.</p>");
+								$( "#loginModal .modal-body div").append( "<p style='color:red'>Wrong student ID or password. Please input again.</p>");
 							}
 					} );
 				} );
