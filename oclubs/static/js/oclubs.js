@@ -31,7 +31,7 @@
 						.html( "<p>Your choice is " + selected.text() + ".</p>" );
 				} );
 
-			$( ".updatehm " )
+			$( ".updatehm" )
 				.click( function() {
 					var date = $( "#date" ).val();
 					var contents = $( "#contents" ).val();
@@ -64,7 +64,3 @@
 				} );
 		} );
 } )( jQuery );
-
-function swing( x ) {
-	x.className = 'swing animated';
-}
