@@ -10,8 +10,9 @@ import pickle
 from datetime import timedelta
 from uuid import uuid4
 from redis import Redis
-from flask import url_for
 from flask.sessions import SessionInterface, SessionMixin
+
+from oclubs.compat import total_seconds
 
 
 class RedisSession(dict, SessionMixin):
@@ -88,10 +89,10 @@ class RedisSessionInterface(SessionInterface):
             if session.modified:
                 val = self.serializer.dumps(dict(session))
                 self.redis.setex(self.prefix + session.sid, val,
-                                 int(redis_exp.total_seconds()))
+                                 int(total_seconds(redis_exp)))
             else:
                 self.redis.expire(self.prefix + session.sid,
-                                  int(redis_exp.total_seconds()))
+                                  int(total_seconds(redis_exp)))
             response.set_cookie(app.session_cookie_name, session.sid,
                                 expires=cookie_exp, httponly=True,
                                 domain=domain)
