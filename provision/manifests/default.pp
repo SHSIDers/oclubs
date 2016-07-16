@@ -100,22 +100,18 @@ package { [
     'python-pip',
     'python-devel',
     'zlib-devel',
-    'openssl-devel'
+    'openssl-devel',
+    'libffi-devel'
 ]:
     ensure  => present,
     require => Package['epel-release'],
+    before  => Exec['pip-install-requirements'],
 }
 
 exec { 'pip-install-requirements':
     command => 'pip install -Ur /vagrant/requirements.txt',
     path    => '/usr/bin',
     tries   => 5,
-    require => [
-        Package['python-pip'],
-        Package['python-devel'],
-        Package['zlib-devel'],
-        Package['openssl-devel'],
-    ],
 }
 
 user { 'uwsgi':
