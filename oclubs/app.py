@@ -26,13 +26,23 @@ app.register_blueprint(actblueprint, url_prefix='/act')
 app.session_interface = RedisSessionInterface()
 
 
+def get_name():
+    '''Get user's name if available'''
+    if 'user_id' in session:
+        user_obj = oclubs.objs.User(session['user_id'])
+        user = user_obj.nickname
+    else:
+        user = ''
+    return user
+
+
+app.jinja_env.globals['usernickname'] = get_name
+
+
 @app.errorhandler(404)
 @app.route('/404')
 def wrong_url(e):
-    if 'user_id' in session:
-        user = oclubs.objs.User(session['user_id']).nickname
-    else:
-        user = ''
+    user = get_name()
     return render_template('wrongurl.html',
                            title='Wrong URL',
                            user=user
@@ -77,10 +87,7 @@ def login():
 @app.route('/')
 def homepage():
     '''Homepage'''
-    if('user_id' in session):
-        user = oclubs.objs.User(session['user_id'])
-    else:
-        user = ''
+    user = get_name()
     # Three excellent clubs
     ex_clubs = [{'name': 'Website Club', 'picture': '1', 'intro': 'We create platform for SHSID.'},
                 {'name': 'Art Club', 'picture': '2', 'intro': 'We invite people to the world of arts.'},
@@ -95,10 +102,7 @@ def homepage():
 @app.route('/about')
 def about():
     '''About This Website'''
-    if('user_id' in session):
-        user = oclubs.objs.User(session['user_id']).nickname
-    else:
-        user = ''
+    user = get_name()
     return render_template('about.html',
                            title='About',
                            is_about=True,
@@ -108,10 +112,7 @@ def about():
 @app.route('/advice')
 def advice():
     '''Advice Page'''
-    if('user_id' in session):
-        user = oclubs.objs.User(session['user_id']).nickname
-    else:
-        user = ''
+    user = get_name()
     return render_template('advice.html',
                            title='Advice',
                            user=user)
@@ -120,10 +121,7 @@ def advice():
 @app.route('/creators')
 def creators():
     '''Introduction Page about Us'''
-    if('user_id' in session):
-        user = oclubs.objs.User(session['user_id']).nickname
-    else:
-        user = ''
+    user = get_name()
     return render_template('creators.html',
                            title='Creators',
                            user=user)
