@@ -28,7 +28,7 @@ app.session_interface = RedisSessionInterface()
 
 @app.errorhandler(404)
 @app.route('/404')
-def wrong_url():
+def wrong_url(e):
     if 'user_id' in session:
         user = oclubs.objs.User(session['user_id']).nickname
     else:
@@ -40,7 +40,7 @@ def wrong_url():
 
 
 @app.errorhandler(403)
-def no_access():
+def no_access(e):
     user_obj = oclubs.objs.User(session['user_id'])
     return render_template('noaccess.html',
                            title='No Access',
@@ -49,7 +49,7 @@ def no_access():
 
 
 @app.errorhandler(401)
-def not_logged_in():
+def not_logged_in(e):
     return render_template('notloggedin.html',
                            title='Not Logged In',
                            user=''
