@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
+{% with quit_messages = get_flashed_messages(category_filter=["quit"]) %}
+
 
 <!-- Below Navbar -->
 <div class="container">
@@ -7,12 +9,20 @@
         <img src="../static/images/areyousure1.jpg" class="img-responsive img-thumbnail" alt="Are you sure?">
     </div>
     <div class="col-sm-6">
-    	<div class="form-group" style="margin-left:auto; margin-right:auto; color:#f2f2f2">
+    	<form class="form-group" id="quit_club" action="{{ url_for('quitclub_submit') }}" style="margin-left:auto; margin-right:auto; color:#f2f2f2">
             <h1>Quitting Club</h1>
             <p style="font-style:italic; font-size:150%">If you really want to quit a club, then please select the club and state your reason. You request for quitting will be emailed to the club leader</p>
             <br>
+            {% if status_info %}
+            <ul class="list-group">
+                {% for message in quit_messages %}
+                <li class="list-group-item">{{ message }}</li>
+                {% endfor %}
+            </ul>
+            <br>
+            {% endif %}
     		<label for="clubs">The club:</label>
-        	<select id="clubs" type="dropdown" style="color:black">
+        	<select id="clubs" name="clubs" type="dropdown" style="color:black">
                 {% for club in clubs %}
                 <option value="{{ club }}">{{ club }}</option>
                 {% endfor %}
@@ -22,7 +32,7 @@
         	<textarea class="form-control" rows="10" id="reason"></textarea>
             <br>
             <button class="btn btn-primary" data-toggle="modal" data-target="#confirmation" id="updatequit">Submit</button>
-        </div>
+        </form>
     </div>
     <div class="col-sm-3">
         <img src="../static/images/areyousure2.jpg" class="img-responsive img-thumbnail" alt="Are you sure?">
@@ -44,7 +54,7 @@
             </div>
             <div class="modal-footer">
                 <button type='button' class='btn btn-default' data-dismiss='modal'>No!</button>
-                <button type='submit' class='btn btn-primary'>Confirm</button>
+                <input type='submit' form='quit_club' class='btn btn-primary' value='Confirm'>
             </div>
         </div>
     </div>

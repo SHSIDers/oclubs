@@ -31,7 +31,9 @@ def quitclub():
 @userblueprint.route('/quit_club/submit', methods=['POST'])
 def quitclub_submit():
     '''Delete connection between user and club in database'''
-    pass
+    # quit club
+    flash('You have successfully quitted' + request.form['clubs'], 'quit')
+    return redirect(url_for('quitclub'))
 
 
 @userblueprint.route('/')
@@ -59,15 +61,40 @@ def personal():
         club['picture'] = club.picture
         club['intro'] = club.intro
         club['cas'] = user_obj.cas_in_club(club_obj)
-    evaluate = False
     castotal = 0
     for club in clubs:
         castotal += club['cas']
-    activities = [{'club': 'Website Club', 'act': 'Create Club Platform', 'time': 'Forever', 'place': 'Home'},
-                  {'club': 'Chess Club', 'act': 'Chess Tournament', 'time': 'June 1, 2011', 'place': 'XMT 201'},
-                  {'club': 'Math Club', 'act': 'Do Math Homework', 'time': 'July 2, 2012', 'place': 'Home'}]
-    hongmei = [{'club': 'Chess Club', 'act': 'Teach Basic Rules of Chess', 'time': 'March 2, 2012'},
-               {'club': 'Math Club', 'act': 'Teach Multiplication', 'time': 'March 9, 2012'}]
+    meetings_obj = user_obj.activities_reminder([False, True, True, False, False])
+    meetings = []
+    for meeting_obj in meetings_obj:
+        meeting = {}
+        meeting['club'] = meeting_obj.club
+        date = str(meeting_obj.date)
+        time_int = meeting_obj.time
+        if time_int == 1:
+            time = "Noon"
+        else:
+            time = "Afternoon"
+        meeting['time'] = date[0:4] + " - " + date[4:6] + " - " + date[6:8] + ": " + time
+        meeting['location'] = meeting_obj.location
+        meetings.append(meeting)
+    activities_obj = user_obj.activities_reminder([True, False, False, True, True])
+    activities = []
+    for act_obj in activities_obj:
+        act = {}
+        act['club'] = act_obj.club
+        date = str(act_obj.date)
+        time_int = act_obj.time
+        if time_int == 0:
+            time = "Unknown time"
+        elif time_int == 3:
+            time = "HongMei activity"
+        else:
+            time = "Individual club activity"
+        act['time'] = date[0:4] + " - " + date[4:6] + " - " + date[6:8] + ": " + time
+        act['location'] = act_obj.location
+        activities.append(act)
+    leader_club = ''
     for club_obj in clubs_obj:
         if user_obj.id == club_obj.leader.id:
             leader_club = club_obj.name
@@ -78,10 +105,9 @@ def personal():
                            pictures=pictures,
                            info=info,
                            clubs=clubs,
-                           evaluate=evaluate,
                            castotal=castotal,
+                           meetings=meetings,
                            activities=activities,
-                           hongmei=hongmei,
                            leader_club=leader_club)
 
 

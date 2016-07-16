@@ -58,7 +58,7 @@ def clubactivities(club_info):
     for activity_obj in activities_obj:
         activity = {}
         activity['act_name'] = activity_obj.name
-        activity_date = activity_obj.date
+        activity_date = str(activity_obj.date)
         activity['time'] = activity_date[0:4] + " - " + activity_date[4:6] + " - " + activity_date[6:8]
         # activity['place']  = 
         activities.append(activity)

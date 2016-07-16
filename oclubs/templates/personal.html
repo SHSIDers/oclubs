@@ -37,19 +37,14 @@
 		{% endfor %}
 	</div>
 	<div class="clearfix"></div>
-	<div class="col-sm-4">
+	<div class="col-sm-6">
 		<center><a href="clublist">
 			<button class="btn btn-info" style="padding:5% 10% 5% 10%; font-size:125%">Join Clubs</button>
 		</a></center>
 	</div>
-	<div class="col-sm-4">
+	<div class="col-sm-6">
 		<center><a href="quit">
 			<button class="btn btn-info" style="padding:5% 10% 5% 10%; font-size:125%">Quit Clubs</button>
-		</a></center>
-	</div>
-	<div class="col-sm-4">
-		<center><a href="#">
-			<button class="btn btn-info" style="padding:5% 10% 5% 10%; font-size:125%">Evaluate Clubs</button>
 		</a></center>
 	</div>
 	<div class="clearfix"></div>
@@ -79,18 +74,16 @@
             <thead class="list">
                 <tr style="background-color:#bfbfbf">
                     <th>Club</th>
-                    <th>Contents</th>
                     <th>Time</th>
                     <th>Location</th>
                 </tr>
             </thead>
             <tbody>
-                {% for activity in activities %}
+                {% for meeting in meetings %}
                 <tr class="clickable act" data-href="#">
-                    <td>{{ activity.club }}</td>
-                    <td>{{ activity.act}}</td>
-                    <td>{{ activity.time }}</td>
-                    <td>{{ activity.place }}</td>
+                    <td>{{ meeting.club }}</td>
+                    <td>{{ meeting.time }}</td>
+                    <td>{{ meeting.place }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -109,14 +102,16 @@
                     <th>Club</th>
                     <th>Contents</th>
                     <th>Time</th>
+                    <th>Location</th>
                 </tr>
             </thead>
             <tbody>
-                {% for activity in hongmei %}
+                {% for activity in activities %}
                 <tr class="clickable act" data-href="#">
                     <td>{{ activity.club }}</td>
                     <td>{{ activity.act}}</td>
                     <td>{{ activity.time }}</td>
+                    <td>{{ activity.location }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
