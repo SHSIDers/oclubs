@@ -12,21 +12,61 @@ import types
 from oclubs.access import database
 
 
-class Property(object):
-    def __init__(self, dbname, ie=None):
-        super(Property, self).__init__()
-        self.dbname = dbname
-        self.ie = _get_ie(ie)
+class Property(property):
+    def __init__(prop, dbname, ie=None):
+        prop.dbname = dbname
+        prop.imp, prop.exp = _get_ie(ie)
+        super(Property, prop).__init__(prop.getf, prop.setf, prop.delf)
+
+    def getf(prop, self):
+        if prop.name not in self._cache:
+            self._cache[prop.name] = prop.imp(self._data[prop.name])
+        return self._cache[prop.name]
+
+    def setf(prop, self, value):
+        if prop.name:
+            self._cache[prop.name] = value
+
+        value = prop.exp(value)
+        if prop.name and self._dbdata is not None:
+            self._dbdata[prop.name] = value
+
+        database.update_row(
+            self.table,
+            {prop.dbname: value},
+            [('=', self.identifier, self.id)]
+        )
+
+    def delf(prop, self):
+        if prop.name in self._cache:
+            del self._cache[prop.name]
+
+        self._dbdata = None
 
 
-class ListProperty(object):
+class ListProperty(property):
     """docstring for ListProperty"""
-    def __init__(self, table, this, that, ie=None):
-        super(ListProperty, self).__init__()
-        self.table = table
-        self.this = this
-        self.that = that
-        self.ie = _get_ie(ie)
+    def __init__(prop, table, this, that, ie=None):
+        prop.table = table
+        prop.this = this
+        prop.that = that
+        prop.imp, prop.exp = _get_ie(ie)
+        super(ListProperty, prop).__init__(prop.getf, None, prop.delf)
+
+    def getf(prop, self):
+        if prop.name not in self._cache:
+            tempdata = database.fetch_onecol(
+                prop.table,
+                prop.that,
+                [('=', prop.this, self.id)]
+            )
+            self._cache[prop.name] = [prop.imp(member) for member in tempdata]
+
+        return self._cache[prop.name]
+
+    def delf(prop, self):
+        if prop.name in self._cache:
+            del self._cache[prop.name]
 
 
 class _BaseMetaclass(type):
@@ -36,16 +76,16 @@ class _BaseMetaclass(type):
             if isinstance(value, Property):
                 _propsdb[value.dbname] = key
 
-                dct[key] = meta.create_property(key, value)
+                value.name = key
             if isinstance(value, ListProperty):
-                dct[key] = meta.create_listproperty(key, value)
+                value.name = key
 
         @property
         def _data(self):
             if self._dbdata is None:
                 self._dbdata = database.fetch_onerow(
                     self.table,
-                    self._propsdb,
+                    _propsdb,
                     [('=', self.identifier, self.id)]
                 )
 
@@ -59,60 +99,6 @@ class _BaseMetaclass(type):
         dct['id'] = id
 
         return super(_BaseMetaclass, meta).__new__(meta, name, bases, dct)
-
-    @staticmethod
-    def create_property(name, value):
-        imp, exp = value.ie
-
-        def getter(self):
-            if name not in self._cache:
-                self._cache[name] = imp(self._data[name])
-            return self._cache[name]
-
-        def setter(self, value):
-            if name:
-                self._cache[name] = value
-
-            value = exp(value)
-            if name and self._dbdata is not None:
-                self._dbdata[name] = value
-
-            database.update_row(
-                self.table,
-                {value.dbname: value},
-                [('=', self.identifier, self.id)]
-            )
-
-        def deleter(self):
-            if name in self._cache:
-                del self._cache[name]
-
-            self._dbdata = None
-
-        getter.__name__ = setter.__name__ = deleter.__name__ = name
-        return property(getter, setter, deleter)
-
-    @staticmethod
-    def create_listproperty(name, value):
-        imp, exp = value.ie
-
-        def getter(self):
-            if name not in self._cache:
-                tempdata = database.fetch_onecol(
-                    value.table,
-                    value.that,
-                    [('=', value.this, self.id)]
-                )
-                self._cache[name] = [imp(member) for member in tempdata]
-
-            return self._cache[name]
-
-        def deleter(self):
-            if name in self._cache:
-                del self._cache[name]
-
-        getter.__name__ = deleter.__name__ = name
-        return property(getter, None, deleter)
 
     def __call__(cls, oid):
         self = type.__call__(cls)
