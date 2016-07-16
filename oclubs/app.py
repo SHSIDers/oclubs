@@ -15,11 +15,15 @@ from oclubs.userblueprint import userblueprint
 from oclubs.clubblueprint import clubblueprint
 from oclubs.actblueprint import actblueprint
 
+from oclubs.redissession import RedisSessionInterface
+
 app = Flask(__name__)
 
 app.register_blueprint(userblueprint, url_prefix='/user')
 app.register_blueprint(clubblueprint, url_prefix='/club')
 app.register_blueprint(actblueprint, url_prefix='/act')
+
+app.session_interface = RedisSessionInterface()
 
 
 @app.errorhandler(404)
