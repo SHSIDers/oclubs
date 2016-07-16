@@ -39,17 +39,20 @@ file { '/etc/nginx/conf.d/default.conf':
 
 yumrepo { 'MariaDB':
     baseurl  => 'http://yum.mariadb.org/10.1/centos6-amd64',
-    descr    => 'The name repository',
+    descr    => 'The MariaDB repository',
     enabled  => 1,
     gpgcheck => 1,
     gpgkey   => 'https://yum.mariadb.org/RPM-GPG-KEY-MariaDB',
 }
 
-package { [
-    'MariaDB-server',
-    'MariaDB-client',
-    'MariaDB-devel'
-]:
+exec { 'install-mariadb':
+    command => '/usr/bin/yum -y localinstall /vagrant/MariaDB-10.1.14-centos6-x86_64-server.rpm /vagrant/MariaDB-10.1.14-centos6-x86_64-client.rpm',
+    creates => '/usr/bin/mysql',
+    timeout => 1800,
+    require => Package['MariaDB-devel'],
+}
+
+package { 'MariaDB-devel':
     ensure  => present,
     require => [
         Package['epel-release'],
@@ -57,30 +60,16 @@ package { [
     ],
 }
 
-# package { [
-#     'mysql-server',
-#     'mysql',
-#     'mysql-devel'
-# ]:
-#     ensure  => present,
-#     require => Package['epel-release'],
-# }
 
 service { 'mysql':
     ensure  => running,
-    # name    => 'mysqld', # for mysql only, not mariadb
     enable  => true,
-    require => Package['MariaDB-server'],
-    # require => Package['mysql-server'],
+    require => Exec['install-mariadb'],
 }
 
 exec { 'sql-import':
     command => '/usr/bin/mysql -u root < /vagrant/oclubs-tables.sql',
-    require => [
-        Service['mysql'],
-        Package['MariaDB-client'],
-        # Package['mysql'],
-    ]
+    require => Service['mysql'],
 }
 
 file { '/etc/selinux/config':
@@ -107,6 +96,7 @@ exec { 'pip-install-requirements':
     command => 'pip install -Ur /vagrant/requirements.txt',
     path    => '/usr/bin',
     tries   => 5,
+    require => Package['MariaDB-devel'],
 }
 
 user { 'uwsgi':
