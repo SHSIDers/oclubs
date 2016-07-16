@@ -2,11 +2,6 @@ Package {
     provider => 'yum'
 }
 
-exec { 'yum-update':
-    command => 'yum -y update',
-    path    => '/usr/bin',
-}
-
 package { 'epel-release':
     ensure => present,
 }
