@@ -56,9 +56,9 @@
 							if ( data.result == 'success' ) {
 								location.reload();
 							} else if ( data.result == 'loggedin') {
-								$( "#loginModal .modal-body div").append( "<p style='color:#ffcc00'>Already logged in.</p>");
+								$( "#loginModal .modal-body form").append( "<p style='color:#ffcc00'>Already logged in.</p>");
 							} else if ( data.result == 'failure' ) {
-								$( "#loginModal .modal-body div").append( "<p style='color:red'>Wrong student ID or password. Please input again.</p>");
+								$( "#loginModal .modal-body form").append( "<p style='color:red'>Wrong student ID or password. Please input again.</p>");
 							}
 					} );
 				} );
