@@ -36,7 +36,7 @@ def allactivities():
                            activities=activities)
 
 
-@actblueprint.route('/<club_info>/clubact')
+@actblueprint.route('/<club_info>/activity')
 def clubactivities(club_info):
     '''One Club's Activities'''
     if('user_id' in session):
@@ -89,6 +89,39 @@ def allphotos():
                            is_photos=True,
                            user=user,
                            top=top,
+                           photos=photos)
+
+
+@actblueprint.route('/<club_info>/photo')
+def clubphoto(club_info):
+    '''Individual Club's Photo Page'''
+    if('user_id' in session):
+        user_obj = oclubs.objs.User(session['user_id'])
+        user = user_obj.nickname
+    else:
+        user = ''
+    try:
+        club_id = int(re.match(r'^\d+', club_info).group(0))
+        club = oclubs.objs.Club(club_id)
+    except:
+        abort(404)
+    club_name = club.name
+    photos = []
+    activities_obj = club.activities([True, True, True, False, True])
+    photos = [{'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
+              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
+              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
+              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
+              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
+              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
+              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
+              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
+              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
+              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'}]
+    return render_template('clubphoto.html',
+                           title=club,
+                           user=user,
+                           club=club,
                            photos=photos)
 
 
@@ -227,7 +260,7 @@ def registerhm(club_info):
                            schedule=schedule)
 
 
-@actblueprint.route('/<act_info>/register_hongmei_submit')
+@actblueprint.route('/<act_info>/register_hongmei/submit')
 def registerhm_submit(act_info):
     '''Submit HongMei signup info to database'''
     pass

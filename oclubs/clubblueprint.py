@@ -76,40 +76,21 @@ def clubintro(club_info):
                            intro=club.intro,
                            leader=club.leader.nickname,
                            picture=club.picture,
-                           desc=club.description)
+                           desc=club.description,
+                           club_info=club_info)
 
 
-@clubblueprint.route('/<club_info>/club_photo')
-def clubphoto(club_info):
-    '''Individual Club's Photo Page'''
-    if('user_id' in session):
-        user_obj = oclubs.objs.User(session['user_id'])
-        user = user_obj.nickname
-    else:
-        user = ''
-    try:
-        club_id = int(re.match(r'^\d+', club_info).group(0))
-        club = oclubs.objs.Club(club_id)
-    except:
-        abort(404)
-    club_name = club.name
-    photos = []
-    activities_obj = club.activities([True, True, True, False, True])
-    photos = [{'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
-              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
-              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
-              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
-              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
-              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
-              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
-              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
-              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
-              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'}]
-    return render_template('clubphoto.html',
-                           title=club,
-                           user=user,
-                           club=club,
-                           photos=photos)
+@clubblueprint.route('/<club_info>/introduction/submit')
+def clubintro_submit(club_info):
+    '''Add new member'''
+    if 'user_id' not in session:
+        abort(401)
+    user_obj = oclubs.objs.User(session['user_id'])
+    club_id = int(re.match(r'^\d+', club_info).group(0))
+    club = oclubs.objs.Club(club_id)
+    club.add_member(user_obj)
+    flash('You have successfully joined' + club.name, 'join')
+    return redirect(url_for('clubintro'))
 
 
 @clubblueprint.route('/<club_info>/new_leader')

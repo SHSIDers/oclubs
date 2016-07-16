@@ -21,7 +21,10 @@ def quitclub():
     clubs_obj = user_obj.clubs
     clubs = []
     for club_obj in clubs_obj:
-        clubs.append(club_obj.name)
+        club = {}
+        club['id'] = club_obj.id
+        club['name'] = club_obj.name
+        clubs.append(club)
     return render_template('quitclub.html',
                            title='Quit Club',
                            user=user_obj.nickname,
@@ -31,7 +34,9 @@ def quitclub():
 @userblueprint.route('/quit_club/submit', methods=['POST'])
 def quitclub_submit():
     '''Delete connection between user and club in database'''
-    # quit club
+    club = oclubs.objs.Club(request.form['clubs'])
+    user_obj = oclubs.objs.User(session['user_id'])
+    club.remove_member(user_obj)
     flash('You have successfully quitted' + request.form['clubs'], 'quit')
     return redirect(url_for('quitclub'))
 

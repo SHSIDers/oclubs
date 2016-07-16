@@ -24,7 +24,7 @@
     		<label for="clubs">The club:</label>
         	<select id="clubs" name="clubs" type="dropdown" style="color:black">
                 {% for club in clubs %}
-                <option value="{{ club }}">{{ club }}</option>
+                <option value="{{ club.id }}">{{ club.name }}</option>
                 {% endfor %}
             </select>
             <br>

@@ -691,7 +691,7 @@ thead.darklist {
 	text-align: center;
 }
 
-.intro_function div {
+.intro_function input {
 	border-style: outset;
 	background-color: #5bc0de;
 	border-radius: 5%;
@@ -699,7 +699,7 @@ thead.darklist {
 	margin: 0 2% 0 2%;
 }
 
-.intro_function > a > div:hover {
+.intro_function input:hover {
 	background-color: #1a53ff;
 }
 

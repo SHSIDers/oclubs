@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+{% with messages_join = get_flashed_messages(category_filter=["join"]) %}
 
 <!-- Below Navbar -->
 <div class="large_container">
@@ -34,21 +35,22 @@
         </div>
         <div class="container">
             <div class="intro_function">
-                <a href="clubact">
-                    <div class="col-sm-3">
-                        <h2>Activities</h2>
-                    </div>
-                </a>
-                <a href="#">
-                    <div class="col-sm-3">
-                        <h2>Photos</h2>
-                    </div>
-                </a>
-                <a href="#">
-                    <div class="col-sm-3">
-                        <h2>Join</h2>
-                    </div>
-                </a>
+                {% if messages_join %}
+                <ul class="list-group">
+                    {% for message in messages_join %}
+                    <li class="list-group-item">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                <form class="form-group col-sm-3" action="{{ url_for('clubactivities', club_info=club_info) }}">
+                    <input class="form-control" type="submit" value="Activities">
+                </form>
+                <form class="form-group col-sm-3" action="{{ url_for('clubphoto', club_info=club_info) }}">
+                    <input class="form-control" type="submit" value="Photos">
+                </form>
+                <form class="form-group col-sm-3" action="{{ url_for('clubintro_submit', club_info=club_info) }}">
+                    <input class="form-control" type="submit" value="Join">
+                </form>
             </div>
         </div>
     </div>
