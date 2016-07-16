@@ -9,9 +9,6 @@ import MySQLdb
 
 from oclubs.exceptions import NoRow, AlreadyExists
 
-# g = type(b'g', (object,), {'get': lambda self, name, default:
-#                            getattr(self, name, default)})()
-
 
 def _parse_cond(conds):
     return ' AND '.join([__parse_cond(one_cond) for one_cond in conds])
