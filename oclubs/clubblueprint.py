@@ -191,7 +191,7 @@ def inputatten(club_info):
                            members=members)
 
 
-@clubblueprint.route('/{club_info>/input_attendance/submit', methods=['POST'])
+@clubblueprint.route('/<club_info>/input_attendance/submit', methods=['POST'])
 def inputatten_submit(club_info):
     '''Change attendance in database'''
     pass

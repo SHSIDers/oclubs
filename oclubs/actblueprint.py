@@ -3,11 +3,12 @@
 #
 
 from flask import (
-    Blueprint, render_template, url_for, session, re, abort
+    Blueprint, render_template, url_for, session, abort
 )
 
 import traceback
 import oclubs
+import re
 
 actblueprint = Blueprint('actblueprint', __name__)
 
@@ -107,10 +108,6 @@ def newact(club_info):
     return render_template('newact.html',
                            title='New Activity',
                            user=user)
-
-
-@actblueprint.route
-wefe
 
 
 @actblueprint.route('/act')
