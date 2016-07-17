@@ -12,11 +12,39 @@ import re
 clubblueprint = Blueprint('clubblueprint', __name__)
 
 
-@clubblueprint.route('/clublist')
-def clublist():
-    '''Club List'''
+@clubblueprint.route('/clublist/<type>')
+def clublist(type):
+    '''Club list by club type'''
+    num = 18
+    if type == '':
+        clubs_obj = oclubs.objs.Club.randomclubs(num)
+    elif type == 'academics':
+        clubs_obj = oclubs.objs.Club.randomclubs(num, (True, False, False, False, False, False, False))
+    elif type == 'sports':
+        clubs_obj = oclubs.objs.Club.randomclubs(num, (False, True, False, False, False, False, False))
+    elif type == 'arts':
+        clubs_obj = oclubs.objs.Club.randomclubs(num, (False, False, True, False, False, False, False))
+    elif type == 'services':
+        clubs_obj = oclubs.objs.Club.randomclubs(num, (False, False, False, True, False, False, False))
+    elif type == 'entertainment':
+        clubs_obj = oclubs.objs.Club.randomclubs(num, (False, False, False, False, True, False, False))
+    elif type == 'others':
+        clubs_obj = oclubs.objs.Club.randomclubs(num, (False, False, False, False, False, True, False))
+    elif type == 'school_teams':
+        clubs_obj = oclubs.objs.Club.randomclubs(num, (False, False, False, False, False, False, True))
+    else:
+        abort(404)
+    clubs = generate_clublist(clubs_obj)
+    return render_template('clublist.html',
+                           title='Club List',
+                           is_list=True,
+                           clubs=clubs,
+                           type=type)
+
+
+def generate_clublist(clubs_obj):
+    '''User club type to generate list of clubs'''
     clubs = []
-    clubs_obj = oclubs.objs.Club.randomclubs(18)
     for club_obj in clubs_obj:
         club = {}
         club['id'] = club_obj.id
@@ -24,10 +52,7 @@ def clublist():
         club['picture'] = club_obj.picture
         club['intro'] = club_obj.intro
         clubs.append(club)
-    return render_template('clublist.html',
-                           title='Club List',
-                           is_list=True,
-                           clubs=clubs)
+    return clubs
 
 
 @clubblueprint.route('/<club_info>')

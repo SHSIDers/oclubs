@@ -187,10 +187,6 @@ def teacher_submit_password():
 @userblueprint.route('/forgot_password')
 def forgotpw():
     '''Page for retrieving password'''
-    if('user_id' in session):
-        user = oclubs.objs.User(session['user_id']).nickname
-    else:
-        user = ''
     return render_template('forgotpassword.html',
                            title='Retrieve Password')
 

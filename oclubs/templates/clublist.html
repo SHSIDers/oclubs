@@ -12,20 +12,14 @@
         </div>
         <div class="list-group">
             <li class="list-group-item active">Club Types</li>
-            <a href="#" class="list-group-item selected">All</a>
-            <a href="#" class="list-group-item">Academics</a>
-            <a href="#" class="list-group-item">Sports</a>
-            <a href="#" class="list-group-item">The Arts</a>
-            <a href="#" class="list-group-item">Services</a>
-            <a href="#" class="list-group-item">Entertainment</a>
-            <a href="#" class="list-group-item">Others</a>
-            <a href="#" class="list-group-item">School Teams</a>
-        </div>
-        <div class="list-group">
-             <li class="list-group-item active">Time</li>
-            <a href="#" class="list-group-item selected">All</a>
-            <a href="#" class="list-group-item">Noon</a>
-            <a href="#" class="list-group-item">Afternoon</a>
+            <a href="{{ url_for('.clublist', type='') }}" class="list-group-item {% if type='' %}selected{% endif %}">All</a>
+            <a href="{{ url_for('.clublist', type='academics') }}" class="list-group-item {% if type='academics' %}selected{% endif %}">Academics</a>
+            <a href="{{ url_for('.clublist', type='sports') }}" class="list-group-item {% if type='sports' %}selected{% endif %}">Sports</a>
+            <a href="{{ url_for('.clublist', type='arts') }}" class="list-group-item {% if type='arts' %}selected{% endif %}">The Arts</a>
+            <a href="{{ url_for('.clublist', type='services') }}" class="list-group-item {% if type='services' %}selected{% endif %}">Services</a>
+            <a href="{{ url_for('.clublist', type='entertainment') }}" class="list-group-item {% if type='entertainment' %}selected{% endif %}">Entertainment</a>
+            <a href="{{ url_for('.clublist', type='others') }}" class="list-group-item {% if type='others' %}selected{% endif %}">Others</a>
+            <a href="{{ url_for('.clublist', type='school_teams') }}" class="list-group-item {% if type='school_teams' %}selected{% endif %}">School Teams</a>
         </div>
     </div>
 
@@ -41,15 +35,6 @@
             </a>
             {% endfor %}
         </div>
-        <center><ul class="pagination center">
-            <li><a href="#">&laquo;</a></li>
-            <li class="active"><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">&raquo;</a></li>
-        </ul></center>
     </div>
 </div>
 
