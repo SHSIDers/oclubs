@@ -34,6 +34,7 @@ class Activity(BaseObject):
     cas = Property('act_cas')
     post = None  # FIXME: Post object
     attendance = ListProperty('attendance', 'att_act', 'att_user', 'User')
+    pictures = ListProperty('activity_pic', 'ap_act', 'ap_upload', 'Upload')
 
     date_fmtstr = '%Y%m%d'
 
