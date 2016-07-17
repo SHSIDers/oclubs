@@ -106,3 +106,7 @@ class Activity(BaseObject):
         )
 
         return [cls(act) for act in acts]
+
+    @classmethod
+    def all_activities(cls):
+        return cls.get_activities_conditions((True,)*10)
