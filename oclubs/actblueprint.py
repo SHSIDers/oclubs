@@ -56,11 +56,11 @@ def clubactivities(club_info):
     club_info = {'club_name': 'Art Club', 'image1': '1', 'image2': '2', 'image3': '3'}
     activities = []
     activities_obj = club.activities([True, True, True, False, True])
-    for activity_obj in activities_obj:
+    for act_obj in activities_obj:
         activity = {}
-        activity['act_name'] = activity_obj.name
-        activity['time'] = date_to_string(activity_obj.date)
-        # activity['place']  = 
+        activity['act_name'] = act_obj.name
+        activity['time'] = date_to_string(act_obj.date)
+        activity['place'] = act_obj.location
         activities.append(activity)
     return render_template('clubact.html',
                            title=club['club_name'],
