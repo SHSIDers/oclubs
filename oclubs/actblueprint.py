@@ -215,6 +215,8 @@ def newhm(club_info):
 @actblueprint.route('/<club_info>/newhm/submit', methods=['POST'])
 def newhm_submit(club_info):
     '''Input HongMei plan into databse'''
+    date = request.form['date']
+    contents = request.form['contents']
     pass
 
 
