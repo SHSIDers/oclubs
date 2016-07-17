@@ -7,7 +7,6 @@
 from __future__ import absolute_import, unicode_literals
 
 from datetime import datetime, date
-import json
 
 from oclubs.access import database
 from oclubs.objs.base import BaseObject, Property, ListProperty
@@ -29,8 +28,7 @@ class Activity(BaseObject):
     description = Property('act_desc', 'FormattedText')
     date = Property('act_date', (int_date, date_int))
     time = Property('act_time')
-    # FIXME: define location syntax
-    location = Property('act_location', json)
+    location = Property('act_location')
     cas = Property('act_cas')
     post = None  # FIXME: Post object
     attendance = ListProperty('attendance', 'att_act', 'att_user', 'User')

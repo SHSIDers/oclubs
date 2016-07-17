@@ -6,8 +6,6 @@
 
 from __future__ import absolute_import
 
-import json
-
 from oclubs.access import database
 from oclubs.objs.base import BaseObject, Property, ListProperty
 
@@ -19,8 +17,7 @@ class Club(BaseObject):
     teacher = Property('club_teacher', 'User')
     leader = Property('club_leader', 'User')
     description = Property('club_desc', 'FormattedText')
-    # FIXME: define location syntax
-    location = Property('club_picture', json)
+    location = Property('club_picture')
     is_active = Property('club_inactive', lambda v: not v)
     intro = Property('club_intro')
     picture = Property('club_picture', 'Upload')

@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS activity (
 	act_desc int NOT NULL, # Foreign key to text.text_id
 	act_date int unsigned NOT NULL,
 	act_time tinyint NOT NULL, # 0 = unknown, 1 = noon, 2 = afterschool, 3 = hongmei, 4 = others
-	act_location mediumblob NOT NULL, # stores object in JSON
+	act_location varchar(255) NOT NULL, # stores object in JSON
 	act_cas int NOT NULL, # CAS hours
 	act_cp int # Foreign key to clubpost.cp_act
 );
