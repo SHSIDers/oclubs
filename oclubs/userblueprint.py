@@ -67,7 +67,7 @@ def personal():
     castotal = 0
     for club in clubs:
         castotal += club['cas']
-    meetings_obj = user_obj.activities_reminder([False, True, True, False, False])
+    meetings_obj = user_obj.activities_reminder((False, True, True, False, False))
     meetings = []
     for meeting_obj in meetings_obj:
         meeting = {}
