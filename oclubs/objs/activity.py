@@ -93,9 +93,9 @@ class Activity(BaseObject):
 
         conds['where'] = conds.get('where', [])
         if dates == (True, False):
-            conds['where'].append('<', 'act_date', date_int(date.today()))
+            conds['where'].append(('<', 'act_date', date_int(date.today())))
         elif dates == (False, True):
-            conds['where'].append('>=', 'act_date', date_int(date.today()))
+            conds['where'].append(('>=', 'act_date', date_int(date.today())))
         conds['where'].append(('in', 'act_time', times))
 
         acts = database.fetch_onecol(
