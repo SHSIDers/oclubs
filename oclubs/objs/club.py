@@ -37,13 +37,18 @@ class Club(BaseObject):
             Club._excellentclubs = set()
         return Club._excellentclubs
 
-    @staticmethod
-    def randomclubs(amount):
-        # DO NOT ORDER BY RAND() -- slow
-        # TODO: ASSERT number of rows < amount
-
-        # FIXME: BLOCKED-ON-DATABASE: JOIN REQUIRED
-        return [Club(0)] * 10
+    @classmethod
+    def randomclubs(cls, amount):
+        tempdata = database.fetch_onecol(
+            cls.table,
+            cls.identifier,
+            {
+                'where': [],
+                'order': [('RAND()', True)],
+                'limit': amount
+            }
+        )
+        return [cls(item) for item in tempdata]
 
     def activities(self, types, dates=(True, True)):
         from oclubs.objs import Activity
