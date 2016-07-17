@@ -49,6 +49,39 @@ class Activity(BaseObject):
             {'signup_consentform': concentform}
         )
 
+    def signup_undo(self, user):
+        database.delete_rows(
+            'signup',
+            {'signup_act': self.id, 'signup_user': user.id}
+        )
+
+    def signup_list(self):
+        from oclubs.objs import User
+
+        ret = database.fetch_multirow(
+            'signup',
+            {'signup_act': self.id},
+            {'signup_user': 'user', 'signup_consentform': 'consentform'}
+        )
+        for item in ret:
+            item['user'] = User(item['user'])
+
+        return ret
+
+    def attend(self, user):
+        database.insert_row(
+            'attendance',
+            {'att_act': self.id, 'att_user': user.id}
+        )
+        del self.attendance
+
+    def attend_undo(self, user):
+        database.delete_row(
+            'attendance',
+            {'att_act': self.id, 'att_user': user.id}
+        )
+        del self.attendance
+
     @classmethod
     def get_activities_conditions(cls, times, additional_conds=None,
                                   require_future=False):

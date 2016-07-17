@@ -50,8 +50,10 @@ def _parse_comp_cond(cond, forcelimit=None):
     if isinstance(cond, list):
         # this is a simple cond
         conddict['where'] = cond
-    else:
+    elif 'where' in cond:
         conddict.update(cond)
+    else:
+        conddict['where'] = [('=', key, value) for key, value in cond.items()]
 
     if forcelimit:
         conddict['limit'] = forcelimit
@@ -134,7 +136,10 @@ def _execute(sql, write=False):
             g.dbtransaction = True
 
         # debugger
-        # print sql
+        try:
+            print sql
+        except:
+            pass
         cur.execute(sql)
 
         return cur.rowcount if write else cur.fetchall()

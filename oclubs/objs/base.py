@@ -34,7 +34,7 @@ class Property(property):
         database.update_row(
             self.table,
             {prop.dbname: value},
-            [('=', self.identifier, self.id)]
+            {self.identifier: self.id}
         )
 
     def delf(prop, self):
@@ -58,7 +58,7 @@ class ListProperty(property):
             tempdata = database.fetch_onecol(
                 prop.table,
                 prop.that,
-                [('=', prop.this, self.id)]
+                {prop.this: self.id}
             )
             self._cache[prop.name] = [prop.imp(member) for member in tempdata]
 
@@ -86,7 +86,7 @@ class _BaseMetaclass(type):
                 self._dbdata = database.fetch_onerow(
                     self.table,
                     _propsdb,
-                    [('=', self.identifier, self.id)]
+                    {self.identifier: self.id}
                 )
 
             return self._dbdata
@@ -125,18 +125,26 @@ def object_proxy(name):
 
 
 def _get_ie(ie):
+    if isinstance(ie, tuple) and len(ie) == 2:
+        imp, exp = __get_ie(ie[0])[0], __get_ie(ie[1])[1]
+    else:
+        imp, exp = __get_ie(ie)
+
+    return imp, exp
+
+
+def __get_ie(ie):
     if ie is None:
         imp = exp = lambda val: val
+    elif ie is NotImplemented:
+        imp = exp = lambda val: NotImplemented
     elif isinstance(ie, basestring):
         imp, exp = object_proxy(ie), lambda val: val.id
     elif isinstance(ie, BaseObject):
         imp, exp = ie, lambda val: val.id
     elif isinstance(ie, types.ModuleType):
-        imp, exp = ie, ie.dumps
+        imp, exp = ie.loads, ie.dumps
     elif callable(ie):
         imp = exp = ie
-    elif isinstance(ie, tuple) and len(ie) == 2 and \
-            callable(ie[0]) and callable(ie[1]):
-        imp, exp = ie
 
     return imp, exp

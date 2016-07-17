@@ -20,6 +20,7 @@ class User(BaseObject):
     identifier = 'user_id'
     studentid = Property('user_login_name')
     passportname = Property('user_passport_name')
+    password = Property('user_password', (NotImplemented, _crypt.encrypt))
     nickname = Property('user_nick_name')
     email = Property('user_email')
     phone = Property('user_phone')
@@ -27,18 +28,6 @@ class User(BaseObject):
     type = Property('user_type')
     gradyear = Property('user_grad_year')
     clubs = ListProperty('club_member', 'cm_user', 'cm_club', 'Club')
-
-    @property
-    def password(self):  # write-only
-        raise NotImplementedError
-
-    @password.setter
-    def password(self, value):
-        database.update_row(
-            self.table,
-            {'user_password': _crypt.encrypt(value)},
-            [('=', self.identifier, self.id)]
-        )
 
     def cas_in_club(self, club):
         return database.fetch_oneentry(
