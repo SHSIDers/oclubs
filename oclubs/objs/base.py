@@ -109,7 +109,7 @@ class _BaseMetaclass(type):
             self._id = database.insert_row(self.table, data)
 
             # Reload with newest data from database
-            del self._dbdata
+            self._dbdata = None
             self._data
 
         dct['create'] = create
