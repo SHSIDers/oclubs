@@ -46,8 +46,8 @@
 			$( "#loginModal #loginform" )
 				.submit( function(event) {
 					event.preventDefault();
-					if ( $( "#loginModal .modal-body div p").last().html() == "<p style='color:red'>Wrong student ID or password. Please input again.</p>" ){
-						$( "#loginModal .modal-body div p").last().remove();
+					if ( $( "#loginModal .modal-body form p").last().html() == "<p style='color:red'>Wrong student ID or password. Please input again.</p>" ){
+						$( "#loginModal .modal-body form p").last().remove();
 					}
 					username = $( "#loginModal #username" ).val();
 					password = $( "#loginModal #password" ).val();
@@ -56,9 +56,9 @@
 							if ( data.result == 'success' ) {
 								location.reload();
 							} else if ( data.result == 'loggedin') {
-								$( "#loginModal .modal-body form").append( "<p style='color:#ffcc00'>Already logged in.</p>");
+								$( "#loginModal .modal-body form").append( "<p style='color:#ffcc00'>Already logged in.</p>" );
 							} else if ( data.result == 'failure' ) {
-								$( "#loginModal .modal-body form").append( "<p style='color:red'>Wrong student ID or password. Please input again.</p>");
+								$( "#loginModal .modal-body form").append( "<p style='color:red'>Wrong student ID or password. Please input again.</p>" );
 							}
 					} );
 				} );
