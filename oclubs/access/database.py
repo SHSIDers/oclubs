@@ -112,7 +112,7 @@ def _mk_multi_return(row, cols, coldict):
     return ret
 
 
-def _execute(sql, write=False):
+def _execute(sql, write=False, ret='fetch'):
     """
     Internal sql execution handling for each request.
 
@@ -142,7 +142,14 @@ def _execute(sql, write=False):
             pass
         cur.execute(sql)
 
-        return cur.rowcount if write else cur.fetchall()
+        if ret == 'fetch':
+            return cur.fetchall()
+        elif ret == 'rowcount':
+            return cur.rowcount
+        elif ret == 'lastrowid':
+            return cur.lastrowid
+        else:  # fetch
+            return cur.fetchall()
     finally:
         cur.close()
 
@@ -206,20 +213,6 @@ def fetch_multirow(table, coldict, conds):
     return [_mk_multi_return(row, cols, coldict) for row in rows]
 
 
-def update_row(table, update, conds):
-    conds = _parse_comp_cond(conds)
-    update = ["%s=%s" % (key, _encode(val)) for key, val in update.items()]
-    update = ','.join(update)
-
-    rows = _execute('UPDATE %s SET %s %s;' % (table, update, conds),
-                    write=True)
-
-    if not rows:
-        raise NoRow
-
-    return rows
-
-
 def insert_row(table, insert):
     try:
         keys = ','.join(insert.keys())
@@ -227,7 +220,7 @@ def insert_row(table, insert):
 
         return _execute("INSERT INTO %s (%s) VALUES (%s);"
                         % (table, keys, values),
-                        write=True)
+                        write=True, ret='lastrowid')
     except MySQLdb.IntegrityError as e:
         if e[0] == 1062:
             raise AlreadyExists
@@ -244,14 +237,28 @@ def insert_or_update_row(table, insert, update):
     return _execute(
         "INSERT INTO %s (%s) VALUES (%s) ON DUPLICATE KEY UPDATE %s;"
         % (table, keys, values, update),
-        write=True)
+        write=True, ret='lastrowid')
+
+
+def update_row(table, update, conds):
+    conds = _parse_comp_cond(conds)
+    update = ["%s=%s" % (key, _encode(val)) for key, val in update.items()]
+    update = ','.join(update)
+
+    rows = _execute('UPDATE %s SET %s %s;' % (table, update, conds),
+                    write=True, ret='rowcount')
+
+    if not rows:
+        raise NoRow
+
+    return rows
 
 
 def delete_rows(table, conds):
     conds = _parse_comp_cond(conds)
 
     rows = _execute("DELETE FROM %s %s;" % (table, conds),
-                    write=True)
+                    write=True, ret='rowcount')
 
     if not rows:
         raise NoRow
