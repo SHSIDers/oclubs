@@ -15,8 +15,8 @@
 <title>{{ title }} - oClubs!</title>
 
 <script>
-    function swing( x ) {
-        x.className = 'swing animated';
+    function jello( x ) {
+        x.className = 'jello animated';
     }
 </script>
 
@@ -46,11 +46,11 @@
         
         <div class="login">
             {% if user %}
-            <span id="loginanimation" onmouseenter="swing(this)" onmouseleave="this.className=''" style="display: block;">
-                <a href="#"><span class="glyphicon glyphicon-info-sign"></span> {{ user }}</a>
+            <span id="loginanimation" onmouseenter="jello(this)" onmouseleave="this.className=''" style="display: block;">
+                <a href="{{ url_for('userblueprint.personal') }}" style="text-decoration:none"><span class="glyphicon glyphicon-info-sign"></span>&nbsp;{{ user }}</a>
             </span>
             {% else %}
-            <span id="loginanimation" onmouseenter="swing(this)" onmouseleave="this.className=''" style="display: block;">
+            <span id="loginanimation" onmouseenter="jello(this)" onmouseleave="this.className=''" style="display: block;">
                 <a href="#loginModal" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-user"></span>Login</a>
             </span>
             {% endif %}
@@ -86,7 +86,7 @@
 
 {% block content %}{% endblock %}
 
-<div class="clearfix"></div>
+<div class="clearfix" style="min-height:90%"></div>
 
 <div class="footer">
     <div class="container text-center">

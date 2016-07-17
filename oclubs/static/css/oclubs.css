@@ -459,6 +459,7 @@ body {
   padding: 4em 0;
   background-color: #333333;
   margin: 2em 0 0 0;
+  position: relative;
 }
 .soci ul {
   padding: 0;

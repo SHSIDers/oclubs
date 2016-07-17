@@ -66,6 +66,16 @@ def not_logged_in(e):
                            ), 401
 
 
+@app.errorhandler(500)
+def error(e):
+    '''Internal server error'''
+    user = get_name()
+    return render_template('500.html',
+                           title='Error',
+                           user=user
+                           ), 500
+
+
 @app.route('/login', methods=['POST'])
 def login():
     '''API to login'''

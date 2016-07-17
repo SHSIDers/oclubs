@@ -46,9 +46,6 @@
 			$( "#loginModal #loginform" )
 				.submit( function(event) {
 					event.preventDefault();
-					if ( $( "#loginModal .modal-body form p").last().html() == "<p style='color:red'>Wrong student ID or password. Please input again.</p>" ){
-						$( "#loginModal .modal-body form p").last().remove();
-					}
 					username = $( "#loginModal #username" ).val();
 					password = $( "#loginModal #password" ).val();
 					$.post( '/login' , { 'username': username, 'password': password } )
