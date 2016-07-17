@@ -12,7 +12,7 @@
         </div>
         <div class="list-group">
             <li class="list-group-item active">Club Types</li>
-            <a href="{{ url_for('.clublist', type='all') }}" class="list-group-item {% if type=='' %}selected{% endif %}">All</a>
+            <a href="{{ url_for('.clublist', type='all') }}" class="list-group-item {% if type=='all' %}selected{% endif %}">All</a>
             <a href="{{ url_for('.clublist', type='academics') }}" class="list-group-item {% if type=='academics' %}selected{% endif %}">Academics</a>
             <a href="{{ url_for('.clublist', type='sports') }}" class="list-group-item {% if type=='sports' %}selected{% endif %}">Sports</a>
             <a href="{{ url_for('.clublist', type='arts') }}" class="list-group-item {% if type=='arts' %}selected{% endif %}">The Arts</a>
