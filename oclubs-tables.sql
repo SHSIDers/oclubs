@@ -26,7 +26,8 @@ CREATE TABLE IF NOT EXISTS club (
 	club_picture int NOT NULL, # Foreign key to upload.upload_id
 	club_desc int NOT NULL, # Foreign key to text.text_id
 	club_location tinyblob NOT NULL, # stores object in JSON
-	club_inactive boolean NOT NULL
+	club_inactive boolean NOT NULL,
+	club_type tinyint NOT NULL # 0 = academics, 1 = sports, 2 = arts, 3 = services, 4 = entertainment, 5 = others, 6 = school teams
 );
 
 CREATE INDEX IF NOT EXISTS club_name ON club (club_name);
