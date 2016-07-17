@@ -45,7 +45,6 @@ def club(club_info):
         abort(403)
     return render_template('club.html',
                            title=club.name,
-                           user=user_obj.nickname,
                            club=club.name)
 
 
@@ -107,7 +106,6 @@ def newleader(club_info):
         members.append(member)
     return render_template('newleader.html',
                            title='New Leader',
-                           user=user_obj.nickname,
                            club=club.name,
                            leader=leader,
                            members=members,
@@ -117,7 +115,6 @@ def newleader(club_info):
 @clubblueprint.route('/<club_info>/new_leader/submit', methods=['POST'])
 def newleader_submit(club_info):
     '''Change leader in database'''
-    user_obj = oclubs.objs.User(session['user_id'])
     club_id = int(re.match(r'^\d+', club_info).group(0))
     club = oclubs.objs.Club(club_id)
     members_obj = club.members
@@ -127,8 +124,7 @@ def newleader_submit(club_info):
             club.leader = member_obj
             break
     return render_template('success.html',
-                           title='Success',
-                           user=user_obj.nickname)
+                           title='Success')
 
 
 @clubblueprint.route('/<club_info>/member_info')
@@ -155,7 +151,6 @@ def memberinfo(club_info):
         members.append(member)
     return render_template('memberinfo.html',
                            title='Member Info',
-                           user=user_obj.nickname,
                            club=club.name,
                            members=members)
 
@@ -175,7 +170,6 @@ def changeclubinfo(club_info):
         abort(403)
     return render_template('changeclubinfo.html',
                            title='Change Club Info',
-                           user=user_obj.nickname,
                            club=club.name,
                            intro=club.intro,
                            picture=club.picture,
@@ -220,7 +214,6 @@ def adjustmember(club_info):
         members.append(member)
     return render_template('adjustmember.html',
                            title='Adjust Members',
-                           user=user_obj.nickname,
                            club=club.name,
                            members=members,
                            club_info=club_info)

@@ -64,7 +64,6 @@ def clubactivities(club_info):
         activities.append(activity)
     return render_template('clubact.html',
                            title=club['club_name'],
-                           user=user,
                            club=club_info,
                            activities=activities)
 
@@ -86,7 +85,6 @@ def allphotos():
     return render_template('photos.html',
                            title='All Photos',
                            is_photos=True,
-                           user=user,
                            top=top,
                            photos=photos)
 
@@ -119,7 +117,6 @@ def clubphoto(club_info):
               {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'}]
     return render_template('clubphoto.html',
                            title=club,
-                           user=user,
                            club=club,
                            photos=photos)
 
@@ -252,7 +249,6 @@ def actstatus(act_info):
         members_num += 1
     return render_template('actstatus.html',
                            title=actname,
-                           user=user_obj.nickname,
                            club=club.name,
                            actname=actname,
                            date=date,

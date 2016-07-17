@@ -26,7 +26,6 @@ def quitclub():
         clubs.append(club)
     return render_template('quitclub.html',
                            title='Quit Club',
-                           user=user_obj.nickname,
                            clubs=clubs)
 
 
@@ -105,7 +104,6 @@ def personal():
             break
     return render_template('personal.html',
                            title=user_obj.nickname,
-                           user=user_obj.nickname,
                            pictures=pictures,
                            info=info,
                            clubs=clubs,
@@ -157,7 +155,6 @@ def teacher():
     info['picture'] = user_obj.picture
     return render_template('teacher.html',
                            title=user_obj.nickname,
-                           user=user_obj.nickname,
                            myclubs=myclubs,
                            pictures=pictures,
                            info=info)
@@ -195,8 +192,7 @@ def forgotpw():
     else:
         user = ''
     return render_template('forgotpassword.html',
-                           title='Retrieve Password',
-                           user=user)
+                           title='Retrieve Password')
 
 
 @userblueprint.route('/forgot_password/submit', methods=['POST'])
