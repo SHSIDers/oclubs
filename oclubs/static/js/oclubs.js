@@ -59,5 +59,10 @@
 							}
 					} );
 				} );
+
+			$( '.refresh' )
+				.click( function() {
+					location.reload();
+				} );
 		} );
 } )( jQuery );

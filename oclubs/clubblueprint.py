@@ -16,7 +16,7 @@ clubblueprint = Blueprint('clubblueprint', __name__)
 def clublist(type):
     '''Club list by club type'''
     num = 18
-    if type == '':
+    if type == 'all':
         clubs_obj = oclubs.objs.Club.randomclubs(num)
     elif type == 'academics':
         clubs_obj = oclubs.objs.Club.randomclubs(num, (True, False, False, False, False, False, False))

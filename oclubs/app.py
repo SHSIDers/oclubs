@@ -38,7 +38,13 @@ def get_name():
         user = ''
     return user
 
+
+def get_picture(picture):
+    return url_for('static', filename='images/' + picture + '.jpg')
+
+
 app.jinja_env.globals['usernickname'] = get_name
+app.jinja_env.globals['getpicture'] = get_picture
 
 
 @app.errorhandler(404)
