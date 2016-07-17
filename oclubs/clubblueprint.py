@@ -6,7 +6,6 @@ from flask import (
     Blueprint, render_template, url_for, request, session, redirect, flash, abort
 )
 
-import traceback
 import oclubs
 import re
 

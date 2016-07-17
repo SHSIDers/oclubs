@@ -6,7 +6,6 @@ from flask import (
     Blueprint, render_template, url_for, session, abort, request, redirect, flash
 )
 
-import traceback
 import oclubs
 import re
 
@@ -19,26 +18,21 @@ def date_to_string(date):
     return result
 
 
-@actblueprint.route('/allact')
+@actblueprint.route('/all')
 def allactivities():
     '''All Activities'''
-    user = ''
-    activities = [{'club_name': 'Art Club', 'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
-                  {'club_name': 'Photo Club', 'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'},
-                  {'club_name': 'Art Club', 'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
-                  {'club_name': 'Photo Club', 'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'},
-                  {'club_name': 'Art Club', 'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
-                  {'club_name': 'Photo Club', 'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'},
-                  {'club_name': 'Art Club', 'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
-                  {'club_name': 'Photo Club', 'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'},
-                  {'club_name': 'Art Club', 'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
-                  {'club_name': 'Photo Club', 'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'},
-                  {'club_name': 'Art Club', 'act_name': 'Painting', 'time': 'June 30, 2016', 'place': 'Art Center'},
-                  {'club_name': 'Photo Club', 'act_name': 'Taking Pictures', 'time': 'June 30, 2016', 'place': 'SHSID Campus'}]
+    activities = []
+    acts_obj = oclubs.obj.Activity.add_activities()
+    for act_obj in acts_obj:
+        act = {}
+        act['club_name'] = act_obj.club.name
+        act['act_name'] = act_obj.name
+        act['time'] = date_to_string(act_obj.date)
+        act['place'] = act_obj.location
+        activities.append(act)
     return render_template('allact.html',
                            title='All Activities',
                            is_allact=True,
-                           user=user,
                            activities=activities)
 
 
