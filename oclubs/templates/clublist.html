@@ -12,14 +12,14 @@
         </div>
         <div class="list-group">
             <li class="list-group-item active">Club Types</li>
-            <a href="{{ url_for('.clublist', type='') }}" class="list-group-item {% if type='' %}selected{% endif %}">All</a>
-            <a href="{{ url_for('.clublist', type='academics') }}" class="list-group-item {% if type='academics' %}selected{% endif %}">Academics</a>
-            <a href="{{ url_for('.clublist', type='sports') }}" class="list-group-item {% if type='sports' %}selected{% endif %}">Sports</a>
-            <a href="{{ url_for('.clublist', type='arts') }}" class="list-group-item {% if type='arts' %}selected{% endif %}">The Arts</a>
-            <a href="{{ url_for('.clublist', type='services') }}" class="list-group-item {% if type='services' %}selected{% endif %}">Services</a>
-            <a href="{{ url_for('.clublist', type='entertainment') }}" class="list-group-item {% if type='entertainment' %}selected{% endif %}">Entertainment</a>
-            <a href="{{ url_for('.clublist', type='others') }}" class="list-group-item {% if type='others' %}selected{% endif %}">Others</a>
-            <a href="{{ url_for('.clublist', type='school_teams') }}" class="list-group-item {% if type='school_teams' %}selected{% endif %}">School Teams</a>
+            <a href="{{ url_for('.clublist', type='') }}" class="list-group-item {% if type=='' %}selected{% endif %}">All</a>
+            <a href="{{ url_for('.clublist', type='academics') }}" class="list-group-item {% if type=='academics' %}selected{% endif %}">Academics</a>
+            <a href="{{ url_for('.clublist', type='sports') }}" class="list-group-item {% if type=='sports' %}selected{% endif %}">Sports</a>
+            <a href="{{ url_for('.clublist', type='arts') }}" class="list-group-item {% if type=='arts' %}selected{% endif %}">The Arts</a>
+            <a href="{{ url_for('.clublist', type='services') }}" class="list-group-item {% if type=='services' %}selected{% endif %}">Services</a>
+            <a href="{{ url_for('.clublist', type='entertainment') }}" class="list-group-item {% if type=='entertainment' %}selected{% endif %}">Entertainment</a>
+            <a href="{{ url_for('.clublist', type='others') }}" class="list-group-item {% if type=='others' %}selected{% endif %}">Others</a>
+            <a href="{{ url_for('.clublist', type='school_teams') }}" class="list-group-item {% if type=='school_teams' %}selected{% endif %}">School Teams</a>
         </div>
     </div>
 
