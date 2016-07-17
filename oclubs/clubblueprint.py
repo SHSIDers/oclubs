@@ -144,40 +144,6 @@ def newleader_submit(club_info):
                            user=user_obj.nickname)
 
 
-@clubblueprint.route('/<club_info>/input_attendance')
-def inputatten(club_info):
-    '''Input Attendance'''
-    if 'user_id' not in session:
-        abort(401)
-    user_obj = oclubs.objs.User(session['user_id'])
-    try:
-        club_id = int(re.match(r'^\d+', club_info).group(0))
-        club = oclubs.objs.Club(club_id)
-    except:
-        abort(404)
-    if user_obj.id != club.leader.id:
-        abort(403)
-    members_obj = club.members
-    members = []
-    for member_obj in members_obj:
-        member = {}
-        member['passportname'] = member_obj.passportname
-        member['nick_name'] = member_obj.nickname
-        member['picture'] = member_obj.picture
-        members.append(member)
-    return render_template('inputatten.html',
-                           title='Input Attendance',
-                           user=user_obj.nickname,
-                           club=club.name,
-                           members=members)
-
-
-@clubblueprint.route('/<club_info>/input_attendance/submit', methods=['POST'])
-def inputatten_submit(club_info):
-    '''Change attendance in database'''
-    pass
-
-
 @clubblueprint.route('/<club_info>/member_info')
 def memberinfo(club_info):
     '''Check Members' Info'''

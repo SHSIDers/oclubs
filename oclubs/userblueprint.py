@@ -45,10 +45,10 @@ def quitclub_submit():
 def personal():
     '''Student Personal Page'''
     if 'user_id' not in session:
-        return redirect(url_for('notloggedin'))
+        abort(401)
     user_obj = oclubs.objs.User(session['user_id'])
     if user_obj.type == 1:
-        return redirect(url_for('noaccess'))
+        abort(403)
     pictures = []
     for num in range(1, 21):
         pictures.append(num)

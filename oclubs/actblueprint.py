@@ -3,7 +3,7 @@
 #
 
 from flask import (
-    Blueprint, render_template, url_for, session, abort
+    Blueprint, render_template, url_for, session, abort, request, redirect, flash
 )
 
 import traceback
@@ -227,40 +227,77 @@ def registerhm(club_info):
     '''Register Page for HongMei Activites'''
     if 'user_id' not in session:
         abort(401)
-    user_obj = oclubs.objs.User(session['user_id'])
     try:
         club_id = int(re.match(r'^\d+', club_info).group(0))
         club = oclubs.objs.Club(club_id)
     except:
         abort(404)
     schedule = []
-    # activities = club.
-    schedule = [{'id': '1', 'date': 'June 6 2016', 'activity': 'Finish homepage design'},
-                {'id': '2', 'date': 'June 7 2016', 'activity': 'Finish activity page design'},
-                {'id': '3', 'date': 'June 8 2016', 'activity': 'Finish personal page design'},
-                {'id': '4', 'date': 'June 9 2016', 'activity': 'Finish club page design'},
-                {'id': '5', 'date': 'June 10 2016', 'activity': 'Finish photo page design'},
-                {'id': '6', 'date': 'June 11 2016', 'activity': 'Finish about page design'},
-                {'id': '7', 'date': 'June 6 2016', 'activity': 'Finish homepage design'},
-                {'id': '8', 'date': 'June 7 2016', 'activity': 'Finish activity page design'},
-                {'id': '9', 'date': 'June 8 2016', 'activity': 'Finish personal page design'},
-                {'id': '10', 'date': 'June 9 2016', 'activity': 'Finish club page design'},
-                {'id': '11', 'date': 'June 10 2016', 'activity': 'Finish photo page design'},
-                {'id': '12', 'date': 'June 11 2016', 'activity': 'Finish about page design'},
-                {'id': '13', 'date': 'June 6 2016', 'activity': 'Finish homepage design'},
-                {'id': '14', 'date': 'June 7 2016', 'activity': 'Finish activity page design'},
-                {'id': '15', 'date': 'June 8 2016', 'activity': 'Finish personal page design'},
-                {'id': '16', 'date': 'June 9 2016', 'activity': 'Finish club page design'},
-                {'id': '17', 'date': 'June 10 2016', 'activity': 'Finish photo page design'},
-                {'id': '18', 'date': 'June 11 2016', 'activity': 'Finish about page design'}]
+    acts_obj = club.activities((False, False, False, True, False), (False, True))
+    for act_obj in acts_obj:
+        act = {}
+        act['id'] = act_obj.id
+        date = str(act_obj.date)
+        act['date'] = date[0:4] + " - " + date[4:6] + " - " + date[6:8]
+        act['activity'] = act_obj.description
+        schedule.append(act)
     return render_template('registerhm.html',
                            title='Register for HongMei',
-                           user=user_obj.nickname,
                            club=club.name,
-                           schedule=schedule)
+                           schedule=schedule,
+                           club_info=club_info)
 
 
-@actblueprint.route('/<act_info>/register_hongmei/submit')
-def registerhm_submit(act_info):
+@actblueprint.route('/<club_info>/register_hongmei/submit')
+def registerhm_submit(club_info):
     '''Submit HongMei signup info to database'''
-    pass
+    club_id = int(re.match(r'^\d+', club_info).group(0))
+    club = oclubs.objs.Club(club_id)
+    user_obj = oclubs.objs.User(session['user_id'])
+    register = request.form['register']
+    for reg in register:
+        act = oclubs.objs.Activity(reg)
+        act.signup(user_obj)
+    flash('Your application has been successfully submitted.', 'reghm')
+    return redirect(url_for('registerhm', club_info=club_info))
+
+
+@actblueprint.route('/<act_info>/input_attendance')
+def inputatten(act_info):
+    '''Input Attendance'''
+    if 'user_id' not in session:
+        abort(401)
+    user_obj = oclubs.objs.User(session['user_id'])
+    try:
+        act_id = int(re.match(r'^\d+', act_info).group(0))
+        act = oclubs.objs.Activity(act_id)
+    except:
+        abort(404)
+    club = act.club
+    if user_obj.id != club.leader.id:
+        abort(403)
+    members_obj = act.members
+    members = []
+    for member_obj in members_obj:
+        member = {}
+        member['passportname'] = member_obj.passportname
+        member['nick_name'] = member_obj.nickname
+        member['picture'] = member_obj.picture
+        member['id'] = member_obj.id
+        members.append(member)
+    return render_template('inputatten.html',
+                           title='Input Attendance',
+                           club=club.name,
+                           members=members)
+
+
+@actblueprint.route('/<act_info>/input_attendance/submit', methods=['POST'])
+def inputatten_submit(act_info):
+    '''Change attendance in database'''
+    act_id = int(re.match(r'^\d+', act_info).group(0))
+    act = oclubs.objs.Activity(act_id)
+    attendances = request.form['attendance']
+    for atten in attendances:
+        act.attend(oclubs.objs.User(atten))
+    flash('The attendance has been successfully submitted.', 'atten')
+    return redirect(url_for('inputatten', act_info=act_info))

@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 
-<html>
+<html usernickname="{{ usernickname() }}">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
@@ -45,9 +45,9 @@
         </div>
         
         <div class="login">
-            {% if user %}
+            {% if usernickname() %}
             <span id="loginanimation" onmouseenter="jello(this)" onmouseleave="this.className=''" style="display: block;">
-                <a href="{{ url_for('userblueprint.personal') }}" style="text-decoration:none"><span class="glyphicon glyphicon-info-sign"></span>&nbsp;{{ user }}</a>
+                <a href="{{ url_for('userblueprint.personal') }}" style="text-decoration:none"><span class="glyphicon glyphicon-info-sign"></span>&nbsp;{{ usernickname() }}</a>
             </span>
             {% else %}
             <span id="loginanimation" onmouseenter="jello(this)" onmouseleave="this.className=''" style="display: block;">

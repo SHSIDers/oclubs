@@ -1,25 +1,33 @@
 {% extends "base.html" %}
 {% block content %}
+{% with reghm = get_flashed_messages(category_filter=["reghm"]) %}
 
 <!-- Below Navbar -->
 <div class="container">
-    <h1 class="title">Register for HongMei Activities</h1>
-    <h2 class="title_next">{{ club }}</h2>
-    <div class="checkbox_block">
-        {% for plan in schedule %}
-        <label for="{{ plan.id }}">
-            <div class="col-sm-10">
-                <p style="font-size:150%">{{ plan.date }}</p>
-                <p>{{ plan.activity }}</p>
-            </div>
-            <div class="col-sm-2">
-                <input type="checkbox" value="{{ plan.id }}"" id="{{ plan.id }}">
-            </div>
-        </label>
-        {% endfor %}
-    </div>
-    <br>
-    <center><button class="btn btn-info" type="submit" style="width:20%;padding: 3% 0 3% 0; font-size:200%">Submit</button>
+	<h1 class="title">Register for HongMei Activities</h1>
+	<h2 class="title_next">{{ club }}</h2>
+	{% if reghm %}
+	<ul class="list-group">
+		{% for message in reghm %}
+		<li class="list-group-item">{{ message }}</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+	<div class="checkbox_block">
+		{% for plan in schedule %}
+		<label for="{{ plan.id }}">
+			<div class="col-sm-10">
+				<p style="font-size:150%">{{ plan.date }}</p>
+				<p>{{ plan.activity }}</p>
+			</div>
+			<div class="col-sm-2">
+				<input type="checkbox" name="register" value="{{ plan.id }}"" id="{{ plan.id }}">
+			</div>
+		</label>
+		{% endfor %}
+	</div>
+	<br>
+	<center><button class="btn btn-info" type="submit" style="width:20%;padding: 3% 0 3% 0; font-size:200%">Submit</button>
 </div>
 
 {% endblock %}

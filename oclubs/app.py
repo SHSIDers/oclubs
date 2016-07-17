@@ -5,7 +5,7 @@
 from __future__ import absolute_import
 
 from flask import (
-    Flask, redirect, request, render_template, url_for, session, jsonify
+    Flask, redirect, request, render_template, url_for, session, jsonify, g
 )
 
 import traceback
@@ -29,12 +29,14 @@ app.session_interface = RedisSessionInterface()
 def get_name():
     '''Get user's name if available'''
     if 'user_id' in session:
-        user_obj = oclubs.objs.User(session['user_id'])
+        user_obj = g.get('user_obj', None)
+        if not user_obj:
+            user_obj = oclubs.objs.User(session['user_id'])
+            g.user_obj = user_obj
         user = user_obj.nickname
     else:
         user = ''
     return user
-
 
 app.jinja_env.globals['usernickname'] = get_name
 
@@ -42,37 +44,30 @@ app.jinja_env.globals['usernickname'] = get_name
 @app.errorhandler(404)
 @app.route('/404')
 def wrong_url(e):
-    user = get_name()
     return render_template('wrongurl.html',
-                           title='Wrong URL',
-                           user=user
+                           title='Wrong URL'
                            ), 404
 
 
 @app.errorhandler(403)
 def no_access(e):
-    user_obj = oclubs.objs.User(session['user_id'])
     return render_template('noaccess.html',
-                           title='No Access',
-                           user=user_obj.nickname
+                           title='No Access'
                            ), 403
 
 
 @app.errorhandler(401)
 def not_logged_in(e):
     return render_template('notloggedin.html',
-                           title='Not Logged In',
-                           user=''
+                           title='Not Logged In'
                            ), 401
 
 
 @app.errorhandler(500)
 def error(e):
     '''Internal server error'''
-    user = get_name()
     return render_template('500.html',
-                           title='Error',
-                           user=user
+                           title='Error'
                            ), 500
 
 
@@ -97,7 +92,6 @@ def login():
 @app.route('/')
 def homepage():
     '''Homepage'''
-    user = get_name()
     # Three excellent clubs
     ex_clubs = [{'name': 'Website Club', 'picture': '1', 'intro': 'We create platform for SHSID.'},
                 {'name': 'Art Club', 'picture': '2', 'intro': 'We invite people to the world of arts.'},
@@ -105,36 +99,29 @@ def homepage():
     return render_template('homepage.html',
                            title='Here you come',
                            is_home=True,
-                           user=user,
                            ex_clubs=ex_clubs)
 
 
 @app.route('/about')
 def about():
     '''About This Website'''
-    user = get_name()
     return render_template('about.html',
                            title='About',
-                           is_about=True,
-                           user=user)
+                           is_about=True)
 
 
 @app.route('/advice')
 def advice():
     '''Advice Page'''
-    user = get_name()
     return render_template('advice.html',
-                           title='Advice',
-                           user=user)
+                           title='Advice')
 
 
 @app.route('/creators')
 def creators():
     '''Introduction Page about Us'''
-    user = get_name()
     return render_template('creators.html',
-                           title='Creators',
-                           user=user)
+                           title='Creators')
 
 
 if __name__ == '__main__':
