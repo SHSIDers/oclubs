@@ -660,6 +660,14 @@ thead.darklist {
 	height: 10vw;
 }
 
+.homepage_block > div > div > a {
+	color: #f2f2f2;
+}
+
+.homepage_block > div > div > a:hover {
+	color: #d9d9d9;
+}
+
 .homepage_function {
 	border-top-style: dotted;
 	border-color: #e4e6e7;
@@ -813,4 +821,39 @@ thead.darklist {
 .error p {
 	font-size:125%;
 	color:#f2f2f2;
+}
+
+.creators .bg {
+	background-color:#e6e6ff;
+}
+
+.creators p {
+	font-size: 125%;
+}
+
+.creators .blue {
+	color: #f2f2f2;
+	background-color: #337ab7;
+	border-style: solid;
+	border-color: #337ab7;
+	font-size: 150%;
+	font-family: 'Georgia'
+}
+
+.creators .green {
+	color: #f2f2f2;
+	background-color: #33cc33;
+	border-style: solid;
+	border-color: #33cc33;
+	font-size: 150%;
+	font-family: 'Georgia'
+}
+
+.creators .red {
+	color: #f2f2f2;
+	background-color: #990000;
+	border-style: solid;
+	border-color: #990000;
+	font-size: 150%;
+	font-family: 'Georgia'
 }

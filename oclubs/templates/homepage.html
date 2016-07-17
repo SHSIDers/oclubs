@@ -81,7 +81,7 @@
 						<h1>Clubs in SHSID</h1>
 					</div>
 					<div class="col-sm-2" style="padding-right:0">
-						<a href="#"><h1><span class="glyphicon glyphicon-list text-right"></span></h1></a>
+						<a href="{{ url_for('clubblueprint.clublist', type='all') }}"><h1><span class="glyphicon glyphicon-list text-right"></span></h1></a>
 					</div>
 					<h3>Student-led, creative, and surprising</h3>
 					<p>In SHSID, many of students participate in club activities. In academics, sports, and many other fields, students can always find what they are interested and join these clubs. All clubs are led by students, and yet they often give out surprising achievements. Let's explore the world of clubs on this website, oClubs!</p>
@@ -102,7 +102,7 @@
 				</div>
 				<div class="clearfix"></div>
 				<br>
-				<a href="act/photos"><button class="btn btn-block btn-primary">All Club Photos</button></a>
+				<a href="{{ url_for('actblueprint.allphotos') }}"><button class="btn btn-block btn-primary">All Club Photos</button></a>
 			</div>
 		</div>
 		<br>
@@ -126,7 +126,7 @@
 			<h2>Club Teachers</h2>
 			<h4>Online operation</h4>
 		</div>
-		<a href="about">
+		<a href="{{ url_for('about') }}">
 			<div class="col-sm-3">
 				<center><img src="static/images/more.jpg" class="img-responsive img-circle" alt="More"></center>
 				<h2>Learn more</h2>

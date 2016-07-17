@@ -92,10 +92,10 @@
     <div class="container text-center">
         <div class="col-md-4 soci">
             <h3>Join Clubs</h3>
-            <p style="text-decoration:underline"><a href="club/clublist">Click Here</a></p>
+            <p style="text-decoration:underline"><a href="{{ url_for('clubblueprint.clublist', type='all') }}">Click Here</a></p>
             <div class="clearfix"></div>
             <h3>Advice/Opinion</h3>
-            <p style="text-decoration:underline"><a href="advice">Click Here</a></p>
+            <p style="text-decoration:underline"><a href="{{ url_for('advice') }}">Click Here</a></p>
         </div>
         <div class="col-md-4 footer-left">
             <h3>Notes</h3>
@@ -103,7 +103,7 @@
         </div>
         <div class="col-md-4 footer-left">
             <h3>Check Creators' Info</h3>
-            <p style="text-decoration:underline"><a href="creators">Click Here</a></p>
+            <p style="text-decoration:underline"><a href="{{ url_for('creators') }}">Click Here</a></p>
             <div class="clearfix"> </div>
             <h3>Contact Us</h3>
             <p>oclubs@outlook.com</p>
