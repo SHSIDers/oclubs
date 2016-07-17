@@ -15,25 +15,18 @@ clubblueprint = Blueprint('clubblueprint', __name__)
 @clubblueprint.route('/clublist')
 def clublist():
     '''Club List'''
-    if('user_id' in session):
-        user = oclubs.objs.User(session['user_id']).nickname
-    else:
-        user = ''
-    # randomly choose clubs
-    clubs = [{'name': 'Art Club', 'photo': 'intro1', 'intro': 'Here is where birth of arts happens'},
-             {'name': 'Photo Club', 'photo': 'intro2', 'intro': 'Place for photography!'},
-             {'name': 'Art Club', 'photo': 'intro3', 'intro': 'Here is where birth of arts happens'},
-             {'name': 'Photo Club', 'photo': 'intro3', 'intro': 'Place for photography!'},
-             {'name': 'Art Club', 'photo': 'intro4', 'intro': 'Here is where birth of arts happens'},
-             {'name': 'Photo Club', 'photo': 'intro5', 'intro': 'Place for photography!'},
-             {'name': 'Art Club', 'photo': 'intro6', 'intro': 'Here is where birth of arts happens'},
-             {'name': 'Photo Club', 'photo': 'intro7', 'intro': 'Place for photography!'},
-             {'name': 'Art Club', 'photo': 'intro8', 'intro': 'Here is where birth of arts happens'},
-             {'name': 'Photo Club', 'photo': 'intro9', 'intro': 'Place for photography!'}]
+    clubs = []
+    clubs_obj = oclubs.objs.Club.randomclubs(18)
+    for club_obj in clubs_obj:
+        club = {}
+        club['id'] = club_obj.id
+        club['name'] = club_obj.name
+        club['picture'] = club_obj.picture
+        club['intro'] = club_obj.intro
+        clubs.append(club)
     return render_template('clublist.html',
                            title='Club List',
                            is_list=True,
-                           user=user,
                            clubs=clubs)
 
 
@@ -59,10 +52,6 @@ def club(club_info):
 @clubblueprint.route('/<club_info>/introduction')
 def clubintro(club_info):
     '''Club Intro'''
-    if('user_id' in session):
-        user = oclubs.objs.User(session['user_id']).nickname
-    else:
-        user = ''
     try:
         club_id = int(re.match(r'^\d+', club_info).group(0))
         club = oclubs.objs.Club(club_id)
@@ -70,7 +59,6 @@ def clubintro(club_info):
         abort(404)
     return render_template('clubintro.html',
                            title='Club Intro',
-                           user=user,
                            club=club.name,
                            intro=club.intro,
                            leader=club.leader.nickname,
