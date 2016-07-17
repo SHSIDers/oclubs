@@ -49,7 +49,7 @@ class User(BaseObject):
                 'where': [('=', 'cm_user', self.id)],
                 'order': [('act_date', True)]
             },
-            require_future=True
+            dates=(False, True)
         )
 
     @staticmethod
