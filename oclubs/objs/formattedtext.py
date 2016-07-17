@@ -9,23 +9,28 @@ from __future__ import absolute_import, unicode_literals
 
 from flask import Markup
 
-from oclubs.objs.base import BaseObject
+from oclubs.objs.base import BaseObject, Property
 
 
 class FormattedText(BaseObject):
-    def __init__(self, tid):
-        super(FormattedText, self).__init__(tid)
+    table = 'text'
+    identifier = 'text_id'
+    _data = Property('text_data')
+    _flags = Property('text_flags',
+                      (lambda x: x.split(','), lambda x: ','.join(x)))
+
+    def __init__(self):
+        super(FormattedText, self).__init__()
         self._raw = self._formatted = None
 
     @property
     def raw(self):
         if self._raw is None:
-            flags = self.__data['flags'].split(',')
-            if 'external' in flags:
+            if 'external' in self._flags:
                 # TODO
                 pass
             else:
-                self._raw = self._data['data']
+                self._raw = self._data
         return self._raw
 
     @property
@@ -34,14 +39,3 @@ class FormattedText(BaseObject):
             # TODO
             self._formatted = Markup(self.raw)
         return self._formatted
-
-    @property
-    def _data(self):
-        return super(FormattedText, self)._data(
-                'text',
-                [('=', 'text_id', self.id)],
-                {
-                    'text_data': 'data',
-                    'text_flags': 'flags'
-                }
-            )

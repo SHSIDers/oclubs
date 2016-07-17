@@ -7,55 +7,18 @@
 
 from __future__ import absolute_import
 
-from oclubs.objs import User, Club
-from oclubs.objs.base import BaseObject
+from oclubs.objs.base import BaseObject, Property
 
 
 class Upload(BaseObject):
-    def __init__(self, uid):
-        super(Upload, self).__init__(uid)
-        self._club = self._uploader = None
-        self._location_local = self._location_external = None
-
-    @property
-    def club(self):
-        if self._club is None:
-            self._club = Club(self._data['club'])
-        return self._club
-
-    @property
-    def uploader(self):
-        if self._uploader is None:
-            self._uploader = User(self._data['uploader'])
-        return self._uploader
-
-    @property
-    def location_local(self):
-        if self._location_local is None:
-            # TODO
-            self._location_local = self._data['location']
-        return self._location_local
+    table = 'upload'
+    identifier = 'upload_id'
+    club = Property('upload_club', 'Club')
+    uploader = Property('upload_user', 'User')
+    location_local = Property('upload_loc')
+    mime = Property('upload_mime')
 
     @property
     def location_external(self):
-        if self._location_external is None:
-            # TODO
-            self._location_external = self._data['location']
-        return self._location_external
-
-    @property
-    def mime(self):
-        return self._data['mime']
-
-    @property
-    def _data(self):
-        return super(Upload, self)._data(
-                'upload',
-                [('=', 'upload_id', self.id)],
-                {
-                    'upload_club': 'club',
-                    'upload_user': 'uploader',
-                    'upload_loc': 'location',
-                    'upload_mime': 'mine'
-                }
-            )
+        # TODO
+        return self.location_local
