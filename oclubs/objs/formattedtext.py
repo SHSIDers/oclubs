@@ -15,7 +15,7 @@ from oclubs.objs.base import BaseObject, Property
 class FormattedText(BaseObject):
     table = 'text'
     identifier = 'text_id'
-    _data = Property('text_data')
+    _blob = Property('text_data')
     _flags = Property('text_flags',
                       (lambda x: x.split(','), lambda x: ','.join(x)))
 
@@ -30,7 +30,7 @@ class FormattedText(BaseObject):
                 # TODO
                 pass
             else:
-                self._raw = self._data
+                self._raw = self._blob
         return self._raw
 
     @property
