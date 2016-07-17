@@ -22,7 +22,7 @@ def date_to_string(date):
 def allactivities():
     '''All Activities'''
     activities = []
-    acts_obj = oclubs.objs.Activity.add_activities()
+    acts_obj = oclubs.objs.Activity.all_activities()
     for act_obj in acts_obj:
         act = {}
         act['club_name'] = act_obj.club.name

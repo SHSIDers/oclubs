@@ -49,31 +49,38 @@ app.jinja_env.globals['getpicture'] = get_picture
 
 @app.errorhandler(404)
 @app.route('/404')
-def wrong_url(e):
-    return render_template('wrongurl.html',
-                           title='Wrong URL'
+def page_not_found(e):
+    '''Wrong url'''
+    return render_template('error.html',
+                           title='404 Page Not Found',
+                           is_page_not_found=True
                            ), 404
 
 
 @app.errorhandler(403)
-def no_access(e):
-    return render_template('noaccess.html',
-                           title='No Access'
+def forbidden(e):
+    '''No access'''
+    return render_template('error.html',
+                           title='403 Forbidden',
+                           is_forbidden=True
                            ), 403
 
 
 @app.errorhandler(401)
-def not_logged_in(e):
-    return render_template('notloggedin.html',
-                           title='Not Logged In'
+def unauthorized(e):
+    '''Not logged in'''
+    return render_template('error.html',
+                           title='401 Unauthorized',
+                           is_unauthorized=True
                            ), 401
 
 
 @app.errorhandler(500)
-def error(e):
+def internal_server_error(e):
     '''Internal server error'''
-    return render_template('500.html',
-                           title='Error'
+    return render_template('error.html',
+                           title='500 Internal Server Error',
+                           is_internal_server_error=True
                            ), 500
 
 

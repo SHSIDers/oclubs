@@ -804,3 +804,13 @@ thead.darklist {
 	padding: 3%;
 	font-size: 125%;
 }
+
+.error {
+	min-height:95%;
+	height:auto;
+}
+
+.error p {
+	font-size:125%;
+	color:#f2f2f2;
+}
