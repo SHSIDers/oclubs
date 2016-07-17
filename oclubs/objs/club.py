@@ -21,6 +21,7 @@ class Club(BaseObject):
     is_active = Property('club_inactive', lambda v: not v)
     intro = Property('club_intro')
     picture = Property('club_picture', 'Upload')
+    type = Property('club_type')
     members = ListProperty('club_member', 'cm_club', 'cm_user', 'User')
     all_act = ListProperty('activities', 'act_club', 'act_id', 'Activity')
 
@@ -38,12 +39,17 @@ class Club(BaseObject):
         return Club._excellentclubs
 
     @classmethod
-    def randomclubs(cls, amount):
+    def randomclubs(cls, amount, types=None):
+        where = []
+        if types:
+            types = [_type[0] for _type in filter(
+                lambda val: val[1], enumerate(types))]
+            where.append(('in', 'club_type', types))
         tempdata = database.fetch_onecol(
             cls.table,
             cls.identifier,
             {
-                'where': [],
+                'where': where,
                 'order': [('RAND()', True)],
                 'limit': amount
             }
