@@ -48,7 +48,7 @@ class Club(BaseObject):
         # FIXME: BLOCKED-ON-DATABASE: JOIN REQUIRED
         return [Club(0)] * 10
 
-    def activities(self, types, require_future=False):
+    def activities(self, types, dates=(True, True)):
         from oclubs.objs import Activity
 
         return Activity.get_activities_conditions(
@@ -57,7 +57,7 @@ class Club(BaseObject):
                 'where': [('=', 'act_club', self.id)],
                 'order': [('act_date', True)]
             },
-            require_future=require_future
+            dates=dates
         )
 
     def add_member(self, user):

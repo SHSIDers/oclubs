@@ -84,7 +84,7 @@ class Activity(BaseObject):
 
     @classmethod
     def get_activities_conditions(cls, times, additional_conds=None,
-                                  require_future=False):
+                                  dates=(True, True)):
         times = [time[0] for time in filter(
             lambda val: val[1], enumerate(times))]
 
@@ -93,7 +93,9 @@ class Activity(BaseObject):
             conds.update(additional_conds)
 
         conds['where'] = conds.get('where', [])
-        if require_future:
+        if dates == (True, False):
+            conds['where'].append('<', 'act_date', date_int(date.today()))
+        elif dates == (False, True):
             conds['where'].append('>=', 'act_date', date_int(date.today()))
         conds['where'].append(('in', 'act_time', times))
 
