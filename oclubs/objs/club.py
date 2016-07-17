@@ -17,7 +17,7 @@ class Club(BaseObject):
     teacher = Property('club_teacher', 'User')
     leader = Property('club_leader', 'User')
     description = Property('club_desc', 'FormattedText')
-    location = Property('club_picture')
+    location = Property('club_location')
     is_active = Property('club_inactive', lambda v: not v)
     intro = Property('club_intro')
     picture = Property('club_picture', 'Upload')
