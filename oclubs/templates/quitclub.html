@@ -9,7 +9,7 @@
         <img src="../static/images/areyousure1.jpg" class="img-responsive img-thumbnail" alt="Are you sure?">
     </div>
     <div class="col-sm-6">
-    	<form class="form-group" id="quit_club" action="{{ url_for('quitclub_submit') }}" style="margin-left:auto; margin-right:auto; color:#f2f2f2">
+    	<form class="form-group" id="quit_club" action="{{ url_for('userblueprint.quitclub_submit') }}" style="margin-left:auto; margin-right:auto; color:#f2f2f2">
             <h1>Quitting Club</h1>
             <p style="font-style:italic; font-size:150%">If you really want to quit a club, then please select the club and state your reason. You request for quitting will be emailed to the club leader</p>
             <br>
@@ -31,7 +31,7 @@
             <label for="reason">Reason:</label>
         	<textarea class="form-control" rows="10" id="reason"></textarea>
             <br>
-            <button class="btn btn-primary" data-toggle="modal" data-target="#confirmation" id="updatequit">Submit</button>
+            <button class="btn btn-info" data-toggle="modal" data-target="#confirmation" id="updatequit">Submit</button>
         </form>
     </div>
     <div class="col-sm-3">
@@ -60,4 +60,5 @@
     </div>
 </div>
 
+{% endwith %}
 {% endblock %}

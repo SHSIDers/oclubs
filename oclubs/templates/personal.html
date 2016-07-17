@@ -40,12 +40,12 @@
 	</div>
 	<div class="clearfix"></div>
 	<div class="col-sm-6">
-		<center><a href="clublist">
+		<center><a href="{{ url_for('clubblueprint.clublist', type='all') }}">
 			<button class="btn btn-info" style="padding:5% 10% 5% 10%; font-size:125%">Join Clubs</button>
 		</a></center>
 	</div>
 	<div class="col-sm-6">
-		<center><a href="quit">
+		<center><a href="{{ url_for('userblueprint.quitclub') }}">
 			<button class="btn btn-info" style="padding:5% 10% 5% 10%; font-size:125%">Quit Clubs</button>
 		</a></center>
 	</div>

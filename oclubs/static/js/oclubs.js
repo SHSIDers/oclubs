@@ -27,8 +27,13 @@
 			$( "#updatequit" )
 				.click( function() {
 					var selected = $( '.form-group select option:selected' );
-					$( ".modal .modal-body" )
-						.html( "<p>Your choice is " + selected.text() + ".</p>" );
+					if ( selected.size() > 0 ) {
+						$( ".modal .modal-body" )
+							.html( "<p>Your choice is " + selected.text() + ".</p>" );
+					} else {
+						$( ".modal .modal-body" )
+							.html( "<p>Please choose the club you want to quit.</p>" );
+					}
 				} );
 
 			$( ".updatehm" )
