@@ -24,24 +24,31 @@ class Property(property):
         return self._cache[prop.name]
 
     def setf(prop, self, value):
-        if prop.name:
-            self._cache[prop.name] = value
+        self._cache[prop.name] = value
 
         value = prop.exp(value)
-        if prop.name and self._dbdata is not None:
-            self._dbdata[prop.name] = value
+        if self.is_real:
+            if self._dbdata is not None:
+                self._dbdata[prop.name] = value
 
-        database.update_row(
-            self.table,
-            {prop.dbname: value},
-            {self.identifier: self.id}
-        )
+            database.update_row(
+                self.table,
+                {prop.dbname: value},
+                {self.identifier: self.id}
+            )
+        else:
+            self._dbdata = self._dbdata or {}
+            self._dbdata[prop.name] = value
 
     def delf(prop, self):
         if prop.name in self._cache:
             del self._cache[prop.name]
 
-        self._dbdata = None
+        if self.is_real:
+            self._dbdata = None
+        else:
+            if prop.name in self._dbdata:
+                del self._dbdata[prop.name]
 
 
 class ListProperty(property):
@@ -93,10 +100,19 @@ class _BaseMetaclass(type):
 
         dct['_data'] = _data
 
-        @property
-        def id(self):
-            return self._id
-        dct['id'] = id
+        def create(self):
+            if self.is_real:
+                raise NotImplementedError
+            data = {}
+            for key, value in _propsdb.items():
+                data[key] = self._dbdata[value]
+            self._id = database.insert_row(self.table, data)
+
+            # Reload with newest data from database
+            del self._dbdata
+            self._data
+
+        dct['create'] = create
 
         return super(_BaseMetaclass, meta).__new__(meta, name, bases, dct)
 
@@ -111,8 +127,22 @@ class _BaseMetaclass(type):
 class BaseObject(object):
     __metaclass__ = _BaseMetaclass
 
+    @property
+    def id(self):
+        if not self.is_real:
+            raise NotImplementedError
+        return self._id
+
+    @property
+    def is_real(self):
+        return self._id >= 0
+
+    @classmethod
+    def new(cls):
+        return cls(-1)
+
     def __eq__(self, other):
-        if not isinstance(other, BaseObject):
+        if not isinstance(other, BaseObject) or not self.is_real:
             return NotImplemented
         return self.id == other.id
 
