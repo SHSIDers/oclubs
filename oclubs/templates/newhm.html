@@ -35,7 +35,7 @@
         </div>
     </div>
     <br><br><br>
-    <center><button class="btn btn-success" style="padding: 3%; font-size:200%">Submit the Schedule</button></center>
+    <center><form action="{{ url_for('.newhm_submit', club_info=club_info) }}"><input class="btn btn-success" type="submit" style="padding: 3%; font-size:200%" value="Submit the Schedule"></center>
 </div>
 
 {% endblock %}

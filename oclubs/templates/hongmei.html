@@ -18,7 +18,7 @@
                 <td>{{ plan.date }}</td>
                 <td>
                     {% for member in plan.members %}
-                    {{ member.name }}: {{ member.phone }}<br>
+                    {{ member.name }}: {{ member.phone }} (Consent Form Handed? {{ member.consentform }})<br>
                     {% endfor %}
                 </td>
             </tr>
