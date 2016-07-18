@@ -36,7 +36,7 @@ def quitclub_submit():
     user_obj = oclubs.objs.User(session['user_id'])
     club.remove_member(user_obj)
     flash('You have successfully quitted' + request.form['clubs'], 'quit')
-    return redirect(url_for('quitclub'))
+    return redirect(url_for('.quitclub'))
 
 
 @userblueprint.route('/')
@@ -122,7 +122,7 @@ def personal_submit_info():
     user_obj.phone = request.form['phone']
     user_obj.picture = request.form['picture']  # location in html has to be adjusted
     flash('Your information has been successfully changed.', 'status_info')
-    return redirect(url_for('personal'))
+    return redirect(url_for('.personal'))
 
 
 @userblueprint.route('/submit_password', methods=['POST'])
@@ -134,7 +134,7 @@ def personal_submit_password():
         flash('Your information has been successfully changed.', 'status_pw')
     else:
         flash('You have entered two different passwords. Please enter again.', 'status_pw')
-    return redirect(url_for('personal'))
+    return redirect(url_for('.personal'))
 
 
 @userblueprint.route('/teacher')
@@ -169,7 +169,7 @@ def teacher_submit_info():
     user_obj.phone = request.form['phone']
     user_obj.picture = request.form['picture']  # location in html has to be adjusted
     flash('Your information has been successfully changed.', 'status_info')
-    return redirect(url_for('teacher'))
+    return redirect(url_for('.teacher'))
 
 
 @userblueprint.route('/teacher/submit_password', methods=['POST'])
@@ -181,7 +181,7 @@ def teacher_submit_password():
         flash('Your information has been successfully changed.', 'status_pw')
     else:
         flash('You have entered two different passwords. Please enter again.', 'status_pw')
-    return redirect(url_for('teacher'))
+    return redirect(url_for('.teacher'))
 
 
 @userblueprint.route('/forgot_password')

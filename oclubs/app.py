@@ -5,12 +5,13 @@
 from __future__ import absolute_import
 
 from flask import (
-    Flask, redirect, request, render_template, url_for, session, jsonify, g
+    Flask, redirect, request, render_template, url_for, session, jsonify, g, abort
 )
 
 import traceback
 
 import oclubs
+from oclubs.access import database
 from oclubs.userblueprint import userblueprint
 from oclubs.clubblueprint import clubblueprint
 from oclubs.actblueprint import actblueprint
@@ -45,6 +46,15 @@ def get_picture(picture):
 
 app.jinja_env.globals['usernickname'] = get_name
 app.jinja_env.globals['getpicture'] = get_picture
+
+
+@app.after_request
+def database_done(response):
+    if response.status[0] in ['1', '2', '3']:
+        database.done(True)
+    else:
+        database.done(False)
+    return response
 
 
 @app.errorhandler(404)

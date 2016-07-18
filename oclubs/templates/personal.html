@@ -124,7 +124,7 @@
 
 	{% if leader_club %}
 	<br>
-	<center><a href="#">
+	<center><a href="{{ url_for('.club', club_info=club_info) }}">
 		<button class="btn btn-success" style="padding:2%;font-size:125%">Manage {{ leader_club }}</button>
 	</a></center>
 	{% endif %}
@@ -148,7 +148,7 @@
 					</ul>
 					{% endif %}
 					<label for="name">Nick Name:</label>
-					<input class="form-control" id="name" type="text" name="name" placeholder="{{ user }}">
+					<input class="form-control" id="name" type="text" name="name" placeholder="{{ usernickname() }}">
 					<br>
 					<label for="email">Email:</label>
 					<input class="form-control" id="email" type="email" name="email" placeholder="{{ info.email }}">

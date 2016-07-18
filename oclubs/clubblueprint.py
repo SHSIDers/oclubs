@@ -94,8 +94,8 @@ def clubintro_submit(club_info):
     club_id = int(re.match(r'^\d+', club_info).group(0))
     club = oclubs.objs.Club(club_id)
     club.add_member(user_obj)
-    flash('You have successfully joined' + club.name, 'join')
-    return redirect(url_for('clubintro'))
+    flash('You have successfully joined ' + club.name + '.', 'join')
+    return redirect(url_for('clubblueprint.clubintro', club_info=club_info))
 
 
 @clubblueprint.route('/<club_info>/new_leader')

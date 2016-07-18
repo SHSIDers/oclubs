@@ -35,7 +35,9 @@
         </form>
     </div>
     <br><br><br>
-    <center><button class="btn btn-success" type="submit" style="padding: 3%; font-size:200%">Submit the Schedule</button></center>
+    <center><a href="{{ url_for('clubblueprint.club', club_info=club_info) }}" style="text-decoration:none">
+        <button class="btn btn-success" style="padding: 3%; font-size:200%">Submit the Schedule</button>
+    </a></center>
 </div>
 
 {% endblock %}

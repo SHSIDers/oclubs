@@ -206,7 +206,8 @@ def newhm(club_info):
         abort(403)
     return render_template('newhm.html',
                            title='HongMei Schedule',
-                           club=club.name)
+                           club=club.name,
+                           club_info=club_info)
 
 
 @actblueprint.route('/<club_info>/newhm/submit', methods=['POST'])
@@ -291,7 +292,7 @@ def registerhm_submit(club_info):
         act = oclubs.objs.Activity(reg)
         act.signup(user_obj)
     flash('Your application has been successfully submitted.', 'reghm')
-    return redirect(url_for('registerhm', club_info=club_info))
+    return redirect(url_for('.registerhm', club_info=club_info))
 
 
 @actblueprint.route('/<act_info>/input_attendance')
@@ -332,4 +333,4 @@ def inputatten_submit(act_info):
     for atten in attendances:
         act.attend(oclubs.objs.User(atten))
     flash('The attendance has been successfully submitted.', 'atten')
-    return redirect(url_for('inputatten', act_info=act_info))
+    return redirect(url_for('.inputatten', act_info=act_info))
