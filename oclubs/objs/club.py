@@ -50,7 +50,7 @@ class Club(BaseObject):
             cls.identifier,
             {
                 'where': where,
-                'order': [('RAND()', True)],
+                'order': [(Ellipsis, True)],
                 'limit': amount
             }
         )

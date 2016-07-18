@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 #
 
-from __future__ import unicode_literals
+from __future__ import absolute_import
 
 from flask import g
 import MySQLdb
@@ -24,18 +24,18 @@ def ___parse_cond(cond):
         var, const = conds
         if const is None:
             op = {'=': 'IS', '!=': 'IS NOT'}.get(op, op)
-        return ' '.join([var, op, _encode(const)])
+        return ' '.join([_encode_name(var), op, _encode(const)])
     elif op.lower() in ["and", "or"]:
         return (' %s ' % op.upper()).join(
             [__parse_cond(one_cond) for one_cond in conds])
     elif op.lower() == "range":
-        # (lo, hi]
+        # [lo, hi)
         var, (lo, hi) = conds
         return __parse_cond('and', ('>=', var, lo), ('<', var, hi))
     elif op.lower() == "in":
         var, const = conds
         const = ','.join([_encode(elemt) for elemt in const])
-        return '%s IN (%s)' % (var, const)
+        return '%s IN (%s)' % (_encode_name(var), const)
 
 
 def _parse_comp_cond(cond, forcelimit=None):
@@ -70,14 +70,14 @@ def _parse_comp_cond(cond, forcelimit=None):
         sql.append('WHERE ' + _parse_cond(conddict['where']))
 
     if conddict['group']:
-        sql.append('GROUP BY ' + ','.join(conddict['group']))
+        sql.append('GROUP BY ' + ','.join(_encode_name(conddict['group'])))
 
     if conddict['having']:
         sql.append('HAVING ' + _parse_cond(conddict['having']))
 
     if conddict['order']:
         sql.append('ORDER BY ' + ','.join([
-            var + ' ' + ('ASC' if is_asc else 'DESC')
+            _encode_name(var) + ' ' + ('ASC' if is_asc else 'DESC')
             for var, is_asc in conddict['order']
         ]))
 
@@ -96,11 +96,23 @@ def _encode(obj):
         return 'NULL'
     elif isinstance(obj, (bool, int, long, float)):
         return str(obj)
-    elif isinstance(obj, basestring):
+    elif isinstance(obj, str):
         return "'%s'" % MySQLdb.escape_string(obj)
+    elif isinstance(obj, unicode):
+        return _encode(obj.encode('utf-8'))
     else:
         import json
         return _encode(json.dumps(obj))
+
+
+def _encode_name(identifier):
+    if identifier is Ellipsis:
+        return 'RAND()'
+    elif isinstance(identifier, list):
+        return ','.join([_encode_name(item) for item in identifier])
+    elif isinstance(identifier, unicode):
+        identifier = identifier.encode('utf-8')
+    return '`%s`' % MySQLdb.escape_string(identifier)
 
 
 def _mk_multi_return(row, cols, coldict):
@@ -172,11 +184,11 @@ def done(commit=True):
 
 def fetch_onerow(table, coldict, conds):
     cols = coldict.keys()
-    st = ','.join(cols)
+    st = _encode_name(cols)
     conds = _parse_comp_cond(conds, forcelimit=1)
 
     rows = _execute("SELECT %s FROM %s %s;"
-                    % (st, table, conds))
+                    % (st, _encode_name(table), conds))
     if not rows:
         raise NoRow
 
@@ -187,7 +199,7 @@ def fetch_oneentry(table, col, conds):
     conds = _parse_comp_cond(conds, forcelimit=1)
 
     rows = _execute("SELECT %s FROM %s %s;"
-                    % (col, table, conds))
+                    % (_encode_name(col), _encode_name(table), conds))
     if not rows:
         raise NoRow
 
@@ -198,28 +210,28 @@ def fetch_onecol(table, col, conds):
     conds = _parse_comp_cond(conds)
 
     rows = _execute("SELECT %s FROM %s %s;"
-                    % (col, table, conds))
+                    % (_encode_name(col), _encode_name(table), conds))
 
     return [val for val, in rows]
 
 
 def fetch_multirow(table, coldict, conds):
     cols = coldict.keys()
-    st = ','.join(cols)
+    st = _encode_name(cols)
     conds = _parse_comp_cond(conds)
 
-    rows = _execute("SELECT %s FROM %s %s;" % (st, table, conds))
+    rows = _execute("SELECT %s FROM %s %s;" % (st, _encode_name(table), conds))
 
     return [_mk_multi_return(row, cols, coldict) for row in rows]
 
 
 def insert_row(table, insert):
     try:
-        keys = ','.join(insert.keys())
+        keys = _encode_name(insert.keys())
         values = ','.join([_encode(value) for value in insert.values()])
 
         return _execute("INSERT INTO %s (%s) VALUES (%s);"
-                        % (table, keys, values),
+                        % (_encode_name(table), keys, values),
                         write=True, ret='lastrowid')
     except MySQLdb.IntegrityError as e:
         if e[0] == 1062:
@@ -228,24 +240,27 @@ def insert_row(table, insert):
 
 
 def insert_or_update_row(table, insert, update):
-    keys = ','.join(insert.keys())
+    keys = _encode_name(insert.keys())
     values = ','.join([_encode(value) for value in insert.values()])
 
-    update = ["%s=%s" % (key, _encode(val)) for key, val in update.items()]
+    update = ["%s=%s" % (_encode_name(key), _encode(val))
+              for key, val in update.items()]
     update = ','.join(update)
 
     return _execute(
         "INSERT INTO %s (%s) VALUES (%s) ON DUPLICATE KEY UPDATE %s;"
-        % (table, keys, values, update),
+        % (_encode_name(table), keys, values, update),
         write=True, ret='lastrowid')
 
 
 def update_row(table, update, conds):
     conds = _parse_comp_cond(conds)
-    update = ["%s=%s" % (key, _encode(val)) for key, val in update.items()]
+    update = ["%s=%s" % (_encode_name(key), _encode(val))
+              for key, val in update.items()]
     update = ','.join(update)
 
-    rows = _execute('UPDATE %s SET %s %s;' % (table, update, conds),
+    rows = _execute('UPDATE %s SET %s %s;'
+                    % (_encode_name(table), update, conds),
                     write=True, ret='rowcount')
 
     if not rows:
@@ -257,7 +272,7 @@ def update_row(table, update, conds):
 def delete_rows(table, conds):
     conds = _parse_comp_cond(conds)
 
-    rows = _execute("DELETE FROM %s %s;" % (table, conds),
+    rows = _execute("DELETE FROM %s %s;" % (_encode_name(table), conds),
                     write=True, ret='rowcount')
 
     if not rows:
