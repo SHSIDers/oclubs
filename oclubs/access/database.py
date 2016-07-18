@@ -61,10 +61,11 @@ def _parse_comp_cond(cond, forcelimit=None):
     sql = []
 
     for jointype, table, conds in conddict['join']:
-        sql.append(jointype.upper() + ' JOIN ' + table)
-        sql.append('ON ' + ' AND '.join(
-            [var1 + ' = ' + var2 for var1, var2 in conds]
-        ))
+        sql.append(jointype.upper() + ' JOIN ' + _encode_name(table))
+        sql.append('ON ' + ' AND '.join([
+            _encode_name(var1) + ' = ' + _encode_name(var2)
+            for var1, var2 in conds
+        ]))
 
     if conddict['where']:
         sql.append('WHERE ' + _parse_cond(conddict['where']))
@@ -83,9 +84,9 @@ def _parse_comp_cond(cond, forcelimit=None):
 
     if conddict['limit']:
         sql.append('LIMIT ' + (
-            '%d,%d' % conddict['limit']
+            '%s,%s' % tuple(map(_encode, conddict['limit']))
             if isinstance(conddict['limit'], tuple) else
-            str(conddict['limit'])
+            _encode(conddict['limit'])
         ))
 
     return ' '.join(sql)
