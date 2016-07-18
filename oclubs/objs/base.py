@@ -12,68 +12,77 @@ import types
 from oclubs.access import database
 
 
-class Property(property):
-    def __init__(prop, dbname, ie=None):
-        prop.dbname = dbname
-        prop.imp, prop.exp = _get_ie(ie)
-        super(Property, prop).__init__(prop.getf, prop.setf, prop.delf)
+class Property(object):
+    """Descriptor class."""
+    def __init__(self, dbname, ie=None):
+        super(Property, self).__init__()
+        self.dbname = dbname
+        self.imp, self.exp = _get_ie(ie)
 
-    def getf(prop, self):
-        if prop.name not in self._cache:
-            self._cache[prop.name] = prop.imp(self._data[prop.name])
-        return self._cache[prop.name]
+    def __get__(self, instance, owner=None):
+        if instance is None:
+            return self
+        if self.name not in instance._cache:
+            instance._cache[self.name] = self.imp(instance._data[self.name])
+        return instance._cache[self.name]
 
-    def setf(prop, self, value):
-        self._cache[prop.name] = value
+    def __set__(self, instance, value):
+        instance._cache[self.name] = value
 
-        value = prop.exp(value)
-        if self.is_real:
-            if self._dbdata is not None:
-                self._dbdata[prop.name] = value
+        value = self.exp(value)
+        if instance.is_real:
+            if instance._dbdata is not None:
+                instance._dbdata[self.name] = value
 
             database.update_row(
-                self.table,
-                {prop.dbname: value},
-                {self.identifier: self.id}
+                instance.table,
+                {self.dbname: value},
+                {instance.identifier: instance.id}
             )
         else:
-            self._dbdata = self._dbdata or {}
-            self._dbdata[prop.name] = value
+            instance._dbdata = instance._dbdata or {}
+            instance._dbdata[self.name] = value
 
-    def delf(prop, self):
-        if prop.name in self._cache:
-            del self._cache[prop.name]
+    def __delete__(self, instance):
+        if self.name in instance._cache:
+            del instance._cache[self.name]
 
-        if self.is_real:
-            self._dbdata = None
+        if instance.is_real:
+            instance._dbdata = None
         else:
-            if prop.name in self._dbdata:
-                del self._dbdata[prop.name]
+            if self.name in instance._dbdata:
+                del instance._dbdata[self.name]
 
 
-class ListProperty(property):
-    """docstring for ListProperty"""
-    def __init__(prop, table, this, that, ie=None):
-        prop.table = table
-        prop.this = this
-        prop.that = that
-        prop.imp, prop.exp = _get_ie(ie)
-        super(ListProperty, prop).__init__(prop.getf, None, prop.delf)
+class ListProperty(object):
+    """Descriptor class."""
+    def __init__(self, table, this, that, ie=None):
+        super(ListProperty, self).__init__()
+        self.table = table
+        self.this = this
+        self.that = that
+        self.imp, self.exp = _get_ie(ie)
 
-    def getf(prop, self):
-        if prop.name not in self._cache:
+    def __get__(self, instance, owner=None):
+        if instance is None:
+            return self
+        if self.name not in instance._cache:
             tempdata = database.fetch_onecol(
-                prop.table,
-                prop.that,
-                {prop.this: self.id}
+                self.table,
+                self.that,
+                {self.this: instance.id}
             )
-            self._cache[prop.name] = [prop.imp(member) for member in tempdata]
+            instance._cache[self.name] = \
+                [self.imp(member) for member in tempdata]
 
-        return self._cache[prop.name]
+        return instance._cache[self.name]
 
-    def delf(prop, self):
-        if prop.name in self._cache:
-            del self._cache[prop.name]
+    def __set__(self, instance, value):
+        raise AttributeError("ListProperty is not writable.")
+
+    def __delete__(self, instance):
+        if self.name in instance._cache:
+            del instance._cache[self.name]
 
 
 class _BaseMetaclass(type):
