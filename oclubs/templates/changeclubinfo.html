@@ -4,7 +4,7 @@
 
 <!-- Below Navbar -->
 <div class="large_container">
-	<form class="form-group" action="{{ url_for('changeclubinfo_submit', club_info=club_info) }}" style="color:#f2f2f2">
+	<form class="form-group" action="{{ url_for('.changeclubinfo_submit', club_info=club_info) }}" style="color:#f2f2f2">
 		<h1 class="title">Change Club Info</h1>
 		<h2 class="title_next">{{ club }}</h2>
 		{% if messages %}
@@ -30,4 +30,5 @@
 
 <div class="clearfix"></div>
 
+{% endwith %}
 {% endblock %}

@@ -64,7 +64,8 @@ def club(club_info):
         abort(403)
     return render_template('club.html',
                            title=club.name,
-                           club=club.name)
+                           club=club.name,
+                           club_info=club_info)
 
 
 @clubblueprint.route('/<club_info>/introduction')

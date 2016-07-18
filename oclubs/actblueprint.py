@@ -55,7 +55,7 @@ def clubactivities(club_info):
     # get past activities' pictures
     club = {'club_name': 'Art Club', 'image1': '1', 'image2': '2', 'image3': '3'}
     activities = []
-    activities_obj = club.activities([True, True, True, False, True])
+    activities_obj = club_obj.activities([True, True, True, False, True])
     for act_obj in activities_obj:
         activity = {}
         activity['act_name'] = act_obj.name
@@ -187,7 +187,7 @@ def hongmei(club_info):
         schedule.append(act)
     return render_template('hongmei.html',
                            title='HongMei',
-                           club=club,
+                           club=club.name,
                            schedule=schedule)
 
 
