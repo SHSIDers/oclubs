@@ -50,7 +50,7 @@ app.jinja_env.globals['getpicture'] = get_picture
 
 @app.after_request
 def database_done(response):
-    if response.status[0] in ['1', '2', '3']:
+    if response.status_code < 400:
         database.done(True)
     else:
         database.done(False)
