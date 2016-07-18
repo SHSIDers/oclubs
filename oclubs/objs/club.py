@@ -35,7 +35,7 @@ class Club(BaseObject):
     def excellentclubs():
         if Club._excellentclubs is None:
             # FIXME: BLOCKED-ON-REDIS
-            Club._excellentclubs = set()
+            Club._excellentclubs = Club.randomclubs(10)
         return Club._excellentclubs
 
     @classmethod
