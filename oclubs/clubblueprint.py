@@ -34,16 +34,6 @@ def clublist(type):
         clubs_obj = oclubs.objs.Club.randomclubs(num, (False, False, False, False, False, False, True))
     else:
         abort(404)
-    clubs = generate_clublist(clubs_obj)
-    return render_template('clublist.html',
-                           title='Club List',
-                           is_list=True,
-                           clubs=clubs,
-                           type=type)
-
-
-def generate_clublist(clubs_obj):
-    '''User club type to generate list of clubs'''
     clubs = []
     for club_obj in clubs_obj:
         club = {}
@@ -52,7 +42,11 @@ def generate_clublist(clubs_obj):
         club['picture'] = club_obj.picture
         club['intro'] = club_obj.intro
         clubs.append(club)
-    return clubs
+    return render_template('clublist.html',
+                           title='Club List',
+                           is_list=True,
+                           clubs=clubs,
+                           type=type)
 
 
 @clubblueprint.route('/<club_info>')

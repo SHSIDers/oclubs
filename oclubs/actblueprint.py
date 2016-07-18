@@ -46,14 +46,14 @@ def clubactivities(club_info):
         user = ''
     try:
         club_id = int(re.match(r'^\d+', club_info).group(0))
-        club = oclubs.objs.Club(club_id)
+        club_obj = oclubs.objs.Club(club_id)
     except:
         abort(404)
-    club_info = {}
-    club_info['club_name'] = club.name
+    club = {}
+    club['club_name'] = club_obj.name
 
     # get past activities' pictures
-    club_info = {'club_name': 'Art Club', 'image1': '1', 'image2': '2', 'image3': '3'}
+    club = {'club_name': 'Art Club', 'image1': '1', 'image2': '2', 'image3': '3'}
     activities = []
     activities_obj = club.activities([True, True, True, False, True])
     for act_obj in activities_obj:
@@ -64,7 +64,7 @@ def clubactivities(club_info):
         activities.append(activity)
     return render_template('clubact.html',
                            title=club['club_name'],
-                           club=club_info,
+                           club=club,
                            activities=activities)
 
 

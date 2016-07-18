@@ -700,7 +700,7 @@ thead.darklist {
 	text-align: center;
 }
 
-.intro_function input {
+/*.intro_function input {
 	border-style: outset;
 	background-color: #5bc0de;
 	border-radius: 5%;
@@ -710,7 +710,7 @@ thead.darklist {
 
 .intro_function input:hover {
 	background-color: #1a53ff;
-}
+}*/
 
 .checkbox_block  > label {
 	width: 24%;

@@ -8,17 +8,19 @@
 	<div class="col-sm-2" style="padding-left:30px">
         <div class="list-group">
             <li class="list-group-item active">Club Types</li>
-            <a href="#" class="list-group-item">Academics</a>
-            <a href="#" class="list-group-item">Sports</a>
-            <a href="#" class="list-group-item">The Arts</a>
-            <a href="#" class="list-group-item">Services</a>
-            <a href="#" class="list-group-item">Others</a>
-            <a href="#" class="list-group-item">School Teams</a>
+            <a href="{{ url_for('.clublist', type='all') }}" class="list-group-item {% if type=='all' %}selected{% endif %}">All</a>
+            <a href="{{ url_for('.clublist', type='academics') }}" class="list-group-item {% if type=='academics' %}selected{% endif %}">Academics</a>
+            <a href="{{ url_for('.clublist', type='sports') }}" class="list-group-item {% if type=='sports' %}selected{% endif %}">Sports</a>
+            <a href="{{ url_for('.clublist', type='arts') }}" class="list-group-item {% if type=='arts' %}selected{% endif %}">The Arts</a>
+            <a href="{{ url_for('.clublist', type='services') }}" class="list-group-item {% if type=='services' %}selected{% endif %}">Services</a>
+            <a href="{{ url_for('.clublist', type='entertainment') }}" class="list-group-item {% if type=='entertainment' %}selected{% endif %}">Entertainment</a>
+            <a href="{{ url_for('.clublist', type='others') }}" class="list-group-item {% if type=='others' %}selected{% endif %}">Others</a>
+            <a href="{{ url_for('.clublist', type='school_teams') }}" class="list-group-item {% if type=='school_teams' %}selected{% endif %}">School Teams</a>
         </div>
         <div class="list-group">
             <li class="list-group-item active">This Club's</li>
-            <a href="#" class="list-group-item">Activities</a>
-            <a href="#" class="list-group-item">Photos</a>
+            <a href="{{ url_for('actblueprint.clubactivities', club_info=club_info) }}" class="list-group-item">Activities</a>
+            <a href="{{ url_for('actblueprint.clubphoto', club_info=club_info) }}" class="list-group-item">Photos</a>
         </div>
     </div>
     <!-- Main Content -->
@@ -42,15 +44,21 @@
                     {% endfor %}
                 </ul>
                 {% endif %}
-                <form class="form-group col-sm-3" action="{{ url_for('clubactivities', club_info=club_info) }}">
-                    <input class="form-control" type="submit" value="Activities">
-                </form>
-                <form class="form-group col-sm-3" action="{{ url_for('clubphoto', club_info=club_info) }}">
-                    <input class="form-control" type="submit" value="Photos">
-                </form>
-                <form class="form-group col-sm-3" action="{{ url_for('clubintro_submit', club_info=club_info) }}">
-                    <input class="form-control" type="submit" value="Join">
-                </form>
+                <div class="col-sm-4">
+                    <center><a href="{{ url_for('actblueprint.clubactivities', club_info=club_info) }}" style="text-decoration:none">
+                        <button class="btn btn-info btn-lg" style="width:80%">Activities</button>
+                    </a></center>
+                </div>
+                <div class="col-sm-4">
+                    <center><a href="{{ url_for('actblueprint.clubphoto', club_info=club_info) }}" style="text-decoration:none">
+                        <button class="btn btn-info btn-lg" style="width:80%">Photos</button>
+                    </a></center>
+                </div>
+                <div class="col-sm-4">
+                    <center><a href="{{ url_for('clubblueprint.clubintro_submit', club_info=club_info) }}" style="text-decoration:none">
+                        <button class="btn btn-info btn-lg" style="width:80%">Join</button>
+                    </a></center>
+                </div>
             </div>
         </div>
     </div>
@@ -58,4 +66,5 @@
 
 <div class="clearfix"></div>
 
+{% endwith %}
 {% endblock %}
