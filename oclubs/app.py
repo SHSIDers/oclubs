@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 #
 
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
 
 from flask import (
     Flask, redirect, request, render_template, url_for, session, jsonify, g, abort

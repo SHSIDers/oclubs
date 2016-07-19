@@ -2,6 +2,8 @@
 # -*- coding: UTF-8 -*-
 #
 
+from __future__ import absolute_import, unicode_literals
+
 from flask import (
     Blueprint, render_template, url_for, request, session, redirect, flash, abort
 )
