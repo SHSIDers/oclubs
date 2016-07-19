@@ -13,3 +13,8 @@ class NoRow(Exception):
 class AlreadyExists(Exception):
     """Exception occuring when a row exists already when inserting."""
     pass
+
+
+class UploadNotSupported(Exception):
+    """Exception occuring when an uploaded file is not supported."""
+    pass

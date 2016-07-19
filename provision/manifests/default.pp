@@ -85,7 +85,9 @@ package { [
     'python-devel',
     'zlib-devel',
     'openssl-devel',
-    'libffi-devel'
+    'libffi-devel',
+    'libjpeg-turbo-devel',
+    'libpng-devel',
 ]:
     ensure  => present,
     require => Package['epel-release'],
@@ -163,6 +165,12 @@ service { 'uwsgi':
 file { '/srv/oclubs':
     ensure => link,
     target => '/vagrant/oclubs'
+}
+
+file { '/srv/oclubs/images':
+    ensure => directory,
+    owner  => 'uwsgi',
+    group  => 'uwsgi'
 }
 
 service { 'iptables':
