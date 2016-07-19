@@ -103,7 +103,7 @@ def _encode(obj):
         return 'NULL'
     elif isinstance(obj, (bool, int, long, float)):
         return str(obj)
-    elif isinstance(obj, str):
+    elif isinstance(obj, basestring):
         return "'%s'" % MySQLdb.escape_string(_strify(obj))
     else:
         import json
