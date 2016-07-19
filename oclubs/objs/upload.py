@@ -18,7 +18,7 @@ class Upload(BaseObject):
     identifier = 'upload_id'
     club = Property('upload_club', 'Club')
     uploader = Property('upload_user', 'User')
-    location = Property('upload_loc')
+    _location = Property('upload_loc')
     mime = Property('upload_mime')
 
     # Don't use mimetypes.guess_extension(mime) -- 'image/jpeg' => '.jpe'
@@ -29,11 +29,11 @@ class Upload(BaseObject):
 
     @property
     def location_local(self):
-        return self.mk_internal_path(self.location)
+        return self.mk_internal_path(self._location)
 
     @property
     def location_external(self):
-        return self.mk_external_path(self.location)
+        return self.mk_external_path(self._location)
 
     @classmethod
     def handle_upload(cls, user, club, file):
