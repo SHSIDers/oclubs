@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS user (
 	user_picture int NOT NULL, # Foreign key to upload.upload_id
 	user_email tinytext NOT NULL,
 	user_phone bigint,
-	user_type tinyint NOT NULL, # 0=student 1=teacher 2=admin
+	user_type tinyint NOT NULL, # 1=student 2=teacher 3=admin
 	user_grad_year int # NULL for teachers
 );
 
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS club (
 	club_desc int NOT NULL, # Foreign key to text.text_id
 	club_location varchar(255) NOT NULL, # stores object in JSON
 	club_inactive boolean NOT NULL,
-	club_type tinyint NOT NULL # 0 = academics, 1 = sports, 2 = arts, 3 = services, 4 = entertainment, 5 = others, 6 = school teams
+	club_type tinyint NOT NULL # 1 = academics, 2 = sports, 3 = arts, 4 = services, 5 = entertainment, 6 = others, 7 = school teams
 );
 
 CREATE INDEX IF NOT EXISTS club_name ON club (club_name);
