@@ -9,8 +9,15 @@ from flask import (
 )
 
 import oclubs
+from oclubs.enums import UserType, ClubType, ActivityTime
 
 userblueprint = Blueprint('userblueprint', __name__)
+
+
+def date_to_string(date):
+    date_str = str(date)
+    result = date_str[:4] + " - " + date_str[4:6] + " - " + date_str[6:8]
+    return result
 
 
 @userblueprint.route('/quit_club')
@@ -69,26 +76,26 @@ def personal():
     castotal = 0
     for club in clubs:
         castotal += club['cas']
-    meetings_obj = user_obj.activities_reminder((False, True, True, False, False))
+    meetings_obj = user_obj.activities_reminder([ActivityTime.NOON, ActivityTime.AFTERSCHOOL])
     meetings = []
     for meeting_obj in meetings_obj:
         meeting = {}
         meeting['club'] = meeting_obj.club
-        date = str(meeting_obj.date)
         time_int = meeting_obj.time
         if time_int == 1:
             time = "Noon"
         else:
             time = "Afternoon"
-        meeting['time'] = date[0:4] + " - " + date[4:6] + " - " + date[6:8] + ": " + time
+        meeting['time'] = date_to_string(meeting_obj.date) + ": " + time
         meeting['location'] = meeting_obj.location
         meetings.append(meeting)
-    activities_obj = user_obj.activities_reminder([True, False, False, True, True])
+    activities_obj = user_obj.activities_reminder([ActivityTime.UNKNOWN,
+                                                   ActivityTime.HONGMEI,
+                                                   ActivityTime.OTHERS])
     activities = []
     for act_obj in activities_obj:
         act = {}
         act['club'] = act_obj.club
-        date = str(act_obj.date)
         time_int = act_obj.time
         if time_int == 0:
             time = "Unknown time"
@@ -96,7 +103,7 @@ def personal():
             time = "HongMei activity"
         else:
             time = "Individual club activity"
-        act['time'] = date[0:4] + " - " + date[4:6] + " - " + date[6:8] + ": " + time
+        act['time'] = date_to_string(act_obj.date) + ": " + time
         act['location'] = act_obj.location
         activities.append(act)
     leader_club = ''

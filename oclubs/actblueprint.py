@@ -10,6 +10,7 @@ from flask import (
 
 import oclubs
 import re
+from oclubs.enums import UserType, ClubType, ActivityTime
 
 actblueprint = Blueprint('actblueprint', __name__)
 
@@ -41,11 +42,6 @@ def allactivities():
 @actblueprint.route('/<club_info>/activity')
 def clubactivities(club_info):
     '''One Club's Activities'''
-    if('user_id' in session):
-        user_obj = oclubs.objs.User(session['user_id'])
-        user = user_obj.nickname
-    else:
-        user = ''
     try:
         club_id = int(re.match(r'^\d+', club_info).group(0))
         club_obj = oclubs.objs.Club(club_id)
@@ -57,7 +53,10 @@ def clubactivities(club_info):
     # get past activities' pictures
     club = {'club_name': 'Art Club', 'image1': '1', 'image2': '2', 'image3': '3'}
     activities = []
-    activities_obj = club_obj.activities([True, True, True, False, True])
+    activities_obj = club_obj.activities([ActivityTime.UNKNOWN,
+                                          ActivityTime.NOON,
+                                          ActivityTime.AFTERSCHOOL,
+                                          ActivityTime.OTHERS])
     for act_obj in activities_obj:
         activity = {}
         activity['act_name'] = act_obj.name
@@ -72,7 +71,6 @@ def clubactivities(club_info):
 
 @actblueprint.route('/photos')
 def allphotos():
-    user = ''
     top = {'image': 'intro5', 'actname': 'Making Website', 'club': 'Website Club'}
     photos = [{'image1': 'intro1', 'actname1': 'Random Activity', 'club1': 'Random Club', 'image2': 'intro2', 'actname2': 'Random Activity', 'club2': 'Random Club'},
               {'image1': 'intro1', 'actname1': 'Random Activity', 'club1': 'Random Club', 'image2': 'intro2', 'actname2': 'Random Activity', 'club2': 'Random Club'},
@@ -94,11 +92,6 @@ def allphotos():
 @actblueprint.route('/<club_info>/photo')
 def clubphoto(club_info):
     '''Individual Club's Photo Page'''
-    if('user_id' in session):
-        user_obj = oclubs.objs.User(session['user_id'])
-        user = user_obj.nickname
-    else:
-        user = ''
     try:
         club_id = int(re.match(r'^\d+', club_info).group(0))
         club = oclubs.objs.Club(club_id)
@@ -106,7 +99,10 @@ def clubphoto(club_info):
         abort(404)
     club_name = club.name
     photos = []
-    activities_obj = club.activities([True, True, True, False, True])
+    activities_obj = club.activities([ActivityTime.UNKNOWN,
+                                      ActivityTime.NOON,
+                                      ActivityTime.AFTERSCHOOL,
+                                      ActivityTime.OTHERS])
     photos = [{'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
               {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
               {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
@@ -172,7 +168,7 @@ def hongmei(club_info):
     if user_obj.id != club.leader.id:
         abort(403)
     schedule = []
-    acts_obj = club.activities((False, False, False, True, False), (False, True))
+    acts_obj = club.activities([ActivityTime.HONGMEI], (False, True))
     for act_obj in acts_obj:
         act = {}
         act['date'] = act.date_to_string(act_obj.date)
@@ -271,7 +267,7 @@ def registerhm(club_info):
     except:
         abort(404)
     schedule = []
-    acts_obj = club.activities((False, False, False, True, False), (False, True))
+    acts_obj = club.activities([ActivityTime.HONGMEI], (False, True))
     for act_obj in acts_obj:
         act = {}
         act['id'] = act_obj.id

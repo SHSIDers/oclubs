@@ -10,6 +10,7 @@ from flask import (
 
 import oclubs
 import re
+from oclubs.enums import UserType, ClubType, ActivityTime
 
 clubblueprint = Blueprint('clubblueprint', __name__)
 
@@ -21,19 +22,19 @@ def clublist(type):
     if type == 'all':
         clubs_obj = oclubs.objs.Club.randomclubs(num)
     elif type == 'academics':
-        clubs_obj = oclubs.objs.Club.randomclubs(num, (True, False, False, False, False, False, False))
+        clubs_obj = oclubs.objs.Club.randomclubs(num, [ClubType.ACADEMICS])
     elif type == 'sports':
-        clubs_obj = oclubs.objs.Club.randomclubs(num, (False, True, False, False, False, False, False))
+        clubs_obj = oclubs.objs.Club.randomclubs(num, [ClubType.SPORTS])
     elif type == 'arts':
-        clubs_obj = oclubs.objs.Club.randomclubs(num, (False, False, True, False, False, False, False))
+        clubs_obj = oclubs.objs.Club.randomclubs(num, [ClubType.ARTS])
     elif type == 'services':
-        clubs_obj = oclubs.objs.Club.randomclubs(num, (False, False, False, True, False, False, False))
+        clubs_obj = oclubs.objs.Club.randomclubs(num, [ClubType.SERVICES])
     elif type == 'entertainment':
-        clubs_obj = oclubs.objs.Club.randomclubs(num, (False, False, False, False, True, False, False))
+        clubs_obj = oclubs.objs.Club.randomclubs(num, [ClubType.ENTERTAINMENT])
     elif type == 'others':
-        clubs_obj = oclubs.objs.Club.randomclubs(num, (False, False, False, False, False, True, False))
+        clubs_obj = oclubs.objs.Club.randomclubs(num, [ClubType.OTHERS])
     elif type == 'school_teams':
-        clubs_obj = oclubs.objs.Club.randomclubs(num, (False, False, False, False, False, False, True))
+        clubs_obj = oclubs.objs.Club.randomclubs(num, [ClubType.SCHOOL_TEAMS])
     else:
         abort(404)
     clubs = []

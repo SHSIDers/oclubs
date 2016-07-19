@@ -15,6 +15,7 @@ from oclubs.access import database
 from oclubs.userblueprint import userblueprint
 from oclubs.clubblueprint import clubblueprint
 from oclubs.actblueprint import actblueprint
+from oclubs.enums import UserType, ClubType, ActivityTime
 
 from oclubs.redissession import RedisSessionInterface
 
