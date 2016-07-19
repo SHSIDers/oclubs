@@ -9,6 +9,7 @@ from flask import *
 from oclubs import *
 from oclubs.app import *
 from oclubs.access import *
+from oclubs.enums import *
 from oclubs.objs import *
 
 with app.app_context():

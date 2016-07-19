@@ -180,12 +180,12 @@ def __get_ie(ie):
         imp = exp = lambda val: NotImplemented
     elif isinstance(ie, basestring):
         imp, exp = object_proxy(ie), lambda val: val.id
-    elif isinstance(ie, BaseObject):
-        imp, exp = ie, lambda val: val.id
-    elif isinstance(ie, Enum):
-        imp, exp = ie, lambda val: val.value
     elif isinstance(ie, types.ModuleType):
         imp, exp = ie.loads, ie.dumps
+    elif isinstance(ie, type) and issubclass(ie, BaseObject):
+        imp, exp = ie, lambda val: val.id
+    elif isinstance(ie, type) and issubclass(ie, Enum):
+        imp, exp = ie, lambda val: val.value
     elif callable(ie):
         imp = exp = ie
 
