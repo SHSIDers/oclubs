@@ -64,7 +64,7 @@ class Upload(BaseObject):
         obj = cls.new()
         obj.club = club
         obj.uploader = user
-        obj.location = filename
+        obj._location = filename
         return obj.create()
 
     @staticmethod
