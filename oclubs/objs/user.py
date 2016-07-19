@@ -38,11 +38,11 @@ class User(BaseObject):
             }
         )
 
-    def activities_reminder(self, *args):
+    def activities_reminder(self, types):
         from oclubs.objs import Activity
 
         return Activity.get_activities_conditions(
-            args,
+            types,
             {
                 'join': [('inner', 'club_member', [('act_club', 'cm_club')])],
                 'where': [('=', 'cm_user', self.id)],

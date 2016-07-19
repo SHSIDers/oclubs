@@ -81,10 +81,9 @@ class Activity(BaseObject):
         del self.attendance
 
     @classmethod
-    def get_activities_conditions(cls, times, additional_conds=None,
+    def get_activities_conditions(cls, times=None, additional_conds=None,
                                   dates=(True, True)):
-        times = [time[0] for time in filter(
-            lambda val: val[1], enumerate(times))]
+        times = [time.value for time in times]
 
         conds = {}
         if additional_conds:
@@ -95,7 +94,8 @@ class Activity(BaseObject):
             conds['where'].append(('<', 'act_date', date_int(date.today())))
         elif dates == (False, True):
             conds['where'].append(('>=', 'act_date', date_int(date.today())))
-        conds['where'].append(('in', 'act_time', times))
+        if times:
+            conds['where'].append(('in', 'act_time', times))
 
         acts = database.fetch_onecol(
             'activity',
@@ -107,4 +107,4 @@ class Activity(BaseObject):
 
     @classmethod
     def all_activities(cls):
-        return cls.get_activities_conditions((True,)*10)
+        return cls.get_activities_conditions()
