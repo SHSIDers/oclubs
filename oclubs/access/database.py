@@ -24,7 +24,7 @@ def ___parse_cond(cond):
         var, const = conds
         if const is None:
             op = {'=': 'IS', '!=': 'IS NOT'}.get(op, op)
-        return ' '.join([_encode_name(var), op, _encode(const)])
+        return ' '.join([_encode_name(var), _strify(op), _encode(const)])
     elif op.lower() in ["and", "or"]:
         return (' %s ' % op.upper()).join(
             [__parse_cond(one_cond) for one_cond in conds])
@@ -61,7 +61,7 @@ def _parse_comp_cond(cond, forcelimit=None):
     sql = []
 
     for jointype, table, conds in conddict['join']:
-        sql.append(jointype.upper() + ' JOIN ' + _encode_name(table))
+        sql.append(_strify(jointype.upper()) + ' JOIN ' + _encode_name(table))
         sql.append('ON ' + ' AND '.join([
             _encode_name(var1) + ' = ' + _encode_name(var2)
             for var1, var2 in conds
@@ -92,15 +92,19 @@ def _parse_comp_cond(cond, forcelimit=None):
     return ' '.join(sql)
 
 
+def _strify(st):
+    if isinstance(st, unicode):
+        return st.encode('utf-8')
+    return st
+
+
 def _encode(obj):
     if obj is None:
         return 'NULL'
     elif isinstance(obj, (bool, int, long, float)):
         return str(obj)
     elif isinstance(obj, str):
-        return "'%s'" % MySQLdb.escape_string(obj)
-    elif isinstance(obj, unicode):
-        return _encode(obj.encode('utf-8'))
+        return "'%s'" % MySQLdb.escape_string(_strify(obj))
     else:
         import json
         return _encode(json.dumps(obj))
@@ -111,9 +115,7 @@ def _encode_name(identifier):
         return 'RAND()'
     elif isinstance(identifier, list):
         return ','.join([_encode_name(item) for item in identifier])
-    elif isinstance(identifier, unicode):
-        identifier = identifier.encode('utf-8')
-    return '`%s`' % MySQLdb.escape_string(identifier)
+    return '`%s`' % MySQLdb.escape_string(_strify(identifier))
 
 
 def _mk_multi_return(row, cols, coldict):

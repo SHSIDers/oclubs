@@ -2,9 +2,6 @@
 # -*- coding: UTF-8 -*-
 #
 
-
-"""oclubs.shsid.org Formatted Text."""
-
 from __future__ import absolute_import, unicode_literals
 
 from flask import Markup
@@ -30,7 +27,7 @@ class FormattedText(BaseObject):
                 # TODO
                 pass
             else:
-                self._raw = self._blob
+                self._raw = self._blob.decode('utf-8')
         return self._raw
 
     @property

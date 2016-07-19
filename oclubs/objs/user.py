@@ -2,9 +2,7 @@
 # -*- coding: UTF-8 -*-
 #
 
-"""oclubs.shsid.org Users."""
-
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
 
 from passlib.context import CryptContext
 

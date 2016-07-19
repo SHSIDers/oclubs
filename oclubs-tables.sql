@@ -3,9 +3,9 @@ USE oclubs;
 
 CREATE TABLE IF NOT EXISTS user (
 	user_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	user_login_name varchar(255) binary NOT NULL, # Student ID
-	user_nick_name varchar(255) binary NOT NULL,
-	user_passport_name varchar(255) binary NOT NULL,
+	user_login_name varchar(255) NOT NULL, # Student ID
+	user_nick_name varchar(255) NOT NULL,
+	user_passport_name varchar(255) NOT NULL,
 	user_password tinyblob NOT NULL,
 	user_picture int NOT NULL, # Foreign key to upload.upload_id
 	user_email tinytext NOT NULL,
@@ -19,13 +19,13 @@ CREATE UNIQUE INDEX IF NOT EXISTS user_login_name ON user (user_login_name);
 
 CREATE TABLE IF NOT EXISTS club (
 	club_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	club_name varchar(255) binary NOT NULL,
+	club_name varchar(255) NOT NULL,
 	club_teacher int NOT NULL, # Foreign key to user.user_id
 	club_leader int NOT NULL, # Foreign key to user.user_id
-	club_intro tinyblob NOT NULL,
+	club_intro tinytext NOT NULL,
 	club_picture int NOT NULL, # Foreign key to upload.upload_id
 	club_desc int NOT NULL, # Foreign key to text.text_id
-	club_location tinyblob NOT NULL, # stores object in JSON
+	club_location varchar(255) NOT NULL, # stores object in JSON
 	club_inactive boolean NOT NULL,
 	club_type tinyint NOT NULL # 0 = academics, 1 = sports, 2 = arts, 3 = services, 4 = entertainment, 5 = others, 6 = school teams
 );
@@ -48,7 +48,7 @@ CREATE INDEX IF NOT EXISTS cm_user ON club_member (cm_user);
 
 CREATE TABLE IF NOT EXISTS activity (
 	act_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	act_name varchar(255) binary NOT NULL,
+	act_name varchar(255) NOT NULL,
 	act_club int NOT NULL, # Foreign key to club.club_id
 	act_desc int NOT NULL, # Foreign key to text.text_id
 	act_date int unsigned NOT NULL,
@@ -89,7 +89,7 @@ CREATE INDEX IF NOT EXISTS att_user ON attendance (att_user);
 CREATE TABLE IF NOT EXISTS clubpost (
 	cp_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	cp_club int NOT NULL, # Foreign key to club.club_id
-	cp_title varchar(255) binary NOT NULL,
+	cp_title varchar(255) NOT NULL,
 	cp_text int NOT NULL, # Foreign key to text.text_id
 	cp_editor int NOT NULL, # Foreign key to user.user_id
 	cp_timestamp int NOT NULL
@@ -120,8 +120,8 @@ CREATE TABLE IF NOT EXISTS upload (
 	upload_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	upload_club int NOT NULL, # Foreign key to club.club_id
 	upload_user int NOT NULL, # Foreign key to user.user_id
-	upload_loc tinyblob NOT NULL,
-	upload_mime varchar(255) binary NOT NULL # MIME type
+	upload_loc varchar(255) NOT NULL,
+	upload_mime varchar(255) NOT NULL # MIME type
 );
 
 CREATE INDEX IF NOT EXISTS upload_club ON upload (upload_club);
