@@ -81,7 +81,7 @@ class Activity(BaseObject):
         del self.attendance
 
     @classmethod
-    def get_activities_conditions(cls, times=None, additional_conds=None,
+    def get_activities_conditions(cls, times=(), additional_conds=None,
                                   dates=(True, True)):
         times = [time.value for time in times]
 
