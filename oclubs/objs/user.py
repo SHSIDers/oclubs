@@ -7,6 +7,7 @@ from __future__ import absolute_import, unicode_literals
 from passlib.context import CryptContext
 
 from oclubs.access import database
+from oclubs.enums import UserType
 from oclubs.exceptions import NoRow
 from oclubs.objs.base import BaseObject, Property, ListProperty
 
@@ -23,7 +24,7 @@ class User(BaseObject):
     email = Property('user_email')
     phone = Property('user_phone')
     picture = Property('user_picture', 'Upload')
-    type = Property('user_type')
+    type = Property('user_type', UserType)
     gradyear = Property('user_grad_year')
     clubs = ListProperty('club_member', 'cm_user', 'cm_club', 'Club')
 

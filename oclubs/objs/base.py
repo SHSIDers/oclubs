@@ -8,6 +8,7 @@
 from __future__ import absolute_import
 
 import types
+from enum import Enum
 
 from oclubs.access import database
 
@@ -181,6 +182,8 @@ def __get_ie(ie):
         imp, exp = object_proxy(ie), lambda val: val.id
     elif isinstance(ie, BaseObject):
         imp, exp = ie, lambda val: val.id
+    elif isinstance(ie, Enum):
+        imp, exp = ie, lambda val: val.value
     elif isinstance(ie, types.ModuleType):
         imp, exp = ie.loads, ie.dumps
     elif callable(ie):

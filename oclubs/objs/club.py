@@ -5,6 +5,7 @@
 from __future__ import absolute_import, unicode_literals
 
 from oclubs.access import database
+from oclubs.enums import ClubType
 from oclubs.objs.base import BaseObject, Property, ListProperty
 
 
@@ -19,7 +20,7 @@ class Club(BaseObject):
     is_active = Property('club_inactive', lambda v: not v)
     intro = Property('club_intro')
     picture = Property('club_picture', 'Upload')
-    type = Property('club_type')
+    type = Property('club_type', ClubType)
     members = ListProperty('club_member', 'cm_club', 'cm_user', 'User')
     all_act = ListProperty('activities', 'act_club', 'act_id', 'Activity')
 

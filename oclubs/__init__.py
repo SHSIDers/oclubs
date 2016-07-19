@@ -7,9 +7,9 @@
 from __future__ import absolute_import
 
 from oclubs import compat
-
-from oclubs import objs
-from oclubs import access
+from oclubs import enums
 from oclubs import exceptions
+from oclubs import access
+from oclubs import objs
 
-__all__ = ['compat', 'objs', 'access', 'exceptions']
+__all__ = ['compat', 'enums', 'exceptions', 'access', 'objs']

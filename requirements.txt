@@ -4,3 +4,4 @@ redis
 mysql
 passlib
 bcrypt
+enum34

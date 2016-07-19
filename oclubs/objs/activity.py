@@ -7,6 +7,7 @@ from __future__ import absolute_import, unicode_literals
 from datetime import datetime, date
 
 from oclubs.access import database
+from oclubs.enums import ActivityTime
 from oclubs.objs.base import BaseObject, Property, ListProperty
 
 
@@ -25,7 +26,7 @@ class Activity(BaseObject):
     club = Property('act_club', 'Club')
     description = Property('act_desc', 'FormattedText')
     date = Property('act_date', (int_date, date_int))
-    time = Property('act_time')
+    time = Property('act_time', ActivityTime)
     location = Property('act_location')
     cas = Property('act_cas')
     post = None  # FIXME: Post object
