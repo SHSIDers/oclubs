@@ -282,19 +282,3 @@ def delete_rows(table, conds):
         raise NoRow
 
     return rows
-
-
-def _search(table, col, keyword):
-    return _execute("SELECT * FROM %s WHERE %s LIKE \'%%%s%%\'" % (table, col, keyword))
-
-
-def search_club(keyword):
-     return _search('club','club_name',keyword)
-
-
-def search_act(keyword):
-    return _search('act','act_name',keyword)
-
-
-def search_clubpost(keyword):
-    return _search('cp','cp_title',keyword)
