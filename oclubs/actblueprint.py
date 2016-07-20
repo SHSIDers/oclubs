@@ -21,6 +21,26 @@ def date_to_string(date):
     return result
 
 
+def get_club(club_info):
+    '''From club_info get club object'''
+    try:
+        club_id = int(re.match(r'^\d+', club_info).group(0))
+        club = oclubs.objs.Club(club_id)
+    except (NameError, AttributeError, OverflowError):
+        abort(404)
+    return club
+
+
+def get_act(act_info):
+    '''From act_info get activity object'''
+    try:
+        act_id = int(re.match(r'^\d+', act_info).group(0))
+        act = oclubs.objs.Activity(act_id)
+    except (NameError, AttributeError, OverflowError):
+        abort(404)
+    return act
+
+
 @actblueprint.route('/all')
 def allactivities():
     '''All Activities'''
@@ -42,11 +62,7 @@ def allactivities():
 @actblueprint.route('/<club_info>/activity')
 def clubactivities(club_info):
     '''One Club's Activities'''
-    try:
-        club_id = int(re.match(r'^\d+', club_info).group(0))
-        club_obj = oclubs.objs.Club(club_id)
-    except:
-        abort(404)
+    club_obj = get_club(club_info)
     club = {}
     club['club_name'] = club_obj.name
 
@@ -92,11 +108,7 @@ def allphotos():
 @actblueprint.route('/<club_info>/photo')
 def clubphoto(club_info):
     '''Individual Club's Photo Page'''
-    try:
-        club_id = int(re.match(r'^\d+', club_info).group(0))
-        club = oclubs.objs.Club(club_id)
-    except:
-        abort(404)
+    club = get_club(club_info)
     club_name = club.name
     photos = []
     activities_obj = club.activities([ActivityTime.UNKNOWN,
@@ -125,11 +137,7 @@ def newact(club_info):
     if 'user_id' not in session:
         abort(401)
     user_obj = oclubs.objs.User(session['user_id'])
-    try:
-        club_id = int(re.match(r'^\d+', club_info).group(0))
-        club = oclubs.objs.Club(club_id)
-    except:
-        abort(404)
+    club = get_club(club_info)
     if user_obj.id != club.leader.id:
         abort(403)
     return render_template('newact.html',
@@ -139,11 +147,7 @@ def newact(club_info):
 @actblueprint.route('/<act_info>/introduction')
 def activity(act_info):
     '''Club Activity Page'''
-    try:
-        act_id = int(re.match(r'^\d+', act_info).group(0))
-        act_obj = oclubs.objs.Activity(act_id)
-    except:
-        abort(404)
+    act_obj = get_act(act_info)
     act = {}
     act['club'] = act_obj.club.name
     act['actname'] = act_obj.name
@@ -160,11 +164,7 @@ def hongmei(club_info):
     if 'user_id' not in session:
         abort(401)
     user_obj = oclubs.objs.User(session['user_id'])
-    try:
-        club_id = int(re.match(r'^\d+', club_info).group(0))
-        club = oclubs.objs.Club(club_id)
-    except:
-        abort(404)
+    club = get_club(club_info)
     if user_obj.id != club.leader.id:
         abort(403)
     schedule = []
@@ -195,11 +195,7 @@ def newhm(club_info):
     if 'user_id' not in session:
         abort(401)
     user_obj = oclubs.objs.User(session['user_id'])
-    try:
-        club_id = int(re.match(r'^\d+', club_info).group(0))
-        club = oclubs.objs.Club(club_id)
-    except:
-        abort(404)
+    club = get_club(club_info)
     if user_obj.id != club.leader.id:
         abort(403)
     return render_template('newhm.html',
@@ -222,12 +218,8 @@ def actstatus(act_info):
     if 'user_id' not in session:
         abort(401)
     user_obj = oclubs.objs.User(session['user_id'])
-    try:
-        act_id = int(re.match(r'^\d+', act_info).group(0))
-        act = oclubs.objs.Activity(act_id)
-        club = act.club
-    except:
-        abort(404)
+    act = get_act(act_info)
+    club = act.club
     if user_obj.id != club.leader.id:
         abort(403)
     actname = act.name
@@ -261,11 +253,7 @@ def registerhm(club_info):
     '''Register Page for HongMei Activites'''
     if 'user_id' not in session:
         abort(401)
-    try:
-        club_id = int(re.match(r'^\d+', club_info).group(0))
-        club = oclubs.objs.Club(club_id)
-    except:
-        abort(404)
+    club = get_club(club_info)
     schedule = []
     acts_obj = club.activities([ActivityTime.HONGMEI], (False, True))
     for act_obj in acts_obj:
@@ -299,11 +287,7 @@ def inputatten(act_info):
     if 'user_id' not in session:
         abort(401)
     user_obj = oclubs.objs.User(session['user_id'])
-    try:
-        act_id = int(re.match(r'^\d+', act_info).group(0))
-        act = oclubs.objs.Activity(act_id)
-    except:
-        abort(404)
+    act = get_act(act_info)
     club = act.club
     if user_obj.id != club.leader.id:
         abort(403)
@@ -325,8 +309,7 @@ def inputatten(act_info):
 @actblueprint.route('/<act_info>/input_attendance/submit', methods=['POST'])
 def inputatten_submit(act_info):
     '''Change attendance in database'''
-    act_id = int(re.match(r'^\d+', act_info).group(0))
-    act = oclubs.objs.Activity(act_id)
+    act = get_act(act_info)
     attendances = request.form['attendance']
     for atten in attendances:
         act.attend(oclubs.objs.User(atten))

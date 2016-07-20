@@ -15,6 +15,16 @@ from oclubs.enums import UserType, ClubType, ActivityTime
 clubblueprint = Blueprint('clubblueprint', __name__)
 
 
+def get_club(club_info):
+    '''From club_info get club object'''
+    try:
+        club_id = int(re.match(r'^\d+', club_info).group(0))
+        club = oclubs.objs.Club(club_id)
+    except (NameError, AttributeError, OverflowError):
+        abort(404)
+    return club
+
+
 @clubblueprint.route('/clublist/<type>')
 def clublist(type):
     '''Club list by club type'''
@@ -58,11 +68,7 @@ def club(club_info):
     if 'user_id' not in session:
         abort(401)
     user_obj = oclubs.objs.User(session['user_id'])
-    try:
-        club_id = int(re.match(r'^\d+', club_info).group(0))
-        club = oclubs.objs.Club(club_id)
-    except:
-        abort(404)
+    club = get_club(club_info)
     if user_obj.id != club.leader.id:
         abort(403)
     return render_template('club.html',
@@ -74,11 +80,7 @@ def club(club_info):
 @clubblueprint.route('/<club_info>/introduction')
 def clubintro(club_info):
     '''Club Intro'''
-    try:
-        club_id = int(re.match(r'^\d+', club_info).group(0))
-        club = oclubs.objs.Club(club_id)
-    except:
-        abort(404)
+    club = get_club(club_info)
     return render_template('clubintro.html',
                            title='Club Intro',
                            club=club.name,
@@ -95,8 +97,7 @@ def clubintro_submit(club_info):
     if 'user_id' not in session:
         abort(401)
     user_obj = oclubs.objs.User(session['user_id'])
-    club_id = int(re.match(r'^\d+', club_info).group(0))
-    club = oclubs.objs.Club(club_id)
+    club = get_club(club_info)
     club.add_member(user_obj)
     flash('You have successfully joined ' + club.name + '.', 'join')
     return redirect(url_for('clubblueprint.clubintro', club_info=club_info))
@@ -108,11 +109,7 @@ def newleader(club_info):
     if 'user_id' not in session:
         abort(401)
     user_obj = oclubs.objs.User(session['user_id'])
-    try:
-        club_id = int(re.match(r'^\d+', club_info).group(0))
-        club = oclubs.objs.Club(club_id)
-    except:
-        abort(404)
+    club = get_club(club_info)
     if user_obj.id != club.leader.id:
         abort(403)
     leader = {}
@@ -138,8 +135,7 @@ def newleader(club_info):
 @clubblueprint.route('/<club_info>/new_leader/submit', methods=['POST'])
 def newleader_submit(club_info):
     '''Change leader in database'''
-    club_id = int(re.match(r'^\d+', club_info).group(0))
-    club = oclubs.objs.Club(club_id)
+    club = get_club(club_info)
     members_obj = club.members
     leader_name = request.form['leader']
     for member_obj in members_obj:
@@ -156,11 +152,7 @@ def memberinfo(club_info):
     if 'user_id' not in session:
         abort(401)
     user_obj = oclubs.objs.User(session['user_id'])
-    try:
-        club_id = int(re.match(r'^\d+', club_info).group(0))
-        club = oclubs.objs.Club(club_id)
-    except:
-        abort(404)
+    club = get_club(club_info)
     if user_obj.id != club.leader.id:
         abort(403)
     members_obj = club.members
@@ -184,11 +176,7 @@ def changeclubinfo(club_info):
     if 'user_id' not in session:
         abort(401)
     user_obj = oclubs.objs.User(session['user_id'])
-    try:
-        club_id = int(re.match(r'^\d+', club_info).group(0))
-        club = oclubs.objs.Club(club_id)
-    except:
-        abort(404)
+    club = get_club(club_info)
     if user_obj.id != club.leader.id:
         abort(403)
     return render_template('changeclubinfo.html',
@@ -203,8 +191,7 @@ def changeclubinfo(club_info):
 @clubblueprint.route('/<club_info>/change_club_info/submit', methods=['POST'])
 def changeclubinfo_submit(club_info):
     '''Change club's info'''
-    club_id = int(re.match(r'^\d+', club_info).group(0))
-    club = oclubs.objs.Club(club_id)
+    club = get_club(club_info)
     club.intro = request.form['intro']
     club.picture = request.form['photo']
     club.desc = request.form['desc']
@@ -218,11 +205,7 @@ def adjustmember(club_info):
     if 'user_id' not in session:
         abort(401)
     user_obj = oclubs.objs.User(session['user_id'])
-    try:
-        club_id = int(re.match(r'^\d+', club_info).group(0))
-        club = oclubs.objs.Club(club_id)
-    except:
-        abort(404)
+    club = get_club(club_info)
     if user_obj.id != club.leader.id:
         abort(403)
     members_obj = club.members
@@ -245,8 +228,7 @@ def adjustmember(club_info):
 @clubblueprint.route('/<club_info>/adjust_member/submit', methods=['POST'])
 def adjustmember_submit(club_info):
     '''Input adjustment of club members'''
-    club_id = int(re.match(r'^\d+', club_info).group(0))
-    club = oclubs.objs.Club(club_id)
+    club = get_club(club_info)
     member_obj = oclubs.objs.User(request.form['expel'])
     club.remove_member(member_obj)
     flash(member_obj.nickname + ' has been expelled.', 'expelled')
