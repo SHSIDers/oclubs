@@ -145,11 +145,11 @@ class BaseObject(object):
 
     @property
     def is_real(self):
-        return self._id >= 0
+        return self._id > 0
 
     @classmethod
     def new(cls):
-        return cls(-1)
+        return cls(0)
 
     def __eq__(self, other):
         if not isinstance(other, BaseObject) or not self.is_real:

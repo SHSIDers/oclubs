@@ -28,12 +28,22 @@ class Upload(BaseObject):
     }
 
     @property
+    def id(self):
+        return self._id
+
+    @property
     def location_local(self):
-        return self.mk_internal_path(self._location)
+        if self.is_real:
+            return self.mk_internal_path(self._location)
+        else:
+            return self.mk_internal_path(-self.id, False)
 
     @property
     def location_external(self):
-        return self.mk_external_path(self._location)
+        if self.is_real:
+            return self.mk_external_path(self._location)
+        else:
+            return self.mk_external_path(-self.id, False)
 
     @classmethod
     def handle_upload(cls, user, club, file):
@@ -68,13 +78,17 @@ class Upload(BaseObject):
         return obj.create()
 
     @staticmethod
-    def mk_relative_path(filename):
-        return os.path.join('images', filename[0], filename[:2], filename)
+    def mk_relative_path(filename, is_upload=True):
+        if is_upload:
+            return os.path.join('images', filename[0], filename[:2], filename)
+        else:
+            return os.path.join('static/images/icons', 'icon%d.jpg' % filename)
 
     @staticmethod
-    def mk_internal_path(filename):
-        return os.path.join('/srv/oclubs', Upload.mk_relative_path(filename))
+    def mk_internal_path(filename, is_upload=True):
+        return os.path.join('/srv/oclubs',
+                            Upload.mk_relative_path(filename, is_upload))
 
     @staticmethod
-    def mk_external_path(filename):
-        return os.path.join('/', Upload.mk_relative_path(filename))
+    def mk_external_path(filename, is_upload=True):
+        return os.path.join('/', Upload.mk_relative_path(filename, is_upload))
