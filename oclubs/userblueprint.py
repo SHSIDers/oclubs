@@ -130,7 +130,7 @@ def personal():
         info = {}
         info['name'] = user_obj.nickname
         info['email'] = user_obj.email
-        info['picture'] = user_obj.picture
+        info['picture'] = user_obj.picture.location_external
         return render_template('teacher.html',
                                title=user_obj.nickname,
                                myclubs=myclubs,
