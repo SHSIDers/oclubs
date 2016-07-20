@@ -3,11 +3,14 @@
 #
 
 import csv
+import re
+
 from flask import session, abort, request, stream_with_context
 from werkzeug.datastructures import Headers
 from werkzeug.wrappers import Response
 
 import oclubs
+from oclubs.exceptions import NoRow
 
 
 def get_club(club_info):
@@ -15,7 +18,7 @@ def get_club(club_info):
     try:
         club_id = int(re.match(r'^\d+', club_info).group(0))
         club = oclubs.objs.Club(club_id)
-    except (NameError, AttributeError, OverflowError):
+    except (NameError, AttributeError, OverflowError, NoRow):
         abort(404)
     return club
 

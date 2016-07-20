@@ -47,8 +47,15 @@ def get_picture(picture):
     return url_for('static', filename='images/' + picture + '.jpg')
 
 
+def log_out():
+    '''Log out a user'''
+    session.clear()
+    return redirect(url_for('homepage'))
+
+
 app.jinja_env.globals['usernickname'] = get_name
 app.jinja_env.globals['getpicture'] = get_picture
+app.jinja_env.globals['logout'] = log_out
 
 
 @app.after_request
