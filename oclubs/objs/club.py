@@ -5,7 +5,7 @@
 from __future__ import absolute_import, unicode_literals
 
 from oclubs.access import database
-from oclubs.enums import ClubType
+from oclubs.enums import ClubType, UserType
 from oclubs.objs.base import BaseObject, Property, ListProperty
 
 
@@ -76,3 +76,22 @@ class Club(BaseObject):
                              [('=', 'cm_club', self.id),
                               ('=', 'cm_user', user.id)])
         del self.members
+
+    @classmethod
+    def get_clubs_special_access(cls, user):
+        if user.type == UserType.STUDENT:
+            ret = database.fetch_onecol(
+                cls.table,
+                cls.identifier,
+                {'club_leader': user.id},
+            )
+        elif user.type == UserType.TEACHER:
+            ret = database.fetch_onecol(
+                cls.table,
+                cls.identifier,
+                {'club_teacher': user.id},
+            )
+        else:  # ADMIN
+            ret = []
+
+        return map(cls, ret)
