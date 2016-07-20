@@ -162,6 +162,7 @@ def memberinfo_download(club_info, members):
         info_each.append(member['email'])
         info.append(info_each)
     download_csv('Member Info.csv', header, info)
+    return redirect(url_for('memberinfo', club_info=club_info))
 
 
 @clubblueprint.route('/<club_info>/change_club_info')

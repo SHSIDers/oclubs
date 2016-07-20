@@ -5,7 +5,7 @@
 import csv
 import re
 
-from flask import session, abort, request, stream_with_context
+from flask import session, abort, request, make_response
 from werkzeug.datastructures import Headers
 from werkzeug.wrappers import Response
 
@@ -52,10 +52,8 @@ def download_csv(filename, header, info):
         w.writerow(filename)
         for row in info:
             w.writerow(row)
-            # yield data.getvalue()
+            yield row
     headers = Headers()
     headers.set('Content-Disposition', 'attachment', filename=filename)
-    return Response(
-        stream_with_context(generate()),
-        mimetype='text/csv', headers=headers
-    )
+    return Response(generate(), mimetype='text/csv')
+    

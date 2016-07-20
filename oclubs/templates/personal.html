@@ -5,11 +5,11 @@
 
 <!-- Below Navbar -->
 <div class="container">
-	<h2 class="title_next" style="padding-left: 3%; margin-bottom:0;">{{ usernickname() }} <span style="font-size:50%">({{ info.ID }})</span></h2>
+	<h2 class="title_next" style="padding-left: 3%; margin-bottom:0;">{{ info.name }} <span style="font-size:50%">({{ info.ID }})</span><a href="{{ url_for('logout') }}" style="color:#f2f2f2; float:right; font-size:50%; margin-right:4%" onMouseOver="this.style.color='#cccccc'" onMouseOut="this.style.color='#f2f2f2'"><span class="glyphicon glyphicon-log-out">&nbsp;Logout</span></a></h2>
 	<div class="clearfix clearfix-bordered"></div>
 	<br><br>
 	<div class="col-sm-3">
-		<img src="../static/images/icons/icon{{ info.picture }}.jpg" class="img-responsive img-thumbnail" alt="Profile Picture">
+		<img src="{{ info.picture }}" class="img-responsive img-thumbnail" alt="Profile Picture">
 		<br><br>
 	</div>
 	<div class="col-sm-9 personal_info">
@@ -32,7 +32,7 @@
 	<br>
 	<div class="smallBlock">
 		{% for club in clubs %}
-		<a href="#"><img src="../static/images/{{ club.picture }}.jpg" class="img-responsive" alt="">
+		<a href="#"><img src="{{ club.picture }}" class="img-responsive" alt="">
 			<p style="font-size:150%">{{ club.name }}</p>
 			<p>{{ club.intro }}</p>
 		</a>
@@ -148,7 +148,7 @@
 					</ul>
 					{% endif %}
 					<label for="name">Nick Name:</label>
-					<input class="form-control" id="name" type="text" name="name" placeholder="{{ usernickname() }}">
+					<input class="form-control" id="name" type="text" name="name" placeholder="{{ info.name }}">
 					<br>
 					<label for="email">Email:</label>
 					<input class="form-control" id="email" type="email" name="email" placeholder="{{ info.email }}">

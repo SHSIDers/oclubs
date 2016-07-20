@@ -4,7 +4,7 @@
 <!-- Below Navbar -->
 <div class="container">
 	<h1 class="title">{{ club }}</h1>
-	<div class="col-sm-3 function_block clickable" data-href="{{ url_for('.memberinfo', club_info=club_info) }}" style="cursor:pointer">
+	<div class="col-sm-3 function_block clickable" data-href="{{ url_for('clubblueprint.memberinfo', club_info=club_info) }}" style="cursor:pointer">
 		<img src="../static/images/club1.jpg" class="img-responsive img-thumbnail" alt="Club1">
 		<div style="background-color:rgba(77, 77, 77, 0.5)">
 			<p>Check Members' Info</p>

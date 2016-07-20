@@ -60,17 +60,17 @@ def personal():
     info = {}
     info['name'] = user_obj.nickname
     info['email'] = user_obj.email
-    info['picture'] = user_obj.picture
+    info['picture'] = user_obj.picture.location_external
     info['ID'] = user_obj.studentid
     info['phone'] = user_obj.phone
-    if user_obj.type == 1:
+    if user_obj.type == UserType.STUDENT:
         clubs_obj = user_obj.clubs
         clubs = []
         for club_obj in clubs_obj:
             club = {}
             club['name'] = club_obj.name
-            club['picture'] = club.picture
-            club['intro'] = club.intro
+            club['picture'] = club_obj.picture.location_external
+            club['intro'] = club_obj.intro
             club['cas'] = user_obj.cas_in_club(club_obj)
         castotal = 0
         for club in clubs:

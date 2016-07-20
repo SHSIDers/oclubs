@@ -44,12 +44,11 @@
             </form>
         </div>
         
-        <div class="login" style="display:inline-block">
+        <div class="login">
             {% if usernickname() %}
             <span id="loginanimation" onmouseenter="jello(this)" onmouseleave="this.className=''" style="display: block;">
                 <a href="{{ url_for('userblueprint.personal') }}" style="text-decoration:none"><span class="glyphicon glyphicon-user"></span>&nbsp;{{ usernickname() }}</a>
             </span>
-            <a href="{{ logout() }}" style="display:block; text-decoration:none"><span class="glyphicon glyphicon-log-out"></span>&nbsp;Log out</a>
             {% else %}
             <span id="loginanimation" onmouseenter="jello(this)" onmouseleave="this.className=''" style="display: block;">
                 <a href="#loginModal" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-log-in"></span>&nbsp;Login</a>
