@@ -5,25 +5,25 @@
 <div class="large_container">
     <h1 class="text-center title">All Photos</h1>
     <div class="jumbotron">
-        <img src="../static/images/{{ top.image }}.jpg" class="img-responsive img-thumbnail" alt="Image" style="float:left;width:22vw;margin-left:5%;margin-right:5%">
-        <h1>{{ top.club }}</h1>
-        <h1>{{ top.actname }}</h1>
+        <img src="{{ lucky_act.pictures[0] }}" class="img-responsive img-thumbnail" alt="Image" style="float:left;width:22vw;margin-left:5%;margin-right:5%">
+        <h1>{{ lucky_act.club }}</h1>
+        <h1>{{ lucky_act.name }}</h1>
         <h3>Lucky Pick! - The activity is chosen randomly.</h3>
         <h3>Feel free to click it to check the activity.</h3>
         <h3>Below are other fantastic photos from clubs with random order.</h3>
     </div>
     <br>
     <div class="clearfix"></div>
-    {% for photo in photos %}
+    {% for act in acts %}
     <div class="photo clickable bright" data-href="#" style="cursor:pointer">
-        <img src="../static/images/{{ photo.image1 }}.jpg" class="img-responsive" alt="{{ photo.actname1 }}">
-        <h4>{{ photo.actname1 }}</h4>
-        <p>{{ photo.club1 }}</p>
+        <img src="{{ act.image1 }}" class="img-responsive" alt="{{ act.actname1 }}">
+        <h4>{{ act.actname1 }}</h4>
+        <p>{{ act.club1 }}</p>
     </div>
     <div class="photo clickable dark" data-href="#" style="cursor:pointer">
-        <img src="../static/images/{{ photo.image2 }}.jpg" class="img-responsive" alt="{{ photo.actname2 }}">
-        <h4>{{ photo.actname2 }}</h4>
-        <p>{{ photo.club2 }}</p>
+        <img src="{{ act.image2 }}" class="img-responsive" alt="{{ act.actname2 }}">
+        <h4>{{ act.actname2 }}</h4>
+        <p>{{ act.club2 }}</p>
     </div>
     {% endfor %}
     <br>

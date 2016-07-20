@@ -71,7 +71,26 @@ def clubactivities(club_info):
 
 @actblueprint.route('/photos')
 def allphotos():
-    top = {'image': 'intro5', 'actname': 'Making Website', 'club': 'Website Club'}
+    lucky_club = oclubs.objs.Club.randomclubs(1)
+    lucky_act = lucky_club.activities([ActivityTime.UNKNOWN,
+                                       ActivityTime.NOON,
+                                       ActivityTime.AFTERSCHOOL,
+                                       ActivityTime.HONGMEI,
+                                       ActivityTime.OTHERS])[0]
+    acts_obj = oclubs.objs.Activity.all_activities[:20]
+    acts = []
+    for i in range(10):
+        act = {}
+        act['image1'] = acts_obj[2*i+1].pictures[0].location_external
+        act['actname1'] = acts_obj[2*i+1].name
+        act['club1'] = acts_obj[2*i+1].club
+        act['id1'] = acts_obj[2*i+1].id
+        act['image2'] = acts_obj[2*i].pictures[0].location_external
+        act['actname2'] = acts_obj[2*i].name
+        act['club2'] = acts_obj[2*i].club
+        act['id2'] = acts_obj[2*i].id
+        acts.append(act)
+
     photos = [{'image1': 'intro1', 'actname1': 'Random Activity', 'club1': 'Random Club', 'image2': 'intro2', 'actname2': 'Random Activity', 'club2': 'Random Club'},
               {'image1': 'intro1', 'actname1': 'Random Activity', 'club1': 'Random Club', 'image2': 'intro2', 'actname2': 'Random Activity', 'club2': 'Random Club'},
               {'image1': 'intro1', 'actname1': 'Random Activity', 'club1': 'Random Club', 'image2': 'intro2', 'actname2': 'Random Activity', 'club2': 'Random Club'},
@@ -85,8 +104,8 @@ def allphotos():
     return render_template('photos.html',
                            title='All Photos',
                            is_photos=True,
-                           top=top,
-                           photos=photos)
+                           lucky_act=lucky_act,
+                           acts=acts)
 
 
 @actblueprint.route('/<club_info>/photo')
