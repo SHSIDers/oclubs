@@ -60,6 +60,11 @@ class User(BaseObject):
                 [('=', 'user_login_name', studentid)]
             )
         except NoRow:
+            # to gave some delay, verify empty password and discard the results
+            _crypt.verify(
+                password,
+                '$2a$12$mf04JOZtIxRtPFw793AGyeYGHGuiN2ikL/HO9fEKdCIilJqwRZKg.'
+            )
             return
         else:
             if _crypt.verify(password, data['password']):
