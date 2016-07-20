@@ -26,9 +26,9 @@
         </tbody>
     </table>
     <br>
-    <center><form action="{{ url_for('.memberinfo_download', club_info=club_info, members=members) }}">
-        <input type="submit" class="btn btn-success" style="padding: 3%; font-size:200%" value="Download as Excel Document">
-    </form></center>
+    <center><a href="{{ url_for('.memberinfo_download', club_info=club_info) }}" target="_blank">
+        <button class="btn btn-success" style="padding: 3%; font-size:200%">Download as Excel Document</button>
+    </a></center>
 </div>
 
 {% endblock %}
