@@ -41,8 +41,7 @@ class Club(BaseObject):
     def randomclubs(cls, amount, types=None):
         where = []
         if types:
-            types = [_type[0] for _type in filter(
-                lambda val: val[1], enumerate(types))]
+            types = [_type.value for _type in types]
             where.append(('in', 'club_type', types))
         tempdata = database.fetch_onecol(
             cls.table,

@@ -44,7 +44,7 @@ def quitclub_submit():
     club = oclubs.objs.Club(request.form['clubs'])
     user_obj = oclubs.objs.User(session['user_id'])
     club.remove_member(user_obj)
-    flash('You have successfully quitted' + request.form['clubs'], 'quit')
+    flash('You have successfully quitted ' + request.form['clubs'], 'quit')
     return redirect(url_for('.quitclub'))
 
 
@@ -108,8 +108,10 @@ def personal():
         activities.append(act)
     leader_club = ''
     for club_obj in clubs_obj:
-        if user_obj.id == club_obj.leader.id:
-            leader_club = club_obj.name
+        if user_obj == club_obj.leader:
+            leader_club = {}
+            leader_club['name'] = club_obj.name
+            leader_club['club_info'] = club_obj.id + "_" + leader_club['name']
             break
     return render_template('personal.html',
                            title=user_obj.nickname,

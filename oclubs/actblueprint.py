@@ -11,6 +11,7 @@ from flask import (
 import oclubs
 import re
 from oclubs.enums import UserType, ClubType, ActivityTime
+from oclubs.shared import get_club, get_act
 
 actblueprint = Blueprint('actblueprint', __name__)
 
@@ -21,31 +22,14 @@ def date_to_string(date):
     return result
 
 
-def get_club(club_info):
-    '''From club_info get club object'''
-    try:
-        club_id = int(re.match(r'^\d+', club_info).group(0))
-        club = oclubs.objs.Club(club_id)
-    except (NameError, AttributeError, OverflowError):
-        abort(404)
-    return club
-
-
-def get_act(act_info):
-    '''From act_info get activity object'''
-    try:
-        act_id = int(re.match(r'^\d+', act_info).group(0))
-        act = oclubs.objs.Activity(act_id)
-    except (NameError, AttributeError, OverflowError):
-        abort(404)
-    return act
-
-
-@actblueprint.route('/all')
-def allactivities():
+@actblueprint.route('/all/<type>')
+def allactivities(type):
     '''All Activities'''
+    if type == 'all':
+        acts_obj = oclubs.objs.Activity.all_activities()
+    elif type:
+        acts_obj = oclubs.objs.Activity.get_activities_conditions()
     activities = []
-    acts_obj = oclubs.objs.Activity.all_activities()
     for act_obj in acts_obj:
         act = {}
         act['club_name'] = act_obj.club.name
@@ -59,7 +43,7 @@ def allactivities():
                            activities=activities)
 
 
-@actblueprint.route('/<club_info>/activity')
+@actblueprint.route('/<club_info>/club_activity')
 def clubactivities(club_info):
     '''One Club's Activities'''
     club_obj = get_club(club_info)

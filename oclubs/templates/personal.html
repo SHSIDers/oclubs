@@ -90,7 +90,7 @@
                 {% endfor %}
             </tbody>
         </table>
-        <center><a href="{{ url_for('actblueprint.allactivities') }}">
+        <center><a href="{{ url_for('actblueprint.allactivities', type='all') }}">
 			<button class="btn btn-info" style="padding:5% 10% 5% 10%; font-size:125%">Register More</button>
 		</a></center>
 		<br>
@@ -124,8 +124,8 @@
 
 	{% if leader_club %}
 	<br>
-	<center><a href="{{ url_for('.club', club_info=club_info) }}">
-		<button class="btn btn-success" style="padding:2%;font-size:125%">Manage {{ leader_club }}</button>
+	<center><a href="{{ url_for('clubblueprint.club', club_info=leader_club.club_info) }}">
+		<button class="btn btn-success" style="padding:2%;font-size:125%">Manage {{ leader_club.name }}</button>
 	</a></center>
 	{% endif %}
 	

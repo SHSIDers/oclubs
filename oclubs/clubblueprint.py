@@ -11,18 +11,9 @@ from flask import (
 import oclubs
 import re
 from oclubs.enums import UserType, ClubType, ActivityTime
+from oclubs.shared import get_club, get_act, download_csv, upload_picture
 
 clubblueprint = Blueprint('clubblueprint', __name__)
-
-
-def get_club(club_info):
-    '''From club_info get club object'''
-    try:
-        club_id = int(re.match(r'^\d+', club_info).group(0))
-        club = oclubs.objs.Club(club_id)
-    except (NameError, AttributeError, OverflowError):
-        abort(404)
-    return club
 
 
 @clubblueprint.route('/clublist/<type>')
@@ -158,6 +149,21 @@ def memberinfo(club_info):
                            members=members)
 
 
+@clubblueprint.route('/<club_info>/member_info/download')
+def memberinfo_download(club_info, members):
+    '''Download members' info'''
+    header = ['Nick Name', 'Student ID', 'Passport Name', 'Email']
+    info = []
+    for member in members:
+        info_each = []
+        info_each.append(member['nick_name'])
+        info_each.append(member['id'])
+        info_each.append(member['passportname'])
+        info_each.append(member['email'])
+        info.append(info_each)
+    download_csv('Member Info.csv', header, info)
+
+
 @clubblueprint.route('/<club_info>/change_club_info')
 def changeclubinfo(club_info):
     '''Change Club's Info'''
@@ -167,6 +173,7 @@ def changeclubinfo(club_info):
     club = get_club(club_info)
     if user_obj.id != club.leader.id:
         abort(403)
+    upload_picture(club_info)
     return render_template('changeclubinfo.html',
                            title='Change Club Info',
                            club=club.name,
@@ -183,6 +190,7 @@ def changeclubinfo_submit(club_info):
     club.intro = request.form['intro']
     club.picture = request.form['photo']
     club.desc = request.form['desc']
+
     flash('The information about club has been successfully submitted.', 'success')
     return redirect(url_for('changeclubinfo', club_info=club_info))
 

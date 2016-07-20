@@ -9,6 +9,7 @@ from flask import (
 )
 
 import traceback
+import os
 
 import oclubs
 from oclubs.access import database
@@ -16,6 +17,7 @@ from oclubs.userblueprint import userblueprint
 from oclubs.clubblueprint import clubblueprint
 from oclubs.actblueprint import actblueprint
 from oclubs.enums import UserType, ClubType, ActivityTime
+from oclubs.shared import get_club
 
 from oclubs.redissession import RedisSessionInterface
 
