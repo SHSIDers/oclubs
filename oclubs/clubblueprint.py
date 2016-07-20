@@ -134,36 +134,28 @@ def memberinfo(club_info):
     club = get_club(club_info)
     if user_obj.id != club.leader.id:
         abort(403)
-    members_obj = club.members
-    members = []
-    for member_obj in members_obj:
-        member = {}
-        member['nick_name'] = member_obj.nickname
-        member['id'] = member_obj.studentid
-        member['passportname'] = member_obj.passportname
-        member['email'] = member_obj.email
-        members.append(member)
     return render_template('memberinfo.html',
                            title='Member Info',
                            club=club.name,
-                           members=members,
+                           members=club.members,
                            club_info=club_info)
 
 
-@clubblueprint.route('/<club_info>/member_info/download/<members>')
-def memberinfo_download(club_info, members):
+@clubblueprint.route('/<club_info>/member_info/download')
+def memberinfo_download(club_info):
     '''Download members' info'''
     header = ['Nick Name', 'Student ID', 'Passport Name', 'Email']
     info = []
+    members = get_club(club_info).members
     for member in members:
         info_each = []
-        info_each.append(member['nick_name'])
-        info_each.append(member['id'])
-        info_each.append(member['passportname'])
-        info_each.append(member['email'])
+        info_each.append(member.nickname)
+        info_each.append(member.studentid)
+        info_each.append(member.passportname)
+        info_each.append(member.email)
         info.append(info_each)
-    # download_csv('Member Info.csv', header, info)
-    return redirect(url_for('memberinfo', club_info=club_info))
+    download_csv('Member Info.csv', header, info)
+    return redirect(url_for('.memberinfo', club_info=club_info))
 
 
 @clubblueprint.route('/<club_info>/change_club_info')

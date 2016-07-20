@@ -1,0 +1,106 @@
+{% extends "personal.html" %}
+{% block personal %}
+
+<h2 style="color:#f2f2f2">Participating Clubs</h2>
+<br>
+<div class="smallBlock">
+	{% for club in clubs %}
+	<a href="{{ url_for('clubblueprint.clubintro', club_info=club.id ~ '_' + club.name) }}"><img src="{{ club.picture.location_external }}" class="img-responsive" alt="">
+		<p style="font-size:150%">{{ club.name }}</p>
+		<p>{{ club.intro }}</p>
+	</a>
+	{% endfor %}
+</div>
+<div class="clearfix"></div>
+<div class="col-sm-6">
+	<center><a href="{{ url_for('clubblueprint.clublist', type='all') }}">
+		<button class="btn btn-info" style="padding:5% 10% 5% 10%; font-size:125%">Join Clubs</button>
+	</a></center>
+</div>
+<div class="col-sm-6">
+	<center><a href="{{ url_for('userblueprint.quitclub') }}">
+		<button class="btn btn-info" style="padding:5% 10% 5% 10%; font-size:125%">Quit Clubs</button>
+	</a></center>
+</div>
+<div class="clearfix"></div>
+<br>
+<div class="clearfix clearfix-bordered"></div>
+
+<h2 style="color:#f2f2f2">CAS</h2>
+<br>
+<div class="smallBlock">
+	{% for club in clubs %}
+	<div>
+		<p style="font-size:150%">{{ club.name }}</p>
+		<p>CAS Hours: {{ user_obj.cas_in_club(club) }}</p>
+	</div>
+	{% endfor %}
+</div>
+<div class="clearfix"></div>
+<div class="smallBlock">
+	<div style="width:100%"><p style="font-size:200%">Total CAS Hours: {{ castotal }}</p></div>
+</div>
+<div class="clearfix clearfix-bordered"></div>
+
+<div class="col-sm-6" style="border-right-style:solid;border-right-color:#f2f2f2">
+	<h2 style="color:#f2f2f2">Club Meetings</h2>
+	<br>
+	<table class="table table-hover table-bordered">
+        <thead class="list">
+            <tr style="background-color:#bfbfbf">
+                <th>Club</th>
+                <th>Time</th>
+                <th>Location</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for meeting in meetings %}
+            <tr class="clickable act" data-href="#">
+                <td>{{ meeting.club }}</td>
+                <td>{{ meeting.time }}</td>
+                <td>{{ meeting.place }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <center><a href="{{ url_for('actblueprint.allactivities', type='all') }}">
+		<button class="btn btn-info" style="padding:5% 10% 5% 10%; font-size:125%">Register More</button>
+	</a></center>
+	<br>
+</div>
+<div class="col-sm-6">
+	<h2 style="color:#f2f2f2">Activities</h2>
+	<br>
+	<table class="table table-hover table-bordered">
+        <thead class="list">
+            <tr style="background-color:#bfbfbf">
+                <th>Club</th>
+                <th>Contents</th>
+                <th>Time</th>
+                <th>Location</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for activity in activities %}
+            <tr class="clickable act" data-href="#">
+                <td>{{ activity.club }}</td>
+                <td>{{ activity.act}}</td>
+                <td>{{ activity.time }}</td>
+                <td>{{ activity.location }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h3 style="color:#f2f2f2">Check club introduction page to register more</h3>
+</div>
+<div class="clearfix {% if leader_club %}clearfix-bordered{% endif %}"></div>
+
+{% if leader_club %}
+<br>
+<center><a href="{{ url_for('clubblueprint.club', club_info=leader_club.id ~ '_' + leader_club.name) }}">
+	<button class="btn btn-success" style="padding:2%;font-size:125%">Manage {{ leader_club.name }}</button>
+</a></center>
+{% endif %}
+
+
+{% endblock %}

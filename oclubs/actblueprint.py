@@ -149,7 +149,7 @@ def hongmei(club_info):
         abort(401)
     user_obj = oclubs.objs.User(session['user_id'])
     club = get_club(club_info)
-    if user_obj.id != club.leader.id:
+    if user_obj != club.leader and user_obj != club.teacher:
         abort(403)
     schedule = []
     acts_obj = club.activities([ActivityTime.HONGMEI], (False, True))

@@ -1,32 +1,5 @@
-{% extends "base.html" %}
-{% block content %}
-{% with status_info = get_flashed_messages(category_filter=["status_info"]) %}
-{% with status_pw = get_flashed_messages(category_filter=["status_pw"]) %}
-
-<!-- Below Navbar -->
-<div class="container">
-	<h2 class="title_next" style="padding-left: 3%; margin-bottom:0;">{{ usernickname() }}</h2>
-	<div class="clearfix clearfix-bordered"></div>
-	<br><br>
-	<div class="col-sm-3">
-		<img src="{{ info.picture }}" class="img-responsive img-thumbnail" alt="Profile Picture">
-		<br><br>
-	</div>
-	<div class="col-sm-9 personal_info">
-		<h2>Official Name: {{ info.name }}</h2>
-		<h2>Email Address: {{ info.email }}</h2>
-		<h2>Phone Number: {{ info.phone }}</h2>
-		<br>
-		<a href="#changeInfo" data-toggle="modal" data-target="#changeInfo">
-			<button class="btn btn-info">Click here to edit your basic information</button>
-		</a>
-		<a href="#changePass" data-toggle="modal" data-target="#changePass">
-			<button class="btn btn-info">Click here to change your password</button>
-		</a>
-	</div>
-	<div class="clearfix"></div>
-	<br>
-	<div class="clearfix clearfix-bordered"></div>
+{% extends "personal.html" %}
+{% block personal %}
 
 	<h2 style="color:#f2f2f2">Guiding Clubs</h2>
 	<br>
@@ -34,7 +7,7 @@
 		{% for club in myclubs %}
 		<div>
 			<div class="col-sm-3">
-				<img src="../static/images/{{ club.picture }}.jpg" class="img-responsive" alt="">
+				<img src="{{ club.picture }}" class="img-responsive" alt="">
 			</div>
 			<div class="col-sm-9">
 				<h1>{{ club.club }}</h1>
@@ -45,10 +18,10 @@
 					<a href="#"><button class="btn btn-primary">Attendance</button></a>
 				</div>
 				<div class="col-sm-4">
-					<a href="#"><button class="btn btn-primary">Activities Status</button></a>
+					<a href="{{ url_for('actblueprint.clubactivities', club_info=club.id ~ '_' + club.name) }}"><button class="btn btn-primary">Activities Status</button></a>
 				</div>
 				<div class="col-sm-4">
-					<a href="#"><button class="btn btn-primary">HongMei Status</button></a>
+					<a href="{{ url_for('actblueprint.hongmei', club_info=club.id ~ '_' + club.name) }}"><button class="btn btn-primary">HongMei Status</button></a>
 				</div>
 			</div>
 		</div>
@@ -56,85 +29,6 @@
 		{% endfor %}
 	</div>
 	<div class="clearfix"></div>
-	
-</div>
 
-<div class="modal fade" id="changeInfo">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Change Basic Information</h4>
-			</div>
-			<div class="modal-body">
-				<form class="form-group" id="info_form" action="{{ url_for('.teacher_submit_info') }}">
-					{% if status_info %}
-					<ul class="list-group">
-						{% for message in status_info %}
-						<li class="list-group-item">{{ message }}</li>
-						{% endfor %}
-					</ul>
-					{% endif %}
-					<label for="name">Nick Name:</label>
-					<input class="form-control" id="name" type="text" name="name" placeholder="{{ user }}">
-					<br>
-					<label for="email">Email:</label>
-					<input class="form-control" id="email" type="email" name="email" placeholder="{{ info.email }}">
-					<br>
-					<label for="phone">Phone Number:</label>
-					<input class="form-control" id="phone" type="text" name="phone" placeholder="{{ info.phone }}">
-					<br>
-					<label for="picture">Profile Picture:</label>
-					<div class="clearfix"></div>
-					{% for pic in pictures %}
-					<label class="radio_block">
-						<img src="../static/images/icons/icon{{ pic }}.jpg" class="img-responsive" alt="Icon{{ pic }}">
-						<center><input type="radio" name="info" value="{{ pic }}"></center>
-					</label>
-					{% endfor %}
-					<div class="clearfix"></div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<input type="submit" class="btn btn-primary" form="info_form" name="change_info" value="Change Info">
-			</div>
-		</div>
-	</div>
-</div>
 
-<div class="modal fade" id="changePass">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Change Password</h4>
-			</div>
-			<div class="modal-body">
-				<form class="form-group" id="pass_form" action="{{ url_for('.teacher_submit_password') }}">
-					{% if status_pw %}
-					<ul class="list-group">
-						{% for message in status_pw %}
-						<li class="list-group-item">{{ message }}</li>
-						{% endfor %}
-					</ul>
-					{% endif %}
-					<label for="new">New Password:</label>
-					<input class="form-control" id="new" name="new" type="password">
-					<br>
-					<label for="again">Repeat New Password:</label>
-					<input class="form-control" id="again" name="again" type="password">
-					<div class="clearfix"></div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<input type="submit" class="btn btn-primary" form="pass_form" name="change_pass" value="Change Password">
-			</div>
-		</div>
-	</div>
-</div>
-
-{% endwith %}
-{% endwith %}
 {% endblock %}

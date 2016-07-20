@@ -56,32 +56,22 @@ def personal():
     user_obj = oclubs.objs.User(session['user_id'])
     pictures = []
     for num in range(1, 21):
-        pictures.append(num)
-    info = {}
-    info['name'] = user_obj.nickname
-    info['email'] = user_obj.email
-    info['picture'] = user_obj.picture.location_external
-    info['ID'] = user_obj.studentid
-    info['phone'] = user_obj.phone
+        pictures.append(oclubs.objs.Upload(-num))
     if user_obj.type == UserType.STUDENT:
-        clubs_obj = user_obj.clubs
-        clubs = []
-        for club_obj in clubs_obj:
-            club = {}
-            club['name'] = club_obj.name
-            club['picture'] = club_obj.picture.location_external
-            club['intro'] = club_obj.intro
-            club['cas'] = user_obj.cas_in_club(club_obj)
+        clubs = user_obj.clubs
         castotal = 0
-        for club in clubs:
-            castotal += club['cas']
+        cas_clubs = []
+        # for club in clubs:
+        #     cas_clubs.append(user_obj.cas_in_club(club))
+        # for cas in cas_clubs:
+        #     castotal += cas
         meetings_obj = user_obj.activities_reminder([ActivityTime.NOON, ActivityTime.AFTERSCHOOL])
         meetings = []
         for meeting_obj in meetings_obj:
             meeting = {}
             meeting['club'] = meeting_obj.club
             time_int = meeting_obj.time
-            if time_int == 1:
+            if time_int == ActivityTime.NOON:
                 time = "Noon"
             else:
                 time = "Afternoon"
@@ -96,46 +86,37 @@ def personal():
             act = {}
             act['club'] = act_obj.club
             time_int = act_obj.time
-            if time_int == 0:
+            if time_int == ActivityTime.UNKNOWN:
                 time = "Unknown time"
-            elif time_int == 3:
+            elif time_int == ActivityTime.HONGMEI:
                 time = "HongMei activity"
             else:
                 time = "Individual club activity"
             act['time'] = date_to_string(act_obj.date) + ": " + time
             act['location'] = act_obj.location
             activities.append(act)
-        leader_club = ''
-        for club_obj in clubs_obj:
+        for club_obj in clubs:
             if user_obj == club_obj.leader:
-                leader_club = {}
-                leader_club['name'] = club_obj.name
-                leader_club['club_info'] = club_obj.id + "_" + leader_club['name']
+                leader_club = club_obj
                 break
-        return render_template('personal.html',
+        return render_template('student.html',
                                title=user_obj.nickname,
                                pictures=pictures,
-                               info=info,
+                               user_obj=user_obj,
                                clubs=clubs,
                                castotal=castotal,
                                meetings=meetings,
                                activities=activities,
-                               leader_club=leader_club)
+                               leader_club=leader_club,
+                               UserType=UserType)
     else:
-        user_obj = oclubs.objs.User(session['user_id'])
-        myclubs = user_obj.clubs
-        pictures = []
-        for num in range(1, 21):
-            pictures.append(num)
-        info = {}
-        info['name'] = user_obj.nickname
-        info['email'] = user_obj.email
-        info['picture'] = user_obj.picture.location_external
+        myclubs = oclubs.objs.Club.get_clubs_special_access(user_obj)
         return render_template('teacher.html',
                                title=user_obj.nickname,
-                               myclubs=myclubs,
                                pictures=pictures,
-                               info=info)
+                               user_obj=user_obj,
+                               myclubs=myclubs,
+                               UserType=UserType)
 
 
 @userblueprint.route('/submit_info', methods=['POST'])

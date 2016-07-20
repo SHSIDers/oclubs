@@ -5,17 +5,17 @@
 
 <!-- Below Navbar -->
 <div class="container">
-	<h2 class="title_next" style="padding-left: 3%; margin-bottom:0;">{{ info.name }} <span style="font-size:50%">({{ info.ID }})</span><a href="{{ url_for('logout') }}" style="color:#f2f2f2; float:right; font-size:50%; margin-right:4%" onMouseOver="this.style.color='#cccccc'" onMouseOut="this.style.color='#f2f2f2'"><span class="glyphicon glyphicon-log-out">&nbsp;Logout</span></a></h2>
+	<h2 class="title_next" style="padding-left: 3%; margin-bottom:0;">{{ usernickname() }} {% if user_obj.type == UserType.STUDENT %}<span style="font-size:50%">({{ user_obj.studentid }})</span>{% endif %}<a href="{{ url_for('logout') }}" style="color:#f2f2f2; float:right; font-size:50%; margin-right:4%" onMouseOver="this.style.color='#cccccc'" onMouseOut="this.style.color='#f2f2f2'"><span class="glyphicon glyphicon-log-out">&nbsp;Logout</span></a></h2>
 	<div class="clearfix clearfix-bordered"></div>
 	<br><br>
 	<div class="col-sm-3">
-		<img src="{{ info.picture }}" class="img-responsive img-thumbnail" alt="Profile Picture">
+		<img src="{{ user_obj.picture.location_external }}" class="img-responsive img-thumbnail" alt="Profile Picture">
 		<br><br>
 	</div>
 	<div class="col-sm-9 personal_info">
-		<h2>Official Name: {{ info.name }}</h2>
-		<h2>Email Address: {{ info.email }}</h2>
-		<h2>Phone Number: {{ info.phone }}</h2>
+		<h2>Official Name: {{ user_obj.passportname }}</h2>
+		<h2>Email Address: {{ user_obj.email }}</h2>
+		<h2>Phone Number: {{ user_obj.phone }}</h2>
 		<br>
 		<a href="#changeInfo" data-toggle="modal" data-target="#changeInfo">
 			<button class="btn btn-info">Click here to edit your basic information</button>
@@ -28,107 +28,7 @@
 	</div>
 	<div class="clearfix clearfix-bordered"></div>
 
-	<h2 style="color:#f2f2f2">Participating Clubs</h2>
-	<br>
-	<div class="smallBlock">
-		{% for club in clubs %}
-		<a href="#"><img src="{{ club.picture }}" class="img-responsive" alt="">
-			<p style="font-size:150%">{{ club.name }}</p>
-			<p>{{ club.intro }}</p>
-		</a>
-		{% endfor %}
-	</div>
-	<div class="clearfix"></div>
-	<div class="col-sm-6">
-		<center><a href="{{ url_for('clubblueprint.clublist', type='all') }}">
-			<button class="btn btn-info" style="padding:5% 10% 5% 10%; font-size:125%">Join Clubs</button>
-		</a></center>
-	</div>
-	<div class="col-sm-6">
-		<center><a href="{{ url_for('userblueprint.quitclub') }}">
-			<button class="btn btn-info" style="padding:5% 10% 5% 10%; font-size:125%">Quit Clubs</button>
-		</a></center>
-	</div>
-	<div class="clearfix"></div>
-	<br>
-	<div class="clearfix clearfix-bordered"></div>
-
-	<h2 style="color:#f2f2f2">CAS</h2>
-	<br>
-	<div class="smallBlock">
-		{% for club in clubs %}
-		<div>
-			<p style="font-size:150%">{{ club.name }}</p>
-			<p>CAS Hours: {{ club.cas }}</p>
-		</div>
-		{% endfor %}
-	</div>
-	<div class="clearfix"></div>
-	<div class="smallBlock">
-		<div style="width:100%"><p style="font-size:200%">Total CAS Hours: {{ castotal }}</p></div>
-	</div>
-	<div class="clearfix clearfix-bordered"></div>
-
-	<div class="col-sm-6" style="border-right-style:solid;border-right-color:#f2f2f2">
-		<h2 style="color:#f2f2f2">Club Meetings</h2>
-		<br>
-		<table class="table table-hover table-bordered">
-            <thead class="list">
-                <tr style="background-color:#bfbfbf">
-                    <th>Club</th>
-                    <th>Time</th>
-                    <th>Location</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for meeting in meetings %}
-                <tr class="clickable act" data-href="#">
-                    <td>{{ meeting.club }}</td>
-                    <td>{{ meeting.time }}</td>
-                    <td>{{ meeting.place }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <center><a href="{{ url_for('actblueprint.allactivities', type='all') }}">
-			<button class="btn btn-info" style="padding:5% 10% 5% 10%; font-size:125%">Register More</button>
-		</a></center>
-		<br>
-	</div>
-	<div class="col-sm-6">
-		<h2 style="color:#f2f2f2">Activities</h2>
-		<br>
-		<table class="table table-hover table-bordered">
-            <thead class="list">
-                <tr style="background-color:#bfbfbf">
-                    <th>Club</th>
-                    <th>Contents</th>
-                    <th>Time</th>
-                    <th>Location</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for activity in activities %}
-                <tr class="clickable act" data-href="#">
-                    <td>{{ activity.club }}</td>
-                    <td>{{ activity.act}}</td>
-                    <td>{{ activity.time }}</td>
-                    <td>{{ activity.location }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <h3 style="color:#f2f2f2">Check club introduction page to register more</h3>
-	</div>
-	<div class="clearfix {% if leader_club %}clearfix-bordered{% endif %}"></div>
-
-	{% if leader_club %}
-	<br>
-	<center><a href="{{ url_for('clubblueprint.club', club_info=leader_club.club_info) }}">
-		<button class="btn btn-success" style="padding:2%;font-size:125%">Manage {{ leader_club.name }}</button>
-	</a></center>
-	{% endif %}
-	
+	{% block personal %}{% endblock %}
 </div>
 
 <div class="modal fade" id="changeInfo">
@@ -148,20 +48,20 @@
 					</ul>
 					{% endif %}
 					<label for="name">Nick Name:</label>
-					<input class="form-control" id="name" type="text" name="name" placeholder="{{ info.name }}">
+					<input class="form-control" id="name" type="text" name="name" placeholder="{{ usernickname() }}">
 					<br>
 					<label for="email">Email:</label>
-					<input class="form-control" id="email" type="email" name="email" placeholder="{{ info.email }}">
+					<input class="form-control" id="email" type="email" name="email" placeholder="{{ user_obj.email }}">
 					<br>
 					<label for="phone">Phone Number:</label>
-					<input class="form-control" id="phone" type="text" name="phone" placeholder="{{ info.phone }}">
+					<input class="form-control" id="phone" type="text" name="phone" placeholder="{{ user_obj.phone }}">
 					<br>
 					<label for="picture">Profile Picture:</label>
 					<div class="clearfix"></div>
 					{% for pic in pictures %}
 					<label class="radio_block">
-						<img src="../static/images/icons/icon{{ pic }}.jpg" class="img-responsive" alt="Icon{{ pic }}">
-						<center><input type="radio" name="picture" value="{{ pic }}"></center>
+						<img src="{{ pic.location_external }}" class="img-responsive" alt="{{ pic.id }}">
+						<center><input type="radio" name="picture" value="{{ pic.id }}"></center>
 					</label>
 					{% endfor %}
 					<div class="clearfix"></div>

@@ -30,6 +30,13 @@ class Club(BaseObject):
     def is_excellent(self):
         return self.id in self.excellentclubs()
 
+    @property
+    def members_num(self):
+        num = 0
+        for member in self.members:
+            num += 1
+        return num
+
     @staticmethod
     def excellentclubs():
         if Club._excellentclubs is None:
