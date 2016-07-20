@@ -46,7 +46,7 @@ class Upload(BaseObject):
             return self.mk_external_path(-self.id, False)
 
     @classmethod
-    def handle_upload(cls, user, club, file):
+    def handle(cls, user, club, file):
         filename = os.urandom(8).encode('hex')
         temppath = os.path.join('/tmp', filename)
         file.save(temppath)
