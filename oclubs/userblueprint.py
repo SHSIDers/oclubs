@@ -143,30 +143,6 @@ def personal_submit_password():
     return redirect(url_for('.personal'))
 
 
-@userblueprint.route('/teacher/submit_info', methods=['POST'])
-def teacher_submit_info():
-    '''Change teacher's information in database'''
-    user_obj = oclubs.objs.User(session['user_id'])
-    user_obj.nickname = request.form['name']
-    user_obj.email = request.form['email']
-    user_obj.phone = request.form['phone']
-    user_obj.picture = request.form['picture']  # location in html has to be adjusted
-    flash('Your information has been successfully changed.', 'status_info')
-    return redirect(url_for('.teacher'))
-
-
-@userblueprint.route('/teacher/submit_password', methods=['POST'])
-def teacher_submit_password():
-    '''Change teacher's password in database'''
-    if request.form['new'] == request.form['again']:
-        user_obj = oclubs.objs.User(session['user_id'])
-        user_obj.password = request.form['new']
-        flash('Your information has been successfully changed.', 'status_pw')
-    else:
-        flash('You have entered two different passwords. Please enter again.', 'status_pw')
-    return redirect(url_for('.teacher'))
-
-
 @userblueprint.route('/forgot_password')
 def forgotpw():
     '''Page for retrieving password'''
