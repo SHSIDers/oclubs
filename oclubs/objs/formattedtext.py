@@ -4,9 +4,16 @@
 
 from __future__ import absolute_import, unicode_literals
 
+import bleach
 from flask import Markup
+from markdown import markdown
 
 from oclubs.objs.base import BaseObject, Property
+
+
+ALLOWED_TAGS = bleach.ALLOWED_TAGS
+# We exclude <img>
+ALLOWED_TAGS += ['p', 'br', 'hr', 'pre', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 
 
 class FormattedText(BaseObject):
@@ -33,6 +40,16 @@ class FormattedText(BaseObject):
     @property
     def formatted(self):
         if self._formatted is None:
-            # TODO
-            self._formatted = Markup(self.raw)
+            self._formatted = Markup(self.format(self.raw))
         return self._formatted
+
+    @staticmethod
+    def format(rawstr):
+        return bleach.clean(
+            markdown(
+                rawstr,
+                output_format='html5',
+                lazy_ol=False
+            ),
+            tags=ALLOWED_TAGS
+        )

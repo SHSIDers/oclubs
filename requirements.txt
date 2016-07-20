@@ -6,3 +6,6 @@ passlib
 bcrypt
 enum34
 Pillow
+markdown
+bleach
+importlib
