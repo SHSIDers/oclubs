@@ -43,8 +43,8 @@ def get_name():
     return user
 
 
-def get_picture(picture):
-    return url_for('static', filename='images/' + picture + '.png')
+def get_picture(picture, ext='jpg'):
+    return url_for('static', filename='images/' + picture + '.' + ext)
 
 
 @app.route('/logout')
@@ -69,8 +69,8 @@ def database_done(response):
 
 
 @app.errorhandler(404)
-@app.route('/404')
-def page_not_found(e):
+@app.route('/404')  # debugger
+def page_not_found(e=None):
     '''Wrong url'''
     return render_template('error.html',
                            title='404 Page Not Found',
@@ -79,7 +79,8 @@ def page_not_found(e):
 
 
 @app.errorhandler(403)
-def forbidden(e):
+@app.route('/403')  # debugger
+def forbidden(e=None):
     '''No access'''
     return render_template('error.html',
                            title='403 Forbidden',
@@ -88,7 +89,8 @@ def forbidden(e):
 
 
 @app.errorhandler(401)
-def unauthorized(e):
+@app.route('/401')  # debugger
+def unauthorized(e=None):
     '''Not logged in'''
     return render_template('error.html',
                            title='401 Unauthorized',
@@ -97,7 +99,8 @@ def unauthorized(e):
 
 
 @app.errorhandler(500)
-def internal_server_error(e):
+@app.route('/500')  # debugger
+def internal_server_error(e=None):
     '''Internal server error'''
     return render_template('error.html',
                            title='500 Internal Server Error',

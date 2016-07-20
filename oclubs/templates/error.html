@@ -5,7 +5,7 @@
 <div class="container error">
 {% if is_internal_server_error %}
 	<h1 class="title text-center">500 Internal Server Error</h1>
-	<center><img src="{{ getpicture('smiley_face') }}" class="img-responsive img-thumbnail" alt="Sad face" width="40%"></center>
+	<center><img src="{{ getpicture('smiley_face', 'png') }}" class="img-responsive" alt="Sad face" width="40%"></center>
 	<br><br>
 	<p>Oops. This is an awkward moment. Please contact us and tell us about what you have done so far. We will respond as soon as possible. Please click advice/opinion at the bottom of this page to contact us. Thank you for your coorperation.</p>
 {% endif %}
@@ -23,7 +23,7 @@
 {% endif %}
 {% if is_unauthorized %}
 	<h1 class="title text-center">401 Unauthorized</h1>
-	<center><img src="{{ getpicture('notloggedin') }}" class="img-responsive img-thumbnail" alt="Not Logged In" width="40%"></center>
+	<center><img src="{{ getpicture('notloggedin', 'png') }}" class="img-responsive" alt="Not Logged In" width="40%"></center>
 	<br><br>
 	<p>We are sorry to tell you. You are not logged in. Please login to check if you have the access to the url you entered.</p>
 {% endif %}
