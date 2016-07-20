@@ -146,10 +146,11 @@ def memberinfo(club_info):
     return render_template('memberinfo.html',
                            title='Member Info',
                            club=club.name,
-                           members=members)
+                           members=members,
+                           club_info=club_info)
 
 
-@clubblueprint.route('/<club_info>/member_info/download')
+@clubblueprint.route('/<club_info>/member_info/download/<members>')
 def memberinfo_download(club_info, members):
     '''Download members' info'''
     header = ['Nick Name', 'Student ID', 'Passport Name', 'Email']
@@ -161,7 +162,7 @@ def memberinfo_download(club_info, members):
         info_each.append(member['passportname'])
         info_each.append(member['email'])
         info.append(info_each)
-    download_csv('Member Info.csv', header, info)
+    # download_csv('Member Info.csv', header, info)
     return redirect(url_for('memberinfo', club_info=club_info))
 
 

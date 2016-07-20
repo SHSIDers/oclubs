@@ -56,4 +56,15 @@ def download_csv(filename, header, info):
     headers = Headers()
     headers.set('Content-Disposition', 'attachment', filename=filename)
     return Response(generate(), mimetype='text/csv')
-    
+
+    # from flask import Flask, make_response
+    # app = Flask(__name__)
+
+    # @app.route('/csv/')
+    # def download_csv():
+    #     csv = 'foo,bar,baz\nhai,bai,crai\n'
+    #     response = make_response(csv)
+    #     response.headers['Content-Disposition'] = 'attachment; filename=mycsv.csv'
+    #     response.mimetype='text/csv'
+
+    #     return response
