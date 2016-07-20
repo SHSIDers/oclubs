@@ -2,7 +2,8 @@
 # -*- coding: UTF-8 -*-
 #
 
-import csv
+import unicodecsv as csv
+from io import BytesIO
 import re
 
 from flask import session, abort, request, make_response
@@ -40,31 +41,20 @@ def upload_picture(club_info):
     user_obj = oclubs.objs.User(session['user_id'])
     club_obj = get_club(club_info)
     file = request.files['picture']
-    oclubs.objs.Upload.handle_upload(user_obj, club_obj, file)
+    oclubs.objs.Upload.handle(user_obj, club_obj, file)
 
 
 def download_csv(filename, header, info):
     '''Create csv file for given info and download it'''
     # header as list, info as list of list
     def generate():
-        w = csv.writer()
-
-        w.writerow(filename)
+        yield ','.join(header) + '\n'
         for row in info:
-            w.writerow(row)
-            yield row
+            yield ','.join(row) + '\n'
     headers = Headers()
     headers.set('Content-Disposition', 'attachment', filename=filename)
-    return Response(generate(), mimetype='text/csv')
-
-    # from flask import Flask, make_response
-    # app = Flask(__name__)
-
-    # @app.route('/csv/')
-    # def download_csv():
-    #     csv = 'foo,bar,baz\nhai,bai,crai\n'
-    #     response = make_response(csv)
-    #     response.headers['Content-Disposition'] = 'attachment; filename=mycsv.csv'
-    #     response.mimetype='text/csv'
-
-    #     return response
+    return Response(generate(), mimetype='text/csv', headers=headers)
+    # f = BytesIO()
+    # w = csv.writer(f, encoding='utf-16')
+    # _ = w.writerow(header)
+    # _ = f.seek(0)
