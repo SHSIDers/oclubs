@@ -31,7 +31,7 @@ class User(BaseObject):
     def cas_in_club(self, club):
         return database.fetch_oneentry(
             'attendance',
-            'SUM(act_cas)',
+            database.RawSQL('SUM(act_cas)'),
             {
                 'join': [('inner', 'activity', [('act_id', 'att_act')])],
                 'where': [('=', 'att_user', self.id)],

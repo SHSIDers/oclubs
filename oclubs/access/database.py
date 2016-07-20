@@ -10,6 +10,16 @@ import MySQLdb
 from oclubs.exceptions import NoRow, AlreadyExists
 
 
+class RawSQL(object):
+    """Class to signal a raw SQL part of a query. - DANGEROUS!"""
+    def __init__(self, sql):
+        self._sql = _strify(sql)
+
+    @property
+    def sql(self):
+        return self._sql
+
+
 def _parse_cond(conds):
     return ' AND '.join([__parse_cond(one_cond) for one_cond in conds])
 
@@ -111,8 +121,8 @@ def _encode(obj):
 
 
 def _encode_name(identifier):
-    if identifier is Ellipsis:
-        return 'RAND()'
+    if isinstance(identifier, RawSQL):
+        return identifier.sql
     elif isinstance(identifier, list):
         return ','.join([_encode_name(item) for item in identifier])
     return '`%s`' % MySQLdb.escape_string(_strify(identifier))

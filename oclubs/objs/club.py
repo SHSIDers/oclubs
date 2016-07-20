@@ -48,7 +48,7 @@ class Club(BaseObject):
             cls.identifier,
             {
                 'where': where,
-                'order': [(Ellipsis, True)],
+                'order': [(database.RawSQL('RAND()'), True)],
                 'limit': amount
             }
         )
