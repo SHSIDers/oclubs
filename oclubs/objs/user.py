@@ -36,7 +36,7 @@ class User(BaseObject):
                 'join': [('inner', 'activity', [('act_id', 'att_act')])],
                 'where': [('=', 'att_user', self.id)],
             }
-        )
+        ) or 0
 
     def activities_reminder(self, types):
         from oclubs.objs import Activity
