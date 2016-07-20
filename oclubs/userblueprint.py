@@ -95,10 +95,10 @@ def personal():
             act['time'] = date_to_string(act_obj.date) + ": " + time
             act['location'] = act_obj.location
             activities.append(act)
+        leader_club = []
         for club_obj in clubs:
             if user_obj == club_obj.leader:
-                leader_club = club_obj
-                break
+                leader_club.append(club_obj)
         return render_template('student.html',
                                title=user_obj.nickname,
                                pictures=pictures,

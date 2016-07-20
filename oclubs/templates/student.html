@@ -97,9 +97,13 @@
 
 {% if leader_club %}
 <br>
-<center><a href="{{ url_for('clubblueprint.club', club_info=leader_club.id ~ '_' + leader_club.name) }}">
-	<button class="btn btn-success" style="padding:2%;font-size:125%">Manage {{ leader_club.name }}</button>
-</a></center>
+<div class="container">
+    {% for club in leader_club %}
+    <a href="{{ url_for('clubblueprint.club', club_info=club.id ~ '_' + club.name) }}">
+    	<button class="btn btn-success" style="padding:2%;font-size:125%">Manage {{ club.name }}</button>
+    </a>
+    {% endfor %}
+</div>
 {% endif %}
 
 
