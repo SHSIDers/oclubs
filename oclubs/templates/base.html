@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 
-<html usernickname="{{ usernickname() }}">
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
@@ -14,72 +14,66 @@
 
 <title>{{ title }} - oClubs!</title>
 
-<script>
-    function jello( x ) {
-        x.className = 'jello animated';
-    }
-</script>
-
 </head>
 
 <body>
 <div class="header">
-    <div class="container">
-        <div class="logo">
-            <a href="/"><img src="{{ url_for('static', filename='images/logo.png') }}" class="img-responsive" alt=""></a>
-        </div>
-        <div class="top-nav">
-            <ul>
-                <li class="sweep {% if is_home %}active{% endif %}"><a href="{{ url_for('homepage') }}">Home</a></li>
-                <li class="sweep {% if is_list %}active{% endif %}"><a href="{{ url_for('clubblueprint.clublist', type='all') }}">Club List</a></li>
-                <li class="sweep {% if is_allact %}active{% endif %}"><a href="{{ url_for('actblueprint.allactivities', type='all') }}"">Activities</a></li>
-                <li class="sweep {% if is_photos %}active{% endif %}"><a href="{{ url_for('actblueprint.allphotos') }}"">Photos</a></li>
-                <li class="sweep {% if is_about %}active{% endif %}"><a href="{{ url_for('about') }}"">About</a></li>
-            </ul>
-        </div>
-        <div class="search">
-            <form style="display:inline-block">
-                <input type="text" value="Search" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search';}">
-                <span class="glyphicon glyphicon-search"><input type="submit" value=""></span>
-            </form>
-        </div>
-        
-        <div class="login">
-            {% if usernickname() %}
-            <span id="loginanimation" onmouseenter="jello(this)" onmouseleave="this.className=''" style="display: block;">
-                <a href="{{ url_for('userblueprint.personal') }}" style="text-decoration:none"><span class="glyphicon glyphicon-user"></span>&nbsp;{{ usernickname() }}</a>
-            </span>
-            {% else %}
-            <span id="loginanimation" onmouseenter="jello(this)" onmouseleave="this.className=''" style="display: block;">
-                <a href="#loginModal" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-log-in"></span>&nbsp;Login</a>
-            </span>
-            {% endif %}
-        </div>
-    </div>
+	<div class="container">
+		<div class="logo">
+			<a href="/"><img src="{{ url_for('static', filename='images/logo.png') }}" class="img-responsive" alt=""></a>
+		</div>
+		<div class="top-nav">
+			<ul>
+				<li class="sweep {% if is_home %}active{% endif %}"><a href="{{ url_for('homepage') }}">Home</a></li>
+				<li class="sweep {% if is_list %}active{% endif %}"><a href="{{ url_for('clubblueprint.clublist', type='all') }}">Club List</a></li>
+				<li class="sweep {% if is_allact %}active{% endif %}"><a href="{{ url_for('actblueprint.allactivities', type='all') }}"">Activities</a></li>
+				<li class="sweep {% if is_photos %}active{% endif %}"><a href="{{ url_for('actblueprint.allphotos') }}"">Photos</a></li>
+				<li class="sweep {% if is_about %}active{% endif %}"><a href="{{ url_for('about') }}"">About</a></li>
+			</ul>
+		</div>
+		<div class="search">
+			<form style="display:inline-block">
+				<input type="text" value="Search" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search';}">
+				<span class="glyphicon glyphicon-search"><input type="submit" value=""></span>
+			</form>
+		</div>
+		
+		<div class="login">
+			{% if usernickname() %}
+			<span id="loginanimation" style="display: block;">
+				<a href="{{ url_for('userblueprint.personal') }}" style="text-decoration:none"><span class="glyphicon glyphicon-user"></span>&nbsp;{{ usernickname() }}</a>
+			</span>
+			{% else %}
+			<span id="loginanimation" style="display: block;">
+				<a href="#loginModal" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-log-in"></span>&nbsp;Login</a>
+			</span>
+			{% endif %}
+		</div>
+	</div>
 </div>
 
 <div class="modal fade" id="loginModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Login</h4>
-            </div>
-            <div class="modal-body">
-                <form id="loginform" class="form-group">
-                    <label for="username">Username:</label>
-                    <input class="form-control" id="username" type="text" placeholder="Enter username">
-                    <label for="password">Password:</label>
-                    <input class="form-control" id="password" type="password" placeholder="Enter password">
-                    <p class="text-right"><a href="/user/forgotpw">Forgot password?</a></p>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <input type="submit" class="btn btn-primary" form="loginform" value="Login" id="login">
-            </div>
-        </div>
-    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Login</h4>
+			</div>
+			<div class="modal-body">
+				<form id="loginform" class="form-group">
+					<label for="username">Username:</label>
+					<input class="form-control" id="username" type="text" placeholder="Enter username">
+					<label for="password">Password:</label>
+					<input class="form-control" id="password" type="password" placeholder="Enter password">
+					<p class="text-right"><a href="/user/forgotpw">Forgot password?</a></p>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<input type="submit" class="btn btn-primary" form="loginform" value="Login" id="login">
+			</div>
+		</div>
+	</div>
 </div>
 
 <br><br>
@@ -89,26 +83,26 @@
 <div class="clearfix" style="min-height:90%"></div>
 
 <div class="footer">
-    <div class="container text-center">
-        <div class="col-md-4 soci">
-            <h3>Join Clubs</h3>
-            <p style="text-decoration:underline"><a href="{{ url_for('clubblueprint.clublist', type='all') }}">Click Here</a></p>
-            <div class="clearfix"></div>
-            <h3>Advice/Opinion</h3>
-            <p style="text-decoration:underline"><a href="{{ url_for('advice') }}">Click Here</a></p>
-        </div>
-        <div class="col-md-4 footer-left">
-            <h3>Notes</h3>
-            <p>This is a student-made website. We are always welcoming advice about improving this website. Feel free to contact us (or like us) and check our school, SHSID.</p>
-        </div>
-        <div class="col-md-4 footer-left">
-            <h3>Check Creators' Info</h3>
-            <p style="text-decoration:underline"><a href="{{ url_for('creators') }}">Click Here</a></p>
-            <div class="clearfix"> </div>
-            <h3>Contact Us</h3>
-            <p>oclubs@outlook.com</p>
-        </div>
-    </div>
+	<div class="container text-center">
+		<div class="col-md-4 soci">
+			<h3>Join Clubs</h3>
+			<p style="text-decoration:underline"><a href="{{ url_for('clubblueprint.clublist', type='all') }}">Click Here</a></p>
+			<div class="clearfix"></div>
+			<h3>Advice/Opinion</h3>
+			<p style="text-decoration:underline"><a href="{{ url_for('advice') }}">Click Here</a></p>
+		</div>
+		<div class="col-md-4 footer-left">
+			<h3>Notes</h3>
+			<p>This is a student-made website. We are always welcoming advice about improving this website. Feel free to contact us (or like us) and check our school, SHSID.</p>
+		</div>
+		<div class="col-md-4 footer-left">
+			<h3>Check Creators' Info</h3>
+			<p style="text-decoration:underline"><a href="{{ url_for('creators') }}">Click Here</a></p>
+			<div class="clearfix"> </div>
+			<h3>Contact Us</h3>
+			<p>oclubs@outlook.com</p>
+		</div>
+	</div>
 </div>
 </body>
 </html>
