@@ -5,7 +5,7 @@
 
 <!-- Below Navbar -->
 <div class="container">
-	<h2 class="title_next" style="padding-left: 3%; margin-bottom:0;">{{ user }}</h2>
+	<h2 class="title_next" style="padding-left: 3%; margin-bottom:0;">{{ usernickname() }}</h2>
 	<div class="clearfix clearfix-bordered"></div>
 	<br><br>
 	<div class="col-sm-3">
@@ -65,7 +65,7 @@
 				<h4 class="modal-title">Change Basic Information</h4>
 			</div>
 			<div class="modal-body">
-				<form class="form-group" id="info_form" action="{{ url_for('teacher_submit_info') }}">
+				<form class="form-group" id="info_form" action="{{ url_for('.teacher_submit_info') }}">
 					{% if status_info %}
 					<ul class="list-group">
 						{% for message in status_info %}
@@ -109,7 +109,7 @@
 				<h4 class="modal-title">Change Password</h4>
 			</div>
 			<div class="modal-body">
-				<form class="form-group" id="pass_form" action="{{ url_for('teacher_submit_password') }}">
+				<form class="form-group" id="pass_form" action="{{ url_for('.teacher_submit_password') }}">
 					{% if status_pw %}
 					<ul class="list-group">
 						{% for message in status_pw %}
@@ -133,4 +133,6 @@
 	</div>
 </div>
 
+{% endwith %}
+{% endwith %}
 {% endblock %}
