@@ -31,20 +31,8 @@ def clublist(type):
     num = 18
     if type == 'all':
         clubs_obj = oclubs.objs.Club.randomclubs(num)
-    elif type == 'academics':
-        clubs_obj = oclubs.objs.Club.randomclubs(num, [ClubType.ACADEMICS])
-    elif type == 'sports':
-        clubs_obj = oclubs.objs.Club.randomclubs(num, [ClubType.SPORTS])
-    elif type == 'arts':
-        clubs_obj = oclubs.objs.Club.randomclubs(num, [ClubType.ARTS])
-    elif type == 'services':
-        clubs_obj = oclubs.objs.Club.randomclubs(num, [ClubType.SERVICES])
-    elif type == 'entertainment':
-        clubs_obj = oclubs.objs.Club.randomclubs(num, [ClubType.ENTERTAINMENT])
-    elif type == 'others':
-        clubs_obj = oclubs.objs.Club.randomclubs(num, [ClubType.OTHERS])
-    elif type == 'school_teams':
-        clubs_obj = oclubs.objs.Club.randomclubs(num, [ClubType.SCHOOL_TEAMS])
+    elif type != '':
+        clubs_obj = oclubs.objs.Club.randomclubs(num, [ClubType[type.upper()]])
     else:
         abort(404)
     clubs = []
