@@ -12,7 +12,7 @@ import traceback
 import os
 
 from oclubs.objs import User
-from oclubs.access import database
+from oclubs.access import done as db_done
 from oclubs.userblueprint import userblueprint
 from oclubs.clubblueprint import clubblueprint
 from oclubs.actblueprint import actblueprint
@@ -60,12 +60,17 @@ app.jinja_env.globals['logout'] = logout
 
 
 @app.after_request
-def database_done(response):
+def access_done(response):
     if response.status_code < 400:
-        database.done(True)
+        db_done(True)
     else:
-        database.done(False)
+        db_done(False)
     return response
+
+
+@app.teardown_appcontext
+def access_teardown(exception):
+    db_done(False)
 
 
 @app.errorhandler(404)

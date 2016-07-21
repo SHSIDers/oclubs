@@ -181,7 +181,6 @@ def _execute(sql, write=False, ret='fetch'):
         cur.close()
 
 
-# TODO: Integrate into flask
 def done(commit=True):
     """Exported function for flask."""
     if g.get('dbconnection', None):
