@@ -4,12 +4,13 @@
 
 from __future__ import absolute_import, unicode_literals
 
+import re
+
 from flask import (
     Blueprint, render_template, url_for, request, session, redirect, flash, abort
 )
 
-import oclubs
-import re
+from oclubs.objs import User, Club
 from oclubs.enums import UserType, ClubType, ActivityTime
 from oclubs.shared import get_club, get_act, download_csv, upload_picture
 
@@ -21,9 +22,9 @@ def clublist(type):
     '''Club list by club type'''
     num = 18
     if type == 'all':
-        clubs_obj = oclubs.objs.Club.randomclubs(num)
+        clubs_obj = Club.randomclubs(num)
     elif type != '':
-        clubs_obj = oclubs.objs.Club.randomclubs(num, [ClubType[type.upper()]])
+        clubs_obj = Club.randomclubs(num, [ClubType[type.upper()]])
     else:
         abort(404)
     clubs = []
@@ -46,7 +47,7 @@ def club(club_info):
     '''Club Management Page'''
     if 'user_id' not in session:
         abort(401)
-    user_obj = oclubs.objs.User(session['user_id'])
+    user_obj = User(session['user_id'])
     club = get_club(club_info)
     if user_obj.id != club.leader.id:
         abort(403)
@@ -75,7 +76,7 @@ def clubintro_submit(club_info):
     '''Add new member'''
     if 'user_id' not in session:
         abort(401)
-    user_obj = oclubs.objs.User(session['user_id'])
+    user_obj = User(session['user_id'])
     club = get_club(club_info)
     club.add_member(user_obj)
     flash('You have successfully joined ' + club.name + '.', 'join')
@@ -87,7 +88,7 @@ def newleader(club_info):
     '''Selecting New Club Leader'''
     if 'user_id' not in session:
         abort(401)
-    user_obj = oclubs.objs.User(session['user_id'])
+    user_obj = User(session['user_id'])
     club = get_club(club_info)
     if user_obj.id != club.leader.id:
         abort(403)
@@ -130,7 +131,7 @@ def memberinfo(club_info):
     '''Check Members' Info'''
     if 'user_id' not in session:
         abort(401)
-    user_obj = oclubs.objs.User(session['user_id'])
+    user_obj = User(session['user_id'])
     club = get_club(club_info)
     if user_obj.id != club.leader.id:
         abort(403)
@@ -163,7 +164,7 @@ def changeclubinfo(club_info):
     '''Change Club's Info'''
     if 'user_id' not in session:
         abort(401)
-    user_obj = oclubs.objs.User(session['user_id'])
+    user_obj = User(session['user_id'])
     club = get_club(club_info)
     if user_obj.id != club.leader.id:
         abort(403)
@@ -194,7 +195,7 @@ def adjustmember(club_info):
     '''Adjust Club Members'''
     if 'user_id' not in session:
         abort(401)
-    user_obj = oclubs.objs.User(session['user_id'])
+    user_obj = User(session['user_id'])
     club = get_club(club_info)
     if user_obj.id != club.leader.id:
         abort(403)
@@ -219,7 +220,7 @@ def adjustmember(club_info):
 def adjustmember_submit(club_info):
     '''Input adjustment of club members'''
     club = get_club(club_info)
-    member_obj = oclubs.objs.User(request.form['expel'])
+    member_obj = User(request.form['expel'])
     club.remove_member(member_obj)
     flash(member_obj.nickname + ' has been expelled.', 'expelled')
     return redirect(url_for('adjustmember', club_info=club_info))

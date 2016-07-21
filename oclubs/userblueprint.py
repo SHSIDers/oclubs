@@ -8,7 +8,7 @@ from flask import (
     Blueprint, render_template, url_for, request, session, redirect, abort, flash
 )
 
-import oclubs
+from oclubs.objs import User, Club, Upload
 from oclubs.enums import UserType, ClubType, ActivityTime
 
 userblueprint = Blueprint('userblueprint', __name__)
@@ -19,7 +19,7 @@ def quitclub():
     '''Quit Club Page'''
     if 'user_id' not in session:
         abort(401)
-    user_obj = oclubs.objs.User(session['user_id'])
+    user_obj = User(session['user_id'])
     clubs_obj = user_obj.clubs
     clubs = []
     for club_obj in clubs_obj:
@@ -35,8 +35,8 @@ def quitclub():
 @userblueprint.route('/quit_club/submit', methods=['POST'])
 def quitclub_submit():
     '''Delete connection between user and club in database'''
-    club = oclubs.objs.Club(request.form['clubs'])
-    user_obj = oclubs.objs.User(session['user_id'])
+    club = Club(request.form['clubs'])
+    user_obj = User(session['user_id'])
     club.remove_member(user_obj)
     flash('You have successfully quitted ' + request.form['clubs'], 'quit')
     return redirect(url_for('.quitclub'))
@@ -47,10 +47,10 @@ def personal():
     '''Student Personal Page'''
     if 'user_id' not in session:
         abort(401)
-    user_obj = oclubs.objs.User(session['user_id'])
+    user_obj = User(session['user_id'])
     pictures = []
     for num in range(1, 21):
-        pictures.append(oclubs.objs.Upload(-num))
+        pictures.append(Upload(-num))
     if user_obj.type == UserType.STUDENT:
         clubs = user_obj.clubs
         castotal = 0
@@ -104,7 +104,7 @@ def personal():
                                leader_club=leader_club,
                                UserType=UserType)
     else:
-        myclubs = oclubs.objs.Club.get_clubs_special_access(user_obj)
+        myclubs = Club.get_clubs_special_access(user_obj)
         return render_template('teacher.html',
                                title=user_obj.nickname,
                                pictures=pictures,
@@ -116,7 +116,7 @@ def personal():
 @userblueprint.route('/submit_info', methods=['POST'])
 def personal_submit_info():
     '''Change user's information in database'''
-    user_obj = oclubs.objs.User(session['user_id'])
+    user_obj = User(session['user_id'])
     if request.form['name'] != '':
         user_obj.nickname = request.form['name']
     if request.form['email'] != '':
@@ -124,7 +124,7 @@ def personal_submit_info():
     if request.form['phone'] != '':
         user_obj.phone = request.form['phone']
     if request.form['picture'] is not None:
-        user_obj.picture = oclubs.objs.Upload(request.form['picture'])
+        user_obj.picture = Upload(request.form['picture'])
     flash('Your information has been successfully changed.', 'status_info')
     return redirect(url_for('.personal'))
 
@@ -132,8 +132,8 @@ def personal_submit_info():
 @userblueprint.route('/submit_password', methods=['POST'])
 def personal_submit_password():
     '''Change user's password in database'''
-    user_obj = oclubs.objs.User(session['user_id'])
-    user_login = oclubs.objs.User.attempt_login(user_obj.studentid, request.form['old'])
+    user_obj = User(session['user_id'])
+    user_login = User.attempt_login(user_obj.studentid, request.form['old'])
     if user_login is not None:
         if request.form['new'] == request.form['again']:
             user_obj.password = request.form['new']

@@ -11,7 +11,7 @@ from flask import (
 import traceback
 import os
 
-import oclubs
+from oclubs.objs import User
 from oclubs.access import database
 from oclubs.userblueprint import userblueprint
 from oclubs.clubblueprint import clubblueprint
@@ -35,7 +35,7 @@ def get_name():
     if 'user_id' in session:
         user_obj = g.get('user_obj', None)
         if not user_obj:
-            user_obj = oclubs.objs.User(session['user_id'])
+            user_obj = User(session['user_id'])
             g.user_obj = user_obj
         user = user_obj.nickname
     else:
@@ -115,7 +115,7 @@ def login():
     if 'user_id' in session:
         status = 'loggedin'
     else:
-        user = oclubs.objs.User.attempt_login(
+        user = User.attempt_login(
             request.form['username'],
             request.form['password']
         )
