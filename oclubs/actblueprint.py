@@ -8,42 +8,38 @@ from flask import (
     Blueprint, render_template, url_for, session, abort, request, redirect, flash
 )
 
-import oclubs
+from oclubs.objs import User, Club, Activity
 import re
+import math
 from oclubs.enums import UserType, ClubType, ActivityTime
 from oclubs.shared import get_club, get_act
 
 actblueprint = Blueprint('actblueprint', __name__)
 
 
-def date_to_string(date):
-    date_str = str(date)
-    result = date_str[:4] + " - " + date_str[4:6] + " - " + date_str[6:8]
-    return result
-
-
-@actblueprint.route('/all/<type>')
-def allactivities(type):
+@actblueprint.route('/all_activities/<club_type>/<page_num>')
+def allactivities(club_type, page_num):
     '''All Activities'''
-    if type == 'all':
-        acts_obj = oclubs.objs.Activity.all_activities()
-    elif type:
-        acts_obj = oclubs.objs.Activity.get_activities_conditions()
-    activities = []
-    for act_obj in acts_obj:
-        act = {}
-        act['club_name'] = act_obj.club.name
-        act['act_name'] = act_obj.name
-        act['time'] = date_to_string(act_obj.date)
-        act['place'] = act_obj.location
-        activities.append(act)
+    page_num = int(page_num)
+    act_num = 20
+    if club_type == 'all':
+        acts_obj = Activity.all_activities()
+        acts_obj.reverse()
+    elif club_type:
+        acts_obj = Activity.get_activities_conditions(club_types=[ClubType[club_type.upper()]])
+        acts_obj.reverse()
+    max_page_num = math.ceil(float(len(acts_obj)) / act_num)
+    acts_obj = acts_obj[page_num*act_num-act_num: page_num*act_num]
     return render_template('allact.html',
                            title='All Activities',
                            is_allact=True,
-                           activities=activities)
+                           acts=acts_obj,
+                           club_type=club_type,
+                           page_num=page_num,
+                           max_page_num=max_page_num)
 
 
-@actblueprint.route('/<club_info>/club_activity')
+@actblueprint.route('/<club_info>/club_activities')
 def clubactivities(club_info):
     '''One Club's Activities'''
     club_obj = get_club(club_info)
@@ -60,7 +56,7 @@ def clubactivities(club_info):
     for act_obj in activities_obj:
         activity = {}
         activity['act_name'] = act_obj.name
-        activity['time'] = date_to_string(act_obj.date)
+        activity['time'] = act_obj.date
         activity['place'] = act_obj.location
         activities.append(activity)
     return render_template('clubact.html',
@@ -71,13 +67,13 @@ def clubactivities(club_info):
 
 @actblueprint.route('/photos')
 def allphotos():
-    lucky_club = oclubs.objs.Club.randomclubs(1)[0]
+    lucky_club = Club.randomclubs(1)[0]
     lucky_act = lucky_club.activities([ActivityTime.UNKNOWN,
                                        ActivityTime.NOON,
                                        ActivityTime.AFTERSCHOOL,
                                        ActivityTime.HONGMEI,
                                        ActivityTime.OTHERS])[0]
-    acts_obj = oclubs.objs.Activity.all_activities[:20]
+    acts_obj = Activity.all_activities[:20]
     acts = []
     for i in range(10):
         act = {}
@@ -128,7 +124,7 @@ def newact(club_info):
     '''Hosting New Activity'''
     if 'user_id' not in session:
         abort(401)
-    user_obj = oclubs.objs.User(session['user_id'])
+    user_obj = User(session['user_id'])
     club = get_club(club_info)
     if user_obj.id != club.leader.id:
         abort(403)
@@ -143,7 +139,7 @@ def activity(act_info):
     act = {}
     act['club'] = act_obj.club.name
     act['actname'] = act_obj.name
-    act['time'] = date_to_string(act_obj.date)
+    act['time'] = act_obj.date
     act['intro'] = act_obj.description
     return render_template('activity.html',
                            title=activity['actname'],
@@ -155,7 +151,7 @@ def hongmei(club_info):
     '''Check HongMei Status'''
     if 'user_id' not in session:
         abort(401)
-    user_obj = oclubs.objs.User(session['user_id'])
+    user_obj = User(session['user_id'])
     club = get_club(club_info)
     if user_obj != club.leader and user_obj != club.teacher:
         abort(403)
@@ -186,7 +182,7 @@ def newhm(club_info):
     '''Input HongMei Plan'''
     if 'user_id' not in session:
         abort(401)
-    user_obj = oclubs.objs.User(session['user_id'])
+    user_obj = User(session['user_id'])
     club = get_club(club_info)
     if user_obj.id != club.leader.id:
         abort(403)
@@ -209,13 +205,13 @@ def actstatus(act_info):
     '''Check Activity Status'''
     if 'user_id' not in session:
         abort(401)
-    user_obj = oclubs.objs.User(session['user_id'])
+    user_obj = User(session['user_id'])
     act = get_act(act_info)
     club = act.club
     if user_obj.id != club.leader.id:
         abort(403)
     actname = act.name
-    date = date_to_string(act.date)
+    date = act.date
     intro = act.descriptions
     members = []
     members_info = act.signup_list()
@@ -251,7 +247,7 @@ def registerhm(club_info):
     for act_obj in acts_obj:
         act = {}
         act['id'] = act_obj.id
-        act['date'] = date_to_string(act_obj.date)
+        act['date'] = act_obj.date
         act['activity'] = act_obj.description
         schedule.append(act)
     return render_template('registerhm.html',
@@ -264,10 +260,10 @@ def registerhm(club_info):
 @actblueprint.route('/<club_info>/register_hongmei/submit')
 def registerhm_submit(club_info):
     '''Submit HongMei signup info to database'''
-    user_obj = oclubs.objs.User(session['user_id'])
+    user_obj = User(session['user_id'])
     register = request.form['register']
     for reg in register:
-        act = oclubs.objs.Activity(reg)
+        act = Activity(reg)
         act.signup(user_obj)
     flash('Your application has been successfully submitted.', 'reghm')
     return redirect(url_for('.registerhm', club_info=club_info))
@@ -278,7 +274,7 @@ def inputatten(act_info):
     '''Input Attendance'''
     if 'user_id' not in session:
         abort(401)
-    user_obj = oclubs.objs.User(session['user_id'])
+    user_obj = User(session['user_id'])
     act = get_act(act_info)
     club = act.club
     if user_obj.id != club.leader.id:
@@ -304,6 +300,6 @@ def inputatten_submit(act_info):
     act = get_act(act_info)
     attendances = request.form['attendance']
     for atten in attendances:
-        act.attend(oclubs.objs.User(atten))
+        act.attend(User(atten))
     flash('The attendance has been successfully submitted.', 'atten')
     return redirect(url_for('.inputatten', act_info=act_info))

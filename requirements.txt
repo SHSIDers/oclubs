@@ -9,3 +9,4 @@ Pillow
 markdown
 bleach
 importlib
+unicodecsv

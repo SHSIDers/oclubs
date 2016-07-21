@@ -3,48 +3,55 @@
 
 <!-- Below Navbar -->
 <div class="container">
-    <div class="col-sm-2">
-        <div class="list-group" style="margin-top:50px">
-            <li class="list-group-item active">Achievement</li>
-            <a href="#" class="list-group-item selected">All Clubs</a>
-            <a href="#" class="list-group-item">Excellent Clubs</a>
-        </div>
-        <div class="list-group">
-            <li class="list-group-item active">Club Types</li>
-            <a href="#" class="list-group-item selected">All</a>
-            <a href="#" class="list-group-item">Academics</a>
-            <a href="#" class="list-group-item">Sports</a>
-            <a href="#" class="list-group-item">The Arts</a>
-            <a href="#" class="list-group-item">Services</a>
-            <a href="#" class="list-group-item">Entertainment</a>
-            <a href="#" class="list-group-item">Others</a>
-            <a href="#" class="list-group-item">School Teams</a>
-        </div>
-    </div>
+	<div class="col-sm-2">
+		<div class="list-group" style="margin-top:50px">
+			<li class="list-group-item active">Achievement</li>
+			<a href="#" class="list-group-item selected">All Clubs</a>
+			<a href="#" class="list-group-item">Excellent Clubs</a>
+		</div>
+		<div class="list-group">
+			<li class="list-group-item active">Club Types</li>
+			<a href="{{ url_for('.allactivities', club_type='all', page_num='1') }}" class="list-group-item {% if club_type=='all' %}selected{% endif %}">All</a>
+			<a href="{{ url_for('.allactivities', club_type='academics', page_num='1') }}" class="list-group-item {% if club_type=='academics' %}selected{% endif %}">Academics</a>
+			<a href="{{ url_for('.allactivities', club_type='sports', page_num='1') }}" class="list-group-item {% if club_type=='sports' %}selected{% endif %}">Sports</a>
+			<a href="{{ url_for('.allactivities', club_type='arts', page_num='1') }}" class="list-group-item {% if club_type=='arts' %}selected{% endif %}">The Arts</a>
+			<a href="{{ url_for('.allactivities', club_type='services', page_num='1') }}" class="list-group-item {% if club_type=='services' %}selected{% endif %}">Services</a>
+			<a href="{{ url_for('.allactivities', club_type='entertainment', page_num='1') }}" class="list-group-item {% if club_type=='entertainment' %}selected{% endif %}">Entertainment</a>
+			<a href="{{ url_for('.allactivities', club_type='others', page_num='1') }}" class="list-group-item {% if club_type=='others' %}selected{% endif %}">Others</a>
+			<a href="{{ url_for('.allactivities', club_type='school_teams', page_num='1') }}" class="list-group-item {% if club_type=='school_teams' %}selected{% endif %}">School Teams</a>
+		</div>
+	</div>
 
-    <div class="col-sm-10">
-        <h1 class="title">All Activites</h1>
-        <table class="table table-hover table-bordered">
-            <thead class="list">
-                <tr style="background-color:#bfbfbf">
-                    <th>Club</th>
-                    <th>Contents</th>
-                    <th>Time</th>
-                    <th>Location</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for activity in activities %}
-                <tr class="clickable act" data-href="#">
-                    <td>{{ activity.club_name }}</td>
-                    <td>{{ activity.act_name}}</td>
-                    <td>{{ activity.time }}</td>
-                    <td>{{ activity.place }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+	<div class="col-sm-10">
+		<h1 class="title">All Activites</h1>
+		<table class="table table-hover table-bordered">
+			<thead class="list">
+				<tr style="background-color:#bfbfbf">
+					<th>Club</th>
+					<th>Contents</th>
+					<th>Time</th>
+					<th>Location</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for act in acts %}
+				<tr class="clickable act" data-href="#">
+					<td>{{ act.club.name }}</td>
+					<td>{{ act.name}}</td>
+					<td>{{ act.date }}</td>
+					<td>{{ act.location }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<center><ul class="pagination">
+			<li {% if page_num == 1 %}class="disabled"><span>&laquo;</span>{% else %}><a href="{{ url_for('actblueprint.allactivities', club_type=club_type, page_num=page_num - 1) }}">&laquo;</a>{% endif %}</li>
+			{% for item in range(1, max_page_num + 1) %}
+			<li {% if item == page_num %}class="active"{% endif %}><a href="{{ url_for('actblueprint.allactivities', club_type=club_type, page_num=item) }}">{{ item }}</a></li>
+			{% endfor %}
+			<li {% if page_num == max_page_num %}class="disabled"><span>&raquo;</span>{% else %}><a href="{{ url_for('actblueprint.allactivities', club_type=club_type, page_num=page_num + 1) }}">&raquo;</a>{% endif %}</li>
+		</ul></center>
+	</div>
 </div>
 
 {% endblock %}
