@@ -5,7 +5,7 @@
 from __future__ import absolute_import, unicode_literals
 
 from flask import (
-    Flask, redirect, request, render_template, url_for, session, jsonify, g, abort
+    Flask, redirect, request, render_template, url_for, session, jsonify, g, abort, flash
 )
 
 import traceback
@@ -102,6 +102,7 @@ def unauthorized(e=None):
 @app.route('/500')  # debugger
 def internal_server_error(e=None):
     '''Internal server error'''
+    flash(traceback.format_exc(), '500')
     return render_template('error.html',
                            title='500 Internal Server Error',
                            is_internal_server_error=True
