@@ -150,7 +150,8 @@ def _execute(sql, write=False, ret='fetch'):
             user="root",
             db="oclubs",
             charset='utf8',
-            use_unicode=True
+            use_unicode=True,
+            client_flag=MySQLdb.constants.CLIENT.FOUND_ROWS
         )
         g.dbconnection = db
     cur = db.cursor()
