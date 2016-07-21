@@ -10,13 +10,13 @@
 			<p>Check Members' Info</p>
 		</div>
 	</div>
-	<div class="col-sm-3 function_block clickable" data-href="{{ url_for('actblueprint.clubactivities', club_info=club_info) }}" style="cursor:pointer">
+	<div class="col-sm-3 function_block clickable" data-href="{{ url_for('actblueprint.clubactivities', club_info=club_info, page_num='1') }}" style="cursor:pointer">
 		<img src="../static/images/club2.jpg" class="img-responsive img-thumbnail" alt="Club2">
 		<div style="background-color:rgba(0, 153, 153, 0.5)">
 			<p>Input Attendance</p>
 		</div>
 	</div>
-	<div class="col-sm-3 function_block clickable" data-href="{{ url_for('actblueprint.clubactivities', club_info=club_info) }}" style="cursor:pointer">
+	<div class="col-sm-3 function_block clickable" data-href="{{ url_for('actblueprint.clubactivities', club_info=club_info, page_num='1') }}" style="cursor:pointer">
 		<img src="../static/images/club3.jpg" class="img-responsive img-thumbnail" alt="Club3">
 		<div style="background-color:rgba(153, 0, 61, 0.5)">
 			<p>Check Attendance</p>
@@ -58,7 +58,7 @@
 			<p>Host New Activity</p>
 		</div>
 	</div>
-	<div class="col-sm-3 function_block clickable" data-href="{{ url_for('actblueprint.clubactivities', club_info=club_info) }}" style="cursor:pointer">
+	<div class="col-sm-3 function_block clickable" data-href="{{ url_for('actblueprint.clubactivities', club_info=club_info, page_num='1') }}" style="cursor:pointer">
 		<img src="../static/images/club9.jpg" class="img-responsive img-thumbnail" alt="Club9">
 		<div style="background-color:rgba(77, 0, 153, 0.5)">
 			<p>Check Hosted Activites</p>
