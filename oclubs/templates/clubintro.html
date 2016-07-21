@@ -19,7 +19,7 @@
         </div>
         <div class="list-group">
             <li class="list-group-item active">This Club's</li>
-            <a href="{{ url_for('actblueprint.clubactivities', club_info=club_info) }}" class="list-group-item">Activities</a>
+            <a href="{{ url_for('actblueprint.clubactivities', club_info=club_info, page_num='1') }}" class="list-group-item">Activities</a>
             <a href="{{ url_for('actblueprint.clubphoto', club_info=club_info, page_num='1') }}" class="list-group-item">Photos</a>
         </div>
     </div>
@@ -27,13 +27,13 @@
     <div class="col-sm-10" style="padding-right:50px">
         <div class="container">
             <div class="jumbotron" style="background-color:#3366ff;color:#e6e6e6">
-                <h1 class="title">{{ club }}</h1>
-                <p>{{ intro }}</p>
+                <h1 class="title">{{ club.name }}</h1>
+                <p>{{ club.intro }}</p>
             </div>
-            <p class="text-right" style="color:#f2f2f2">Written by: {{ leader }}</p>
-            <center><img src="../static/images/{{ picture }}.jpg" class="img-thumbnail" alt="Club Picture"></center>
+            <p class="text-right" style="color:#f2f2f2">Written by: {{ club.leader.nickname }}</p>
+            <center><img src="{{ club.picture.location_external }}" class="img-thumbnail" alt="Club Picture"></center>
             <br><br>
-            <p style="color:#f2f2f2; font-size:150%">{{ desc }}</p>
+            <p style="color:#f2f2f2; font-size:150%">{{ club.description }}</p>
         </div>
         <div class="container">
             <div class="intro_function">
@@ -45,7 +45,7 @@
                 </ul>
                 {% endif %}
                 <div class="col-sm-4">
-                    <center><a href="{{ url_for('actblueprint.clubactivities', club_info=club_info) }}" style="text-decoration:none">
+                    <center><a href="{{ url_for('actblueprint.clubactivities', club_info=club_info, page_num='1') }}" style="text-decoration:none">
                         <button class="btn btn-info btn-lg" style="width:80%">Activities</button>
                     </a></center>
                 </div>

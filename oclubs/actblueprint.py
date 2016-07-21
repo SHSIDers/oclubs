@@ -42,30 +42,29 @@ def allactivities(club_type, page_num):
                            max_page_num=max_page_num)
 
 
-@actblueprint.route('/<club_info>/club_activities')
-def clubactivities(club_info):
+@actblueprint.route('/<club_info>/club_activities/<page_num>')
+def clubactivities(club_info, page_num):
     '''One Club's Activities'''
-    club_obj = get_club(club_info)
-    club = {}
-    club['club_name'] = club_obj.name
-
-    # get past activities' pictures
-    club = {'club_name': 'Art Club', 'image1': '1', 'image2': '2', 'image3': '3'}
-    activities = []
-    activities_obj = club_obj.activities([ActivityTime.UNKNOWN,
-                                          ActivityTime.NOON,
-                                          ActivityTime.AFTERSCHOOL,
-                                          ActivityTime.OTHERS])
-    for act_obj in activities_obj:
-        activity = {}
-        activity['act_name'] = act_obj.name
-        activity['time'] = act_obj.date
-        activity['place'] = act_obj.location
-        activities.append(activity)
+    page_num = int(page_num)
+    act_num = 20
+    club = get_club(club_info)
+    acts = club.activities([ActivityTime.UNKNOWN,
+                            ActivityTime.NOON,
+                            ActivityTime.AFTERSCHOOL,
+                            ActivityTime.OTHERS])
+    max_page_num = math.ceil(float(len(acts)) / act_num)
+    acts = acts[page_num*act_num-act_num: page_num*act_num]
+    club_pic = {}
+    club_pic['image1'] = acts[0].pictures[0].location_external
+    club_pic['image2'] = acts[1].pictures[0].location_external
+    club_pic['image3'] = acts[2].pictures[0].location_external
     return render_template('clubact.html',
                            title=club['club_name'],
                            club=club,
-                           activities=activities)
+                           club_pic=club_pic,
+                           acts=acts,
+                           page_num=page_num,
+                           max_page_num=max_page_num)
 
 
 @actblueprint.route('/photos/<page_num>')

@@ -66,11 +66,7 @@ def clubintro(club_info):
     club = get_club(club_info)
     return render_template('clubintro.html',
                            title='Club Intro',
-                           club=club.name,
-                           intro=club.intro,
-                           leader=club.leader.nickname,
-                           picture=club.picture,
-                           desc=club.description,
+                           club=club,
                            club_info=club_info)
 
 
