@@ -86,7 +86,7 @@ def personal():
                 time = "HongMei activity"
             else:
                 time = "Individual club activity"
-            act['time'] = act_obj.date + ": " + time
+            act['time'] = str(act_obj.date) + ": " + time
             act['location'] = act_obj.location
             activities.append(act)
         leader_club = []

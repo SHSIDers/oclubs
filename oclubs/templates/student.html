@@ -13,7 +13,7 @@
 </div>
 <div class="clearfix"></div>
 <div class="col-sm-6">
-	<center><a href="{{ url_for('clubblueprint.clublist', type='all') }}">
+	<center><a href="{{ url_for('clubblueprint.clublist', club_type='all') }}">
 		<button class="btn btn-info" style="padding:5% 10% 5% 10%; font-size:125%">Join Clubs</button>
 	</a></center>
 </div>
@@ -63,7 +63,7 @@
             {% endfor %}
         </tbody>
     </table>
-    <center><a href="{{ url_for('actblueprint.allactivities', type='all') }}">
+    <center><a href="{{ url_for('actblueprint.allactivities', club_type='all', page_num='1') }}">
 		<button class="btn btn-info" style="padding:5% 10% 5% 10%; font-size:125%">Register More</button>
 	</a></center>
 	<br>
