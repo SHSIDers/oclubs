@@ -82,9 +82,8 @@ class Activity(BaseObject):
 
     @classmethod
     def get_activities_conditions(cls, times=(), additional_conds=None,
-                                  dates=(True, True)):
-        times = [time.value for time in times]
-
+                                  dates=(True, True), order_by_time=True,
+                                  club_types=()):
         conds = {}
         if additional_conds:
             conds.update(additional_conds)
@@ -94,8 +93,20 @@ class Activity(BaseObject):
             conds['where'].append(('<', 'act_date', date_int(date.today())))
         elif dates == (False, True):
             conds['where'].append(('>=', 'act_date', date_int(date.today())))
+
         if times:
+            times = [time.value for time in times]
             conds['where'].append(('in', 'act_time', times))
+
+        if club_types:
+            club_types = [club_type.value for club_type in club_types]
+            conds['join'] = conds.get('join', [])
+            conds['join'].append(('inner', 'club', [('club_id', 'act_club')]))
+            conds['where'].append(('in', 'club_type', club_types))
+
+        if order_by_time:
+            conds['order'] = conds.get('order', [])
+            conds['order'].append(('act_date', True))
 
         acts = database.fetch_onecol(
             'activity',

@@ -68,9 +68,9 @@ class Club(BaseObject):
             types,
             {
                 'where': [('=', 'act_club', self.id)],
-                'order': [('act_date', True)]
             },
-            dates=dates
+            dates=dates,
+            order_by_time=True
         )
 
     def add_member(self, user):

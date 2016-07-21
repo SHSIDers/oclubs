@@ -45,10 +45,10 @@ class User(BaseObject):
             types,
             {
                 'join': [('inner', 'club_member', [('act_club', 'cm_club')])],
-                'where': [('=', 'cm_user', self.id)],
-                'order': [('act_date', True)]
+                'where': [('=', 'cm_user', self.id)]
             },
-            dates=(False, True)
+            dates=(False, True),
+            order_by_time=True
         )
 
     @staticmethod
