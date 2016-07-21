@@ -6,6 +6,7 @@ from __future__ import absolute_import
 
 from flask import g
 import MySQLdb
+import MySQLdb.constants.CLIENT
 
 from oclubs.exceptions import NoRow, AlreadyExists
 
