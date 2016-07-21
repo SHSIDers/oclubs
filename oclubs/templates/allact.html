@@ -2,14 +2,9 @@
 {% block content %}
 
 <!-- Below Navbar -->
-<div class="container">
+<div class="large_container">
 	<div class="col-sm-2">
 		<div class="list-group" style="margin-top:50px">
-			<li class="list-group-item active">Achievement</li>
-			<a href="#" class="list-group-item selected">All Clubs</a>
-			<a href="#" class="list-group-item">Excellent Clubs</a>
-		</div>
-		<div class="list-group">
 			<li class="list-group-item active">Club Types</li>
 			<a href="{{ url_for('.allactivities', club_type='all', page_num='1') }}" class="list-group-item {% if club_type=='all' %}selected{% endif %}">All</a>
 			<a href="{{ url_for('.allactivities', club_type='academics', page_num='1') }}" class="list-group-item {% if club_type=='academics' %}selected{% endif %}">Academics</a>
@@ -23,7 +18,7 @@
 	</div>
 
 	<div class="col-sm-10">
-		<h1 class="title">All Activites</h1>
+		<h1 class="title">Activites - {{ club_type.capitalize() }}</h1>
 		<table class="table table-hover table-bordered">
 			<thead class="list">
 				<tr style="background-color:#bfbfbf">

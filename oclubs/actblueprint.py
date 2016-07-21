@@ -25,9 +25,12 @@ def allactivities(club_type, page_num):
     if club_type == 'all':
         acts_obj = Activity.all_activities()
         acts_obj.reverse()
-    elif club_type:
-        acts_obj = Activity.get_activities_conditions(club_types=[ClubType[club_type.upper()]])
-        acts_obj.reverse()
+    else:
+        try:
+            acts_obj = Activity.get_activities_conditions(club_types=[ClubType[club_type.upper()]])
+            acts_obj.reverse()
+        except KeyError:
+            abort(404)
     max_page_num = math.ceil(float(len(acts_obj)) / act_num)
     acts_obj = acts_obj[page_num*act_num-act_num: page_num*act_num]
     return render_template('allact.html',

@@ -17,16 +17,19 @@ from oclubs.shared import get_club, get_act, download_csv, upload_picture
 clubblueprint = Blueprint('clubblueprint', __name__)
 
 
-@clubblueprint.route('/clublist/<type>')
-def clublist(type):
+@clubblueprint.route('/clublist/<club_type>')
+def clublist(club_type):
     '''Club list by club type'''
     num = 18
-    if type == 'all':
+    if club_type == 'all':
         clubs_obj = Club.randomclubs(num)
-    elif type != '':
-        clubs_obj = Club.randomclubs(num, [ClubType[type.upper()]])
+    elif club_type == 'excellent':
+        clubs_obj = Club.excellentclubs()
     else:
-        abort(404)
+        try:
+            clubs_obj = Club.randomclubs(num, [ClubType[club_type.upper()]])
+        except KeyError:
+            abort(404)
     clubs = []
     for club_obj in clubs_obj:
         club = {}
@@ -39,7 +42,7 @@ def clublist(type):
                            title='Club List',
                            is_list=True,
                            clubs=clubs,
-                           type=type)
+                           club_type=club_type)
 
 
 @clubblueprint.route('/<club_info>')

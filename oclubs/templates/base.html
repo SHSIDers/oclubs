@@ -25,7 +25,7 @@
 		<div class="top-nav">
 			<ul>
 				<li class="sweep {% if is_home %}active{% endif %}"><a href="{{ url_for('homepage') }}">Home</a></li>
-				<li class="sweep {% if is_list %}active{% endif %}"><a href="{{ url_for('clubblueprint.clublist', type='all') }}">Club List</a></li>
+				<li class="sweep {% if is_list %}active{% endif %}"><a href="{{ url_for('clubblueprint.clublist', club_type='all') }}">Club List</a></li>
 				<li class="sweep {% if is_allact %}active{% endif %}"><a href="{{ url_for('actblueprint.allactivities', club_type='all', page_num='1') }}"">Activities</a></li>
 				<li class="sweep {% if is_photos %}active{% endif %}"><a href="{{ url_for('actblueprint.allphotos') }}"">Photos</a></li>
 				<li class="sweep {% if is_about %}active{% endif %}"><a href="{{ url_for('about') }}"">About</a></li>
@@ -86,7 +86,7 @@
 	<div class="container text-center">
 		<div class="col-md-4 soci">
 			<h3>Join Clubs</h3>
-			<p style="text-decoration:underline"><a href="{{ url_for('clubblueprint.clublist', type='all') }}">Click Here</a></p>
+			<p style="text-decoration:underline"><a href="{{ url_for('clubblueprint.clublist', club_type='all') }}">Click Here</a></p>
 			<div class="clearfix"></div>
 			<h3>Advice/Opinion</h3>
 			<p style="text-decoration:underline"><a href="{{ url_for('advice') }}">Click Here</a></p>
