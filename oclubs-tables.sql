@@ -111,9 +111,14 @@ CREATE INDEX IF NOT EXISTS cp_upload ON clubpost_pic (cp_upload);
 
 CREATE TABLE IF NOT EXISTS text (
 	text_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	text_club int NOT NULL, # Foreign key to club.club_id
+	text_user int NOT NULL, # Foreign key to user.user_id
 	text_data mediumblob NOT NULL, # data depends on flags
 	text_flags tinyblob NOT NULL # comma-separated list of gzip,external
 );
+
+CREATE INDEX IF NOT EXISTS text_club ON text (text_club);
+CREATE INDEX IF NOT EXISTS text_user ON text (text_user);
 
 
 CREATE TABLE IF NOT EXISTS upload (
@@ -125,7 +130,7 @@ CREATE TABLE IF NOT EXISTS upload (
 );
 
 CREATE INDEX IF NOT EXISTS upload_club ON upload (upload_club);
-CREATE INDEX IF NOT EXISTS upload_user ON upload (upload_user); 
+CREATE INDEX IF NOT EXISTS upload_user ON upload (upload_user);
 
 
 CREATE TABLE IF NOT EXISTS notification (

@@ -19,6 +19,8 @@ ALLOWED_TAGS += ['p', 'br', 'hr', 'pre', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 class FormattedText(BaseObject):
     table = 'text'
     identifier = 'text_id'
+    club = Property('text_club', 'Club')
+    uploader = Property('text_user', 'User')
     _blob = Property('text_data')
     _flags = Property('text_flags',
                       (lambda x: x.split(','), lambda x: ','.join(x)))
@@ -42,6 +44,15 @@ class FormattedText(BaseObject):
         if self._formatted is None:
             self._formatted = Markup(self.format(self.raw))
         return self._formatted
+
+    @classmethod
+    def handle(cls, user, club, text):
+        obj = cls.new()
+        obj.club = club
+        obj.uploader = user
+        obj._flags = []
+        obj._blob = text.encode('utf-8')
+        return obj.create()
 
     @staticmethod
     def format(rawstr):

@@ -122,6 +122,8 @@ class _BaseMetaclass(type):
             self._dbdata = None
             self._data
 
+            return self
+
         dct['create'] = create
 
         return super(_BaseMetaclass, meta).__new__(meta, name, bases, dct)
