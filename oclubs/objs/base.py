@@ -172,7 +172,8 @@ def _get_ie(ie):
     else:
         imp, exp = __get_ie(ie)
 
-    return imp, exp
+    return (lambda val: None if val is None else imp(val),
+            lambda val: None if val is None else exp(val))
 
 
 def __get_ie(ie):

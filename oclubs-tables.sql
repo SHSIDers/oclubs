@@ -55,24 +55,24 @@ CREATE TABLE IF NOT EXISTS activity (
 	act_time tinyint NOT NULL, # 0 = unknown, 1 = noon, 2 = afterschool, 3 = hongmei, 4 = others
 	act_location varchar(255) NOT NULL, # stores object in JSON
 	act_cas int NOT NULL, # CAS hours
-	act_cp int # Foreign key to clubpost.cp_act
+	act_post int # Foreign key to text.text_id
 );
 
 CREATE INDEX IF NOT EXISTS act_club ON activity (act_club);
-CREATE INDEX IF NOT EXISTS act_cp ON activity (act_cp);
+CREATE INDEX IF NOT EXISTS act_apost ON activity (act_apost);
 CREATE INDEX IF NOT EXISTS act_date ON activity (act_date);
 CREATE INDEX IF NOT EXISTS act_time ON activity (act_time);
 
 
-CREATE TABLE IF NOT EXISTS activity_pic (
-	ap_act int NOT NULL, # Foreign key to activity.act_id
-	ap_upload int NOT NULL, # Foreign key to upload.upload_id
-	PRIMARY KEY (ap_act, ap_upload)
+CREATE TABLE IF NOT EXISTS act_pic (
+	actpic_act int NOT NULL, # Foreign key to activity.act_id
+	actpic_upload int NOT NULL, # Foreign key to upload.upload_id
+	PRIMARY KEY (actpic_act, actpic_upload)
 );
 
-#CREATE UNIQUE INDEX IF NOT EXISTS ap_act_upload ON activity_pic (ap_act, ap_upload);
-CREATE INDEX IF NOT EXISTS ap_act ON activity_pic (ap_act);
-CREATE INDEX IF NOT EXISTS ap_upload ON activity_pic (ap_upload);
+#CREATE UNIQUE INDEX IF NOT EXISTS actpic_act_upload ON act_pic (actpic_act, actpic_upload);
+CREATE INDEX IF NOT EXISTS actpic_act ON act_pic (actpic_act);
+CREATE INDEX IF NOT EXISTS actpic_upload ON act_pic (actpic_upload);
 
 
 CREATE TABLE IF NOT EXISTS attendance (
@@ -84,29 +84,6 @@ CREATE TABLE IF NOT EXISTS attendance (
 #CREATE UNIQUE INDEX IF NOT EXISTS att_act_user ON attendance (att_act, att_user);
 CREATE INDEX IF NOT EXISTS att_act ON attendance (att_act);
 CREATE INDEX IF NOT EXISTS att_user ON attendance (att_user);
-
-
-CREATE TABLE IF NOT EXISTS clubpost (
-	cp_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	cp_club int NOT NULL, # Foreign key to club.club_id
-	cp_title varchar(255) NOT NULL,
-	cp_text int NOT NULL, # Foreign key to text.text_id
-	cp_editor int NOT NULL, # Foreign key to user.user_id
-	cp_timestamp int NOT NULL
-);
-
-CREATE INDEX IF NOT EXISTS clubpost_club ON clubpost (cp_club);
-
-
-CREATE TABLE IF NOT EXISTS clubpost_pic (
-	cp_post int NOT NULL, # Foreign key to clubpost.cp_id
-	cp_upload int NOT NULL, # Foreign key to upload.upload_id
-	PRIMARY KEY (cp_post, cp_upload)
-);
-
-#CREATE UNIQUE INDEX IF NOT EXISTS cp_post_upload ON clubpost_pic (cp_post, cp_upload);
-CREATE INDEX IF NOT EXISTS cp_post ON clubpost_pic (cp_post);
-CREATE INDEX IF NOT EXISTS cp_upload ON clubpost_pic (cp_upload);
 
 
 CREATE TABLE IF NOT EXISTS text (
