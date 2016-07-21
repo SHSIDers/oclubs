@@ -123,10 +123,14 @@ def personal():
 def personal_submit_info():
     '''Change user's information in database'''
     user_obj = oclubs.objs.User(session['user_id'])
-    user_obj.nickname = request.form['name']
-    user_obj.email = request.form['email']
-    user_obj.phone = request.form['phone']
-    user_obj.picture = request.form['picture']  # location in html has to be adjusted
+    if request.form['name'] != '':
+        user_obj.nickname = request.form['name']
+    if request.form['email'] != '':
+        user_obj.email = request.form['email']
+    if request.form['phone'] != '':
+        user_obj.phone = request.form['phone']
+    if request.form['picture'] is not None:
+        user_obj.picture = request.form['picture']
     flash('Your information has been successfully changed.', 'status_info')
     return redirect(url_for('.personal'))
 

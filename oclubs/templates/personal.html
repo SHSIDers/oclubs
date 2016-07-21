@@ -39,7 +39,7 @@
 				<h4 class="modal-title">Change Basic Information</h4>
 			</div>
 			<div class="modal-body">
-				<form class="form-group" id="info_form" action="{{ url_for('userblueprint.personal_submit_info') }}">
+				<form class="form-group" id="info_form" action="{{ url_for('.personal_submit_info') }}" method="post">
 					{% if status_info %}
 					<ul class="list-group">
 						{% for message in status_info %}
@@ -60,8 +60,8 @@
 					<div class="clearfix"></div>
 					{% for pic in pictures %}
 					<label class="radio_block">
-						<img src="{{ pic.location_external }}" class="img-responsive" alt="{{ pic.id }}">
-						<center><input type="radio" name="picture" value="{{ pic.id }}"></center>
+						<img src="{{ pic.location_external }}" class="img-responsive" alt="{{ -pic.id }}">
+						<center><input type="radio" name="picture" value="{{ pic }}"></center>
 					</label>
 					{% endfor %}
 					<div class="clearfix"></div>
