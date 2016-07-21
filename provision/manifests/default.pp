@@ -60,11 +60,53 @@ package { 'MariaDB-devel':
     ],
 }
 
-
 service { 'mysql':
     ensure  => running,
     enable  => true,
     require => Exec['install-mariadb'],
+}
+
+package { 'java-1.8.0-openjdk':
+    ensure  => present,
+    require => Package['epel-release'],
+}
+
+yumrepo { 'Elasticsearch':
+    baseurl  => 'http://packages.elastic.co/elasticsearch/2.x/centos',
+    descr    => 'Elasticsearch repository for 2.x packages',
+    enabled  => 1,
+    gpgcheck => 1,
+    gpgkey   => 'http://packages.elastic.co/GPG-KEY-elasticsearch',
+}
+
+# package { 'elasticsearch':
+#     ensure  => present,
+#     require => Yumrepo['Elasticsearch'],
+# }
+
+exec { 'install-elasticsearch':
+    command => '/usr/bin/yum -y localinstall /vagrant/elasticsearch-2.3.4.rpm',
+    creates => '/etc/elasticsearch/',
+    timeout => 1800,
+    require => [
+        Package['java-1.8.0-openjdk'],
+        Yumrepo['Elasticsearch'],
+    ],
+}
+
+file { '/etc/elasticsearch/elasticsearch.yml':
+    ensure  => file,
+    mode    => '0750',
+    owner   => 'root',
+    group   => 'elasticsearch',
+    source  => '/vagrant/provision/elasticsearch.yml',
+    require => Exec['install-elasticsearch'],
+    notify  => Service['elasticsearch'],
+}
+
+service { 'elasticsearch':
+    ensure => running,
+    enable => true,
 }
 
 exec { 'sql-import':
@@ -95,7 +137,7 @@ package { [
 }
 
 exec { 'pip-install-requirements':
-    command => 'pip install -Ur /vagrant/requirements.txt',
+    command => 'pip install -r /vagrant/requirements.txt',
     path    => '/usr/bin',
     tries   => 5,
     require => Package['MariaDB-devel'],
