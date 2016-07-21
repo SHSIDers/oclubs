@@ -7,6 +7,22 @@
 <div class="container">
 	<h2 class="title_next" style="padding-left: 3%; margin-bottom:0;">{{ usernickname() }} {% if user_obj.type == UserType.STUDENT %}<span style="font-size:50%">({{ user_obj.studentid }})</span>{% endif %}<a href="{{ url_for('logout') }}" style="color:#f2f2f2; float:right; font-size:50%; margin-right:4%" onMouseOver="this.style.color='#cccccc'" onMouseOut="this.style.color='#f2f2f2'"><span class="glyphicon glyphicon-log-out">&nbsp;Logout</span></a></h2>
 	<div class="clearfix clearfix-bordered"></div>
+	{% if status_info %}
+	<br>
+	<ul class="list-group">
+		{% for message in status_info %}
+		<li class="list-group-item">{{ message }}</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+	{% if status_pw %}
+	<br>
+	<ul class="list-group">
+		{% for message in status_pw %}
+		<li class="list-group-item">{{ message }}</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
 	<br><br>
 	<div class="col-sm-3">
 		<img src="{{ user_obj.picture.location_external }}" class="img-responsive img-thumbnail" alt="Profile Picture">
@@ -40,13 +56,6 @@
 			</div>
 			<div class="modal-body">
 				<form class="form-group" id="info_form" action="{{ url_for('.personal_submit_info') }}" method="post">
-					{% if status_info %}
-					<ul class="list-group">
-						{% for message in status_info %}
-						<li class="list-group-item">{{ message }}</li>
-						{% endfor %}
-					</ul>
-					{% endif %}
 					<label for="name">Nick Name:</label>
 					<input class="form-control" id="name" type="text" name="name" placeholder="{{ usernickname() }}">
 					<br>
@@ -61,7 +70,7 @@
 					{% for pic in pictures %}
 					<label class="radio_block">
 						<img src="{{ pic.location_external }}" class="img-responsive" alt="{{ -pic.id }}">
-						<center><input type="radio" name="picture" value="{{ pic }}"></center>
+						<center><input type="radio" name="picture" value="{{ pic.id }}"></center>
 					</label>
 					{% endfor %}
 					<div class="clearfix"></div>
@@ -83,14 +92,10 @@
 				<h4 class="modal-title">Change Password</h4>
 			</div>
 			<div class="modal-body">
-				<form class="form-group" id="pass_form" action="{{ url_for('userblueprint.personal_submit_password') }}">
-					{% if status_pw %}
-					<ul class="list-group">
-						{% for message in status_pw %}
-						<li class="list-group-item">{{ message }}</li>
-						{% endfor %}
-					</ul>
-					{% endif %}
+				<form class="form-group" id="pass_form" action="{{ url_for('userblueprint.personal_submit_password') }}" method="post">
+					<label for="old">Old Password:</label>
+					<input class="form-control" id="old" name="old" type="password">
+					<br>
 					<label for="new">New Password:</label>
 					<input class="form-control" id="new" name="new" type="password">
 					<br>

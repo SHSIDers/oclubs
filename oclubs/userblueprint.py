@@ -130,7 +130,7 @@ def personal_submit_info():
     if request.form['phone'] != '':
         user_obj.phone = request.form['phone']
     if request.form['picture'] is not None:
-        user_obj.picture = request.form['picture']
+        user_obj.picture = oclubs.objs.Upload(request.form['picture'])
     flash('Your information has been successfully changed.', 'status_info')
     return redirect(url_for('.personal'))
 
@@ -138,12 +138,16 @@ def personal_submit_info():
 @userblueprint.route('/submit_password', methods=['POST'])
 def personal_submit_password():
     '''Change user's password in database'''
-    if request.form['new'] == request.form['again']:
-        user_obj = oclubs.objs.User(session['user_id'])
-        user_obj.password = request.form['new']
-        flash('Your information has been successfully changed.', 'status_pw')
+    user_obj = oclubs.objs.User(session['user_id'])
+    user_login = oclubs.objs.User.attempt_login(user_obj.studentid, request.form['old'])
+    if user_login is not None:
+        if request.form['new'] == request.form['again']:
+            user_obj.password = request.form['new']
+            flash('Your information has been successfully changed.', 'status_pw')
+        else:
+            flash('You have entered two different passwords. Please enter again.', 'status_pw')
     else:
-        flash('You have entered two different passwords. Please enter again.', 'status_pw')
+        flash('You have entered wrong old password. Please enter again.', 'status_pw')
     return redirect(url_for('.personal'))
 
 
