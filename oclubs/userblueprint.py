@@ -55,10 +55,10 @@ def personal():
         clubs = user_obj.clubs
         castotal = 0
         cas_clubs = []
-        # for club in clubs:
-        #     cas_clubs.append(user_obj.cas_in_club(club))
-        # for cas in cas_clubs:
-        #     castotal += cas
+        for club in clubs:
+            cas_clubs.append(user_obj.cas_in_club(club))
+        for cas in cas_clubs:
+            castotal += cas
         meetings_obj = user_obj.activities_reminder([ActivityTime.NOON, ActivityTime.AFTERSCHOOL])
         meetings = []
         for meeting_obj in meetings_obj:

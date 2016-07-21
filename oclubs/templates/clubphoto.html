@@ -3,27 +3,25 @@
 
 <!-- Below Navbar -->
 <div class="large_container">
-    <h1 class="text-center title">Photos of {{ club }}</h1>
-    {% for photo in photos %}
-    <div class="photo clickable bright" data-href="#">
-        <img src="../static/images/{{ photo.image1 }}.jpg" class="img-responsive" alt="{{ photo.actname1 }}">
-        <h2>{{ photo.actname1 }}</h2>
-    </div>
-    <div class="photo clickable dark" data-href="#" style="cursor:pointer">
-        <img src="../static/images/{{ photo.image2 }}.jpg" class="img-responsive" alt="{{ photo.actname2 }}">
-        <h2>{{ photo.actname2 }}</h2>
-    </div>
-    {% endfor %}
-    <br>
-    <center><ul class="pagination center">
-        <li><a href="#">&laquo;</a></li>
-        <li class="active"><a href="#">1</a></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
-        <li><a href="#">&raquo;</a></li>
-    </ul></center>
+	<h1 class="text-center title">Photos of {{ club.name }}</h1>
+	{% for act in acts %}
+	<div class="photo clickable bright" data-href="#">
+		<img src="{{ act.image1 }}" class="img-responsive" alt="{{ act.actname1 }}">
+		<h2>{{ act.actname1 }}</h2>
+	</div>
+	<div class="photo clickable dark" data-href="#" style="cursor:pointer">
+		<img src="{{ act.image2 }}" class="img-responsive" alt="{{ act.actname2 }}">
+		<h2>{{ act.actname2 }}</h2>
+	</div>
+	{% endfor %}
+	<br>
+	<center><ul class="pagination">
+		<li {% if page_num == 1 %}class="disabled"><span>&laquo;</span>{% else %}><a href="{{ url_for('actblueprint.allactivities', club_type=club_type, page_num=page_num - 1) }}">&laquo;</a>{% endif %}</li>
+		{% for item in range(1, max_page_num + 1) %}
+		<li {% if item == page_num %}class="active"{% endif %}><a href="{{ url_for('actblueprint.allactivities', club_type=club_type, page_num=item) }}">{{ item }}</a></li>
+		{% endfor %}
+		<li {% if page_num == max_page_num %}class="disabled"><span>&raquo;</span>{% else %}><a href="{{ url_for('actblueprint.allactivities', club_type=club_type, page_num=page_num + 1) }}">&raquo;</a>{% endif %}</li>
+	</ul></center>
 </div>
 
 {% endblock %}

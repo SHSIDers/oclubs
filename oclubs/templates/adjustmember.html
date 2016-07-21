@@ -32,11 +32,12 @@
                 <td>{{ member.nick_name }}</td>
                 <td>{{ member.passportname }}</td>
                 <td>{{ member.studentid }}</td>
-                <td><form action="{{ url_for('adjustmember_submit', club_info=club_info) }}"><input type="submit" class="btn btn-danger" name="expel" value="{{ member.id }}">Expel</button>
+                <td><form action="{{ url_for('.adjustmember_submit', club_info=club_info) }}"><input type="submit" class="btn btn-danger" name="expel" value="{{ member.id }}">Expel</button>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
 
+{% endwith %}
 {% endblock %}

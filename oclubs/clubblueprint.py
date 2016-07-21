@@ -226,4 +226,4 @@ def adjustmember_submit(club_info):
     member_obj = User(request.form['expel'])
     club.remove_member(member_obj)
     flash(member_obj.nickname + ' has been expelled.', 'expelled')
-    return redirect(url_for('adjustmember', club_info=club_info))
+    return redirect(url_for('.adjustmember', club_info=club_info))

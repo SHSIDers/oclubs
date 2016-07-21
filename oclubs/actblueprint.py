@@ -68,17 +68,27 @@ def clubactivities(club_info):
                            activities=activities)
 
 
-@actblueprint.route('/photos')
-def allphotos():
-    lucky_club = Club.randomclubs(1)[0]
-    lucky_act = lucky_club.activities([ActivityTime.UNKNOWN,
-                                       ActivityTime.NOON,
-                                       ActivityTime.AFTERSCHOOL,
-                                       ActivityTime.HONGMEI,
-                                       ActivityTime.OTHERS])[0]
-    acts_obj = Activity.all_activities[:20]
+@actblueprint.route('/photos/<page_num>')
+def allphotos(page_num):
+    page_num = int(page_num)
+    pic_num = 20
+    lucky_act = ''
+    if page_num == 1:
+        lucky_club = Club.randomclubs(1)[0]
+        lucky_acts = lucky_club.activities([ActivityTime.UNKNOWN,
+                                            ActivityTime.NOON,
+                                            ActivityTime.AFTERSCHOOL,
+                                            ActivityTime.HONGMEI,
+                                            ActivityTime.OTHERS])
+        if lucky_acts != []:
+            lucky_act = lucky_acts[0]
+        else:
+            lucky_act = Activity(1)  # for testing
+    acts_obj = Activity.all_activities()
+    max_page_num = math.ceil(float(len(acts_obj)) / pic_num)
     acts = []
-    for i in range(10):
+    acts_obj = acts_obj[page_num*pic_num-pic_num: page_num*pic_num]
+    for i in range(pic_num / 2):
         act = {}
         act['image1'] = acts_obj[2*i+1].pictures[0].location_external
         act['actname1'] = acts_obj[2*i+1].name
@@ -93,33 +103,40 @@ def allphotos():
                            title='All Photos',
                            is_photos=True,
                            lucky_act=lucky_act,
-                           acts=acts)
+                           acts=acts,
+                           page_num=page_num,
+                           max_page_num=max_page_num)
 
 
-@actblueprint.route('/<club_info>/photo')
-def clubphoto(club_info):
+@actblueprint.route('/<club_info>/club_photo/<page_num>')
+def clubphoto(club_info, page_num):
     '''Individual Club's Photo Page'''
+    page_num = int(page_num)
+    pic_num = 20
     club = get_club(club_info)
-    club_name = club.name
     photos = []
-    activities_obj = club.activities([ActivityTime.UNKNOWN,
-                                      ActivityTime.NOON,
-                                      ActivityTime.AFTERSCHOOL,
-                                      ActivityTime.OTHERS])
-    photos = [{'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
-              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
-              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
-              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
-              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
-              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
-              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
-              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
-              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'},
-              {'image1': 'intro1', 'actname1': 'Random Activity', 'image2': 'intro2', 'actname2': 'Random Activity'}]
+    acts_obj = club.activities([ActivityTime.UNKNOWN,
+                                ActivityTime.NOON,
+                                ActivityTime.AFTERSCHOOL,
+                                ActivityTime.OTHERS])
+    max_page_num = math.ceil(float(len(acts_obj)) / pic_num)
+    acts = []
+    acts_obj = acts_obj[page_num*pic_num-pic_num: page_num*pic_num]
+    for i in range(pic_num / 2):
+        act = {}
+        act['image1'] = acts_obj[2*i+1].pictures[0].location_external
+        act['actname1'] = acts_obj[2*i+1].name
+        act['id1'] = acts_obj[2*i+1].id
+        act['image2'] = acts_obj[2*i].pictures[0].location_external
+        act['actname2'] = acts_obj[2*i].name
+        act['id2'] = acts_obj[2*i].id
+        acts.append(act)
     return render_template('clubphoto.html',
                            title=club,
                            club=club,
-                           photos=photos)
+                           photos=photos,
+                           page_num=page_num,
+                           max_page_num=max_page_num)
 
 
 @actblueprint.route('/<club_info>/newact')
