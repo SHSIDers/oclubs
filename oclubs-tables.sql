@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS activity (
 );
 
 CREATE INDEX IF NOT EXISTS act_club ON activity (act_club);
-CREATE INDEX IF NOT EXISTS act_apost ON activity (act_apost);
+CREATE INDEX IF NOT EXISTS act_post ON activity (act_post);
 CREATE INDEX IF NOT EXISTS act_date ON activity (act_date);
 CREATE INDEX IF NOT EXISTS act_time ON activity (act_time);
 
