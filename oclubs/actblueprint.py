@@ -8,7 +8,7 @@ from flask import (
     Blueprint, render_template, url_for, session, abort, request, redirect, flash
 )
 
-from oclubs.objs import User, Club, Activity
+from oclubs.objs import User, Club, Activity, Upload
 import re
 import math
 from oclubs.enums import UserType, ClubType, ActivityTime
@@ -55,9 +55,14 @@ def clubactivities(club_info, page_num):
     max_page_num = math.ceil(float(len(acts)) / act_num)
     acts = acts[page_num*act_num-act_num: page_num*act_num]
     club_pic = {}
-    club_pic['image1'] = acts[0].pictures[0].location_external
-    club_pic['image2'] = acts[1].pictures[0].location_external
-    club_pic['image3'] = acts[2].pictures[0].location_external
+    try:
+        club_pic['image1'] = acts[0].pictures[0].location_external
+        club_pic['image2'] = acts[1].pictures[0].location_external
+        club_pic['image3'] = acts[2].pictures[0].location_external
+    except IndexError:
+        club_pic['image1'] = Upload(-1)
+        club_pic['image2'] = Upload(-2)
+        club_pic['image3'] = Upload(-3)
     return render_template('clubact.html',
                            title=club['club_name'],
                            club=club,
@@ -82,22 +87,25 @@ def allphotos(page_num):
         if lucky_acts != []:
             lucky_act = lucky_acts[0]
         else:
-            lucky_act = Activity(1)  # for testing
+            lucky_act = ''  # for testing
     acts_obj = Activity.all_activities()
     max_page_num = math.ceil(float(len(acts_obj)) / pic_num)
     acts = []
     acts_obj = acts_obj[page_num*pic_num-pic_num: page_num*pic_num]
     for i in range(pic_num / 2):
         act = {}
-        act['image1'] = acts_obj[2*i+1].pictures[0].location_external
-        act['actname1'] = acts_obj[2*i+1].name
-        act['club1'] = acts_obj[2*i+1].club
-        act['id1'] = acts_obj[2*i+1].id
-        act['image2'] = acts_obj[2*i].pictures[0].location_external
-        act['actname2'] = acts_obj[2*i].name
-        act['club2'] = acts_obj[2*i].club
-        act['id2'] = acts_obj[2*i].id
-        acts.append(act)
+        try:
+            act['actname1'] = acts_obj[2*i+1].name
+            act['club1'] = acts_obj[2*i+1].club
+            act['id1'] = acts_obj[2*i+1].id
+            act['actname2'] = acts_obj[2*i].name
+            act['club2'] = acts_obj[2*i].club
+            act['id2'] = acts_obj[2*i].id
+            act['image1'] = acts_obj[2*i+1].pictures[0].location_external
+            act['image2'] = acts_obj[2*i].pictures[0].location_external
+            acts.append(act)
+        except IndexError:
+            break
     return render_template('photos.html',
                            title='All Photos',
                            is_photos=True,
