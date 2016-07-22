@@ -184,7 +184,6 @@ def changeclubinfo_submit(club_info):
     club.intro = request.form['intro']
     club.picture = request.form['photo']
     club.desc = request.form['desc']
-
     flash('The information about club has been successfully submitted.', 'success')
     return redirect(url_for('changeclubinfo', club_info=club_info))
 

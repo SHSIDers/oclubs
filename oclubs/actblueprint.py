@@ -64,12 +64,13 @@ def clubactivities(club_info, page_num):
         club_pic['image2'] = Upload(-2)
         club_pic['image3'] = Upload(-3)
     return render_template('clubact.html',
-                           title=club['club_name'],
+                           title=club.name,
                            club=club,
                            club_pic=club_pic,
                            acts=acts,
                            page_num=page_num,
-                           max_page_num=max_page_num)
+                           max_page_num=max_page_num,
+                           club_info=club_info)
 
 
 @actblueprint.route('/photos/<page_num>')
