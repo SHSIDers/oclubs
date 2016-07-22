@@ -33,7 +33,7 @@
             <p class="text-right" style="color:#f2f2f2">Written by: {{ club.leader.nickname }}</p>
             <center><img src="{{ club.picture.location_external }}" class="img-thumbnail" alt="Club Picture"></center>
             <br><br>
-            <p style="color:#f2f2f2; font-size:150%">{{ club.description }}</p>
+            <div style="color:#f2f2f2; font-size:150%">{{ club.description.formatted }}</div>
         </div>
         <div class="container">
             <div class="intro_function">
