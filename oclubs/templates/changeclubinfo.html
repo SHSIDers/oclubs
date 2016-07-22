@@ -15,14 +15,20 @@
 		</ul>
 		{% endif %}
 		<p>*Please input below.</p>
-		<label for="intro">One sentence intro:</label>
-		<input type="text" class="form-control" name="intro" value="{{ intro }}">
+		<label for="intro" style="font-size:200%">One sentence intro:</label>
+		<p>Current:</p>
+		<p>{{ intro}}</p>
+		<p>New:</p>
+		<input type="text" class="form-control" name="intro">
 		<br>
-		<label for="picture">Picture:</label>
+		<label for="picture" style="font-size:200%">Picture:</label>
 		<input type="file" name="picture" accept="image/*">
 		<br>		
-		<label for="desc">Introduction Paragraphs:</label>
-		<textarea class="form-control" rows="10" name="desc">{{ desc }}</textarea>
+		<label for="desc" style="font-size:200%">Introduction Paragraphs:</label>
+		<p>Current:</p>
+		{{ desc }}
+		<p>New:</p>
+		<textarea class="form-control" rows="10" name="desc"></textarea>
 		<br>
 		<input type="submit" class="btn btn-primary" value="Submit">
 	</form>

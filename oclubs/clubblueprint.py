@@ -167,13 +167,12 @@ def changeclubinfo(club_info):
     club = get_club(club_info)
     if user_obj.id != club.leader.id:
         abort(403)
-    upload_picture(club_info)
     return render_template('changeclubinfo.html',
                            title='Change Club Info',
                            club=club.name,
                            intro=club.intro,
                            picture=club.picture,
-                           desc=club.description,
+                           desc=club.description.formatted,
                            club_info=club_info)
 
 
@@ -181,8 +180,8 @@ def changeclubinfo(club_info):
 def changeclubinfo_submit(club_info):
     '''Change club's info'''
     club = get_club(club_info)
+    upload_picture(club_info)
     club.intro = request.form['intro']
-    club.picture = request.form['photo']
     club.desc = request.form['desc']
     flash('The information about club has been successfully submitted.', 'success')
     return redirect(url_for('changeclubinfo', club_info=club_info))
