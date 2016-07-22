@@ -10,3 +10,4 @@ markdown
 bleach
 importlib
 unicodecsv
+elasticsearch

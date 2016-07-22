@@ -80,8 +80,7 @@ class Club(BaseObject):
 
     def remove_member(self, user):
         database.delete_rows('club_member',
-                             [('=', 'cm_club', self.id),
-                              ('=', 'cm_user', user.id)])
+                             {'cm_club': self.id, 'cm_user': user.id})
         del self.members
 
     @classmethod

@@ -80,6 +80,18 @@ class Activity(BaseObject):
         )
         del self.attendance
 
+    def add_picture(self, upload):
+        database.insert_row('act_pic',
+                            {'actpic_act': self.id,
+                             'actpic_upload': upload.id})
+        del self.pictures
+
+    def remove_picture(self, upload):
+        database.delete_rows('act_pic',
+                             {'actpic_act': self.id,
+                              'actpic_upload': upload.id})
+        del self.pictures
+
     @classmethod
     def get_activities_conditions(cls, times=(), additional_conds=None,
                                   dates=(True, True), order_by_time=True,
