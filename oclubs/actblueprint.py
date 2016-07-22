@@ -223,9 +223,18 @@ def newhm(club_info):
 @actblueprint.route('/<club_info>/newhm/submit', methods=['POST'])
 def newhm_submit(club_info):
     '''Input HongMei plan into databse'''
-    date = request.form['date']
+    date_hm = request.form['date']
     contents = request.form['contents']
-    pass
+    a = Activity.new()
+    a.name = contents
+    a.club = get_club(club_info)
+    a.description = None
+    a.post = None
+    a.date = date_hm
+    a.time = ActivityTime.HONGMEI
+    a.location = 'HongMei Elementary School'
+    a.cas = 1
+    return a.create()
 
 
 @actblueprint.route('/<act_info>/actstatus')

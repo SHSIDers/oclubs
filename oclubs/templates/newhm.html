@@ -23,10 +23,10 @@
     <br><br><br>
 
     <div class="container" style="width:50%">
-        <form class="form-group" action="{{ url_for('.newhm_submit', club_info=club_info) }}" id="newhm" style="color:#f2f2f2; background-color:#66a3ff; padding:5%; border-style:solid; border-color:#b3cce6">
+        <form class="form-group" action="{{ url_for('.newhm_submit', club_info=club_info) }}" method="post" id="newhm" style="color:#f2f2f2; background-color:#66a3ff; padding:5%; border-style:solid; border-color:#b3cce6">
             <h1>Input Information</h1>
             <label for="date">Date:</label>
-            <input type="date" class="form-control" name="date" id="date">
+            <input type="datetime-local" class="form-control" name="date" id="date">
             <br>
             <label for="contents">Contents:</label>
             <input type="text" class="form-control" name="contents" id="contents">
