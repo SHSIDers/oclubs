@@ -9,10 +9,11 @@ import re
 from flask import (
     Blueprint, render_template, url_for, request, session, redirect, flash, abort
 )
+from flask_login import current_user, login_required
 
 from oclubs.objs import User, Club
 from oclubs.enums import UserType, ClubType, ActivityTime
-from oclubs.shared import get_club, get_act, download_csv, upload_picture
+from oclubs.shared import download_csv, upload_picture, get_callsign, special_access_required
 
 clubblueprint = Blueprint('clubblueprint', __name__)
 
@@ -22,22 +23,14 @@ def clublist(club_type):
     '''Club list by club type'''
     num = 18
     if club_type == 'all':
-        clubs_obj = Club.randomclubs(num)
+        clubs = Club.randomclubs(num)
     elif club_type == 'excellent':
-        clubs_obj = Club.excellentclubs()
+        clubs = Club.excellentclubs()
     else:
         try:
-            clubs_obj = Club.randomclubs(num, [ClubType[club_type.upper()]])
+            clubs = Club.randomclubs(num, [ClubType[club_type.upper()]])
         except KeyError:
             abort(404)
-    clubs = []
-    for club_obj in clubs_obj:
-        club = {}
-        club['id'] = club_obj.id
-        club['name'] = club_obj.name
-        club['picture'] = club_obj.picture
-        club['intro'] = club_obj.intro
-        clubs.append(club)
     return render_template('clublist.html',
                            title='Club List',
                            is_list=True,
@@ -45,56 +38,40 @@ def clublist(club_type):
                            club_type=club_type)
 
 
-@clubblueprint.route('/<club_info>')
-def club(club_info):
+@clubblueprint.route('/<club>')
+@get_callsign(Club, 'club')
+@special_access_required  # FIXME: Why?
+def club(club):
     '''Club Management Page'''
-    if 'user_id' not in session:
-        abort(401)
-    user_obj = User(session['user_id'])
-    club = get_club(club_info)
-    if user_obj.id != club.leader.id:
-        abort(403)
     return render_template('club.html',
                            title=club.name,
-                           club=club.name,
-                           club_info=club_info)
+                           club=club.name)
 
 
-@clubblueprint.route('/<club_info>/introduction')
-def clubintro(club_info):
+@clubblueprint.route('/<club>/introduction')
+@get_callsign(Club, 'club')
+def clubintro(club):
     '''Club Intro'''
-    club = get_club(club_info)
     return render_template('clubintro.html',
-                           title='Club Intro',
-                           club=club,
-                           club_info=club_info)
+                           title='Club Intro')
 
 
-@clubblueprint.route('/<club_info>/introduction/submit')
-def clubintro_submit(club_info):
+@clubblueprint.route('/<club>/introduction/submit')
+@get_callsign(Club, 'club')
+@login_required
+def clubintro_submit(club):
     '''Add new member'''
-    if 'user_id' not in session:
-        abort(401)
-    user_obj = User(session['user_id'])
-    club = get_club(club_info)
-    club.add_member(user_obj)
+    club.add_member(current_user)
     flash('You have successfully joined ' + club.name + '.', 'join')
-    return redirect(url_for('clubblueprint.clubintro', club_info=club_info))
+    return redirect(url_for('clubblueprint.clubintro', club=club.callsign))
 
 
-@clubblueprint.route('/<club_info>/new_leader')
-def newleader(club_info):
+@clubblueprint.route('/<club>/new_leader')
+@get_callsign(Club, 'club')
+@login_required  # FIXME: fresh_login_required
+@special_access_required
+def newleader(club):
     '''Selecting New Club Leader'''
-    if 'user_id' not in session:
-        abort(401)
-    user_obj = User(session['user_id'])
-    club = get_club(club_info)
-    if user_obj.id != club.leader.id:
-        abort(403)
-    leader = {}
-    leader['passportname'] = user_obj.passportname
-    leader['nick_name'] = user_obj.nickname
-    leader['picture'] = user_obj.picture
     members_obj = club.members
     members = []
     for member_obj in members_obj:
@@ -106,15 +83,16 @@ def newleader(club_info):
     return render_template('newleader.html',
                            title='New Leader',
                            club=club.name,
-                           leader=leader,
-                           members=members,
-                           club_info=club_info)
+                           leader=current_user,
+                           members=members)
 
 
-@clubblueprint.route('/<club_info>/new_leader/submit', methods=['POST'])
-def newleader_submit(club_info):
+@clubblueprint.route('/<club>/new_leader/submit', methods=['POST'])
+@get_callsign(Club, 'club')
+@login_required  # FIXME: fresh_login_required
+@special_access_required
+def newleader_submit(club):
     '''Change leader in database'''
-    club = get_club(club_info)
     members_obj = club.members
     leader_name = request.form['leader']
     for member_obj in members_obj:
@@ -125,28 +103,25 @@ def newleader_submit(club_info):
                            title='Success')
 
 
-@clubblueprint.route('/<club_info>/member_info')
-def memberinfo(club_info):
+@clubblueprint.route('/<club>/member_info')
+@get_callsign(Club, 'club')
+@special_access_required
+def memberinfo(club):
     '''Check Members' Info'''
-    if 'user_id' not in session:
-        abort(401)
-    user_obj = User(session['user_id'])
-    club = get_club(club_info)
-    if user_obj.id != club.leader.id:
-        abort(403)
     return render_template('memberinfo.html',
                            title='Member Info',
                            club=club.name,
-                           members=club.members,
-                           club_info=club_info)
+                           members=club.members)
 
 
-@clubblueprint.route('/<club_info>/member_info/download')
-def memberinfo_download(club_info):
+@clubblueprint.route('/<club>/member_info/download')
+@get_callsign(Club, 'club')
+@special_access_required
+def memberinfo_download(club):
     '''Download members' info'''
     header = ['Nick Name', 'Student ID', 'Passport Name', 'Email']
     info = []
-    members = get_club(club_info).members
+    members = club.members
     for member in members:
         info_each = []
         info_each.append(member.nickname)
@@ -158,44 +133,36 @@ def memberinfo_download(club_info):
     return download_csv('Member Info.csv', header, info)
 
 
-@clubblueprint.route('/<club_info>/change_club_info')
-def changeclubinfo(club_info):
+@clubblueprint.route('/<club>/change_club')
+@get_callsign(Club, 'club')
+@special_access_required
+def changeclubinfo(club):
     '''Change Club's Info'''
-    if 'user_id' not in session:
-        abort(401)
-    user_obj = User(session['user_id'])
-    club = get_club(club_info)
-    if user_obj.id != club.leader.id:
-        abort(403)
     return render_template('changeclubinfo.html',
                            title='Change Club Info',
                            club=club.name,
                            intro=club.intro,
                            picture=club.picture,
-                           desc=club.description.formatted,
-                           club_info=club_info)
+                           desc=club.description.formatted)
 
 
-@clubblueprint.route('/<club_info>/change_club_info/submit', methods=['POST'])
-def changeclubinfo_submit(club_info):
+@clubblueprint.route('/<club>/change_club/submit', methods=['POST'])
+@get_callsign(Club, 'club')
+@special_access_required
+def changeclubinfo_submit(club):
     '''Change club's info'''
-    club = get_club(club_info)
-    upload_picture(club_info)
+    upload_picture(club)
     club.intro = request.form['intro']
     club.desc = request.form['desc']
     flash('The information about club has been successfully submitted.', 'success')
-    return redirect(url_for('.changeclubinfo', club_info=club_info))
+    return redirect(url_for('.changeclubinfo', club=club.callsign))
 
 
-@clubblueprint.route('/<club_info>/adjust_member')
-def adjustmember(club_info):
+@clubblueprint.route('/<club>/adjust_member')
+@get_callsign(Club, 'club')
+@special_access_required
+def adjustmember(club):
     '''Adjust Club Members'''
-    if 'user_id' not in session:
-        abort(401)
-    user_obj = User(session['user_id'])
-    club = get_club(club_info)
-    if user_obj.id != club.leader.id:
-        abort(403)
     members_obj = club.members
     members = []
     for member_obj in members_obj:
@@ -209,15 +176,15 @@ def adjustmember(club_info):
     return render_template('adjustmember.html',
                            title='Adjust Members',
                            club=club.name,
-                           members=members,
-                           club_info=club_info)
+                           members=members)
 
 
-@clubblueprint.route('/<club_info>/adjust_member/submit', methods=['POST'])
-def adjustmember_submit(club_info):
+@clubblueprint.route('/<club>/adjust_member/submit', methods=['POST'])
+@get_callsign(Club, 'club')
+@special_access_required
+def adjustmember_submit(club):
     '''Input adjustment of club members'''
-    club = get_club(club_info)
     member_obj = User(request.form['expel'])
     club.remove_member(member_obj)
     flash(member_obj.nickname + ' has been expelled.', 'expelled')
-    return redirect(url_for('.adjustmember', club_info=club_info))
+    return redirect(url_for('.adjustmember', club=club.callsign))

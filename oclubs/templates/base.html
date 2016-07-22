@@ -39,9 +39,9 @@
 		</div>
 		
 		<div class="login">
-			{% if usernickname() %}
+			{% if current_user.is_authenticated %}
 			<span id="loginanimation" style="display: block;">
-				<a href="{{ url_for('userblueprint.personal') }}" style="text-decoration:none"><span class="glyphicon glyphicon-user"></span>&nbsp;{{ usernickname() }}</a>
+				<a href="{{ url_for('userblueprint.personal') }}" style="text-decoration:none"><span class="glyphicon glyphicon-user"></span>&nbsp;{{ current_user.nickname }}</a>
 			</span>
 			{% else %}
 			<span id="loginanimation" style="display: block;">

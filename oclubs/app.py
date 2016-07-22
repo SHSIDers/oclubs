@@ -4,12 +4,14 @@
 
 from __future__ import absolute_import, unicode_literals
 
-from flask import (
-    Flask, redirect, request, render_template, url_for, session, jsonify, g, abort, flash
-)
 
 import traceback
 import os
+
+from flask import (
+    Flask, redirect, request, render_template, url_for, session, jsonify, g, abort, flash
+)
+from flask_login import LoginManager, login_user, logout_user, current_user
 
 from oclubs.objs import User
 from oclubs.access import done as db_done
@@ -17,7 +19,6 @@ from oclubs.userblueprint import userblueprint
 from oclubs.clubblueprint import clubblueprint
 from oclubs.actblueprint import actblueprint
 from oclubs.enums import UserType, ClubType, ActivityTime
-from oclubs.shared import get_club
 
 from oclubs.redissession import RedisSessionInterface
 
@@ -29,34 +30,14 @@ app.register_blueprint(actblueprint, url_prefix='/act')
 
 app.session_interface = RedisSessionInterface()
 
-
-def get_name():
-    '''Get user's name if available'''
-    if 'user_id' in session:
-        user_obj = g.get('user_obj', None)
-        if not user_obj:
-            user_obj = User(session['user_id'])
-            g.user_obj = user_obj
-        user = user_obj.nickname
-    else:
-        user = ''
-    return user
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 
 def get_picture(picture, ext='jpg'):
     return url_for('static', filename='images/' + picture + '.' + ext)
 
-
-@app.route('/logout')
-def logout():
-    '''Logout a user'''
-    session.clear()
-    return redirect(url_for('homepage'))
-
-
-app.jinja_env.globals['usernickname'] = get_name
 app.jinja_env.globals['getpicture'] = get_picture
-app.jinja_env.globals['logout'] = logout
 
 
 @app.after_request
@@ -114,10 +95,20 @@ def internal_server_error(e=None):
                            ), 500
 
 
+@login_manager.user_loader
+def load_user(user_id):
+    try:
+        user = User(int(user_id))
+        assert user.nickname
+        return user
+    except Exception:
+        return None
+
+
 @app.route('/login', methods=['POST'])
 def login():
     '''API to login'''
-    if 'user_id' in session:
+    if current_user.is_authenticated:
         status = 'loggedin'
     else:
         user = User.attempt_login(
@@ -125,11 +116,18 @@ def login():
             request.form['password']
         )
         if user is not None:
-            session['user_id'] = user.id
+            login_user(user)
             status = 'success'
         else:
             status = 'failure'
     return jsonify({'result': status})
+
+
+@app.route('/logout')
+def logout():
+    '''Logout a user'''
+    logout_user()
+    return redirect(url_for('homepage'))
 
 
 @app.route('/')

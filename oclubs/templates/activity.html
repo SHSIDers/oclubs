@@ -26,14 +26,14 @@
 	<div class="col-sm-10" style="padding-right:50px">
 		<div class="container">
 			<div class="jumbotron" style="background-color:#3366ff;color:#e6e6e6">
-				<h1 class="title">{{ activity.actname }}</h1>
-				<p>{{ activity.club }}</p>
+				<h1 class="title">{{ activity.name }}</h1>
+				<p>{{ activity.club.name }}</p>
 			</div>
 			<div style="font-size:150%;color:#f2f2f2">
-				<p>Time: {{ activity.time }}</p>
+				<p>Time: {{ activity.date }}</p>
 				<br>
 				<p>Introduction:</p>
-				<p>{{ activity.intro }}</p>
+				<p>{{ activity.description }}</p>
 				<br>
 			</div>
 		</div>

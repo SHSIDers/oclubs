@@ -5,7 +5,7 @@
 <br>
 <div class="smallBlock">
 	{% for club in clubs %}
-	<a href="{{ url_for('clubblueprint.clubintro', club_info=club.id ~ '_' + club.name) }}"><img src="{{ club.picture.location_external }}" class="img-responsive" alt="">
+	<a href="{{ url_for('clubblueprint.clubintro', club=club.callsign) }}"><img src="{{ club.picture.location_external }}" class="img-responsive" alt="">
 		<p style="font-size:150%">{{ club.name }}</p>
 		<p>{{ club.intro }}</p>
 	</a>
@@ -32,7 +32,7 @@
 	{% for club in clubs %}
 	<div>
 		<p style="font-size:150%">{{ club.name }}</p>
-		<p>CAS Hours: {{ user_obj.cas_in_club(club) }}</p>
+		<p>CAS Hours: {{ current_user.cas_in_club(club) }}</p>
 	</div>
 	{% endfor %}
 </div>
@@ -99,7 +99,7 @@
 <br>
 <div class="container">
     {% for club in leader_club %}
-    <a href="{{ url_for('clubblueprint.club', club_info=club.id ~ '_' + club.name) }}">
+    <a href="{{ url_for('clubblueprint.club', club=club.callsign) }}">
     	<button class="btn btn-success" style="padding:2%;font-size:125%">Manage {{ club.name }}</button>
     </a>
     {% endfor %}

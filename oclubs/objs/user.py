@@ -4,6 +4,7 @@
 
 from __future__ import absolute_import, unicode_literals
 
+from flask_login import UserMixin
 from passlib.context import CryptContext
 
 from oclubs.access import database
@@ -14,7 +15,7 @@ from oclubs.objs.base import BaseObject, Property, ListProperty
 _crypt = CryptContext(schemes=['bcrypt'])  # , 'sha512_crypt', 'pbkdf2_sha512'
 
 
-class User(BaseObject):
+class User(BaseObject, UserMixin):
     table = 'user'
     identifier = 'user_id'
     studentid = Property('user_login_name')

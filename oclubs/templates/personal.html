@@ -5,7 +5,7 @@
 
 <!-- Below Navbar -->
 <div class="container">
-	<h2 class="title_next" style="padding-left: 3%; margin-bottom:0;">{{ usernickname() }} {% if user_obj.type == UserType.STUDENT %}<span style="font-size:50%">({{ user_obj.studentid }})</span>{% endif %}<a href="{{ url_for('logout') }}" style="color:#f2f2f2; float:right; font-size:50%; margin-right:4%" onMouseOver="this.style.color='#cccccc'" onMouseOut="this.style.color='#f2f2f2'"><span class="glyphicon glyphicon-log-out">&nbsp;Logout</span></a></h2>
+	<h2 class="title_next" style="padding-left: 3%; margin-bottom:0;">{{ current_user.nickname }} {% if current_user.type == UserType.STUDENT %}<span style="font-size:50%">({{ current_user.studentid }})</span>{% endif %}<a href="{{ url_for('logout') }}" style="color:#f2f2f2; float:right; font-size:50%; margin-right:4%" onMouseOver="this.style.color='#cccccc'" onMouseOut="this.style.color='#f2f2f2'"><span class="glyphicon glyphicon-log-out">&nbsp;Logout</span></a></h2>
 	<div class="clearfix clearfix-bordered"></div>
 	{% if status_info %}
 	<br>
@@ -25,13 +25,13 @@
 	{% endif %}
 	<br><br>
 	<div class="col-sm-3">
-		<img src="{{ user_obj.picture.location_external }}" class="img-responsive img-thumbnail" alt="Profile Picture">
+		<img src="{{ current_user.picture.location_external }}" class="img-responsive img-thumbnail" alt="Profile Picture">
 		<br><br>
 	</div>
 	<div class="col-sm-9 personal_info">
-		<h2>Official Name: {{ user_obj.passportname }}</h2>
-		<h2>Email Address: {{ user_obj.email }}</h2>
-		<h2>Phone Number: {{ user_obj.phone }}</h2>
+		<h2>Official Name: {{ current_user.passportname }}</h2>
+		<h2>Email Address: {{ current_user.email }}</h2>
+		<h2>Phone Number: {{ current_user.phone }}</h2>
 		<br>
 		<a href="#changeInfo" data-toggle="modal" data-target="#changeInfo">
 			<button class="btn btn-info">Click here to edit your basic information</button>
@@ -57,13 +57,13 @@
 			<div class="modal-body">
 				<form class="form-group" id="info_form" action="{{ url_for('.personal_submit_info') }}" method="post">
 					<label for="name">Nick Name:</label>
-					<input class="form-control" id="name" type="text" name="name" placeholder="{{ usernickname() }}">
+					<input class="form-control" id="name" type="text" name="name" placeholder="{{ current_user.nickname }}">
 					<br>
 					<label for="email">Email:</label>
-					<input class="form-control" id="email" type="email" name="email" placeholder="{{ user_obj.email }}">
+					<input class="form-control" id="email" type="email" name="email" placeholder="{{ current_user.email }}">
 					<br>
 					<label for="phone">Phone Number:</label>
-					<input class="form-control" id="phone" type="text" name="phone" placeholder="{{ user_obj.phone }}">
+					<input class="form-control" id="phone" type="text" name="phone" placeholder="{{ current_user.phone }}">
 					<br>
 					<label for="picture">Profile Picture:</label>
 					<div class="clearfix"></div>

@@ -18,10 +18,10 @@
 					<a href="#"><button class="btn btn-primary">Attendance</button></a>
 				</div>
 				<div class="col-sm-4">
-					<a href="{{ url_for('actblueprint.clubactivities', club_info=club.id ~ '_' + club.name) }}"><button class="btn btn-primary">Activities Status</button></a>
+					<a href="{{ url_for('actblueprint.clubactivities', club=club.callsign) }}"><button class="btn btn-primary">Activities Status</button></a>
 				</div>
 				<div class="col-sm-4">
-					<a href="{{ url_for('actblueprint.hongmei', club_info=club.id ~ '_' + club.name) }}"><button class="btn btn-primary">HongMei Status</button></a>
+					<a href="{{ url_for('actblueprint.hongmei', club=club.callsign) }}"><button class="btn btn-primary">HongMei Status</button></a>
 				</div>
 			</div>
 		</div>

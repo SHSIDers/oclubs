@@ -7,12 +7,13 @@ from __future__ import absolute_import, unicode_literals
 from flask import (
     Blueprint, render_template, url_for, session, abort, request, redirect, flash
 )
+from flask_login import current_user, login_required
 
 from oclubs.objs import User, Club, Activity, Upload
 import re
 import math
 from oclubs.enums import UserType, ClubType, ActivityTime
-from oclubs.shared import get_club, get_act
+from oclubs.shared import get_callsign, special_access_required
 
 actblueprint = Blueprint('actblueprint', __name__)
 
@@ -42,12 +43,12 @@ def allactivities(club_type, page_num):
                            max_page_num=max_page_num)
 
 
-@actblueprint.route('/<club_info>/club_activities/<page_num>')
-def clubactivities(club_info, page_num):
+@actblueprint.route('/<club>/club_activities/<page_num>')
+@get_callsign(Club, 'club')
+def clubactivities(club, page_num):
     '''One Club's Activities'''
     page_num = int(page_num)
     act_num = 20
-    club = get_club(club_info)
     acts = club.activities([ActivityTime.UNKNOWN,
                             ActivityTime.NOON,
                             ActivityTime.AFTERSCHOOL,
@@ -69,8 +70,7 @@ def clubactivities(club_info, page_num):
                            club_pic=club_pic,
                            acts=acts,
                            page_num=page_num,
-                           max_page_num=max_page_num,
-                           club_info=club_info)
+                           max_page_num=max_page_num)
 
 
 @actblueprint.route('/photos/<page_num>')
@@ -116,12 +116,12 @@ def allphotos(page_num):
                            max_page_num=max_page_num)
 
 
-@actblueprint.route('/<club_info>/club_photo/<page_num>')
-def clubphoto(club_info, page_num):
+@actblueprint.route('/<club>/club_photo/<page_num>')
+@get_callsign(Club, 'club')
+def clubphoto(club, page_num):
     '''Individual Club's Photo Page'''
     page_num = int(page_num)
     pic_num = 20
-    club = get_club(club_info)
     photos = []
     acts_obj = club.activities([ActivityTime.UNKNOWN,
                                 ActivityTime.NOON,
@@ -147,42 +147,29 @@ def clubphoto(club_info, page_num):
                            max_page_num=max_page_num)
 
 
-@actblueprint.route('/<club_info>/newact')
-def newact(club_info):
+@actblueprint.route('/<club>/newact')
+@get_callsign(Club, 'club')
+@special_access_required
+def newact(club):
     '''Hosting New Activity'''
-    if 'user_id' not in session:
-        abort(401)
-    user_obj = User(session['user_id'])
-    club = get_club(club_info)
-    if user_obj.id != club.leader.id:
-        abort(403)
     return render_template('newact.html',
                            title='New Activity')
 
 
-@actblueprint.route('/<act_info>/introduction')
-def activity(act_info):
+@actblueprint.route('/<activity>/introduction')
+@get_callsign(Activity, 'activity')
+def activity(activity):
     '''Club Activity Page'''
-    act_obj = get_act(act_info)
-    act = {}
-    act['club'] = act_obj.club.name
-    act['actname'] = act_obj.name
-    act['time'] = act_obj.date
-    act['intro'] = act_obj.description
     return render_template('activity.html',
-                           title=activity['actname'],
-                           activity=act)
+                           title=activity.name,
+                           activity=activity)
 
 
-@actblueprint.route('/<club_info>/hongmei')
-def hongmei(club_info):
+@actblueprint.route('/<club>/hongmei')
+@get_callsign(Club, 'club')
+@special_access_required
+def hongmei(club):
     '''Check HongMei Status'''
-    if 'user_id' not in session:
-        abort(401)
-    user_obj = User(session['user_id'])
-    club = get_club(club_info)
-    if user_obj != club.leader and user_obj != club.teacher:
-        abort(403)
     schedule = []
     acts_obj = club.activities([ActivityTime.HONGMEI], (False, True))
     for act_obj in acts_obj:
@@ -205,23 +192,20 @@ def hongmei(club_info):
                            schedule=schedule)
 
 
-@actblueprint.route('/<club_info>/newhm')
-def newhm(club_info):
+@actblueprint.route('/<club>/newhm')
+@get_callsign(Club, 'club')
+@special_access_required
+def newhm(club):
     '''Input HongMei Plan'''
-    if 'user_id' not in session:
-        abort(401)
-    user_obj = User(session['user_id'])
-    club = get_club(club_info)
-    if user_obj.id != club.leader.id:
-        abort(403)
     return render_template('newhm.html',
                            title='HongMei Schedule',
-                           club=club.name,
-                           club_info=club_info)
+                           club=club.name)
 
 
-@actblueprint.route('/<club_info>/newhm/submit', methods=['POST'])
-def newhm_submit(club_info):
+@actblueprint.route('/<club>/newhm/submit', methods=['POST'])
+@get_callsign(Club, 'club')
+@special_access_required
+def newhm_submit(club):
     '''Input HongMei plan into databse'''
     date_hm = request.form['date']
     contents = request.form['contents']
@@ -237,21 +221,17 @@ def newhm_submit(club_info):
     return a.create()
 
 
-@actblueprint.route('/<act_info>/actstatus')
-def actstatus(act_info):
+@actblueprint.route('/<activity>/actstatus')
+@get_callsign(Activity, 'activity')
+@special_access_required
+def actstatus(activity):
     '''Check Activity Status'''
-    if 'user_id' not in session:
-        abort(401)
-    user_obj = User(session['user_id'])
-    act = get_act(act_info)
-    club = act.club
-    if user_obj.id != club.leader.id:
-        abort(403)
-    actname = act.name
-    date = act.date
-    intro = act.descriptions
+    club = activity.club
+    actname = activity.name
+    date = activity.date
+    intro = activity.descriptions
     members = []
-    members_info = act.signup_list()
+    members_info = activity.signup_list()
     for member_info in members_info:
         member = {}
         member_obj = member_info['user']
@@ -273,12 +253,11 @@ def actstatus(act_info):
                            members_num=members_num)
 
 
-@actblueprint.route('/<club_info>/register_hongmei')
-def registerhm(club_info):
+@actblueprint.route('/<club>/register_hongmei')
+@get_callsign(Club, 'club')
+@login_required
+def registerhm(club):
     '''Register Page for HongMei Activites'''
-    if 'user_id' not in session:
-        abort(401)
-    club = get_club(club_info)
     schedule = []
     acts_obj = club.activities([ActivityTime.HONGMEI], (False, True))
     for act_obj in acts_obj:
@@ -290,33 +269,29 @@ def registerhm(club_info):
     return render_template('registerhm.html',
                            title='Register for HongMei',
                            club=club.name,
-                           schedule=schedule,
-                           club_info=club_info)
+                           schedule=schedule)
 
 
-@actblueprint.route('/<club_info>/register_hongmei/submit')
-def registerhm_submit(club_info):
+@actblueprint.route('/<club>/register_hongmei/submit')
+@get_callsign(Club, 'club')
+@login_required
+def registerhm_submit(club):
     '''Submit HongMei signup info to database'''
-    user_obj = User(session['user_id'])
     register = request.form['register']
     for reg in register:
         act = Activity(reg)
-        act.signup(user_obj)
+        act.signup(current_user)
     flash('Your application has been successfully submitted.', 'reghm')
-    return redirect(url_for('.registerhm', club_info=club_info))
+    return redirect(url_for('.registerhm', club=club.callsign))
 
 
-@actblueprint.route('/<act_info>/input_attendance')
-def inputatten(act_info):
+@actblueprint.route('/<activity>/input_attendance')
+@get_callsign(Activity, 'activity')
+@special_access_required
+def inputatten(activity):
     '''Input Attendance'''
-    if 'user_id' not in session:
-        abort(401)
-    user_obj = User(session['user_id'])
-    act = get_act(act_info)
-    club = act.club
-    if user_obj.id != club.leader.id:
-        abort(403)
-    members_obj = act.members
+    club = activity.club
+    members_obj = activity.members
     members = []
     for member_obj in members_obj:
         member = {}
@@ -331,12 +306,13 @@ def inputatten(act_info):
                            members=members)
 
 
-@actblueprint.route('/<act_info>/input_attendance/submit', methods=['POST'])
-def inputatten_submit(act_info):
+@actblueprint.route('/<activity>/input_attendance/submit', methods=['POST'])
+@get_callsign(Activity, 'activity')
+@special_access_required
+def inputatten_submit(activity):
     '''Change attendance in database'''
-    act = get_act(act_info)
     attendances = request.form['attendance']
     for atten in attendances:
-        act.attend(User(atten))
+        activity.attend(User(atten))
     flash('The attendance has been successfully submitted.', 'atten')
-    return redirect(url_for('.inputatten', act_info=act_info))
+    return redirect(url_for('.inputatten', activity=activity.callsign))

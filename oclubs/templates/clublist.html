@@ -34,8 +34,8 @@
         <div class="clearfix"></div>
         <div class="smallBlock">
             {% for club in clubs %}
-            <a href="{{ url_for('clubblueprint.clubintro', club_info=club.id ~ '_' ~ club.name) }}">
-                <img src="{{ getpicture('1') }}" class="img-responsive" alt="{{ usernickname() }}">
+            <a href="{{ url_for('clubblueprint.clubintro', club=club.callsign) }}">
+                <img src="{{ getpicture('1') }}" class="img-responsive" alt="{{ current_user.nickname }}">
                 <p style="font-size:150%">{{ club.name }}</p>
                 <p>{{ club.intro }}</p>
             </a>

@@ -2,46 +2,26 @@
 # -*- coding: UTF-8 -*-
 #
 
-import unicodecsv as csv
+from functools import wraps
 from io import BytesIO
 import re
+import unicodecsv as csv
 
-from flask import session, abort, request, make_response
+from flask import session, abort, request, make_response, g
+from flask_login import current_user, login_required
 from werkzeug.datastructures import Headers
 from werkzeug.wrappers import Response
 
 import oclubs
 from oclubs.exceptions import NoRow
+from oclubs.enums import UserType
 
 
-def get_club(club_info):
-    '''From club_info get club object'''
-    try:
-        club_id = int(re.match(r'^\d+', club_info).group(0))
-        club = oclubs.objs.Club(club_id)
-    except (NameError, AttributeError, OverflowError, NoRow):
-        abort(404)
-    return club
-
-
-def get_act(act_info):
-    '''From act_info get activity object'''
-    try:
-        act_id = int(re.match(r'^\d+', act_info).group(0))
-        act = oclubs.objs.Activity(act_id)
-    except (NameError, AttributeError, OverflowError):
-        abort(404)
-    return act
-
-
-def upload_picture(club_info):
+@login_required
+def upload_picture(club):
     '''Handle upload object'''
-    if 'user_id' not in session:
-        abort(401)
-    user_obj = oclubs.objs.User(session['user_id'])
-    club_obj = get_club(club_info)
     file = request.files['picture']
-    oclubs.objs.Upload.handle(user_obj, club_obj, file)
+    oclubs.objs.Upload.handle(current_user, club, file)
 
 
 def download_csv(filename, header, info):
@@ -58,3 +38,49 @@ def download_csv(filename, header, info):
     # w = csv.writer(f, encoding='utf-16')
     # _ = w.writerow(header)
     # _ = f.seek(0)
+
+
+def get_callsign(objtype, kw=None):
+    def decorator(func):
+        @wraps(func)
+        def decorated_function(*args, **kwargs):
+            try:
+                item = int(re.match(r'^\d+', kwargs[kw]).group(0))
+                item = objtype(item)
+                item._data
+            except (NameError, AttributeError, OverflowError, NoRow):
+                abort(404)
+            kwargs[kw] = item
+            setattr(g, kw, item)
+            return func(*args, **kwargs)
+
+        return decorated_function
+
+    return decorator
+
+
+def special_access_required(func):
+    @wraps(func)
+    @login_required
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated:
+            abort(401)
+
+        if 'club' in kwargs:
+            club = kwargs['club']
+        elif 'activity' in kwargs:
+            club = kwargs['activity'].club
+        else:
+            abort(500)  # Assertion
+
+        if current_user.type == UserType.ADMIN:
+            return
+        elif current_user.type == UserType.TEACHER:
+            if current_user.id != club.teacher.id:
+                abort(403)
+        else:
+            if current_user.id != club.leader.id:
+                abort(403)
+        return func(*args, **kwargs)
+
+    return decorated_function

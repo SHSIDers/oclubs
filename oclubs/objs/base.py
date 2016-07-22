@@ -149,6 +149,10 @@ class BaseObject(object):
     def is_real(self):
         return self._id > 0
 
+    @property
+    def callsign(self):
+        return str(self.id) + '_' + self.name.replace(' ', '_')
+
     @classmethod
     def new(cls):
         return cls(0)
@@ -168,7 +172,6 @@ class BaseObject(object):
             return self.id != other.id
         except NotImplementedError:
             return NotImplemented
-
 
     def __hash__(self):
         return hash(self.id)
