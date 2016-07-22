@@ -38,18 +38,31 @@ class User(BaseObject):
             }
         ) or 0
 
-    def activities_reminder(self, types):
+    def activities_reminder(self, types, signedup_only=False):
         from oclubs.objs import Activity
 
-        return Activity.get_activities_conditions(
-            types,
-            {
-                'join': [('inner', 'club_member', [('act_club', 'cm_club')])],
-                'where': [('=', 'cm_user', self.id)]
-            },
-            dates=(False, True),
-            order_by_time=True
-        )
+        if signedup_only:
+            return Activity.get_activities_conditions(
+                types,
+                {
+                    'join': [('inner', 'signup',
+                             [('act_id', 'signup_act')])],
+                    'where': [('=', 'signup_user', self.id)]
+                },
+                dates=(False, True),
+                order_by_time=True
+            )
+        else:
+            return Activity.get_activities_conditions(
+                types,
+                {
+                    'join': [('inner', 'club_member',
+                             [('act_club', 'cm_club')])],
+                    'where': [('=', 'cm_user', self.id)]
+                },
+                dates=(False, True),
+                order_by_time=True
+            )
 
     @staticmethod
     def attempt_login(studentid, password):
