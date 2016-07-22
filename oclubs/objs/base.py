@@ -154,9 +154,21 @@ class BaseObject(object):
         return cls(0)
 
     def __eq__(self, other):
-        if not isinstance(other, BaseObject) or not self.is_real:
+        if not isinstance(other, BaseObject):
             return NotImplemented
-        return self.id == other.id
+        try:
+            return self.id == other.id
+        except NotImplementedError:
+            return NotImplemented
+
+    def __ne__(self, other):
+        if not isinstance(other, BaseObject):
+            return NotImplemented
+        try:
+            return self.id != other.id
+        except NotImplementedError:
+            return NotImplemented
+
 
     def __hash__(self):
         return hash(self.id)
