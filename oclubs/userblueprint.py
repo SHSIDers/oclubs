@@ -38,7 +38,7 @@ def quitclub_submit():
     club = Club(request.form['clubs'])
     user_obj = User(session['user_id'])
     club.remove_member(user_obj)
-    flash('You have successfully quitted ' + request.form['clubs'], 'quit')
+    flash('You have successfully quitted ' + club.name + '.', 'quit')
     return redirect(url_for('.quitclub'))
 
 
