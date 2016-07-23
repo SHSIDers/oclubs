@@ -40,7 +40,7 @@ def download_csv(filename, header, info):
     # _ = f.seek(0)
 
 
-def get_callsign(objtype, kw=None):
+def get_callsign(objtype, kw):
     def decorator(func):
         @wraps(func)
         def decorated_function(*args, **kwargs):
