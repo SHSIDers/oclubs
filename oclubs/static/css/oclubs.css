@@ -857,3 +857,15 @@ thead.darklist {
 	font-size: 150%;
 	font-family: 'Georgia'
 }
+
+.upload_button {
+	color: #f2f2f2;
+	background-color: #33ccff;
+	padding: 10px;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.upload_button:hover {
+	background-color: #0099cc;
+}
