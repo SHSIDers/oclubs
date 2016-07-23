@@ -63,9 +63,6 @@ def special_access_required(func):
     @login_required
     @wraps(func)
     def decorated_function(*args, **kwargs):
-        if not current_user.is_authenticated:
-            abort(401)
-
         if 'club' in kwargs:
             club = kwargs['club']
         elif 'activity' in kwargs:
