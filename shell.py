@@ -11,6 +11,7 @@ from oclubs.app import *
 from oclubs.access import *
 from oclubs.enums import *
 from oclubs.objs import *
+from oclubs.shared import *
 
 with app.app_context():
     __import__('code').interact("Welcome to the oClubs interactive shell!",

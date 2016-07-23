@@ -215,6 +215,14 @@ file { '/srv/oclubs/images':
     group  => 'uwsgi'
 }
 
+file { '/srv/oclubs/secrets.ini':
+    ensure => file,
+    mode   => '0644',
+    owner  => 'root',
+    group  => 'root',
+    source => '/vagrant/provision/secrets.ini'
+}
+
 service { 'iptables':
     ensure => running,
     enable => true,

@@ -2,10 +2,14 @@
 # -*- coding: UTF-8 -*-
 #
 
+from ConfigParser import ConfigParser
 from functools import wraps
 from io import BytesIO
 import re
 import unicodecsv as csv
+
+from Crypto.Cipher import AES
+from Crypto import Random
 
 from flask import session, abort, request, make_response, g
 from flask_login import current_user, login_required
@@ -81,3 +85,30 @@ def special_access_required(func):
         return func(*args, **kwargs)
 
     return decorated_function
+
+
+def get_secret(name):
+    config = ConfigParser()
+    config.read('/srv/oclubs/secrets.ini')
+    return config.get('secrets', name)
+
+
+def _strify(st):
+    if isinstance(st, unicode):
+        return st.encode('utf-8')
+    return st
+
+
+def encrypt(msg):
+    key = get_secret('encrypt_key').decode('hex')
+    iv = Random.new().read(AES.block_size)
+    cipher = AES.new(key, AES.MODE_CFB, iv)
+    return (iv + cipher.encrypt(_strify(msg))).encode('hex')
+
+
+def decrypt(msg):
+    key = get_secret('encrypt_key').decode('hex')
+    msg = msg.decode('hex')
+    iv = msg[:16]
+    cipher = AES.new(key, AES.MODE_CFB, iv)
+    return cipher.decrypt(msg)[16:]
