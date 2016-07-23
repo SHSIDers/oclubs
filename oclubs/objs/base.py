@@ -28,6 +28,12 @@ class Property(object):
         return instance._cache[self.name]
 
     def __set__(self, instance, value):
+        # Proxies can't pass isinstance check
+        try:
+            value = value._get_current_object()
+        except AttributeError:
+            pass
+
         instance._cache[self.name] = value
 
         value = self.exp(value)
