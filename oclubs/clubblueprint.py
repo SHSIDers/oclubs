@@ -152,28 +152,16 @@ def changeclubinfo_submit(club):
 @special_access_required
 def adjustmember(club):
     '''Adjust Club Members'''
-    members_obj = club.members
-    members = []
-    for member_obj in members_obj:
-        member = {}
-        member['nick_name'] = member_obj.nickname
-        member['passportname'] = member_obj.passportname
-        member['picture'] = member_obj.picture
-        member['studentid'] = member_obj.studentid
-        member['id'] = member_obj.id
-        members.append(member)
     return render_template('adjustmember.html',
-                           title='Adjust Members',
-                           club=club.name,
-                           members=members)
+                           title='Adjust Members')
 
 
-@clubblueprint.route('/<club>/adjust_member/submit', methods=['POST'])
+@clubblueprint.route('/<club>/adjust_member/submit/<studentid>', methods=['POST'])
 @get_callsign(Club, 'club')
 @special_access_required
-def adjustmember_submit(club):
+def adjustmember_submit(club, studentid):
     '''Input adjustment of club members'''
-    member_obj = User(request.form['expel'])
+    member_obj = User(studentid)
     club.remove_member(member_obj)
     flash(member_obj.nickname + ' has been expelled.', 'expelled')
     return redirect(url_for('.adjustmember', club=club.callsign))
