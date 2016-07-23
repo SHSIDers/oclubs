@@ -120,9 +120,10 @@ def login_submit():
         request.form['password']
     )
     if user is not None:
-        if request.form['remember'] == 'remember':
+        try:
+            assert request.form.getlist['remember']
             login_user(user, remember=True)
-        else:
+        except:
             login_user(user)
     else:
         flash('Please enter your username and password correctly in order to login.', 'login')
