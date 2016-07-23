@@ -7,7 +7,6 @@
 	{% for club in clubs %}
 	<a href="{{ url_for('clubblueprint.clubintro', club=club.callsign) }}"><img src="{{ club.picture.location_external }}" class="img-responsive" alt="">
 		<p style="font-size:150%">{{ club.name }}</p>
-		<p>{{ club.intro }}</p>
 	</a>
 	{% endfor %}
 </div>
