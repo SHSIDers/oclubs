@@ -189,7 +189,9 @@ def activity(activity):
     '''Club Activity Page'''
     return render_template('activity.html',
                            title=activity.name,
-                           activity=activity)
+                           activity=activity,
+                           is_other_act=(activity.time == ActivityTime.UNKNOWN or
+                                         activity.time == ActivityTime.OTHERS))
 
 
 @actblueprint.route('/<activity>/introduction/submit', methods=['POST'])
