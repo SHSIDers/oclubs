@@ -103,12 +103,12 @@ def encrypt(msg):
     key = get_secret('encrypt_key').decode('hex')
     iv = Random.new().read(AES.block_size)
     cipher = AES.new(key, AES.MODE_CFB, iv)
-    return (iv + cipher.encrypt(_strify(msg))).encode('hex')
+    return (iv + cipher.encrypt(_strify(msg))).encode('base-64').strip()
 
 
 def decrypt(msg):
     key = get_secret('encrypt_key').decode('hex')
-    msg = msg.decode('hex')
+    msg = msg.strip().decode('base-64')
     iv = msg[:16]
     cipher = AES.new(key, AES.MODE_CFB, iv)
     return cipher.decrypt(msg)[16:]
