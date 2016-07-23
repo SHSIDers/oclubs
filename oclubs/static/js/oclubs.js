@@ -1,16 +1,6 @@
 ( function( $ ) {
 	$( document )
 		.ready( function() {
-			$( "#loginanimation" )
-				.mouseover( function() {
-					this.className = 'jello animated';
-				} );
-
-			$( "#loginanimation" )
-				.mouseout( function() {
-					this.className = '';
-				} );
-
 			$( ".clickable" )
 				.click( function() {
 					window.document.location = $( this )
