@@ -9,11 +9,13 @@ from flask import (
 )
 from flask_login import current_user, login_required
 
-from oclubs.objs import User, Club, Activity, Upload
 import re
 import math
+from copy import deepcopy
+
 from oclubs.enums import UserType, ClubType, ActivityTime
 from oclubs.shared import get_callsign, special_access_required
+from oclubs.objs import User, Club, Activity, Upload
 
 actblueprint = Blueprint('actblueprint', __name__)
 
@@ -77,41 +79,40 @@ def clubactivities(club, page_num):
 def allphotos(page_num):
     page_num = int(page_num)
     pic_num = 20
-    lucky_act = ''
-    if page_num == 1:
-        lucky_club = Club.randomclubs(1)[0]
-        lucky_acts = lucky_club.activities([ActivityTime.UNKNOWN,
-                                            ActivityTime.NOON,
-                                            ActivityTime.AFTERSCHOOL,
-                                            ActivityTime.HONGMEI,
-                                            ActivityTime.OTHERS])
-        if lucky_acts != []:
-            lucky_act = lucky_acts[0]
-        else:
-            lucky_act = ''  # for testing
     acts_obj = Activity.all_activities()
-    max_page_num = math.ceil(float(len(acts_obj)) / pic_num)
+    act_recent = ''
+    if page_num == 1:
+        for act in acts_obj:
+            try:
+                assert act.pictures[0].location_external
+                act_recent = act
+            except IndexError:
+                continue
+            else:
+                break
     acts = []
-    acts_obj = acts_obj[page_num*pic_num-pic_num: page_num*pic_num]
-    for i in range(pic_num / 2):
-        act = {}
+    for act in acts_obj:
         try:
-            act['actname1'] = acts_obj[2*i+1].name
-            act['club1'] = acts_obj[2*i+1].club
-            act['id1'] = acts_obj[2*i+1].id
-            act['actname2'] = acts_obj[2*i].name
-            act['club2'] = acts_obj[2*i].club
-            act['id2'] = acts_obj[2*i].id
-            act['image1'] = acts_obj[2*i+1].pictures[0].location_external
-            act['image2'] = acts_obj[2*i].pictures[0].location_external
-            acts.append(act)
+            assert act.pictures[0]
         except IndexError:
-            break
+            continue
+        acts.append(act)
+    all_pictures = []
+    for act in acts:
+        each_block = {}
+        each_block['activity'] = act
+        each_block['club'] = act.club
+        for pic in act.pictures:
+            each = deepcopy(each_block)
+            each['picture'] = pic
+            all_pictures.append(each)
+    max_page_num = math.ceil(float(len(all_pictures)) / pic_num)
+    acts = acts[page_num*pic_num-pic_num: page_num*pic_num]
     return render_template('photos.html',
                            title='All Photos',
                            is_photos=True,
-                           lucky_act=lucky_act,
-                           acts=acts,
+                           act_recent=act_recent,
+                           all_pictures=all_pictures,
                            page_num=page_num,
                            max_page_num=max_page_num)
 
