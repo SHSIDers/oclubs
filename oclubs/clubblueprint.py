@@ -72,19 +72,8 @@ def clubintro_submit(club):
 @special_access_required
 def newleader(club):
     '''Selecting New Club Leader'''
-    members_obj = club.members
-    members = []
-    for member_obj in members_obj:
-        member = {}
-        member['passportname'] = member_obj.passportname
-        member['nick_name'] = member_obj.nickname
-        member['picture'] = member_obj.picture
-        members.append(member)
     return render_template('newleader.html',
-                           title='New Leader',
-                           club=club.name,
-                           leader=current_user,
-                           members=members)
+                           title='New Leader')
 
 
 @clubblueprint.route('/<club>/new_leader/submit', methods=['POST'])
