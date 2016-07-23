@@ -21,8 +21,11 @@ from oclubs.actblueprint import actblueprint
 from oclubs.enums import UserType, ClubType, ActivityTime
 
 from oclubs.redissession import RedisSessionInterface
+from oclubs.shared import get_secret
 
 app = Flask(__name__)
+
+app.config['SECRET_KEY'] = get_secret('flask_key')
 
 app.register_blueprint(userblueprint, url_prefix='/user')
 app.register_blueprint(clubblueprint, url_prefix='/club')
