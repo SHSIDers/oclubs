@@ -21,7 +21,7 @@ from oclubs.actblueprint import actblueprint
 from oclubs.enums import UserType, ClubType, ActivityTime
 
 from oclubs.redissession import RedisSessionInterface
-from oclubs.shared import get_secret
+from oclubs.shared import get_secret, encrypt
 
 app = Flask(__name__)
 
@@ -91,7 +91,7 @@ def unauthorized(e=None):
 @app.route('/500')  # debugger
 def internal_server_error(e=None):
     '''Internal server error'''
-    flash(traceback.format_exc(), '500')
+    flash(encrypt(traceback.format_exc()), '500')
     return render_template('error.html',
                            title='500 Internal Server Error',
                            is_internal_server_error=True

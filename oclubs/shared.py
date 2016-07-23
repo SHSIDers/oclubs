@@ -96,7 +96,7 @@ def get_secret(name):
 def _strify(st):
     if isinstance(st, unicode):
         return st.encode('utf-8')
-    return st
+    return str(st)
 
 
 def encrypt(msg):
