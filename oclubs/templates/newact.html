@@ -1,55 +1,67 @@
 {% extends "base.html" %}
 {% block content %}
+{% with messages = get_flashed_messages(category_filter=["newact"]) %}
 
 <!-- Below Navbar -->
 <div class="container">
     <div class="col-sm-6">
         <h1 class="title">New Activity</h1>
-        <div class="form-horizontal" role="form" style="color:#f2f2f2">
-            <div class="form-group">
-                <label class="col-sm-2 control-label" for="name">Activity Name:</label>
+        {% if messages %}
+        <br>
+        <ul class="list-group">
+            {% for message in messages %}
+            <li class="list-group-item">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <div class="form-horizontal" role="form" style="color:#f2f2f2; font-size:125%">
+            <form class="form-group" id="newact" action="{{ url_for('.newact_submit', club=g.club.callsign) }}" method="post">
+                <label class="col-sm-2" for="name">Name:</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="name">
+                    <input type="text" class="form-control" id="name" name="name">
                 </div>
-            </div>
-            <br>
-            <div class="form-group">
-                <label class="col-sm-2 control-label" for="time">Time:</label>
+                <div class="clearfix" style="margin-bottom:5%"></div>
+                <label class="col-sm-2" for="date">Date:</label>
                 <div class="col-sm-10">
-                    <input type="date" class="form-control" id="time">
+                    <input type="date" class="form-control" id="date" name="date">
                 </div>
-            </div>
-            <br>
-            <div class="form-group">
-                <label class="col-sm-2 control-label" for="location">Location:</label>
+                <div class="clearfix" style="margin-bottom:5%"></div>
+                <label class="col-sm-2" for="location">Location:</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="location">
+                    <input type="text" class="form-control" id="location" name="location">
                 </div>
-            </div>
-            <br>
-            <div class="form-group">
-                <label class="col-sm-2 control-label" for="people">Amount of People:</label>
+                <div class="clearfix" style="margin-bottom:5%"></div>
+                <label class="col-sm-2" for="act_type">Type:</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="people">
+                    <select class="form-control" id="act_type" name="act_type" type="dropdown" style="color:black">
+                        <option value="noon">Noon Meeting</option>
+                        <option value="afterschool">Afterschool Meeting</option>
+                        <option value="others">Others</option>
+                    </select>
                 </div>
-            </div>
-            <br>
+                <div class="clearfix" style="margin-bottom:5%"></div>
+                <label class="col-sm-2" for="cas">CAS Hours:</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="cas" name="cas">
+                </div>
+            </form>
         </div>
             
     </div>
     <div class="col-sm-6">
-        <img src="../static/images/activity.jpg" class="img-responsive img-thumbnail" alt="Activity">
+        <img src="{{ url_for('static', filename='/images/activity.jpg') }}" class="img-responsive img-thumbnail" alt="Activity">
     </div>
 
     <div class="clearfix"></div>
     <br>
 
-    <div class="form-group" style="color:#f2f2f2">
-        <label for="intro">Introduction:</label>
-        <textarea class="form-control" rows="10" id="intro"></textarea>
+    <div class="form-group" style="color:#f2f2f2; font-size:125%">
+        <label for="description">Description: <span style="font-size:80%">(optional)</span></label>
+        <textarea class="form-control" rows="10" id="description" form="newact" name="description"></textarea>
     </div>
 
-    <center><input type="submit" class="btn btn-info" value="Submit" style="width:20%;font-size:150%;padding:2%"></center>
+    <center><input type="submit" class="btn btn-info" form="newact" value="Submit" style="width:20%;font-size:150%;padding:2%"></center>
 </div>
 
+{% endwith %}
 {% endblock %}

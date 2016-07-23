@@ -12,10 +12,11 @@ from flask_login import current_user, login_required
 import re
 import math
 from copy import deepcopy
+from datetime import datetime
 
 from oclubs.enums import UserType, ClubType, ActivityTime
 from oclubs.shared import get_callsign, special_access_required
-from oclubs.objs import User, Club, Activity, Upload
+from oclubs.objs import User, Club, Activity, Upload, FormattedText
 
 actblueprint = Blueprint('actblueprint', __name__)
 
@@ -157,6 +158,31 @@ def newact(club):
                            title='New Activity')
 
 
+@actblueprint.route('/<club>/newact/submit', methods=['POST'])
+@get_callsign(Club, 'club')
+@special_access_required
+def newact_submit(club):
+    '''Input new activity's information into database'''
+    try:
+        a = Activity.new()
+        a.name = request.form['name']
+        a.club = club
+        if request.form['description']:
+            a.description = FormattedText.handle(current_user, club, request.form['description'])
+        else:
+            a.description = None
+        a.post = None
+        a.date = datetime.strptime(request.form['date'], '%Y-%m-%d')
+        a.time = ActivityTime[request.form['act_type'].upper()]
+        a.location = request.form['location']
+        a.cas = request.form['cas']
+        a.create()
+        flash(a.name + ' has been successfully created.', 'newact')
+    except ValueError:
+        flash('Please input all information to create a new activity.', 'newact')
+    return redirect(url_for('.newact', club=club.callsign))
+
+
 @actblueprint.route('/<activity>/introduction')
 @get_callsign(Activity, 'activity')
 def activity(activity):
@@ -166,7 +192,7 @@ def activity(activity):
                            activity=activity)
 
 
-@actblueprint.route('/<activity>/introduction/submit')
+@actblueprint.route('/<activity>/introduction/submit', methods=['POST'])
 @get_callsign(Activity, 'activity')
 def activity_submit(activity):
     '''Signup for activity'''
@@ -221,7 +247,7 @@ def newhm_submit(club):
     contents = request.form['contents']
     a = Activity.new()
     a.name = contents
-    a.club = get_club(club_info)
+    a.club = club
     a.description = None
     a.post = None
     a.date = date_hm
@@ -282,7 +308,7 @@ def registerhm(club):
                            schedule=schedule)
 
 
-@actblueprint.route('/<club>/register_hongmei/submit')
+@actblueprint.route('/<club>/register_hongmei/submit', methods=['POST'])
 @get_callsign(Club, 'club')
 @login_required
 def registerhm_submit(club):
