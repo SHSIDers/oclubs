@@ -32,7 +32,7 @@
 			</ul>
 		</div>
 		<div class="search">
-			<form style="display:inline-block">
+			<form action="{{ url_for('search') }}" style="display:inline-block">
 				<input type="text" value="Search" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search';}">
 				<span class="glyphicon glyphicon-search"><input type="submit" value=""></span>
 			</form>

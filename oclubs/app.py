@@ -137,6 +137,15 @@ def logout():
     return redirect(url_for('homepage'))
 
 
+@app.route('/search')
+def search():
+    '''Search Page'''
+    results = [{}, {}, {}, {}, {}]
+    return render_template('search.html',
+                           title='Search',
+                           results=results)
+
+
 @app.route('/')
 def homepage():
     '''Homepage'''
