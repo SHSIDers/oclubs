@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 #
 
-from __future__ import absolute_import, unicode_literals
+from __future__ import absolute_import, unicode_literals, division
 
 from datetime import datetime, date
 
@@ -28,7 +28,7 @@ class Activity(BaseObject):
     date = Property('act_date', (int_date, date_int))
     time = Property('act_time', ActivityTime)
     location = Property('act_location')
-    cas = Property('act_cas')
+    cas = Property('act_cas', (lambda val: val/60, lambda val: val*60))
     post = Property('act_post', 'FormattedText')
     attendance = ListProperty('attendance', 'att_act', 'att_user', 'User')
     pictures = ListProperty('act_pic', 'actpic_act', 'actpic_upload', 'Upload')
