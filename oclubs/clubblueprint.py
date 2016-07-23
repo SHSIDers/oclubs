@@ -38,9 +38,9 @@ def clublist(club_type):
                            club_type=club_type)
 
 
-@clubblueprint.route('/<club>')
+@clubblueprint.route('/<club>/management')
 @get_callsign(Club, 'club')
-@special_access_required  # FIXME: Why?
+@special_access_required
 def club(club):
     '''Club Management Page'''
     return render_template('club.html',
@@ -133,7 +133,7 @@ def memberinfo_download(club):
     return download_csv('Member Info.csv', header, info)
 
 
-@clubblueprint.route('/<club>/change_club')
+@clubblueprint.route('/<club>/change_club_info')
 @get_callsign(Club, 'club')
 @special_access_required
 def changeclubinfo(club):
@@ -146,7 +146,7 @@ def changeclubinfo(club):
                            desc=club.description.formatted)
 
 
-@clubblueprint.route('/<club>/change_club/submit', methods=['POST'])
+@clubblueprint.route('/<club>/change_club_info/submit', methods=['POST'])
 @get_callsign(Club, 'club')
 @special_access_required
 def changeclubinfo_submit(club):

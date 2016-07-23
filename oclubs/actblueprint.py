@@ -165,6 +165,15 @@ def activity(activity):
                            activity=activity)
 
 
+@actblueprint.route('/<activity>/introduction/submit')
+@get_callsign(Activity, 'activity')
+def activity_submit(activity):
+    '''Signup for activity'''
+    activity.signup(current_user)
+    flash('You have successfully signed up for ' + activity.name + '.', 'signup')
+    return redirect(url_for('.activity', activity=activity.callsign))
+
+
 @actblueprint.route('/<club>/hongmei')
 @get_callsign(Club, 'club')
 @special_access_required
