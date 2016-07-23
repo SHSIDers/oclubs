@@ -105,22 +105,29 @@ def load_user(user_id):
         return None
 
 
-@app.route('/login', methods=['POST'])
+@app.route('/login')
 def login():
+    '''Login page'''
+    return render_template('login.html',
+                           title='Login')
+
+
+@app.route('/login/submit', methods=['POST'])
+def login_submit():
     '''API to login'''
-    if current_user.is_authenticated:
-        status = 'loggedin'
-    else:
-        user = User.attempt_login(
-            request.form['username'],
-            request.form['password']
-        )
-        if user is not None:
-            login_user(user)
-            status = 'success'
+    user = User.attempt_login(
+        request.form['username'],
+        request.form['password']
+    )
+    if user is not None:
+        if request.form['remember'] == 'remember':
+            login_user(user, remember=True)
         else:
-            status = 'failure'
-    return jsonify({'result': status})
+            login_user(user)
+    else:
+        flash('Please enter your username and password correctly in order to login.', 'login')
+        return redirect(url_for('login'))
+    return redirect(url_for('userblueprint.personal'))
 
 
 @app.route('/logout')

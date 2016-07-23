@@ -869,3 +869,40 @@ thead.darklist {
 .upload_button:hover {
 	background-color: #0099cc;
 }
+
+.login_block {
+	padding: 2%;
+	margin: 4% 35% 4% 35%;
+	border-radius: 10px;
+	color: #f2f2f2;
+	border-style: solid;
+	border-color: #337ab7;
+}
+
+.login_block a,
+.login_block .remember {
+	margin-top: 5px;
+	color: #f2f2f2;
+	font-weight: normal;
+}
+
+.login_block a {
+	float: right;
+}
+
+.login_block input[type="submit"] {
+	width: 100%;
+	padding: 2.5%;
+	margin-top: 10px;
+	background-color: #337ab7;
+	color: #f2f2f2;
+	font-size: 125%;
+	border-style: solid;
+	border-color: #337ab7;
+	border-radius: 7px;
+}
+
+.login_block input[type="submit"]:hover {
+	background-color: #275d8b;
+	border-color: #275d8b;
+}

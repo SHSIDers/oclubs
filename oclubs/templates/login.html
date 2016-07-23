@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+{% with messages = get_flashed_messages(category_filter=["login"]) %}
+
+<!-- Below Navbar -->
+<div class="container">
+    <h1 class="title text-center">Login to oClubs!</h1>
+    {% if messages %}
+    <ul class="list-group" style="margin:0 35% 0 35%">
+        {% for message in messages %}
+        <li class="list-group-item">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <form class="login_block form-group" action="{{ url_for('login_submit') }}" method="post">
+        <label for="studentid">Student ID:</label>
+        <input type="text" class="form-control" id="studentid" name="username" placeholder="Enter username">
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Enter password">
+        <div class="clearfix"></div>
+        <label class="remember"><input type="checkbox" value="remember" name="remember">&nbsp;Remember me</label>
+        <a href="{{ url_for('userblueprint.forgotpw') }}">Forgot password?</a>
+        <div class="clearfix"></div>
+        <input type="submit" value="Login">
+    </form>
+    <div class="login_block">
+        <p>If you do not have an account, please ask your teacher to get your personal account.</p>
+    </div>
+</div>
+
+{% endwith %}
+{% endblock %}
