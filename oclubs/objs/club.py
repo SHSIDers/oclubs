@@ -12,15 +12,15 @@ from oclubs.objs.base import BaseObject, Property, ListProperty
 class Club(BaseObject):
     table = 'club'
     identifier = 'club_id'
-    name = Property('club_name')
-    teacher = Property('club_teacher', 'User')
-    leader = Property('club_leader', 'User')
-    description = Property('club_desc', 'FormattedText')
-    location = Property('club_location')
-    is_active = Property('club_inactive', lambda v: not v)
-    intro = Property('club_intro')
+    name = Property('club_name', search=True)
+    teacher = Property('club_teacher', 'User', search=True)
+    leader = Property('club_leader', 'User', search=True)
+    description = Property('club_desc', 'FormattedText', search=True)
+    location = Property('club_location', search=True)
+    is_active = Property('club_inactive', lambda v: not v, search=True)
+    intro = Property('club_intro', search=True)
     picture = Property('club_picture', 'Upload')
-    type = Property('club_type', ClubType)
+    type = Property('club_type', ClubType, search=True)
     members = ListProperty('club_member', 'cm_club', 'cm_user', 'User')
     all_act = ListProperty('activities', 'act_club', 'act_id', 'Activity')
 

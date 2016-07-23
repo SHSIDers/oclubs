@@ -22,14 +22,14 @@ def date_int(dateobj):
 class Activity(BaseObject):
     table = 'activity'
     identifier = 'act_id'
-    name = Property('act_name')
-    club = Property('act_club', 'Club')
-    description = Property('act_desc', 'FormattedText')
-    date = Property('act_date', (int_date, date_int))
-    time = Property('act_time', ActivityTime)
-    location = Property('act_location')
+    name = Property('act_name', search=True)
+    club = Property('act_club', 'Club', search=True)
+    description = Property('act_desc', 'FormattedText', search=True)
+    date = Property('act_date', (int_date, date_int), search=None)
+    time = Property('act_time', ActivityTime, search=True)
+    location = Property('act_location', search=True)
     cas = Property('act_cas', (lambda val: val/60, lambda val: val*60))
-    post = Property('act_post', 'FormattedText')
+    post = Property('act_post', 'FormattedText', search=None)
     attendance = ListProperty('attendance', 'att_act', 'att_user', 'User')
     pictures = ListProperty('act_pic', 'actpic_act', 'actpic_upload', 'Upload')
 

@@ -10,15 +10,16 @@ from __future__ import absolute_import
 import types
 from enum import Enum
 
-from oclubs.access import database
+from oclubs.access import database, elasticsearch
 
 
 class Property(object):
     """Descriptor class."""
-    def __init__(self, dbname, ie=None):
+    def __init__(self, dbname, ie=None, search=False):
         super(Property, self).__init__()
         self.dbname = dbname
         self.imp, self.exp = _get_ie(ie)
+        self.search = _get_search(search, ie)
 
     def __get__(self, instance, owner=None):
         if instance is None:
@@ -36,19 +37,31 @@ class Property(object):
 
         instance._cache[self.name] = value
 
-        value = self.exp(value)
+        dbvalue = self.exp(value)
         if instance.is_real:
-            if instance._dbdata is not None:
-                instance._dbdata[self.name] = value
+            if instance._dbdata is None:
+                instance._data
+
+            if dbvalue == instance._dbdata[self.name]:
+                return
+
+            instance._dbdata[self.name] = dbvalue
 
             database.update_row(
                 instance.table,
-                {self.dbname: value},
+                {self.dbname: dbvalue},
                 {instance.identifier: instance.id}
             )
+
+            if self.search:
+                elasticsearch.update(
+                    instance.table,
+                    instance.id,
+                    {self.name: self.search(value)}
+                )
         else:
             instance._dbdata = instance._dbdata or {}
-            instance._dbdata[self.name] = value
+            instance._dbdata[self.name] = dbvalue
 
     def __delete__(self, instance):
         if self.name in instance._cache:
@@ -95,9 +108,13 @@ class ListProperty(object):
 class _BaseMetaclass(type):
     def __new__(meta, name, bases, dct):
         _propsdb = {}
+        _essearches = []
+
         for key, value in dct.items():
             if isinstance(value, Property):
                 _propsdb[value.dbname] = key
+                if value.search:
+                    _essearches.append(value)
 
                 value.name = key
             if isinstance(value, ListProperty):
@@ -123,6 +140,13 @@ class _BaseMetaclass(type):
             for key, value in _propsdb.items():
                 data[key] = self._dbdata[value]
             self._id = database.insert_row(self.table, data)
+
+            if _essearches:
+                _esdata = {}
+                for prop in _essearches:
+                    _esdata[prop.name] = prop.search(self._cache[prop.name])
+
+                elasticsearch.create(self.table, self.id, _esdata)
 
             # Reload with newest data from database
             self._dbdata = None
@@ -214,3 +238,33 @@ def __get_ie(ie):
         imp = exp = ie
 
     return imp, exp
+
+
+def _get_search(search, ie):
+    search = __get_search(search, ie)
+    if search:
+        return lambda val: None if val is None else search(val)
+
+
+def __get_search(search, ie):
+    if search is False:
+        return None
+    if search is True:
+        if isinstance(ie, tuple):
+            ie = ie[1]
+        return __get_search(ie, False)
+    elif search is None:
+        return lambda val: val
+    elif isinstance(search, basestring):
+        if search == 'User':
+            return lambda val: val.passportname
+        elif search == 'FormattedText':
+            return lambda val: val.raw
+        else:
+            return lambda val: val.name
+    elif isinstance(search, type) and issubclass(search, Enum):
+        return lambda val: val.format_name
+    elif callable(search):
+        return search
+
+    return None

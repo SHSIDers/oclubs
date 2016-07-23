@@ -8,11 +8,11 @@ from __future__ import absolute_import
 
 from oclubs.access import database
 # TODO redis
-# TODO elasticsearch
+from oclubs.access import elasticsearch
 
 
 def done(commit=True):
     database.done(commit)
 
 
-__all__ = ['database', 'done']
+__all__ = ['database', 'elasticsearch', 'done']
