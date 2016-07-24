@@ -7,7 +7,7 @@
 	<div class="search_bar">
 		<div class="col-sm-8">
 			<form action="{{ url_for('search') }}" id="search_form" method="get" style="display:inline-block">
-				<input type="text" name="keywords" placeholder="{% if keywords %}{% else %}Search{% endif %}">
+				<input type="text" name="keywords" placeholder="{% if keywords %}{{ keywords }}{% else %}Search{% endif %}">
 				<span class="glyphicon glyphicon-search"><input type="submit" value=""></span>
 			</form>
 		</div>

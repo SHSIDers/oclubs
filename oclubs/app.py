@@ -141,8 +141,8 @@ def logout():
 def search():
     '''Search Page'''
     try:
-        search_type = request.form['search_type']
-        keywords = request.form['keywords']
+        search_type = request.args['search_type']
+        keywords = request.args['keywords']
         if search_type == 'club':
             search = Club.search(keywords, offset=0, size=5)
         else:
