@@ -12,3 +12,4 @@ bleach
 importlib
 unicodecsv
 elasticsearch
+pycrypto

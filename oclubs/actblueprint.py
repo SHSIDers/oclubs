@@ -9,11 +9,14 @@ from flask import (
 )
 from flask_login import current_user, login_required
 
-from oclubs.objs import User, Club, Activity, Upload
 import re
 import math
+from copy import deepcopy
+from datetime import datetime
+
 from oclubs.enums import UserType, ClubType, ActivityTime
 from oclubs.shared import get_callsign, special_access_required
+from oclubs.objs import User, Club, Activity, Upload, FormattedText
 
 actblueprint = Blueprint('actblueprint', __name__)
 
@@ -77,41 +80,40 @@ def clubactivities(club, page_num):
 def allphotos(page_num):
     page_num = int(page_num)
     pic_num = 20
-    lucky_act = ''
-    if page_num == 1:
-        lucky_club = Club.randomclubs(1)[0]
-        lucky_acts = lucky_club.activities([ActivityTime.UNKNOWN,
-                                            ActivityTime.NOON,
-                                            ActivityTime.AFTERSCHOOL,
-                                            ActivityTime.HONGMEI,
-                                            ActivityTime.OTHERS])
-        if lucky_acts != []:
-            lucky_act = lucky_acts[0]
-        else:
-            lucky_act = ''  # for testing
     acts_obj = Activity.all_activities()
-    max_page_num = math.ceil(float(len(acts_obj)) / pic_num)
+    act_recent = ''
+    if page_num == 1:
+        for act in acts_obj:
+            try:
+                assert act.pictures[0].location_external
+                act_recent = act
+            except IndexError:
+                continue
+            else:
+                break
     acts = []
-    acts_obj = acts_obj[page_num*pic_num-pic_num: page_num*pic_num]
-    for i in range(pic_num / 2):
-        act = {}
+    for act in acts_obj:
         try:
-            act['actname1'] = acts_obj[2*i+1].name
-            act['club1'] = acts_obj[2*i+1].club
-            act['id1'] = acts_obj[2*i+1].id
-            act['actname2'] = acts_obj[2*i].name
-            act['club2'] = acts_obj[2*i].club
-            act['id2'] = acts_obj[2*i].id
-            act['image1'] = acts_obj[2*i+1].pictures[0].location_external
-            act['image2'] = acts_obj[2*i].pictures[0].location_external
-            acts.append(act)
+            assert act.pictures[0]
         except IndexError:
-            break
+            continue
+        acts.append(act)
+    all_pictures = []
+    for act in acts:
+        each_block = {}
+        each_block['activity'] = act
+        each_block['club'] = act.club
+        for pic in act.pictures:
+            each = deepcopy(each_block)
+            each['picture'] = pic
+            all_pictures.append(each)
+    max_page_num = math.ceil(float(len(all_pictures)) / pic_num)
+    acts = acts[page_num*pic_num-pic_num: page_num*pic_num]
     return render_template('photos.html',
                            title='All Photos',
                            is_photos=True,
-                           lucky_act=lucky_act,
-                           acts=acts,
+                           act_recent=act_recent,
+                           all_pictures=all_pictures,
                            page_num=page_num,
                            max_page_num=max_page_num)
 
@@ -156,13 +158,49 @@ def newact(club):
                            title='New Activity')
 
 
+@actblueprint.route('/<club>/newact/submit', methods=['POST'])
+@get_callsign(Club, 'club')
+@special_access_required
+def newact_submit(club):
+    '''Input new activity's information into database'''
+    try:
+        a = Activity.new()
+        a.name = request.form['name']
+        a.club = club
+        if request.form['description']:
+            a.description = FormattedText.handle(current_user, club, request.form['description'])
+        else:
+            a.description = None
+        a.post = None
+        a.date = datetime.strptime(request.form['date'], '%Y-%m-%d')
+        a.time = ActivityTime[request.form['act_type'].upper()]
+        a.location = request.form['location']
+        a.cas = request.form['cas']
+        a.create()
+        flash(a.name + ' has been successfully created.', 'newact')
+    except ValueError:
+        flash('Please input all information to create a new activity.', 'newact')
+    return redirect(url_for('.newact', club=club.callsign))
+
+
 @actblueprint.route('/<activity>/introduction')
 @get_callsign(Activity, 'activity')
 def activity(activity):
     '''Club Activity Page'''
     return render_template('activity.html',
                            title=activity.name,
-                           activity=activity)
+                           activity=activity,
+                           is_other_act=(activity.time == ActivityTime.UNKNOWN or
+                                         activity.time == ActivityTime.OTHERS))
+
+
+@actblueprint.route('/<activity>/introduction/submit', methods=['POST'])
+@get_callsign(Activity, 'activity')
+def activity_submit(activity):
+    '''Signup for activity'''
+    activity.signup(current_user)
+    flash('You have successfully signed up for ' + activity.name + '.', 'signup')
+    return redirect(url_for('.activity', activity=activity.callsign))
 
 
 @actblueprint.route('/<club>/hongmei')
@@ -211,7 +249,7 @@ def newhm_submit(club):
     contents = request.form['contents']
     a = Activity.new()
     a.name = contents
-    a.club = get_club(club_info)
+    a.club = club
     a.description = None
     a.post = None
     a.date = date_hm
@@ -272,7 +310,7 @@ def registerhm(club):
                            schedule=schedule)
 
 
-@actblueprint.route('/<club>/register_hongmei/submit')
+@actblueprint.route('/<club>/register_hongmei/submit', methods=['POST'])
 @get_callsign(Club, 'club')
 @login_required
 def registerhm_submit(club):

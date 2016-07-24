@@ -2,12 +2,12 @@
 {% block content %}
 
 <!-- Below Navbar -->
-<h1 class="title text-center">{{ club }}</h1>
+<h1 class="title text-center">{{ g.club.name }}</h1>
 <div class="huge_block">
     <h1>Current Club Leader</h1>
-    <img src="../static/images/{{ leader.picture }}.jpg" class="img-responsive img-circle" alt="{{ leader.nick_name }}">
-    <h2>{{ leader.nick_name }}</h2>
-    <h3>{{ leader.passportname }}</h3>
+    <img src="{{ current_user.picture.location_external }}" class="img-responsive img-circle" alt="{{ current_user.nick_name }}">
+    <h2>{{ current_user.nickname }}</h2>
+    <h3>{{ current_user.passportname }}</h3>
 </div>
 
 <div class="clearfix"></div>
@@ -16,16 +16,19 @@
 
 <div class="container">
     <form id="leader_radio" action="{{ url_for('.newleader_submit', club=g.club.callsign)}}">
-        {% for member in members %}
+        {% for member in g.club.members %}
+        {% if member != current_user %}
         <label class="radio_block" for="leader">
-            <img src="../static/images/{{ member.picture }}.jpg" class="img-responsive" alt="">
+            <img src="{{ member.picture.location_external }}" class="img-responsive" alt="">
             <p>{{ member.passportname }}</p>
-            <p>{{ member.nick_name }}</p>
+            <p>{{ member.nickname }}</p>
             <center><input type="radio" id="leader" name="leader" value="{{ member.passportname }}"></center>
         </label>
+        {% endif %}
         {% endfor %}
     </form>
-    <center><button class="btn btn-info" data-toggle="modal" data-target="#confirmation" id="updatecheck">Submit</button>
+    <div class="clearfix"></div>
+    <center><button class="btn btn-info btn-lg" data-toggle="modal" data-target="#confirmation" id="updatecheck">Submit</button>
 </div>
 
 <div id="confirmation" class="modal fade" role="dialog">

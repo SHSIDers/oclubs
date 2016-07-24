@@ -10,88 +10,117 @@ from __future__ import absolute_import
 import types
 from enum import Enum
 
-from oclubs.access import database
+from oclubs.access import database, elasticsearch
+
+# In this file,
+# cls refers to BaseObject class
+# meta refers to _BaseMetaclass class
+# prop refers to an instance of Property or ListProperty
+# self refers to an instance of BaseObject
 
 
 class Property(object):
     """Descriptor class."""
-    def __init__(self, dbname, ie=None):
-        super(Property, self).__init__()
-        self.dbname = dbname
-        self.imp, self.exp = _get_ie(ie)
+    def __init__(prop, dbname, ie=None, search=False):
+        super(Property, prop).__init__()
+        prop.dbname = dbname
+        prop.imp, prop.exp = _get_ie(ie)
+        prop.search = _get_search(search, ie)
 
-    def __get__(self, instance, owner=None):
-        if instance is None:
-            return self
-        if self.name not in instance._cache:
-            instance._cache[self.name] = self.imp(instance._data[self.name])
-        return instance._cache[self.name]
+    def __get__(prop, self, owner=None):
+        if self is None:
+            return prop
+        if prop.name not in self._cache:
+            self._cache[prop.name] = prop.imp(self._data[prop.name])
+        return self._cache[prop.name]
 
-    def __set__(self, instance, value):
-        instance._cache[self.name] = value
+    def __set__(prop, self, value):
+        # Proxies can't pass isinstance check
+        try:
+            value = value._get_current_object()
+        except AttributeError:
+            pass
 
-        value = self.exp(value)
-        if instance.is_real:
-            if instance._dbdata is not None:
-                instance._dbdata[self.name] = value
+        self._cache[prop.name] = value
+
+        dbvalue = prop.exp(value)
+        if self.is_real:
+            if self._dbdata is None:
+                self._data
+
+            if dbvalue == self._dbdata[prop.name]:
+                return
+
+            self._dbdata[prop.name] = dbvalue
 
             database.update_row(
-                instance.table,
-                {self.dbname: value},
-                {instance.identifier: instance.id}
+                self.table,
+                {prop.dbname: dbvalue},
+                {self.identifier: self.id}
             )
-        else:
-            instance._dbdata = instance._dbdata or {}
-            instance._dbdata[self.name] = value
 
-    def __delete__(self, instance):
-        if self.name in instance._cache:
-            del instance._cache[self.name]
-
-        if instance.is_real:
-            instance._dbdata = None
+            if prop.search:
+                elasticsearch.update(
+                    self.table,
+                    self.id,
+                    {prop.name: prop.search(value)}
+                )
         else:
-            if self.name in instance._dbdata:
-                del instance._dbdata[self.name]
+            self._dbdata = self._dbdata or {}
+            self._dbdata[prop.name] = dbvalue
+
+    def __delete__(prop, self):
+        if prop.name in self._cache:
+            del self._cache[prop.name]
+
+        if self.is_real:
+            self._dbdata = None
+        else:
+            if prop.name in self._dbdata:
+                del self._dbdata[prop.name]
 
 
 class ListProperty(object):
     """Descriptor class."""
-    def __init__(self, table, this, that, ie=None):
-        super(ListProperty, self).__init__()
-        self.table = table
-        self.this = this
-        self.that = that
-        self.imp, self.exp = _get_ie(ie)
+    def __init__(prop, table, this, that, ie=None):
+        super(ListProperty, prop).__init__()
+        prop.table = table
+        prop.this = this
+        prop.that = that
+        prop.imp, prop.exp = _get_ie(ie)
 
-    def __get__(self, instance, owner=None):
-        if instance is None:
-            return self
-        if self.name not in instance._cache:
+    def __get__(prop, self, owner=None):
+        if self is None:
+            return prop
+        if prop.name not in self._cache:
             tempdata = database.fetch_onecol(
-                self.table,
-                self.that,
-                {self.this: instance.id}
+                prop.table,
+                prop.that,
+                {prop.this: self.id}
             )
-            instance._cache[self.name] = \
-                [self.imp(member) for member in tempdata]
+            self._cache[prop.name] = \
+                [prop.imp(member) for member in tempdata]
 
-        return instance._cache[self.name]
+        return self._cache[prop.name]
 
-    def __set__(self, instance, value):
+    def __set__(prop, self, value):
         raise AttributeError("ListProperty is not writable.")
 
-    def __delete__(self, instance):
-        if self.name in instance._cache:
-            del instance._cache[self.name]
+    def __delete__(prop, self):
+        if prop.name in self._cache:
+            del self._cache[prop.name]
 
 
 class _BaseMetaclass(type):
     def __new__(meta, name, bases, dct):
         _propsdb = {}
+        _essearches = []
+
         for key, value in dct.items():
             if isinstance(value, Property):
                 _propsdb[value.dbname] = key
+                if value.search:
+                    _essearches.append(value)
 
                 value.name = key
             if isinstance(value, ListProperty):
@@ -117,6 +146,13 @@ class _BaseMetaclass(type):
             for key, value in _propsdb.items():
                 data[key] = self._dbdata[value]
             self._id = database.insert_row(self.table, data)
+
+            if _essearches:
+                _esdata = {}
+                for prop in _essearches:
+                    _esdata[prop.name] = prop.search(self._cache[prop.name])
+
+                elasticsearch.create(self.table, self.id, _esdata)
 
             # Reload with newest data from database
             self._dbdata = None
@@ -208,3 +244,33 @@ def __get_ie(ie):
         imp = exp = ie
 
     return imp, exp
+
+
+def _get_search(search, ie):
+    search = __get_search(search, ie)
+    if search:
+        return lambda val: None if val is None else search(val)
+
+
+def __get_search(search, ie):
+    if search is False:
+        return None
+    if search is True:
+        if isinstance(ie, tuple):
+            ie = ie[1]
+        return __get_search(ie, False)
+    elif search is None:
+        return lambda val: val
+    elif isinstance(search, basestring):
+        if search == 'User':
+            return lambda val: val.passportname
+        elif search == 'FormattedText':
+            return lambda val: val.raw
+        else:
+            return lambda val: val.name
+    elif isinstance(search, type) and issubclass(search, Enum):
+        return lambda val: val.format_name
+    elif callable(search):
+        return search
+
+    return None

@@ -18,7 +18,7 @@
 	</div>
 
 	<div class="col-sm-10">
-		<h1 class="title">Activites - {{ club_type.capitalize() }}</h1>
+		<h1 class="title">Activites - {{ club_type.replace('_', ' ').title() }}</h1>
 		<table class="table table-hover table-bordered">
 			<thead class="list">
 				<tr style="background-color:#bfbfbf">
@@ -30,7 +30,7 @@
 			</thead>
 			<tbody>
 				{% for act in acts %}
-				<tr class="clickable act" data-href="#">
+				<tr class="clickable act" data-href="{{ url_for('.activity', activity=act.callsign) }}">
 					<td>{{ act.club.name }}</td>
 					<td>{{ act.name}}</td>
 					<td>{{ act.date }}</td>

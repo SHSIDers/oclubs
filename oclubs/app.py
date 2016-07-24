@@ -21,8 +21,11 @@ from oclubs.actblueprint import actblueprint
 from oclubs.enums import UserType, ClubType, ActivityTime
 
 from oclubs.redissession import RedisSessionInterface
+from oclubs.shared import get_secret, encrypt
 
 app = Flask(__name__)
+
+app.config['SECRET_KEY'] = get_secret('flask_key')
 
 app.register_blueprint(userblueprint, url_prefix='/user')
 app.register_blueprint(clubblueprint, url_prefix='/club')
@@ -88,7 +91,7 @@ def unauthorized(e=None):
 @app.route('/500')  # debugger
 def internal_server_error(e=None):
     '''Internal server error'''
-    flash(traceback.format_exc(), '500')
+    flash(encrypt(traceback.format_exc()), '500')
     return render_template('error.html',
                            title='500 Internal Server Error',
                            is_internal_server_error=True
@@ -105,22 +108,26 @@ def load_user(user_id):
         return None
 
 
-@app.route('/login', methods=['POST'])
+@app.route('/login')
 def login():
+    '''Login page'''
+    return render_template('login.html',
+                           title='Login')
+
+
+@app.route('/login/submit', methods=['POST'])
+def login_submit():
     '''API to login'''
-    if current_user.is_authenticated:
-        status = 'loggedin'
+    user = User.attempt_login(
+        request.form['username'],
+        request.form['password']
+    )
+    if user is not None:
+        login_user(user, remember=('remember' in request.form))
     else:
-        user = User.attempt_login(
-            request.form['username'],
-            request.form['password']
-        )
-        if user is not None:
-            login_user(user)
-            status = 'success'
-        else:
-            status = 'failure'
-    return jsonify({'result': status})
+        flash('Please enter your username and password correctly in order to login.', 'login')
+        return redirect(url_for('login'))
+    return redirect(url_for('userblueprint.personal'))
 
 
 @app.route('/logout')
@@ -128,6 +135,15 @@ def logout():
     '''Logout a user'''
     logout_user()
     return redirect(url_for('homepage'))
+
+
+@app.route('/search')
+def search():
+    '''Search Page'''
+    results = [{}, {}, {}, {}, {}]
+    return render_template('search.html',
+                           title='Search',
+                           results=results)
 
 
 @app.route('/')

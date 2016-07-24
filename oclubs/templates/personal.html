@@ -70,7 +70,7 @@
 					{% for pic in pictures %}
 					<label class="radio_block">
 						<img src="{{ pic.location_external }}" class="img-responsive" alt="{{ -pic.id }}">
-						<center><input type="radio" name="picture" value="{{ pic.id }}"></center>
+						<center><input type="radio" name="picture" {% if pic == current_user.picture %}checked="checked"{% endif %} value="{{ pic.id }}"></center>
 					</label>
 					{% endfor %}
 					<div class="clearfix"></div>

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Below Navbar -->
+<div class="container">
+	<h1 class="title">Search</h1>
+	<div class="search_bar">
+		<form action="{{ url_for('search') }}" style="display:inline-block">
+			<input type="text" value="Search" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search';}">
+			<span class="glyphicon glyphicon-search"><input type="submit" value=""></span>
+		</form>
+	</div>
+	<h2 class="title_next">Results</h2>
+	{% for result in results %}
+	<div class="search_block clickable" data-href="#">
+		<h1>Activity/Club Name</h1>
+		<div class="col-sm-2">
+			<img src="{{ url_for('static', filename='images/1.jpg') }}" class="img-responsive img-thumbnail" alt="Test">
+		</div>
+		<div class="col-sm-10">
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam in turpis accumsan, luctus velit eu, dapibus risus. Integer ultricies molestie nibh, eget faucibus sem mattis eget. Donec ac venenatis quam. Phasellus hendrerit bibendum pellentesque. Nunc lectus nunc, pharetra non viverra at, vehicula eu purus. Etiam nibh nisl, tristique nec libero a, mattis faucibus leo. Morbi a ultricies sem, vel semper lectus. Nunc convallis nisi ac nibh scelerisque, in sagittis orci tempor. Vestibulum convallis ligula nisi, eget venenatis nulla molestie ac.</p>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	<div class="clearfix"></div>
+	{% endfor %}
+</div>
+
+{% endblock %}

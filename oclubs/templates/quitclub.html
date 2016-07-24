@@ -6,7 +6,7 @@
 <!-- Below Navbar -->
 <div class="container">
     <div class="col-sm-3">
-        <img src="../static/images/areyousure1.jpg" class="img-responsive img-thumbnail" alt="Are you sure?">
+        <img src="{{ url_for('static', filename='images/areyousure1.jpg') }}" class="img-responsive img-thumbnail" alt="Are you sure?">
     </div>
     <div class="col-sm-6">
     	<form class="form-group" id="quit_club" action="{{ url_for('userblueprint.quitclub_submit') }}" method="post" style="margin-left:auto; margin-right:auto; color:#f2f2f2">
@@ -22,7 +22,7 @@
             <br>
             {% endif %}
     		<label for="clubs">The club:</label>
-        	<select id="clubs" name="clubs" type="dropdown" style="color:black">
+        	<select class="form-control" id="clubs" name="clubs" type="dropdown" style="color:black">
                 {% for club in clubs %}
                 <option value="{{ club.id }}">{{ club.name }}</option>
                 {% endfor %}
@@ -35,7 +35,7 @@
         </form>
     </div>
     <div class="col-sm-3">
-        <img src="../static/images/areyousure2.jpg" class="img-responsive img-thumbnail" alt="Are you sure?">
+        <img src="{{ url_for('static', filename='images/areyousure2.jpg') }}" class="img-responsive img-thumbnail" alt="Are you sure?">
     </div>
 </div>
 

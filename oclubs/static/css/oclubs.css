@@ -28,8 +28,10 @@ body {
 
 .smallBlock > div,
 .smallBlock > a {
-	width: 30%;
+	width: 25em;
+	height: 10em;
 	padding: 2.5%;
+	float: left;
 	background-color: #f5f5f5;
 	border: 1px solid #e3e3e3;
 	border-radius: 3%;
@@ -45,20 +47,23 @@ body {
 	margin-bottom: 0.05vw;
 }
 
+.smallBlock > a > p {
+	line-height: 1em;
+}
+
 .smallBlock a:hover {
 	background-color: #cccccc;
 	text-decoration: none;
 }
 
 .smallBlock img {
-	width: 6vw;
-	height: 4vw;
+	width: 9em;
+	height: 6em;
 	vertical-align: middle;
 	margin-right: 10%;
 	float: left;
 }
 
-/*till here is former oclubs.css*/
 .logo {
 	float: left;
 	width: 15%;
@@ -562,7 +567,7 @@ thead.darklist {
 	padding-bottom: 2%;
 	margin-left: 20%;
 	margin-right: 20%;
-	border-radius: 15%;
+	border-radius: 50px;
 	border-style: solid;
 	border-color: #0066cc;
 	border-width: 20px;
@@ -856,4 +861,110 @@ thead.darklist {
 	border-color: #990000;
 	font-size: 150%;
 	font-family: 'Georgia'
+}
+
+.upload_button {
+	color: #f2f2f2;
+	background-color: #33ccff;
+	padding: 10px;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.upload_button:hover {
+	background-color: #0099cc;
+}
+
+.login_block {
+	padding: 2%;
+	margin: 4% 35% 4% 35%;
+	border-radius: 10px;
+	color: #f2f2f2;
+	border-style: solid;
+	border-color: #337ab7;
+}
+
+.login_block a,
+.login_block .remember {
+	margin-top: 5px;
+	color: #f2f2f2;
+	font-weight: normal;
+}
+
+.login_block a {
+	float: right;
+}
+
+.login_block input[type="submit"] {
+	width: 100%;
+	padding: 2.5%;
+	margin-top: 10px;
+	background-color: #337ab7;
+	color: #f2f2f2;
+	font-size: 125%;
+	border-style: solid;
+	border-color: #337ab7;
+	border-radius: 7px;
+}
+
+.login_block input[type="submit"]:hover {
+	background-color: #275d8b;
+	border-color: #275d8b;
+}
+
+.search_bar {
+	width: 50%;
+	padding: 0.5em;
+	margin: 0 25% 10px 25%;
+	font-size: 125%;
+	background-color: transparent;
+	color: #f2f2f2;
+	border-style: solid;
+	border-color: #337ab7;
+	border-radius: 5px;
+}
+
+.search_bar form {
+	width: 100%;
+}
+
+.search_bar input[type="text"] {
+	width: 95%;
+	background-color: transparent;
+	border: none;
+}
+
+.search_bar input[type="submit"] {
+	width: 1em;
+	height: 1em;
+	border: none;
+	outline: none;
+	background-color: transparent;
+	position: absolute;
+	left: 1px;
+}
+
+.search_block {
+	padding: 0 2% 2% 2%;
+	margin-bottom: 15px;
+	border-radius: 10px;
+	color: #f2f2f2;
+	border-style: solid;
+	border-color: #337ab7;
+}
+
+.search_block h1 {
+	font-size: 150%;
+	color: #f2f2f2;
+	border-bottom-style: solid;
+	border-color: #f2f2f2;
+
+}
+
+.search_block:hover {
+	background-color: #003380;
+}
+
+.search_block img {
+	width: 80%;
 }

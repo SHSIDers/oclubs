@@ -32,7 +32,7 @@
 			</ul>
 		</div>
 		<div class="search">
-			<form style="display:inline-block">
+			<form action="{{ url_for('search') }}" style="display:inline-block">
 				<input type="text" value="Search" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search';}">
 				<span class="glyphicon glyphicon-search"><input type="submit" value=""></span>
 			</form>
@@ -45,33 +45,9 @@
 			</span>
 			{% else %}
 			<span id="loginanimation" style="display: block;">
-				<a href="#loginModal" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-log-in"></span>&nbsp;Login</a>
+				<a href="{{ url_for('login') }}" style="text-decoration:none"><span class="glyphicon glyphicon-log-in"></span>&nbsp;Login</a>
 			</span>
 			{% endif %}
-		</div>
-	</div>
-</div>
-
-<div class="modal fade" id="loginModal">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Login</h4>
-			</div>
-			<div class="modal-body">
-				<form id="loginform" class="form-group">
-					<label for="username">Username:</label>
-					<input class="form-control" id="username" type="text" placeholder="Enter username">
-					<label for="password">Password:</label>
-					<input class="form-control" id="password" type="password" placeholder="Enter password">
-					<p class="text-right"><a href="/user/forgotpw">Forgot password?</a></p>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<input type="submit" class="btn btn-primary" form="loginform" value="Login" id="login">
-			</div>
 		</div>
 	</div>
 </div>

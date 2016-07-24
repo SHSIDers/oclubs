@@ -7,7 +7,6 @@
 	{% for club in clubs %}
 	<a href="{{ url_for('clubblueprint.clubintro', club=club.callsign) }}"><img src="{{ club.picture.location_external }}" class="img-responsive" alt="">
 		<p style="font-size:150%">{{ club.name }}</p>
-		<p>{{ club.intro }}</p>
 	</a>
 	{% endfor %}
 </div>
@@ -63,10 +62,9 @@
             {% endfor %}
         </tbody>
     </table>
-    <center><a href="{{ url_for('actblueprint.allactivities', club_type='all', page_num='1') }}">
-		<button class="btn btn-info" style="padding:5% 10% 5% 10%; font-size:125%">Register More</button>
-	</a></center>
 	<br>
+    <h3 style="color:#f2f2f2">Check activities page to see more.</h3>
+    <h3 style="color:#f2f2f2">No need for signup.</h3>
 </div>
 <div class="col-sm-6">
 	<h2 style="color:#f2f2f2">Activities</h2>
@@ -91,7 +89,9 @@
             {% endfor %}
         </tbody>
     </table>
-    <h3 style="color:#f2f2f2">Check club introduction page to register more</h3>
+    <center><a href="{{ url_for('actblueprint.allactivities', club_type='all', page_num='1') }}">
+        <button class="btn btn-info" style="padding:5% 10% 5% 10%; font-size:125%">Register More</button>
+    </a></center>
 </div>
 <div class="clearfix {% if leader_club %}clearfix-bordered{% endif %}"></div>
 

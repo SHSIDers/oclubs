@@ -5,7 +5,7 @@
 <!-- Below Navbar -->
 <div class="container">
     <h1 class="title">Adjust Members</h1>
-    <h2 class="title_next">{{ club }}</h2>
+    <h2 class="title_next">{{ g.club.name }}</h2>
     {% if messages %}
     <ul class="list-group">
         {% for message in messages %}
@@ -24,16 +24,18 @@
             </tr>
         </thead>
         <tbody>
-            {% for member in members %}
+            {% for member in g.club.members %}
+            {% if member != g.club.leader %}
             <tr class="act" id="{{ member.passportname }}">
                 <td>
-                    <img src="../static/images/{{ member.picture }}.jpg" class="img-responsive" alt="{{ member.nick_name }}" style="width:3em">
+                    <img src="{{ member.picture.location_external }}" class="img-responsive" alt="{{ member.nickname }}" style="width:3em">
                 </td>
-                <td>{{ member.nick_name }}</td>
+                <td>{{ member.nickname }}</td>
                 <td>{{ member.passportname }}</td>
                 <td>{{ member.studentid }}</td>
-                <td><form action="{{ url_for('.adjustmember_submit', club=g.club.callsign) }}"><input type="submit" class="btn btn-danger" name="expel" value="{{ member.id }}">Expel</button>
+                <td><form action="{{ url_for('.adjustmember_submit', club=g.club.callsign, studentid=member.id) }}"><input type="submit" class="btn btn-danger" name="expel" value="Expel" style="font-size:110%"></form>
             </tr>
+            {% endif %}
             {% endfor %}
         </tbody>
     </table>

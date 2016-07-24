@@ -1,16 +1,6 @@
 ( function( $ ) {
 	$( document )
 		.ready( function() {
-			$( "#loginanimation" )
-				.mouseover( function() {
-					this.className = 'jello animated';
-				} );
-
-			$( "#loginanimation" )
-				.mouseout( function() {
-					this.className = '';
-				} );
-
 			$( ".clickable" )
 				.click( function() {
 					window.document.location = $( this )
@@ -56,23 +46,6 @@
 						$( "#" + contents )
 							.click( function() {$( this ).parents("tr").eq(0).remove();});
 					}
-				} );
-
-			$( "#loginModal #loginform" )
-				.submit( function(event) {
-					event.preventDefault();
-					username = $( "#loginModal #username" ).val();
-					password = $( "#loginModal #password" ).val();
-					$.post( '/login' , { 'username': username, 'password': password } )
-						.done( function(data) {
-							if ( data.result == 'success' ) {
-								location.reload();
-							} else if ( data.result == 'loggedin') {
-								$( "#loginModal .modal-body form").append( "<p style='color:#ffcc00'>Already logged in.</p>" );
-							} else if ( data.result == 'failure' ) {
-								$( "#loginModal .modal-body form").append( "<p style='color:red'>Wrong student ID or password. Please input again.</p>" );
-							}
-					} );
 				} );
 
 			$( '.refresh' )

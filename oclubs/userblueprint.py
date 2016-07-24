@@ -9,7 +9,7 @@ from flask import (
 )
 from flask_login import current_user, login_required, fresh_login_required
 
-from oclubs.objs import User, Club, Upload
+from oclubs.objs import User, Club, Activity, Upload
 from oclubs.enums import UserType, ClubType, ActivityTime
 
 userblueprint = Blueprint('userblueprint', __name__)
@@ -66,7 +66,7 @@ def personal():
                 time = "Noon"
             else:
                 time = "Afternoon"
-            meeting['time'] = meeting_obj.date + ": " + time
+            meeting['time'] = meeting_obj.date.strftime('%Y-%m-%d') + ": " + time
             meeting['location'] = meeting_obj.location
             meetings.append(meeting)
         activities_obj = current_user.activities_reminder([ActivityTime.UNKNOWN,

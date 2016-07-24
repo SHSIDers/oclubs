@@ -25,19 +25,28 @@ class FormattedText(BaseObject):
     _flags = Property('text_flags',
                       (lambda x: x.split(','), lambda x: ','.join(x)))
 
+    _emptytext = None
+
     def __init__(self):
         super(FormattedText, self).__init__()
         self._raw = self._formatted = None
 
     @property
+    def id(self):
+        return self._id
+
+    @property
     def raw(self):
-        if self._raw is None:
-            if 'external' in self._flags:
-                # TODO
-                pass
-            else:
-                self._raw = self._blob.decode('utf-8')
-        return self._raw
+        if self.is_real:
+            if self._raw is None:
+                if 'external' in self._flags:
+                    # TODO
+                    pass
+                else:
+                    self._raw = self._blob.decode('utf-8')
+            return self._raw
+        else:
+            return ''
 
     @property
     def formatted(self):
@@ -47,6 +56,9 @@ class FormattedText(BaseObject):
 
     @classmethod
     def handle(cls, user, club, text):
+        text = text.strip()
+        if not text:
+            return cls.emptytext()
         obj = cls.new()
         obj.club = club
         obj.uploader = user
@@ -64,3 +76,9 @@ class FormattedText(BaseObject):
             ),
             tags=ALLOWED_TAGS
         )
+
+    @classmethod
+    def emptytext(cls):
+        if cls._emptytext is None:
+            cls._emptytext = cls(0)
+        return cls._emptytext
