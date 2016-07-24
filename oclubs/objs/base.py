@@ -114,13 +114,13 @@ class ListProperty(object):
 class _BaseMetaclass(type):
     def __new__(meta, name, bases, dct):
         _propsdb = {}
-        _essearches = []
+        _esfields = []
 
         for key, value in dct.items():
             if isinstance(value, Property):
                 _propsdb[value.dbname] = key
                 if value.search:
-                    _essearches.append(value)
+                    _esfields.append(key)
 
                 value.name = key
             if isinstance(value, ListProperty):
@@ -147,10 +147,10 @@ class _BaseMetaclass(type):
                 data[key] = self._dbdata[value]
             self._id = database.insert_row(self.table, data)
 
-            if _essearches:
+            if _esfields:
                 _esdata = {}
-                for prop in _essearches:
-                    _esdata[prop.name] = prop.search(self._cache[prop.name])
+                for field in _esfields:
+                    _esdata[field] = dct[field].search(self._cache[field])
 
                 elasticsearch.create(self.table, self.id, _esdata)
 
@@ -161,6 +161,17 @@ class _BaseMetaclass(type):
             return self
 
         dct['create'] = create
+
+        @classmethod
+        def search(cls, query_string, offset=0, size=10):
+            ret = elasticsearch.search(query_string, cls.table, _esfields,
+                                       offset=offset, size=size)
+            for item in ret['results']:
+                item['object'] = cls(item['_id'])
+
+            return ret
+
+        dct['search'] = search
 
         return super(_BaseMetaclass, meta).__new__(meta, name, bases, dct)
 
