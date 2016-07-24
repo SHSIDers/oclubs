@@ -13,6 +13,6 @@ from oclubs.enums import *
 from oclubs.objs import *
 from oclubs.shared import *
 
-with app.app_context():
+with app.test_request_context('/', method='GET'):
     __import__('code').interact("Welcome to the oClubs interactive shell!",
                                 local=locals())
