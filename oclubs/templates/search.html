@@ -6,15 +6,15 @@
 	<h1 class="title text-center">Search Results</h1>
 	<div class="search_bar">
 		<div class="col-sm-8">
-			<form action="{{ url_for('search') }}" method="get" style="display:inline-block">
+			<form action="{{ url_for('search') }}" id="search_form" method="get" style="display:inline-block">
 				<input type="text" name="keywords" placeholder="Search">
 				<span class="glyphicon glyphicon-search"><input type="submit" value=""></span>
 			</form>
 		</div>
 		<div class="col-sm-4">
-			<select name="search_type">
-				<option value="activity">Activity</option>
+			<select name="search_type" form="search_form">
 				<option value="club">Club</option>
+				<option value="activity">Activity</option>
 			</select>
 		</div>
 	</div>
