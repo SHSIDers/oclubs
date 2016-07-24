@@ -19,6 +19,7 @@ from oclubs.userblueprint import userblueprint
 from oclubs.clubblueprint import clubblueprint
 from oclubs.actblueprint import actblueprint
 from oclubs.enums import UserType, ClubType, ActivityTime
+from oclubs.exceptions import NoRow
 
 from oclubs.redissession import RedisSessionInterface
 from oclubs.shared import get_secret, encrypt
@@ -143,46 +144,67 @@ def search():
     try:
         search_type = request.args['search_type']
         keywords = request.args['keywords']
+
         if search_type == 'club':
-            search = Club.search(keywords, offset=0, size=5)
+            cls, title, desc, pic = (Club, 'name', ['intro', 'description'],
+                                     lambda obj: obj.picture)
         else:
-            search = Activity.search(keywords, offset=0, size=5)
-        count = str(search['count'])
-        instead = ''
-        if search['instead'] is not None:
-            instead = search['instead']
+            cls, title, desc, pic = (Activity, 'name', ['description', 'post'],
+                                     lambda obj: obj.pictures[0]
+                                     if obj.pictures else None)
+
+        search_result = cls.search(keywords, offset=0, size=5)
+
         results = []
-        for each_search in search['results']:
-            result = {}
-            obj = each_search['object']
-            if search_type == 'club':
-                result['picture'] = obj.picture
-                result['name'] = obj.name
-            else:
-                if obj.pictures:
-                    result['picture'] = obj.pictures[0]
-                else:
-                    result['picture'] = Upload(-1)  # FIXME: change to default picture
-                result['name'] = obj.name
-            highlight = each_search['highlight']
-            highlight_result = []
-            if 'name' in highlight:
-                highlight_result.append(highlight['name'])
-            if 'intro' in highlight:
-                highlight_result.append(highlight['intro'])
-            if 'description' in highlight:
-                highlight_result.append(highlight['description'])
-            result['highlight'] = Markup('...').join(highlight_result)
-            results.append(result)
+        for result in search_result['results']:
+            obj = result['object']
+            highlight = result['highlight']
+
+            try:
+                results.append({
+                    'name': _search_hl_or_attr(obj, highlight, [title]),
+                    'desc': _search_hl_or_attr(obj, highlight, desc),
+                    'pic': pic(obj)
+                })
+            except NoRow:  # database unsyncronized
+                continue
+
         return render_template('search.html',
                                title='Search',
-                               count=count,
-                               instead=instead,
+                               search_result=search_result,
                                results=results,
                                keywords=keywords,
                                search_type=search_type)
     except:
         traceback.print_exc()
+        raise
+
+
+def _search_hl_or_attr(obj, highlight, namelist):
+    markup = []
+    for name in namelist:
+        if name in highlight:
+            markup.extend(highlight[name])
+        else:
+            text = _search_gettext(obj, name)
+            if text:
+                markup.append(text)
+
+    return Markup('... ').join(markup)
+
+
+def _search_gettext(obj, name):
+    obj = getattr(obj, name)
+
+    try:
+        obj = obj.raw
+    except AttributeError:
+        pass
+
+    try:
+        return obj[:256]
+    except TypeError:
+        return obj
 
 
 @app.route('/')
