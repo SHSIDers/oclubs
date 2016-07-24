@@ -9,11 +9,11 @@ import traceback
 import os
 
 from flask import (
-    Flask, redirect, request, render_template, url_for, session, jsonify, g, abort, flash
+    Flask, redirect, request, render_template, url_for, session, jsonify, g, abort, flash, Markup
 )
 from flask_login import LoginManager, login_user, logout_user, current_user
 
-from oclubs.objs import User
+from oclubs.objs import User, Club, Activity, Upload
 from oclubs.access import done as db_done
 from oclubs.userblueprint import userblueprint
 from oclubs.clubblueprint import clubblueprint
@@ -140,10 +140,49 @@ def logout():
 @app.route('/search')
 def search():
     '''Search Page'''
-    results = [{}, {}, {}, {}, {}]
-    return render_template('search.html',
-                           title='Search',
-                           results=results)
+    try:
+        search_type = request.form['search_type']
+        keywords = request.form['keywords']
+        if search_type == 'club':
+            search = Club.search(keywords, offset=0, size=5)
+        else:
+            search = Activity.search(keywords, offset=0, size=5)
+        count = str(search['count'])
+        instead = ''
+        if search['instead'] is not None:
+            instead = search['instead']
+        results = []
+        for each_search in search['results']:
+            result = {}
+            obj = each_search['object']
+            if search_type == 'club':
+                result['picture'] = obj.picture
+                result['name'] = obj.name
+            else:
+                if obj.pictures:
+                    result['picture'] = obj.pictures[0]
+                else:
+                    result['picture'] = Upload(-1)  # FIXME: change to default picture
+                result['name'] = obj.name
+            highlight = each_search['highlight']
+            highlight_result = []
+            if 'name' in highlight:
+                highlight_result.append(highlight['name'])
+            if 'intro' in highlight:
+                highlight_result.append(highlight['intro'])
+            if 'description' in highlight:
+                highlight_result.append(highlight['description'])
+            result['highlight'] = Markup('...').join(highlight_result)
+            results.append(result)
+        return render_template('search.html',
+                               title='Search',
+                               count=count,
+                               instead=instead,
+                               results=results,
+                               keywords=keywords,
+                               search_type=search_type)
+    except:
+        traceback.print_exc()
 
 
 @app.route('/')
