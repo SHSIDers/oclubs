@@ -162,16 +162,17 @@ class _BaseMetaclass(type):
 
         dct['create'] = create
 
-        @classmethod
-        def search(cls, query_string, offset=0, size=10):
-            ret = elasticsearch.search(query_string, cls.table, _esfields,
-                                       offset=offset, size=size)
-            for item in ret['results']:
-                item['object'] = cls(item['_id'])
+        if _esfields:
+            @classmethod
+            def search(cls, query_string, offset=0, size=10):
+                ret = elasticsearch.search(query_string, cls.table, _esfields,
+                                           offset=offset, size=size)
+                for item in ret['results']:
+                    item['object'] = cls(item['_id'])
 
-            return ret
+                return ret
 
-        dct['search'] = search
+            dct['search'] = search
 
         return super(_BaseMetaclass, meta).__new__(meta, name, bases, dct)
 
