@@ -33,7 +33,8 @@
 		</div>
 		<div class="search">
 			<form action="{{ url_for('search') }}" method="get" style="display:inline-block">
-				<input type="text" value="Search">
+				<input type="hidden" name="search_type" value="club">
+				<input type="text" name="keywords" placeholder="Search">
 				<span class="glyphicon glyphicon-search"><input type="submit" value=""></span>
 			</form>
 		</div>

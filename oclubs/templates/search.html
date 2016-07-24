@@ -3,17 +3,25 @@
 
 <!-- Below Navbar -->
 <div class="container">
-	<h1 class="title">Search Results</h1>
+	<h1 class="title text-center">Search Results</h1>
 	<div class="search_bar">
-		<form action="{{ url_for('search') }}" method="get" style="display:inline-block">
-			<input type="text" value="{{ keywords }}">
-			<select class="form-control">
+		<div class="col-sm-8">
+			<form action="{{ url_for('search') }}" method="get" style="display:inline-block">
+				<input type="text" name="keywords" placeholder="Search">
+				<span class="glyphicon glyphicon-search"><input type="submit" value=""></span>
+			</form>
+		</div>
+		<div class="col-sm-4">
+			<select name="search_type">
 				<option value="activity">Activity</option>
 				<option value="club">Club</option>
 			</select>
-			<span class="glyphicon glyphicon-search"><input type="submit" value=""></span>
-		</form>
+		</div>
 	</div>
+	<div class="clearfix"></div>
+	<br>
+	<p class="search_result">oClubs has found 5 related results.</p>
+	<br>
 	{% for result in results %}
 	<div class="search_block clickable" data-href="#">
 		<h1>Activity/Club Name</h1>
