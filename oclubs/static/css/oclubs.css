@@ -929,7 +929,7 @@ thead.darklist {
 }
 
 .search_bar input[type="text"] {
-	width: 95%;
+	width: 80%;
 	background-color: transparent;
 	border: none;
 }

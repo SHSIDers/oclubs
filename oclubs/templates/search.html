@@ -3,14 +3,17 @@
 
 <!-- Below Navbar -->
 <div class="container">
-	<h1 class="title">Search</h1>
+	<h1 class="title">Search Results</h1>
 	<div class="search_bar">
-		<form action="{{ url_for('search') }}" style="display:inline-block">
-			<input type="text" value="Search" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search';}">
+		<form action="{{ url_for('search') }}" method="get" style="display:inline-block">
+			<input type="text" value="{{ keywords }}">
+			<select class="form-control">
+				<option value="activity">Activity</option>
+				<option value="club">Club</option>
+			</select>
 			<span class="glyphicon glyphicon-search"><input type="submit" value=""></span>
 		</form>
 	</div>
-	<h2 class="title_next">Results</h2>
 	{% for result in results %}
 	<div class="search_block clickable" data-href="#">
 		<h1>Activity/Club Name</h1>
