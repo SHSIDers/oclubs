@@ -5,10 +5,12 @@
 
 """oclubs.shsid.org Base Object."""
 
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
 
 import types
 from enum import Enum
+
+from flask import Markup
 
 from oclubs.access import database, elasticsearch
 
@@ -169,6 +171,11 @@ class _BaseMetaclass(type):
                                            offset=offset, size=size)
                 for item in ret['results']:
                     item['object'] = cls(item['_id'])
+
+                    item['highlight'] = item.get('highlight', {})
+                    for hlfield, hllist in item['highlight'].items():
+                        item['highlight'][hlfield] = [
+                            Markup(hlhtml) for hlhtml in hllist]
 
                 return ret
 
