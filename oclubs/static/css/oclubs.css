@@ -926,7 +926,6 @@ thead.darklist {
 .search_bar select {
 	width: 80%;
 	border-width: 3px;
-	margin-top: 1%;
 	margin-right: 20%;
 }
 
@@ -943,6 +942,7 @@ thead.darklist {
 	width: 92%;
 	background-color: transparent;
 	border: none;
+	padding: 0px;
 }
 
 .search_bar input[type="submit"] {
