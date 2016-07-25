@@ -52,10 +52,5 @@
 				.click( function() {
 					location.reload();
 				} );
-
-			$( '#search_pagination li a' )
-				.click( function() {
-					$( '#search_form' ).submit();
-				} );
 		} );
 } )( jQuery );

@@ -187,7 +187,6 @@ def activity(activity):
     '''Club Activity Page'''
     return render_template('activity/actintro.html',
                            title=activity.name,
-                           activity=activity,
                            is_other_act=(activity.time == ActivityTime.UNKNOWN or
                                          activity.time == ActivityTime.OTHERS),
                            is_past=date.today() >= activity.date)
@@ -195,11 +194,20 @@ def activity(activity):
 
 @actblueprint.route('/<activity>/introduction/submit', methods=['POST'])
 @get_callsign(Activity, 'activity')
+@login_required
 def activity_submit(activity):
     '''Signup for activity'''
     activity.signup(current_user)
     flash('You have successfully signed up for ' + activity.name + '.', 'signup')
     return redirect(url_for('.activity', activity=activity.callsign))
+
+
+@actblueprint.route('/<activity>/post')
+@get_callsign(Activity, 'activity')
+def actpost(activity):
+    '''Activity Post Page'''
+    return render_template('activity/actpost.html',
+                           title='Activity Post')
 
 
 @actblueprint.route('/<club>/hongmei_status')

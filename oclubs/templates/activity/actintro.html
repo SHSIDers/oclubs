@@ -23,15 +23,15 @@
 	<div class="col-sm-10" style="padding-right:50px">
 		<div class="container">
 			<div class="jumbotron" style="background-color:#3366ff;color:#e6e6e6">
-				<h1 class="title">{{ activity.name }}</h1>
-				<p>{{ activity.club.name }}</p>
+				<h1 class="title">{{ g.activity.name }}</h1>
+				<p>{{ g.activity.club.name }}</p>
 			</div>
 			<div style="font-size:150%;color:#f2f2f2">
-				<p>Time: {{ activity.date }}</p>
+				<p>Time: {{ g.activity.date }}</p>
 				<br>
 				<p>Description:</p>
-				{% if activity.description.raw %}
-				{{ activity.description.formatted }}
+				{% if g.activity.description.raw %}
+				{{ g.activity.description.formatted }}
 				{% else %}
 				<p>None</p>
 				{% endif %}
@@ -48,13 +48,13 @@
             {% endif %}
 			<div class="intro_function">
 				<div class="col-sm-6">
-					<a href="{{ url_for('clubblueprint.clubintro', club=activity.club.callsign) }}">
+					<a href="{{ url_for('clubblueprint.clubintro', club=g.activity.club.callsign) }}">
 						<button class="btn btn-info btn-lg" style="width:80%">Club Introduction</button>
 					</a>
 				</div>
 				<div class="col-sm-6">
 					{% if is_other_act %}
-					<form action="{{ url_for('.activity_submit', activity=activity.callsign) }}" method="post">
+					<form action="{{ url_for('.activity_submit', activity=g.activity.callsign) }}" method="post">
 						<input class="btn btn-info btn-lg" type="submit" style="width:80%" value="Join">
 					</form>
 					{% endif %}
@@ -62,21 +62,22 @@
 
 				<div class="clearfix"></div>
 				<br>
-
+				{% if current_user == g.activity.club.leader %}
 				<div class="col-sm-6">
 					{% if is_past %}
-					<a href="{{ url_for('.inputatten', activity=activity.callsign) }}">
+					<a href="{{ url_for('.inputatten', activity=g.activity.callsign) }}">
 						<button class="btn btn-info btn-lg" style="width:80%">Input Attendance</button>
 					</a>
 					{% endif %}
 				</div>
 				<div class="col-sm-6">
 					{% if is_past %}
-					<a href="{{ url_for('.checkatten', activity=activity.callsign) }}">
+					<a href="{{ url_for('.checkatten', activity=g.activity.callsign) }}">
 						<button class="btn btn-info btn-lg" style="width:80%">Check Attendance</button>
 					</a>
 					{% endif %}
 				</div>
+				{% endif %}
 			</div>
 		</div>
 	</div>
