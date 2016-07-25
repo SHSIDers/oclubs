@@ -61,6 +61,23 @@ class Club(BaseObject):
         )
         return [cls(item) for item in tempdata]
 
+    @classmethod
+    def allclubs(cls, amount, types=None):
+        where = []
+        if types:
+            types = [_type.value for _type in types]
+            where.append(('in', 'club_type', types))
+        tempdata = database.fetch_onecol(
+            cls.table,
+            cls.identifier,
+            {
+                'where': where,
+                'order': [(database.RawSQL('RAND()'), True)],
+                'limit': amount
+            }
+        )
+        return [cls(item) for item in tempdata]
+
     def activities(self, types, dates=(True, True)):
         from oclubs.objs import Activity
 
