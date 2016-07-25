@@ -303,7 +303,7 @@ def checkatten(activity):
 @special_access_required
 def checkatten_download(activity):
     '''Download activity's attendance'''
-    header = ['Passport Name', 'Nick Name', 'Student ID', 'Attendance']
+    header = ['Nick Name', 'Student ID', 'Attendance']
     result = []
     attendance = activity.attendance
     attend = []
@@ -315,14 +315,12 @@ def checkatten_download(activity):
             absent.append(member['user'])
     for member in attend:
         result_each = []
-        result_each.append(member.passportname)
         result_each.append(member.nickname)
         result_each.append(member.studentid)
         result_each.append('Attended')
         result.append(result_each)
     for member in absent:
         result_each = []
-        result_each.append(member.passportname)
         result_each.append(member.nickname)
         result_each.append(member.studentid)
         result_each.append('Absent')

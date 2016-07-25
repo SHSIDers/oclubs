@@ -29,8 +29,8 @@
 			<div style="font-size:150%;color:#f2f2f2">
 				<p>Time: {{ activity.date }}</p>
 				<br>
-				<p>Introduction:</p>
-				{% if activity.description %}
+				<p>Description:</p>
+				{% if activity.description.raw %}
 				{{ activity.description.formatted }}
 				{% else %}
 				<p>None</p>
