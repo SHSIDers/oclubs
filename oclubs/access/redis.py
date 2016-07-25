@@ -25,7 +25,7 @@ class RedisStuff(object):
                 return g.redisObjDict[key]
         else:
             g.redisObjDict = {}
-        obj = object.__new__(cls)
+        obj = super(RedisStuff, cls).__new__(cls)
         obj._fresh = True
         obj.key = key
         return obj
