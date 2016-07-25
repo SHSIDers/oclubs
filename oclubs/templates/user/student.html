@@ -55,7 +55,7 @@
         <tbody>
             {% for meeting in meetings %}
             <tr class="clickable act" data-href="#">
-                <td>{{ meeting.club }}</td>
+                <td>{{ meeting.club.name }}</td>
                 <td>{{ meeting.time }}</td>
                 <td>{{ meeting.place }}</td>
             </tr>
@@ -81,7 +81,7 @@
         <tbody>
             {% for activity in activities %}
             <tr class="clickable act" data-href="#">
-                <td>{{ activity.club }}</td>
+                <td>{{ activity.club.name }}</td>
                 <td>{{ activity.act}}</td>
                 <td>{{ activity.time }}</td>
                 <td>{{ activity.location }}</td>
