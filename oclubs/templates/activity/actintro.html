@@ -62,7 +62,7 @@
 
 				<div class="clearfix"></div>
 				<br>
-				{% if current_user == g.activity.club.leader %}
+				{% if current_user == g.activity.club.leader or current_user == g.activity.club.teacher %}
 				<div class="col-sm-6">
 					{% if is_past %}
 					<a href="{{ url_for('.inputatten', activity=g.activity.callsign) }}">

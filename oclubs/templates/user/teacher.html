@@ -7,21 +7,18 @@
 		{% for club in myclubs %}
 		<div>
 			<div class="col-sm-3">
-				<img src="{{ club.picture }}" class="img-responsive" alt="">
+				<img src="{{ club.picture.location_external }}" class="img-responsive" alt="">
 			</div>
 			<div class="col-sm-9">
 				<h1>{{ club.club }}</h1>
 				<h2>Members: {{ club.members_num }}</h2>
 				<p>Intro: {{ club.intro }}</p>
 				<div class="clearfix"></div>
-				<div class="col-sm-4">
-					<a href="#"><button class="btn btn-primary">Attendance</button></a>
+				<div class="col-sm-6">
+					<a href="{{ url_for('actblueprint.clubactivities', club=club.callsign, page=1) }}"><button class="btn btn-primary">Activities Status</button></a>
 				</div>
-				<div class="col-sm-4">
-					<a href="{{ url_for('actblueprint.clubactivities', club=club.callsign) }}"><button class="btn btn-primary">Activities Status</button></a>
-				</div>
-				<div class="col-sm-4">
-					<a href="{{ url_for('actblueprint.hongmei', club=club.callsign) }}"><button class="btn btn-primary">HongMei Status</button></a>
+				<div class="col-sm-6">
+					<a href="{{ url_for('actblueprint.hongmei_status', club=club.callsign) }}"><button class="btn btn-primary">HongMei Status</button></a>
 				</div>
 			</div>
 		</div>
