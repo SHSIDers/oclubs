@@ -12,7 +12,7 @@ from flask_login import current_user, login_required
 import re
 import math
 from copy import deepcopy
-from datetime import datetime
+from datetime import datetime, date
 
 from oclubs.enums import UserType, ClubType, ActivityTime
 from oclubs.shared import get_callsign, special_access_required, Pagination
@@ -189,7 +189,8 @@ def activity(activity):
                            title=activity.name,
                            activity=activity,
                            is_other_act=(activity.time == ActivityTime.UNKNOWN or
-                                         activity.time == ActivityTime.OTHERS))
+                                         activity.time == ActivityTime.OTHERS),
+                           is_past=date.today() >= activity.date)
 
 
 @actblueprint.route('/<activity>/introduction/submit', methods=['POST'])
@@ -206,26 +207,10 @@ def activity_submit(activity):
 @special_access_required
 def hongmei_status(club):
     '''Check HongMei Status'''
-    schedule = []
-    acts_obj = club.activities([ActivityTime.HONGMEI], (False, True))
-    for act_obj in acts_obj:
-        act = {}
-        act['date'] = act.date_to_string(act_obj.date)
-        members = []
-        members_list = act_obj.signup_list()
-        for member_list in members_list:
-            member = {}
-            member_obj = member_list.user
-            member['name'] = member_obj.nickname
-            member['phone'] = member_obj.phone
-            member['consentform'] = member_obj.consentform
-            members.append(member)
-        act['members'] = members
-        schedule.append(act)
+    acts = club.activities([ActivityTime.HONGMEI], (False, True))
     return render_template('activity/hmstatus.html',
-                           title='HongMei',
-                           club=club.name,
-                           schedule=schedule)
+                           title='HongMei Status',
+                           acts=acts)
 
 
 @actblueprint.route('/<club>/newhm')
