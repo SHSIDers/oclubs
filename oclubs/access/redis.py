@@ -12,10 +12,6 @@ import json
 r = Redis(host='localhost', port=6379, db=0)
 
 
-def jsondumps(val):
-    
-
-
 def done(commit=True):
     if commit:
         for stuff in g.redisObjDict.values():
@@ -59,7 +55,10 @@ class RedisStuff(object):
         return ret
 
     def save(self):
-        dumped = jsondumps(self)
+        if isinstance(self, RedisCache):
+            dumped = json.dumps(self.get())
+        else:
+            dumped = json.dumps(val)
         if self._initial != dumped:
             r.set(self.key, dumped)
         if self.timeout < 0:
