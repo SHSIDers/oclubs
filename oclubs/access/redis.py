@@ -13,18 +13,23 @@ r = Redis(host='localhost', port=6379, db=0)
 
 
 def done():
-    for stuff in g.redisStuffList.values():
+    for stuff in g.redisObjDict.values():
         stuff.save()
 
 
 class RedisStuff(object):
-    def __init__(self):
-        exist = g.get('redisStuffList', None)
+    def __init__(self, loaded):
+        exist = g.get('redisObjDict', None)
         if not exist:
-            g.redisStuffList = {}
-        g.redisStuffList[self.key] = self
+            g.redisObjDict = {self.key: self}
+            super(RedisStuff, self).__init__(loaded)
+        else:
+            if self.key in g.redisObjDict:
+                super(RedisStuff, self).__init__(g.redisObjDict[self.key])
+            else:
+                g.redisObjDict[self.key] = self
+                super(RedisStuff, self).__init__(loaded)
         self._initial = json.dumps(self)
-        super(RedisStuff, self).__init__()
 
     def load(self):
         val = r.get(self.key)
@@ -39,33 +44,35 @@ class RedisStuff(object):
 
     def save(self, timeout=-1):
         dumped = json.dumps(self)
-        changed = self._initial != dumped
-        if changed:
+        if self._initial != dumped:
             r.set(self.key, dumped)
         if timeout == -1:
             r.persist(self.key)
         else:
             r.expire(self.key, timeout)
-        return changed
 
 
-class RedisDict(dict, RedisStuff):
+class RedisDict(RedisStuff, dict):
     def __init__(self, key):
         self.key = key
-        dict.__init__(dict(self.load()))
-        RedisStuff.__init__(self)
+        super(RedisDict, self).__init__(dict(self.load()))
 
 
-class RedisList(list, RedisStuff):
+class RedisList(RedisStuff, list):
     def __init__(self, key):
-        list.__init__(list(self.load()))
-        RedisStuff.__init__(self)
+        self.key = key
+        super(RedisDict, self).__init__(list(self.load()))
 
 
-class RedisCache(RedisStuff):
+class RedisCache(RedisStuff, Cache):
     def __init__(self, key):
         self.key = key
         super(RedisCache, self).__init__(self.load())
+
+
+class Cache(object):
+    def __init__(self, value):
+        self._value = value
 
     def set(self, value):
         self._value = value
