@@ -18,18 +18,26 @@ def done():
 
 
 class RedisStuff(object):
-    def __init__(self, loaded):
+    def __new__(cls, *args, **kwargs):
         exist = g.get('redisObjDict', None)
-        if not exist:
-            g.redisObjDict = {self.key: self}
-            super(RedisStuff, self).__init__(loaded)
-        else:
-            if self.key in g.redisObjDict:
-                super(RedisStuff, self).__init__(g.redisObjDict[self.key])
+        if exist and self.key in g.redisObjDict:
+                return g.redisObjDict[self.key]
+        obj = object.__new__(cls, *args, **kwargs)
+        obj._fresh = True
+        return obj
+
+
+    def __init__(self, loaded):
+        if self._fresh:
+            exist = g.get('redisObjDict', None)
+            if not exist:
+                g.redisObjDict = {self.key: self}
             else:
                 g.redisObjDict[self.key] = self
-                super(RedisStuff, self).__init__(loaded)
-        self._initial = json.dumps(self)
+            super(RedisStuff, self).__init__(loaded)
+            self._fresh = False
+            self._initial = json.dumps(self)
+
 
     def load(self):
         val = r.get(self.key)
@@ -64,12 +72,6 @@ class RedisList(RedisStuff, list):
         super(RedisDict, self).__init__(list(self.load()))
 
 
-class RedisCache(RedisStuff, Cache):
-    def __init__(self, key):
-        self.key = key
-        super(RedisCache, self).__init__(self.load())
-
-
 class Cache(object):
     def __init__(self, value):
         self._value = value
@@ -79,3 +81,9 @@ class Cache(object):
 
     def get(self):
         return self._value
+
+
+class RedisCache(RedisStuff, Cache):
+    def __init__(self, key):
+        self.key = key
+        super(RedisCache, self).__init__(self.load())
