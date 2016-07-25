@@ -162,6 +162,7 @@ def search():
 
             try:
                 results.append({
+                    'obj': obj,
                     'name': _search_hl_or_attr(obj, highlight, [title]),
                     'desc': _search_hl_or_attr(obj, highlight, desc),
                     'pic': pic(obj)

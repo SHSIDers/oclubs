@@ -26,7 +26,7 @@
 	</p>
 	<br>
 	{% for result in results %}
-	<div class="search_block clickable" data-href="#">
+	<div class="search_block clickable" data-href="{% if search_type == 'club' %}{{ url_for('clubblueprint.clubintro', club=result.obj.callsign) }}{% else %}{{ url_for('actblueprint.activity', activity=result.obj.callsign) }}{% endif %}">
 		<h1>{{ result.name }}</h1>
 		{% if result.pic %}
 		<div class="col-sm-2">
