@@ -6,7 +6,7 @@
 	<h1 class="title text-center">Search Results</h1>
 	<div class="search_bar">
 		<div class="col-sm-8">
-			<form action="{{ url_for('search') }}" id="search_form" method="get" style="display:inline-block">
+			<form action="{{ url_for('search', page_num=1) }}" id="search_form" method="get" style="display:inline-block">
 				<input type="text" name="keywords" placeholder="Search" value="{{ keywords }}">
 				<span class="glyphicon glyphicon-search"><input type="submit" value=""></span>
 			</form>
@@ -40,6 +40,13 @@
 	</div>
 	<div class="clearfix"></div>
 	{% endfor %}
+	<center><ul class="pagination" id="search_pagination">
+		<li {% if page_num == 1 %} class="disabled"><span>&laquo;</span>{% else %}><a href="#"><input type="hidden" name="page_num" value="{{ page_num - 1 }}" form="search_form">&laquo;</a>{% endif %}</li>
+		{% for item in range(1, max_page_num + 1) %}
+		<li {% if item == page_num %} class="active"{% endif %}><a href="#"><input type="hidden" name="page_num" value="{{ item }}" form="search_form">{{ item }}</a></li>
+		{% endfor %}
+		<li {% if page_num == max_page_num or page_num == 1 %} class="disabled"><span>&raquo;</span>{% else %}><a href="#"><input type="hidden" name="page_num" value="{{ page_num + 1 }}" form="search_form">&raquo;</a>{% endif %}</li>
+	</ul></center>
 </div>
 
 {% endblock %}

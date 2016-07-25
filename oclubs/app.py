@@ -7,6 +7,7 @@ from __future__ import absolute_import, unicode_literals
 
 import traceback
 import os
+import math
 
 from flask import (
     Flask, redirect, request, render_template, url_for, session, jsonify, g, abort, flash, Markup
@@ -144,6 +145,7 @@ def search():
     try:
         search_type = request.args['search_type']
         keywords = request.args['keywords']
+        page_num = int(request.args['page_num'])
 
         if search_type == 'club':
             cls, title, desc, pic = (Club, 'name', ['intro', 'description'],
@@ -153,7 +155,7 @@ def search():
                                      lambda obj: obj.pictures[0]
                                      if obj.pictures else None)
 
-        search_result = cls.search(keywords, offset=0, size=5)
+        search_result = cls.search(keywords, offset=(page_num-1)/10, size=10)
 
         results = []
         for result in search_result['results']:
@@ -170,12 +172,18 @@ def search():
             except NoRow:  # database unsyncronized
                 continue
 
+        max_page_num = math.ceil((float(search_result['count'])) / 10)
+        if search_result['count'] == 0:
+            max_page_num = 1
+
         return render_template('search.html',
                                title='Search',
                                search_result=search_result,
                                results=results,
                                keywords=keywords,
-                               search_type=search_type)
+                               search_type=search_type,
+                               max_page_num=max_page_num,
+                               page_num=page_num)
     except:
         traceback.print_exc()
         raise
