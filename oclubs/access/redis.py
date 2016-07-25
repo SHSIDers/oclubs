@@ -12,13 +12,15 @@ import json
 r = Redis(host='localhost', port=6379, db=0)
 
 
-def done():
-    for stuff in g.redisObjDict.values():
-        stuff.save()
+def done(commit=True):
+    if commit:
+        for stuff in g.redisObjDict.values():
+            stuff.save()
+    g.redisObjDict.clear()
 
 
 class RedisStuff(object):
-    def __new__(cls, key):
+    def __new__(cls, key, timeout):
         exist = g.get('redisObjDict', None)
         if exist:
             if key in g.redisObjDict:
@@ -28,6 +30,7 @@ class RedisStuff(object):
         obj = super(RedisStuff, cls).__new__(cls)
         obj._fresh = True
         obj.key = key
+        obj.timeout = timeout
         return obj
 
     def __init__(self, loaded):
@@ -48,24 +51,24 @@ class RedisStuff(object):
             return ''
         return ret
 
-    def save(self, timeout=-1):
+    def save(self):
         dumped = json.dumps(self)
         if self._initial != dumped:
             r.set(self.key, dumped)
-        if timeout == -1:
+        if self.timeout < 0:
             r.persist(self.key)
         else:
-            r.expire(self.key, timeout)
+            r.expire(self.key, self.timeout)
 
 
 class RedisDict(RedisStuff, dict):
-    def __init__(self, key):
+    def __init__(self, key, timeout):
         super(RedisDict, self).__init__(dict(self.load()))
 
 
 class RedisList(RedisStuff, list):
-    def __init__(self, key):
-        super(RedisDict, self).__init__(list(self.load()))
+    def __init__(self, key, timeout):
+        super(RedisList, self).__init__(list(self.load()))
 
 
 class Cache(object):
@@ -80,5 +83,5 @@ class Cache(object):
 
 
 class RedisCache(RedisStuff, Cache):
-    def __init__(self, key):
+    def __init__(self, key, timeout):
         super(RedisCache, self).__init__(self.load())
