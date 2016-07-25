@@ -50,12 +50,12 @@ CREATE TABLE IF NOT EXISTS activity (
 	act_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	act_name varchar(255) NOT NULL,
 	act_club int NOT NULL, # Foreign key to club.club_id
-	act_desc int, # Foreign key to text.text_id
+	act_desc int NOT NULL, # Foreign key to text.text_id
 	act_date int unsigned NOT NULL,
 	act_time tinyint NOT NULL, # 0 = unknown, 1 = noon, 2 = afterschool, 3 = hongmei, 4 = others
 	act_location varchar(255) NOT NULL, # stores object in JSON
 	act_cas int NOT NULL, # CAS hours
-	act_post int # Foreign key to text.text_id
+	act_post int NOT NULL # Foreign key to text.text_id
 );
 
 CREATE INDEX IF NOT EXISTS act_club ON activity (act_club);

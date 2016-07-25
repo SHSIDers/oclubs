@@ -161,11 +161,6 @@ def _execute(sql, write=False, ret='fetch'):
             cur.execute("START TRANSACTION;")
             g.dbtransaction = True
 
-        # debugger
-        try:
-            print sql
-        except:
-            pass
         cur.execute(sql)
 
         if ret == 'fetch':
