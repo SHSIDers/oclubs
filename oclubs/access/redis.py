@@ -38,10 +38,10 @@ class RedisStuff(object):
             g.redisObjDict[self.key] = self
             super(RedisStuff, self).__init__(loaded)
             self._fresh = False
-            if isinstance(val, RedisCache):
-                self._initial = json.dumps(val.get())
+            if isinstance(self, RedisCache):
+                self._initial = json.dumps(self.get())
             else:
-                self._initial = json.dumps(val)
+                self._initial = json.dumps(self)
 
     def load(self):
         val = r.get(self.key)
