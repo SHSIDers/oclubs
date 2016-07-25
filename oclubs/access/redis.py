@@ -58,6 +58,10 @@ class RedisStuff(object):
             return ''
 
     def save(self):
+        if not self:
+            r.delete(self.key)
+            return
+
         dumped = self.serialize(self)
         if self._initial != dumped:
             r.set(self.key, dumped)
@@ -79,7 +83,7 @@ class RedisList(RedisStuff, list):
     pass
 
 
-class RedisCache(RedisStuff):
+class ImmutableMixin(object):
     def __init__(self, value):
         self._value = value
 
@@ -89,5 +93,10 @@ class RedisCache(RedisStuff):
     def get(self):
         return self._value
 
+    def __nonzero__(self):
+        return bool(self._value)
+
+
+class RedisCache(RedisStuff, ImmutableMixin):
     def serialize(self, obj):
         return super(RedisCache, self).serialize(obj.get())
