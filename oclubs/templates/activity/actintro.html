@@ -72,8 +72,8 @@
 				</div>
 				<div class="col-sm-6">
 					{% if is_past %}
-					<a href="{{ url_for('.inputatten', activity=activity.callsign) }}">
-						<button class="btn btn-info btn-lg" style="width:80%">Input Attendance</button>
+					<a href="{{ url_for('.checkatten', activity=activity.callsign) }}">
+						<button class="btn btn-info btn-lg" style="width:80%">Check Attendance</button>
 					</a>
 					{% endif %}
 				</div>

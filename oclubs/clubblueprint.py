@@ -99,8 +99,7 @@ def memberinfo(club):
     '''Check Members' Info'''
     return render_template('club/memberinfo.html',
                            title='Member Info',
-                           club=club.name,
-                           members=club.members)
+                           club=club)
 
 
 @clubblueprint.route('/<club>/member_info/download')

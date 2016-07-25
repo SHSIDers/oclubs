@@ -4,7 +4,7 @@
 <!-- Below Navbar -->
 <div class="container">
     <h1 class="title">Member Info</h1>
-    <h2 class="title_next">{{ club }}</h2>
+    <h2 class="title_next">{{ club.name }}</h2>
     <table class="table table-hover table-bordered" style="font-size:150%">
         <thead class="list">
             <tr style="background-color:#bfbfbf">
@@ -15,7 +15,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for member in members %}
+            {% for member in club.members %}
             <tr class="act">
                 <td>{{ member.nickname }}</td>
                 <td>{{ member.studentid }}</td>

@@ -15,7 +15,7 @@ from copy import deepcopy
 from datetime import datetime, date
 
 from oclubs.enums import UserType, ClubType, ActivityTime
-from oclubs.shared import get_callsign, special_access_required, Pagination
+from oclubs.shared import get_callsign, special_access_required, Pagination, download_csv
 from oclubs.objs import User, Club, Activity, Upload, FormattedText
 
 actblueprint = Blueprint('actblueprint', __name__)
@@ -276,3 +276,55 @@ def inputatten_submit(activity):
         activity.attend(User(atten))
     flash('The attendance has been successfully submitted.', 'atten')
     return redirect(url_for('.inputatten', activity=activity.callsign))
+
+
+@actblueprint.route('/<activity>/check_attendance')
+@get_callsign(Activity, 'activity')
+@special_access_required
+def checkatten(activity):
+    '''Check attendance'''
+    attendance = activity.attendance
+    attend = []
+    absent = []
+    for member in activity.signup_list():
+        if member['user'] in attendance:
+            attend.append(member['user'])
+        else:
+            absent.append(member['user'])
+    return render_template('/activity/checkatten.html',
+                           title='Check Attendance',
+                           activity=activity,
+                           attend=attend,
+                           absent=absent)
+
+
+@actblueprint.route('/<activity>/check_attendance/download')
+@get_callsign(Activity, 'activity')
+@special_access_required
+def checkatten_download(activity):
+    '''Download activity's attendance'''
+    header = ['Passport Name', 'Nick Name', 'Student ID', 'Attendance']
+    result = []
+    attendance = activity.attendance
+    attend = []
+    absent = []
+    for member in activity.signup_list():
+        if member['user'] in attendance:
+            attend.append(member['user'])
+        else:
+            absent.append(member['user'])
+    for member in attend:
+        result_each = []
+        result_each.append(member.passportname)
+        result_each.append(member.nickname)
+        result_each.append(member.studentid)
+        result_each.append('Attended')
+        result.append(result_each)
+    for member in absent:
+        result_each = []
+        result_each.append(member.passportname)
+        result_each.append(member.nickname)
+        result_each.append(member.studentid)
+        result_each.append('Absent')
+        result.append(result_each)
+    return download_csv('Attendance for ' + activity.name + '.csv', header, result)
