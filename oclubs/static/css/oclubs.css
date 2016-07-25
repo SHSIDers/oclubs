@@ -649,11 +649,9 @@ thead.darklist {
 .homepage_block {
 	display: block;
 	margin-left: 5%;
-	border-style: solid;
-	border-radius: 3%;
-	border-color: #b3cce6;
 	background-color: #66a3ff;
-	color: #1a1a1a;
+	color: #f2f2f2;
+	padding: 0.05% 2% 2% 2%;
 }
 
 .homepage_block > div > img {
@@ -663,6 +661,10 @@ thead.darklist {
 
 .homepage_block > div > a > img {
 	height: 10vw;
+}
+
+.homepage_block > div > a > img:hover {
+	opacity: 0.6;
 }
 
 .homepage_block > div > div > a {
@@ -985,4 +987,14 @@ thead.darklist {
 
 .search_block img {
 	width: 80%;
+}
+
+.tictactoe {
+	width: 100%;
+	height: 100%;
+}
+
+.tictactoe > div {
+	width: 33%;
+	height: 33%;
 }
