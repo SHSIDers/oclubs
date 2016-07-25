@@ -8,14 +8,14 @@
 	<div class="col-sm-2">
 		<div class="list-group" style="margin-top:50px">
 			<li class="list-group-item active">Club Types</li>
-			<a href="{{ url_for('.allactivities', club_type='all', page_num='1') }}" class="list-group-item {% if club_type=='all' %}selected{% endif %}">All</a>
-			<a href="{{ url_for('.allactivities', club_type='academics', page_num='1') }}" class="list-group-item {% if club_type=='academics' %}selected{% endif %}">Academics</a>
-			<a href="{{ url_for('.allactivities', club_type='sports', page_num='1') }}" class="list-group-item {% if club_type=='sports' %}selected{% endif %}">Sports</a>
-			<a href="{{ url_for('.allactivities', club_type='arts', page_num='1') }}" class="list-group-item {% if club_type=='arts' %}selected{% endif %}">The Arts</a>
-			<a href="{{ url_for('.allactivities', club_type='services', page_num='1') }}" class="list-group-item {% if club_type=='services' %}selected{% endif %}">Services</a>
-			<a href="{{ url_for('.allactivities', club_type='entertainment', page_num='1') }}" class="list-group-item {% if club_type=='entertainment' %}selected{% endif %}">Entertainment</a>
-			<a href="{{ url_for('.allactivities', club_type='others', page_num='1') }}" class="list-group-item {% if club_type=='others' %}selected{% endif %}">Others</a>
-			<a href="{{ url_for('.allactivities', club_type='school_teams', page_num='1') }}" class="list-group-item {% if club_type=='school_teams' %}selected{% endif %}">School Teams</a>
+			<a href="{{ url_for('.allactivities', club_type='all', page='1') }}" class="list-group-item {% if club_type=='all' %}selected{% endif %}">All</a>
+			<a href="{{ url_for('.allactivities', club_type='academics', page='1') }}" class="list-group-item {% if club_type=='academics' %}selected{% endif %}">Academics</a>
+			<a href="{{ url_for('.allactivities', club_type='sports', page='1') }}" class="list-group-item {% if club_type=='sports' %}selected{% endif %}">Sports</a>
+			<a href="{{ url_for('.allactivities', club_type='arts', page='1') }}" class="list-group-item {% if club_type=='arts' %}selected{% endif %}">The Arts</a>
+			<a href="{{ url_for('.allactivities', club_type='services', page='1') }}" class="list-group-item {% if club_type=='services' %}selected{% endif %}">Services</a>
+			<a href="{{ url_for('.allactivities', club_type='entertainment', page='1') }}" class="list-group-item {% if club_type=='entertainment' %}selected{% endif %}">Entertainment</a>
+			<a href="{{ url_for('.allactivities', club_type='others', page='1') }}" class="list-group-item {% if club_type=='others' %}selected{% endif %}">Others</a>
+			<a href="{{ url_for('.allactivities', club_type='school_teams', page='1') }}" class="list-group-item {% if club_type=='school_teams' %}selected{% endif %}">School Teams</a>
 		</div>
 	</div>
 

@@ -26,15 +26,15 @@
 			<ul>
 				<li class="sweep {% if is_home %}active{% endif %}"><a href="{{ url_for('homepage') }}">Home</a></li>
 				<li class="sweep {% if is_list %}active{% endif %}"><a href="{{ url_for('clubblueprint.clublist', club_type='all') }}">Club List</a></li>
-				<li class="sweep {% if is_allact %}active{% endif %}"><a href="{{ url_for('actblueprint.allactivities', club_type='all', page_num='1') }}"">Activities</a></li>
-				<li class="sweep {% if is_photos %}active{% endif %}"><a href="{{ url_for('actblueprint.allphotos', page_num='1') }}"">Photos</a></li>
+				<li class="sweep {% if is_allact %}active{% endif %}"><a href="{{ url_for('actblueprint.allactivities', club_type='all', page='1') }}"">Activities</a></li>
+				<li class="sweep {% if is_photos %}active{% endif %}"><a href="{{ url_for('actblueprint.allphotos', page='1') }}"">Photos</a></li>
 				<li class="sweep {% if is_about %}active{% endif %}"><a href="{{ url_for('about') }}"">About</a></li>
 			</ul>
 		</div>
 		<div class="search">
 			<form action="{{ url_for('search') }}" method="get" style="display:inline-block">
 				<input type="hidden" name="search_type" value="club">
-				<input type="hidden" name="page_num" value="1">
+				<input type="hidden" name="page" value="1">
 				<input type="text" name="keywords" placeholder="Search">
 				<span class="glyphicon glyphicon-search"><input type="submit" value=""></span>
 			</form>

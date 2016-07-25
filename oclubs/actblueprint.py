@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 #
 
-from __future__ import absolute_import, unicode_literals
+from __future__ import absolute_import, unicode_literals, division
 
 from flask import (
     Blueprint, render_template, url_for, session, abort, request, redirect, flash
@@ -15,16 +15,15 @@ from copy import deepcopy
 from datetime import datetime
 
 from oclubs.enums import UserType, ClubType, ActivityTime
-from oclubs.shared import get_callsign, special_access_required
+from oclubs.shared import get_callsign, special_access_required, Pagination
 from oclubs.objs import User, Club, Activity, Upload, FormattedText
 
 actblueprint = Blueprint('actblueprint', __name__)
 
 
-@actblueprint.route('/all_activities/<club_type>/<page_num>')
-def allactivities(club_type, page_num):
+@actblueprint.route('/all_activities/<club_type>/<int:page>')
+def allactivities(club_type, page):
     '''All Activities'''
-    page_num = int(page_num)
     act_num = 20
     if club_type == 'all':
         acts_obj = Activity.all_activities()
@@ -35,29 +34,29 @@ def allactivities(club_type, page_num):
             acts_obj.reverse()
         except KeyError:
             abort(404)
-    max_page_num = math.ceil(float(len(acts_obj)) / act_num)
-    acts_obj = acts_obj[page_num*act_num-act_num: page_num*act_num]
+
+    pagination = Pagination(page, act_num, len(acts_obj))
+    acts_obj = acts_obj[(page-1)*act_num: page*act_num]
     return render_template('allact.html',
                            title='All Activities',
                            is_allact=True,
                            acts=acts_obj,
                            club_type=club_type,
-                           page_num=page_num,
-                           max_page_num=max_page_num)
+                           pagination=pagination)
 
 
-@actblueprint.route('/<club>/club_activities/<page_num>')
+@actblueprint.route('/<club>/club_activities/<int:page>')
 @get_callsign(Club, 'club')
-def clubactivities(club, page_num):
+def clubactivities(club, page):
     '''One Club's Activities'''
-    page_num = int(page_num)
     act_num = 20
     acts = club.activities([ActivityTime.UNKNOWN,
                             ActivityTime.NOON,
                             ActivityTime.AFTERSCHOOL,
                             ActivityTime.OTHERS])
-    max_page_num = math.ceil(float(len(acts)) / act_num)
-    acts = acts[page_num*act_num-act_num: page_num*act_num]
+
+    pagination = Pagination(page, act_num, len(acts))
+    acts = acts[(page-1)*act_num: page*act_num]
     club_pic = {}
     try:
         club_pic['image1'] = acts[0].pictures[0].location_external
@@ -72,17 +71,14 @@ def clubactivities(club, page_num):
                            club=club,
                            club_pic=club_pic,
                            acts=acts,
-                           page_num=page_num,
-                           max_page_num=max_page_num)
+                           pagination=pagination)
 
-
-@actblueprint.route('/photos/<page_num>')
-def allphotos(page_num):
-    page_num = int(page_num)
+@actblueprint.route('/photos/<int:page>')
+def allphotos(page):
     pic_num = 20
     acts_obj = Activity.all_activities()
     act_recent = ''
-    if page_num == 1:
+    if page == 1:
         for act in acts_obj:
             try:
                 assert act.pictures[0].location_external
@@ -107,31 +103,31 @@ def allphotos(page_num):
             each = deepcopy(each_block)
             each['picture'] = pic
             all_pictures.append(each)
-    max_page_num = math.ceil(float(len(all_pictures)) / pic_num)
-    acts = acts[page_num*pic_num-pic_num: page_num*pic_num]
+
+    pagination = Pagination(page, pic_num, len(all_pictures))
+    acts = acts[(page-1)*pic_num: page*pic_num]
     return render_template('photos.html',
                            title='All Photos',
                            is_photos=True,
                            act_recent=act_recent,
                            all_pictures=all_pictures,
-                           page_num=page_num,
-                           max_page_num=max_page_num)
+                           pagination=pagination)
 
 
-@actblueprint.route('/<club>/club_photo/<page_num>')
+@actblueprint.route('/<club>/club_photo/<int:page>')
 @get_callsign(Club, 'club')
-def clubphoto(club, page_num):
+def clubphoto(club, page):
     '''Individual Club's Photo Page'''
-    page_num = int(page_num)
     pic_num = 20
     photos = []
     acts_obj = club.activities([ActivityTime.UNKNOWN,
                                 ActivityTime.NOON,
                                 ActivityTime.AFTERSCHOOL,
                                 ActivityTime.OTHERS])
-    max_page_num = math.ceil(float(len(acts_obj)) / pic_num)
+
+    pagination = Pagination(page, pic_num, len(acts_obj))
     acts = []
-    acts_obj = acts_obj[page_num*pic_num-pic_num: page_num*pic_num]
+    acts_obj = acts_obj[(page-1)*pic_num-pic_num: page*pic_num]
     for i in range(pic_num / 2):
         act = {}
         try:
@@ -148,8 +144,7 @@ def clubphoto(club, page_num):
                            title=club.name,
                            club=club,
                            photos=photos,
-                           page_num=page_num,
-                           max_page_num=max_page_num)
+                           pagination=pagination)
 
 
 @actblueprint.route('/<club>/newact')

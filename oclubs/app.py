@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 #
 
-from __future__ import absolute_import, unicode_literals
+from __future__ import absolute_import, unicode_literals, division
 
 
 import traceback
@@ -23,7 +23,7 @@ from oclubs.enums import UserType, ClubType, ActivityTime
 from oclubs.exceptions import NoRow
 
 from oclubs.redissession import RedisSessionInterface
-from oclubs.shared import get_secret, encrypt
+from oclubs.shared import get_secret, encrypt, Pagination
 
 app = Flask(__name__)
 
@@ -43,6 +43,13 @@ def get_picture(picture, ext='jpg'):
     return url_for('static', filename='images/' + picture + '.' + ext)
 
 app.jinja_env.globals['getpicture'] = get_picture
+
+
+def url_for_other_page(page):
+    args = request.args.copy()
+    args['page'] = page
+    return url_for(request.endpoint, **args)
+app.jinja_env.globals['url_for_other_page'] = url_for_other_page
 
 
 @app.after_request
@@ -142,51 +149,44 @@ def logout():
 @app.route('/search')
 def search():
     '''Search Page'''
-    try:
-        search_type = request.args['search_type']
-        keywords = request.args['keywords']
-        page_num = int(request.args['page_num'])
+    search_type = request.args.get('search_type', 'club')
+    keywords = request.args.get('keywords', '')
+    page = int(request.args.get('page', 1))
 
-        if search_type == 'club':
-            cls, title, desc, pic = (Club, 'name', ['intro', 'description'],
-                                     lambda obj: obj.picture)
-        else:
-            cls, title, desc, pic = (Activity, 'name', ['description', 'post'],
-                                     lambda obj: obj.pictures[0]
-                                     if obj.pictures else None)
+    if search_type == 'club':
+        cls, title, desc, pic = (Club, 'name', ['intro', 'description'],
+                                 lambda obj: obj.picture)
+    else:
+        cls, title, desc, pic = (Activity, 'name', ['description', 'post'],
+                                 lambda obj: obj.pictures[0]
+                                 if obj.pictures else None)
 
-        search_result = cls.search(keywords, offset=(page_num-1)/10, size=10)
+    search_result = cls.search(keywords, offset=(page-1)/10, size=10)
 
-        results = []
-        for result in search_result['results']:
-            obj = result['object']
-            highlight = result['highlight']
+    results = []
+    for result in search_result['results']:
+        obj = result['object']
+        highlight = result['highlight']
 
-            try:
-                results.append({
-                    'obj': obj,
-                    'name': _search_hl_or_attr(obj, highlight, [title]),
-                    'desc': _search_hl_or_attr(obj, highlight, desc),
-                    'pic': pic(obj)
-                })
-            except NoRow:  # database unsyncronized
-                continue
+        try:
+            results.append({
+                'obj': obj,
+                'name': _search_hl_or_attr(obj, highlight, [title]),
+                'desc': _search_hl_or_attr(obj, highlight, desc),
+                'pic': pic(obj)
+            })
+        except NoRow:  # database unsyncronized
+            continue
 
-        max_page_num = math.ceil((float(search_result['count'])) / 10)
-        if search_result['count'] == 0:
-            max_page_num = 1
+    pagination = Pagination(page, 10, search_result['count'])
 
-        return render_template('search.html',
-                               title='Search',
-                               search_result=search_result,
-                               results=results,
-                               keywords=keywords,
-                               search_type=search_type,
-                               max_page_num=max_page_num,
-                               page_num=page_num)
-    except:
-        traceback.print_exc()
-        raise
+    return render_template('search.html',
+                           title='Search',
+                           search_result=search_result,
+                           results=results,
+                           keywords=keywords,
+                           search_type=search_type,
+                           pagination=pagination)
 
 
 def _search_hl_or_attr(obj, highlight, namelist):

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{% from 'macros.html' import render_pagination %}
 {% block content %}
 
 <!-- Below Navbar -->
@@ -29,13 +29,7 @@
 	{% endif %}
 	<div class="clearfix"></div>
 	<br>
-	<center><ul class="pagination">
-		<li {% if page_num == 1 %} class="disabled"><span>&laquo;</span>{% else %}><a href="{{ url_for('.allphotos', page_num=page_num - 1) }}">&laquo;</a>{% endif %}</li>
-		{% for item in range(1, max_page_num + 1) %}
-		<li {% if item == page_num %} class="active"{% endif %}><a href="{{ url_for('.allphotos', page_num=item) }}">{{ item }}</a></li>
-		{% endfor %}
-		<li {% if page_num == max_page_num or page_num == 1 %} class="disabled"><span>&raquo;</span>{% else %}><a href="{{ url_for('.allphotos', page_num=page_num + 1) }}">&raquo;</a>{% endif %}</li>
-	</ul></center>
+	<center>{{ render_pagination(pagination) }}</center>
 </div>
 
 {% endblock %}

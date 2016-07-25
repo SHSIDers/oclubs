@@ -19,8 +19,8 @@
         </div>
         <div class="list-group">
             <li class="list-group-item active">This Club's</li>
-            <a href="{{ url_for('actblueprint.clubactivities', club=g.club.callsign, page_num='1') }}" class="list-group-item">Activities</a>
-            <a href="{{ url_for('actblueprint.clubphoto', club=g.club.callsign, page_num='1') }}" class="list-group-item">Photos</a>
+            <a href="{{ url_for('actblueprint.clubactivities', club=g.club.callsign, page='1') }}" class="list-group-item">Activities</a>
+            <a href="{{ url_for('actblueprint.clubphoto', club=g.club.callsign, page='1') }}" class="list-group-item">Photos</a>
         </div>
     </div>
     <!-- Main Content -->
@@ -45,12 +45,12 @@
                 </ul>
                 {% endif %}
                 <div class="col-sm-4">
-                    <center><a href="{{ url_for('actblueprint.clubactivities', club=g.club.callsign, page_num='1') }}" style="text-decoration:none">
+                    <center><a href="{{ url_for('actblueprint.clubactivities', club=g.club.callsign, page='1') }}" style="text-decoration:none">
                         <button class="btn btn-info btn-lg" style="width:80%">Activities</button>
                     </a></center>
                 </div>
                 <div class="col-sm-4">
-                    <center><a href="{{ url_for('actblueprint.clubphoto', club=g.club.callsign, page_num='1') }}" style="text-decoration:none">
+                    <center><a href="{{ url_for('actblueprint.clubphoto', club=g.club.callsign, page='1') }}" style="text-decoration:none">
                         <button class="btn btn-info btn-lg" style="width:80%">Photos</button>
                     </a></center>
                 </div>
