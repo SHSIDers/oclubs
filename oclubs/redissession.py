@@ -15,6 +15,11 @@ from oclubs.access.redis import RedisDict
 
 
 class RedisSession(RedisDict, SessionMixin):
+    def __new__(cls, prefix, sid):
+        self = super(RedisDict, cls).__new__(cls, prefix + sid, 0)
+        self.sid = sid
+        return self
+
     def rollback(self):
         self.clear()
         self.update(self.unserialize(self._initial))
@@ -37,8 +42,7 @@ class RedisSessionInterface(SessionInterface):
     def open_session(self, app, request):
         sid = request.cookies.get(app.session_cookie_name)
         sid = sid or self.generate_sid()
-        session = self.session_class(self.prefix + sid, 0)
-        session.sid = sid
+        session = self.session_class(self.prefix, sid)
         session.unmanage()  # prevent race condition
         return session
 

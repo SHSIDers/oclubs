@@ -20,34 +20,43 @@ def done(commit=True):
 
 
 class _RedisMetaclass(type):
-    def __call__(cls, key, timeout):
+    def __call__(cls, *args, **kwargs):
         cached = g.get('redisObjDict', None)
+        self = cls.__new__(cls, *args, **kwargs)
+
         if cached:
-            if key in g.redisObjDict:
-                return g.redisObjDict[key]
+            if self.key in g.redisObjDict:
+                return g.redisObjDict[self.key]
         else:
             g.redisObjDict = {}
 
-        try:
-            initial = cls.load(key)
-            data = cls.unserialize(initial)
-            self = super(_RedisMetaclass, cls).__call__(data)
-            self.new = False
-        except (TypeError, ValueError, KeyError):
-            self = super(_RedisMetaclass, cls).__call__()
-            self.new = True
+        self.__init__()
 
-        self.key = key
-        self.timeout = timeout
-        self._initial = self.serialize(self)
-
-        g.redisObjDict[key] = self
+        g.redisObjDict[self.key] = self
 
         return self
 
 
 class RedisStuff(object):
     __metaclass__ = _RedisMetaclass
+
+    def __new__(cls, key, timeout):
+        self = super(RedisStuff, cls).__new__(cls)
+        self.key = key
+        self.timeout = timeout
+        return self
+
+    def __init__(self):
+        try:
+            initial = self.load(self.key)
+            data = self.unserialize(initial)
+            super(RedisStuff, self).__init__(data)
+            self.new = False
+        except (TypeError, ValueError, KeyError):
+            super(RedisStuff, self).__init__()
+            self.new = True
+
+        self._initial = self.serialize(self)
 
     @staticmethod
     def load(key):
