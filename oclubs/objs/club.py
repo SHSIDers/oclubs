@@ -4,7 +4,7 @@
 
 from __future__ import absolute_import, unicode_literals
 
-from oclubs.access import database
+from oclubs.access import database, redis
 from oclubs.enums import ClubType, UserType
 from oclubs.objs.base import BaseObject, Property, ListProperty
 
@@ -24,8 +24,6 @@ class Club(BaseObject):
     members = ListProperty('club_member', 'cm_club', 'cm_user', 'User')
     all_act = ListProperty('activities', 'act_club', 'act_id', 'Activity')
 
-    _excellentclubs = None
-
     @property
     def is_excellent(self):
         return self.id in self.excellentclubs()
@@ -37,12 +35,9 @@ class Club(BaseObject):
             num += 1
         return num
 
-    @staticmethod
-    def excellentclubs():
-        if Club._excellentclubs is None:
-            # FIXME: BLOCKED-ON-REDIS
-            Club._excellentclubs = Club.randomclubs(10)
-        return Club._excellentclubs
+    @classmethod
+    def excellentclubs(cls):
+        return [cls(item) for item in redis.RedisList('excellentclubs', -1)]
 
     @classmethod
     def randomclubs(cls, amount, types=None):
