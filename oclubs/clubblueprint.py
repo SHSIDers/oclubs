@@ -117,7 +117,6 @@ def memberinfo_download(club):
         info_each.append(member.passportname)
         info_each.append(member.email)
         info.append(info_each)
-    info.append(['哈哈哈', '哈哈哈', '哈哈哈', '哈哈哈'])
     return download_csv('Member Info.csv', header, info)
 
 

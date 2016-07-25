@@ -4,7 +4,6 @@
 
 from ConfigParser import ConfigParser
 from functools import wraps
-from io import BytesIO
 from math import ceil
 import re
 import unicodecsv
@@ -29,29 +28,28 @@ def upload_picture(club):
     oclubs.objs.Upload.handle(current_user, club, file)
 
 
+class MemoryLine():
+    def __init__(self):
+        self.line_value = None
+
+    def write(self, value):
+        self.line_value = value
+
+
 def download_csv(filename, header, info):
     '''Create csv file for given info and download it'''
     # header as list, info as list of list
-    # def generate():
-    #     yield ','.join(header) + '\n'
-    #     for row in info:
-    #         yield ','.join(row) + '\n'
-    # headers = Headers()
-    # headers.set('Content-Disposition', 'attachment', filename=filename)
-    # return Response(generate(), mimetype='text/csv', headers=headers)
-    try:
-        def generate():
-            f = BytesIO()
-            w = unicodecsv.writer(f, encoding='utf-8')
-            w.writerow(header)
-            for row in info:
-                w.writerow(row)
-            return f
-        headers = Headers()
-        headers.set('Content-Disposition', 'attachment', filename=filename)
-        return Response(generate(), mimetype='text/csv', headers=headers)
-    except:
-        __import__('traceback').print_exc()
+    def generate():
+        m = MemoryLine()
+        w = unicodecsv.writer(m, encoding='GB2312')
+        w.writerow(header)
+        yield m.line_value
+        for row in info:
+            w.writerow(row)
+            yield m.line_value
+    headers = Headers()
+    headers.set('Content-Disposition', 'attachment', filename=filename)
+    return Response(generate(), mimetype='text/csv', headers=headers)
 
 
 def get_callsign(objtype, kw):
