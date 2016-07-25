@@ -37,10 +37,9 @@ with app.app_context():
                     'fields': ['_id']
                 })
             es_ids = (d['_id'] for d in es_ids)
+            es_ids = set(int(x) for x in es_ids)
         except NotFoundError:
             es_ids = []
-
-        es_ids = set(int(x) for x in es_ids)
 
         if es_ids:
             es_max = max(es_ids)
