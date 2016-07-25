@@ -13,10 +13,7 @@ r = Redis(host='localhost', port=6379, db=0)
 
 
 def jsondumps(val):
-    if isinstance(val, RedisCache):
-        return json.dumps(val.get())
-    else:
-        return json.dumps(val)
+    
 
 
 def done(commit=True):
@@ -45,7 +42,10 @@ class RedisStuff(object):
             g.redisObjDict[self.key] = self
             super(RedisStuff, self).__init__(loaded)
             self._fresh = False
-            self._initial = jsondumps(self)
+            if isinstance(val, RedisCache):
+                self._initial = json.dumps(val.get())
+            else:
+                self._initial = json.dumps(val)
 
     def load(self):
         val = r.get(self.key)
