@@ -21,7 +21,7 @@ class User(BaseObject, UserMixin):
     studentid = Property('user_login_name')
     passportname = Property('user_passport_name')
     password = Property('user_password', (NotImplemented, _crypt.encrypt))
-    nickname = Property('user_nick_name')
+    nickname = Property('user_nick_name', rediscached=True)
     email = Property('user_email')
     phone = Property('user_phone')
     picture = Property('user_picture', 'Upload')

@@ -12,7 +12,7 @@ from enum import Enum
 
 from flask import Markup
 
-from oclubs.access import database, elasticsearch
+from oclubs.access import database, elasticsearch, redis
 
 # In this file,
 # cls refers to BaseObject class
@@ -20,20 +20,33 @@ from oclubs.access import database, elasticsearch
 # prop refers to an instance of Property or ListProperty
 # self refers to an instance of BaseObject
 
+REDIS_CACHE_TIME = 3600 * 24  # 1 day
+
 
 class Property(object):
     """Descriptor class."""
-    def __init__(prop, dbname, ie=None, search=False):
+    def __init__(prop, dbname, ie=None, search=False, rediscached=False):
         super(Property, prop).__init__()
         prop.dbname = dbname
         prop.imp, prop.exp = _get_ie(ie)
         prop.search = _get_search(search, ie)
+        prop.rediscached = rediscached
 
     def __get__(prop, self, owner=None):
         if self is None:
             return prop
         if prop.name not in self._cache:
-            self._cache[prop.name] = prop.imp(self._data[prop.name])
+            if prop.rediscached:
+                cache = redis.RedisCache(
+                    prop._get_redis_key(self), REDIS_CACHE_TIME)
+                if not cache.new:
+                    data = cache.get()
+                else:
+                    data = self._data[prop.name]
+                    cache.set(data)
+                self._cache[prop.name] = prop.imp(data)
+            else:
+                self._cache[prop.name] = prop.imp(self._data[prop.name])
         return self._cache[prop.name]
 
     def __set__(prop, self, value):
@@ -67,6 +80,11 @@ class Property(object):
                     self.id,
                     {prop.name: prop.search(value)}
                 )
+
+            if prop.rediscached:
+                cache = redis.RedisCache(
+                    prop._get_redis_key(self), REDIS_CACHE_TIME)
+                cache.set(dbvalue)
         else:
             self._dbdata = self._dbdata or {}
             self._dbdata[prop.name] = dbvalue
@@ -80,6 +98,9 @@ class Property(object):
         else:
             if prop.name in self._dbdata:
                 del self._dbdata[prop.name]
+
+    def _get_redis_key(prop, self):
+        return ':'.join(['cache', self.table, str(self.id), prop.name])
 
 
 class ListProperty(object):
@@ -185,7 +206,7 @@ class _BaseMetaclass(type):
 
     def __call__(cls, oid):
         self = type.__call__(cls)
-        self._id = oid
+        self._id = int(oid)
         self._dbdata = None
         self._cache = {}
         return self
