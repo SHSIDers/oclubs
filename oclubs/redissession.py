@@ -6,93 +6,54 @@
 
 """Server side session on Redis."""
 
-import pickle
 from datetime import timedelta
 from uuid import uuid4
-from redis import Redis
 from flask.sessions import SessionInterface, SessionMixin
 
 from oclubs.compat import total_seconds
+from oclubs.access.redis import RedisDict
 
 
-class RedisSession(dict, SessionMixin):
-    """Redis Session class."""
-
-    def __init__(self, initial=None, sid=None, new=False):
-        """Initialize the instance."""
-        self.sid = sid
-        self.new = new
-        initial = initial or {}
-        if initial:
-            self.update(initial or {})
-
-        self._initials = pickle.dumps(dict(self))
-
-    @property
-    def modified(self):
-        """Check if this is modified recursively."""
-        return pickle.dumps(dict(self)) != self._initials
-
+class RedisSession(RedisDict, SessionMixin):
     def rollback(self):
-        """Rollback all changes."""
         self.clear()
-        self.update(pickle.loads(self._initials))
+        self.update(self.unserialize(self._initial))
 
 
 class RedisSessionInterface(SessionInterface):
-    """Redis Session interface: provides methods dealing with sessions."""
-
-    serializer = pickle
     session_class = RedisSession
 
-    def __init__(self, redis=None, prefix='session:'):
-        """Initialize the instance."""
-        if redis is None:
-            redis = Redis()
-        self.redis = redis
+    def __init__(self, prefix='session:'):
         self.prefix = prefix
 
     def generate_sid(self):
-        """Generate a session ID."""
         return str(uuid4())
 
     def get_redis_expiration_time(self, app, session):
-        """Get Redis expiration time."""
         if session.permanent:
             return app.permanent_session_lifetime
         return timedelta(days=1)
 
     def open_session(self, app, request):
-        """Get session from Redis / start a new session."""
         sid = request.cookies.get(app.session_cookie_name)
-        if not sid:
-            sid = self.generate_sid()
-            return self.session_class(sid=sid, new=True)
-        val = self.redis.get(self.prefix + sid)
-        if val is not None:
-            data = self.serializer.loads(val)
-            return self.session_class(data, sid=sid)
-        return self.session_class(sid=sid, new=True)
+        sid = sid or self.generate_sid()
+        session = self.session_class(self.prefix + sid, 0)
+        session.sid = sid
+        session.unmanage()  # prevent race condition
+        return session
 
     def save_session(self, app, session, response):
-        """Save session to Redis."""
-        domain = self.get_cookie_domain(app)
+        redis_exp = self.get_redis_expiration_time(app, session)
+        session.timeout = int(total_seconds(redis_exp))
+        session.save()
 
+        domain = self.get_cookie_domain(app)
         if not session:
-            self.redis.delete(self.prefix + session.sid)
             if session.modified:
                 response.delete_cookie(app.session_cookie_name,
                                        domain=domain)
         else:
-            redis_exp = self.get_redis_expiration_time(app, session)
             cookie_exp = self.get_expiration_time(app, session)
-            if session.modified:
-                val = self.serializer.dumps(dict(session))
-                self.redis.setex(self.prefix + session.sid, val,
-                                 int(total_seconds(redis_exp)))
-            else:
-                self.redis.expire(self.prefix + session.sid,
-                                  int(total_seconds(redis_exp)))
             response.set_cookie(app.session_cookie_name, session.sid,
                                 expires=cookie_exp, httponly=True,
                                 domain=domain)

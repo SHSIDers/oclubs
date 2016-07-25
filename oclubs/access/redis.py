@@ -28,12 +28,18 @@ class _RedisMetaclass(type):
         else:
             g.redisObjDict = {}
 
-        initial = cls.load(key)
-        data = cls.unserialize(initial)
-        self = super(_RedisMetaclass, cls).__call__(data)
+        try:
+            initial = cls.load(key)
+            data = cls.unserialize(initial)
+            self = super(_RedisMetaclass, cls).__call__(data)
+            self.new = False
+        except (TypeError, ValueError, KeyError):
+            self = super(_RedisMetaclass, cls).__call__()
+            self.new = True
+
         self.key = key
         self.timeout = timeout
-        self._initial = initial
+        self._initial = self.serialize(self)
 
         g.redisObjDict[key] = self
 
@@ -47,15 +53,12 @@ class RedisStuff(object):
     def load(key):
         val = r.get(key)
         if val is None:
-            return ''
+            raise KeyError
         return val
 
     @staticmethod
     def unserialize(data):
-        try:
-            return json.loads(data)
-        except ValueError:
-            return ''
+        return json.loads(data)
 
     def save(self):
         if not self:
@@ -74,6 +77,16 @@ class RedisStuff(object):
     def serialize(obj):
         return json.dumps(obj)
 
+    @property
+    def modified(self):
+        return self.serialize(self) != self._initial
+
+    def unmanage(self):
+        try:
+            del g.redisObjDict[self.key]
+        except KeyError:
+            pass
+
 
 class RedisDict(RedisStuff, dict):
     pass
@@ -84,7 +97,7 @@ class RedisList(RedisStuff, list):
 
 
 class ImmutableMixin(object):
-    def __init__(self, value):
+    def __init__(self, value=''):
         self._value = value
 
     def set(self, value):
