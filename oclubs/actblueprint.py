@@ -134,15 +134,18 @@ def clubphoto(club, page_num):
     acts_obj = acts_obj[page_num*pic_num-pic_num: page_num*pic_num]
     for i in range(pic_num / 2):
         act = {}
-        act['image1'] = acts_obj[2*i+1].pictures[0].location_external
+        try:
+            act['image1'] = acts_obj[2*i+1].pictures[0].location_external
+            act['image2'] = acts_obj[2*i].pictures[0].location_external
+        except IndexError:
+            break
         act['actname1'] = acts_obj[2*i+1].name
         act['id1'] = acts_obj[2*i+1].id
-        act['image2'] = acts_obj[2*i].pictures[0].location_external
         act['actname2'] = acts_obj[2*i].name
         act['id2'] = acts_obj[2*i].id
         acts.append(act)
     return render_template('clubphoto.html',
-                           title=club,
+                           title=club.name,
                            club=club,
                            photos=photos,
                            page_num=page_num,
