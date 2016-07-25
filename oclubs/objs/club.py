@@ -62,7 +62,7 @@ class Club(BaseObject):
         return [cls(item) for item in tempdata]
 
     @classmethod
-    def allclubs(cls, amount, types=None):
+    def allclubs(cls, types=None):
         where = []
         if types:
             types = [_type.value for _type in types]
@@ -72,8 +72,6 @@ class Club(BaseObject):
             cls.identifier,
             {
                 'where': where,
-                'order': [(database.RawSQL('RAND()'), True)],
-                'limit': amount
             }
         )
         return [cls(item) for item in tempdata]
