@@ -148,24 +148,42 @@ def personal_submit_password():
 @special_access_required
 def all_clubs_info():
     '''Allow admin to download all clubs' info'''
-    try:
-        header = ['Club ID', 'Name', 'Leader', 'Teacher', 'Introduction', 'Location', 'Is Active or Not', 'Type']
-        info = []
-        clubs = Club.allclubs()
-        for club in clubs:
-            info_each = []
-            info_each.append(club.id)
-            info_each.append(club.name)
-            info_each.append(club.leader.passportname)
-            info_each.append(club.teacher.passportname)
-            info_each.append(club.intro)
-            info_each.append(club.location)
-            info_each.append(str(club.is_active))
-            info_each.append(club.type.format_name)
-            info.append(info_each)
-        return download_csv('All Clubs Info.csv', header, info)
-    except:
-        __import__('traceback').print_exc()
+    header = ['Club ID', 'Name', 'Leader', 'Teacher', 'Introduction', 'Location', 'Is Active or Not', 'Type']
+    info = []
+    clubs = Club.allclubs()
+    for club in clubs:
+        info_each = []
+        info_each.append(club.id)
+        info_each.append(club.name)
+        info_each.append(club.leader.passportname)
+        info_each.append(club.teacher.passportname)
+        info_each.append(club.intro)
+        info_each.append(club.location)
+        info_each.append(str(club.is_active))
+        info_each.append(club.type.format_name)
+        info.append(info_each)
+    return download_csv('All Clubs\' Info.csv', header, info)
+
+
+@userblueprint.route('/all_activities_info')
+@login_required
+@special_access_required
+def all_activities_info():
+    '''Allow admin to download all activities' info'''
+    header = ['Activity ID', 'Name', 'Club', 'Date', 'Time (Type)', 'Location', 'CAS Hours']
+    info = []
+    acts = Activity.all_activities()
+    for act in acts:
+        info_each = []
+        info_each.append(act.id)
+        info_each.append(act.name)
+        info_each.append(act.club.name)
+        info_each.append(act.date.strftime('%b-%d-%y'))
+        info_each.append(act.time.format_name)
+        info_each.append(act.location)
+        info_each.append(act.cas)
+        info.append(info_each)
+    return download_csv('All Activities\' Info.csv', header, info)
 
 
 @userblueprint.route('/new_users', methods=['POST'])

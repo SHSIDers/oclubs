@@ -3,17 +3,23 @@
 
 <h2 class="title_next">Administrator Functions</h2>
 <div class="col-sm-3 admin_function">
-	<h2 style="color:#f2f2f2">Download All Clubs' Info</h2>
-	<a href="{{ url_for('.all_clubs_info') }}" target="_blank">
+	<h2 class="text-center" style="color:#f2f2f2">Download All Clubs' Info</h2>
+	<center><a href="{{ url_for('.all_clubs_info') }}" target="_blank">
 		<button class="btn btn-success" style="padding: 5%; font-size:125%">Download</button>
-	</a>
+	</a></center>
+</div>
+<div class="col-sm-3 admin_function">
+	<h2 class="text-center" style="color:#f2f2f2">Download All Activities' Info</h2>
+	<center><a href="{{ url_for('.all_activities_info') }}" target="_blank">
+		<button class="btn btn-success" style="padding: 5%; font-size:125%">Download</button>
+	</a></center>
 </div>
 
 <div class="clearfix"></div>
 <br>
 <div class="clearfix clearfix-bordered"></div>
-<br>
 
+<h2 class="title_next">Adjust Database</h2>
 <div class="col-sm-3 admin_function">
 	<h2 style="color:#f2f2f2">Add New Users</h2>
 	<br>
