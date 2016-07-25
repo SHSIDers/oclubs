@@ -77,21 +77,20 @@ def special_access_required(func):
     @login_required
     @wraps(func)
     def decorated_function(*args, **kwargs):
-        if 'club' in kwargs:
-            club = kwargs['club']
-        elif 'activity' in kwargs:
-            club = kwargs['activity'].club
-        else:
-            abort(500)  # Assertion
+        if current_user.type != UserType.ADMIN:
+            if 'club' in kwargs:
+                club = kwargs['club']
+            elif 'activity' in kwargs:
+                club = kwargs['activity'].club
+            else:
+                abort(403)  # Admin-only page
 
-        if current_user.type == UserType.ADMIN:
-            return
-        elif current_user.type == UserType.TEACHER:
-            if current_user.id != club.teacher.id:
-                abort(403)
-        else:
-            if current_user.id != club.leader.id:
-                abort(403)
+            if current_user.type == UserType.TEACHER:
+                if current_user.id != club.teacher.id:
+                    abort(403)
+            else:
+                if current_user.id != club.leader.id:
+                    abort(403)
         return func(*args, **kwargs)
 
     return decorated_function
