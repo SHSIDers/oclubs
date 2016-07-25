@@ -20,12 +20,11 @@ def done():
 class RedisStuff(object):
     def __new__(cls, *args, **kwargs):
         exist = g.get('redisObjDict', None)
-        if exist and self.key in g.redisObjDict:
-                return g.redisObjDict[self.key]
+        if exist and args[0] in g.redisObjDict:
+                return g.redisObjDict[args[0]]
         obj = object.__new__(cls, *args, **kwargs)
         obj._fresh = True
         return obj
-
 
     def __init__(self, loaded):
         if self._fresh:
@@ -37,7 +36,6 @@ class RedisStuff(object):
             super(RedisStuff, self).__init__(loaded)
             self._fresh = False
             self._initial = json.dumps(self)
-
 
     def load(self):
         val = r.get(self.key)
