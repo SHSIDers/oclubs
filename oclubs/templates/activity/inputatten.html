@@ -5,7 +5,7 @@
 <!-- Below Navbar -->
 <div class="container">
 	<h1 class="title">Register for HongMei Activities</h1>
-	<h2 class="title_next">{{ club }}</h2>
+	<h2 class="title_next">{{ activity.club.name }}</h2>
 	<input type="date" class="form-control" id="date" style="width:50%">
 	<br>
 	{% if atten %}
@@ -17,23 +17,23 @@
 	{% endif %}
 	<p style="color:#f2f2f2; font-size:125%">Please select those who attended the meeting</p>
 	<div class="checkbox_block">
-		{% for member in members %}
-		<label for="{{ member.id }}">
+		{% for member in activity.signup_list() %}
+		<label for="{{ member.user.id }}">
 			<div class="col-sm-3" style="padding:0 5px 0 5px">
-				<img src="../static/images/{{ member.picture }}.jpg" class="img-responsive" alt="{{ member.nick_name }}">
+				<img src="{{ member.user.picture.location_external }}" class="img-responsive" alt="{{ member.user.nickname }}">
 			</div>
 			<div class="col-sm-7">
-				<p style="font-size:150%">{{ member.nick_name }}</p>
-				<p>{{ member.passportname }}</p>
+				<p style="font-size:150%">{{ member.user.nickname }}</p>
+				<p>{{ member.user.passportname }}</p>
 			</div>
 			<div class="col-sm-2">
-				<input type="checkbox" name="attendance" value="{{ member.id }}"" id="{{ member.passportname }}">
+				<input type="checkbox" name="attendance" value="{{ member.user.id }}"" id="{{ member.user.passportname }}">
 			</div>
 		</label>
 		{% endfor %}
 	</div>
 	<br>
-	<center><form action="{{ url_for('inputatten_submit') }}"><input class="btn btn-info" type="submit" style="width:20%;padding: 3% 0 3% 0; font-size:200%" value="Submit"></form></center>
+	<center><form action="{{ url_for('.inputatten_submit') }}"><input class="btn btn-info" type="submit" style="width:20%;padding: 3% 0 3% 0; font-size:200%" value="Submit"></form></center>
 </div>
 
 {% endblock %}

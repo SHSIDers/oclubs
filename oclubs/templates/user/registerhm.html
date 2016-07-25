@@ -14,14 +14,14 @@
 	</ul>
 	{% endif %}
 	<div class="checkbox_block">
-		{% for plan in schedule %}
-		<label for="{{ plan.id }}">
+		{% for act in acts %}
+		<label for="{{ act.id }}">
 			<div class="col-sm-10">
-				<p style="font-size:150%">{{ plan.date }}</p>
-				<p>{{ plan.activity }}</p>
+				<p style="font-size:150%">{{ act.date }}</p>
+				<p>{{ act.description }}</p>
 			</div>
 			<div class="col-sm-2">
-				<input type="checkbox" name="register" value="{{ plan.id }}"" id="{{ plan.id }}">
+				<input type="checkbox" name="register" value="{{ act.id }}"" id="{{ act.id }}">
 			</div>
 		</label>
 		{% endfor %}

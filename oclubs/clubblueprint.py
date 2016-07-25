@@ -31,19 +31,19 @@ def clublist(club_type):
             clubs = Club.randomclubs(num, [ClubType[club_type.upper()]])
         except KeyError:
             abort(404)
-    return render_template('clublist.html',
+    return render_template('club/clublist.html',
                            title='Club List',
                            is_list=True,
                            clubs=clubs,
                            club_type=club_type)
 
 
-@clubblueprint.route('/<club>/management')
+@clubblueprint.route('/<club>/manage')
 @get_callsign(Club, 'club')
 @special_access_required
 def club(club):
     '''Club Management Page'''
-    return render_template('club.html',
+    return render_template('club/clubmanage.html',
                            title=club.name,
                            club=club.name)
 
@@ -52,7 +52,7 @@ def club(club):
 @get_callsign(Club, 'club')
 def clubintro(club):
     '''Club Intro'''
-    return render_template('clubintro.html',
+    return render_template('club/clubintro.html',
                            title='Club Intro')
 
 
@@ -63,7 +63,7 @@ def clubintro_submit(club):
     '''Add new member'''
     club.add_member(current_user)
     flash('You have successfully joined ' + club.name + '.', 'join')
-    return redirect(url_for('clubblueprint.clubintro', club=club.callsign))
+    return redirect(url_for('.clubintro', club=club.callsign))
 
 
 @clubblueprint.route('/<club>/new_leader')
@@ -72,7 +72,7 @@ def clubintro_submit(club):
 @special_access_required
 def newleader(club):
     '''Selecting New Club Leader'''
-    return render_template('newleader.html',
+    return render_template('club/newleader.html',
                            title='New Leader')
 
 
@@ -88,7 +88,7 @@ def newleader_submit(club):
         if leader_name == member_obj.passportname:
             club.leader = member_obj
             break
-    return render_template('success.html',
+    return render_template('club/success.html',
                            title='Success')
 
 
@@ -97,7 +97,7 @@ def newleader_submit(club):
 @special_access_required
 def memberinfo(club):
     '''Check Members' Info'''
-    return render_template('memberinfo.html',
+    return render_template('club/memberinfo.html',
                            title='Member Info',
                            club=club.name,
                            members=club.members)
@@ -127,7 +127,7 @@ def memberinfo_download(club):
 @special_access_required
 def changeclubinfo(club):
     '''Change Club's Info'''
-    return render_template('changeclubinfo.html',
+    return render_template('club/changeclubinfo.html',
                            title='Change Club Info',
                            club=club.name,
                            intro=club.intro,
@@ -152,7 +152,7 @@ def changeclubinfo_submit(club):
 @special_access_required
 def adjustmember(club):
     '''Adjust Club Members'''
-    return render_template('adjustmember.html',
+    return render_template('club/adjustmember.html',
                            title='Adjust Members')
 
 

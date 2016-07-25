@@ -70,7 +70,7 @@ def access_teardown(exception):
 @app.route('/404')  # debugger
 def page_not_found(e=None):
     '''Wrong url'''
-    return render_template('error.html',
+    return render_template('static/error.html',
                            title='404 Page Not Found',
                            is_page_not_found=True
                            ), 404
@@ -80,7 +80,7 @@ def page_not_found(e=None):
 @app.route('/403')  # debugger
 def forbidden(e=None):
     '''No access'''
-    return render_template('error.html',
+    return render_template('static/error.html',
                            title='403 Forbidden',
                            is_forbidden=True
                            ), 403
@@ -90,7 +90,7 @@ def forbidden(e=None):
 @app.route('/401')  # debugger
 def unauthorized(e=None):
     '''Not logged in'''
-    return render_template('error.html',
+    return render_template('static/error.html',
                            title='401 Unauthorized',
                            is_unauthorized=True
                            ), 401
@@ -101,7 +101,7 @@ def unauthorized(e=None):
 def internal_server_error(e=None):
     '''Internal server error'''
     flash(encrypt(traceback.format_exc()), '500')
-    return render_template('error.html',
+    return render_template('static/error.html',
                            title='500 Internal Server Error',
                            is_internal_server_error=True
                            ), 500
@@ -120,7 +120,7 @@ def load_user(user_id):
 @app.route('/login')
 def login():
     '''Login page'''
-    return render_template('login.html',
+    return render_template('user/login.html',
                            title='Login')
 
 
@@ -180,7 +180,7 @@ def search():
 
     pagination = Pagination(page, 10, search_result['count'])
 
-    return render_template('search.html',
+    return render_template('static/search.html',
                            title='Search',
                            search_result=search_result,
                            results=results,
@@ -223,7 +223,7 @@ def homepage():
     ex_clubs = [{'name': 'Website Club', 'picture': '1', 'intro': 'We create platform for SHSID.'},
                 {'name': 'Art Club', 'picture': '2', 'intro': 'We invite people to the world of arts.'},
                 {'name': 'Photo Club', 'picture': '3', 'intro': 'We search for the beauty in this world.'}]
-    return render_template('homepage.html',
+    return render_template('static/homepage.html',
                            title='Here you come',
                            is_home=True,
                            ex_clubs=ex_clubs)
@@ -232,7 +232,7 @@ def homepage():
 @app.route('/about')
 def about():
     '''About This Website'''
-    return render_template('about.html',
+    return render_template('static/about.html',
                            title='About',
                            is_about=True)
 
@@ -240,14 +240,14 @@ def about():
 @app.route('/advice')
 def advice():
     '''Advice Page'''
-    return render_template('advice.html',
+    return render_template('static/advice.html',
                            title='Advice')
 
 
 @app.route('/creators')
 def creators():
     '''Introduction Page about Us'''
-    return render_template('creators.html',
+    return render_template('static/creators.html',
                            title='Creators')
 
 

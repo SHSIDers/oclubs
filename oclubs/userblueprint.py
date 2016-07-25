@@ -11,6 +11,7 @@ from flask_login import current_user, login_required, fresh_login_required
 
 from oclubs.objs import User, Club, Activity, Upload
 from oclubs.enums import UserType, ClubType, ActivityTime
+from oclubs.shared import get_callsign
 
 userblueprint = Blueprint('userblueprint', __name__)
 
@@ -26,7 +27,7 @@ def quitclub():
         club['id'] = club_obj.id
         club['name'] = club_obj.name
         clubs.append(club)
-    return render_template('quitclub.html',
+    return render_template('user/quitclub.html',
                            title='Quit Club',
                            clubs=clubs)
 
@@ -90,7 +91,7 @@ def personal():
         for club_obj in clubs:
             if current_user == club_obj.leader:
                 leader_club.append(club_obj)
-        return render_template('student.html',
+        return render_template('user/student.html',
                                title=current_user.nickname,
                                pictures=pictures,
                                clubs=clubs,
@@ -101,7 +102,7 @@ def personal():
                                UserType=UserType)
     else:
         myclubs = Club.get_clubs_special_access(current_user)
-        return render_template('teacher.html',
+        return render_template('user/teacher.html',
                                title=current_user.nickname,
                                pictures=pictures,
                                myclubs=myclubs,
@@ -143,7 +144,7 @@ def personal_submit_password():
 @userblueprint.route('/forgot_password')
 def forgotpw():
     '''Page for retrieving password'''
-    return render_template('forgotpassword.html',
+    return render_template('user/forgotpassword.html',
                            title='Retrieve Password')
 
 
@@ -151,3 +152,28 @@ def forgotpw():
 def forgotpw_submit():
     # TODO: accept input  to retrieve password
     pass
+
+
+@userblueprint.route('/<club>/register_hongmei')
+@get_callsign(Club, 'club')
+@login_required
+def registerhm(club):
+    '''Register Page for HongMei Activites'''
+    acts = club.activities([ActivityTime.HONGMEI], (False, True))
+    return render_template('user/registerhm.html',
+                           title='Register for HongMei',
+                           club=club.name,
+                           acts=acts)
+
+
+@userblueprint.route('/<club>/register_hongmei/submit', methods=['POST'])
+@get_callsign(Club, 'club')
+@login_required
+def registerhm_submit(club):
+    '''Submit HongMei signup info to database'''
+    register = request.form['register']
+    for reg in register:
+        act = Activity(reg)
+        act.signup(current_user)
+    flash('Your application has been successfully submitted.', 'reghm')
+    return redirect(url_for('.registerhm', club=club.callsign))

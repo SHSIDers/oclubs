@@ -37,7 +37,7 @@ def allactivities(club_type, page):
 
     pagination = Pagination(page, act_num, len(acts_obj))
     acts_obj = acts_obj[(page-1)*act_num: page*act_num]
-    return render_template('allact.html',
+    return render_template('activity/allact.html',
                            title='All Activities',
                            is_allact=True,
                            acts=acts_obj,
@@ -66,7 +66,7 @@ def clubactivities(club, page):
         club_pic['image1'] = Upload(-1)
         club_pic['image2'] = Upload(-2)
         club_pic['image3'] = Upload(-3)
-    return render_template('clubact.html',
+    return render_template('activity/clubact.html',
                            title=club.name,
                            club=club,
                            club_pic=club_pic,
@@ -106,7 +106,7 @@ def allphotos(page):
 
     pagination = Pagination(page, pic_num, len(all_pictures))
     acts = acts[(page-1)*pic_num: page*pic_num]
-    return render_template('photos.html',
+    return render_template('activity/photos.html',
                            title='All Photos',
                            is_photos=True,
                            act_recent=act_recent,
@@ -140,7 +140,7 @@ def clubphoto(club, page):
         act['actname2'] = acts_obj[2*i].name
         act['id2'] = acts_obj[2*i].id
         acts.append(act)
-    return render_template('clubphoto.html',
+    return render_template('activity/clubphoto.html',
                            title=club.name,
                            club=club,
                            photos=photos,
@@ -152,7 +152,7 @@ def clubphoto(club, page):
 @special_access_required
 def newact(club):
     '''Hosting New Activity'''
-    return render_template('newact.html',
+    return render_template('activity/newact.html',
                            title='New Activity')
 
 
@@ -185,7 +185,7 @@ def newact_submit(club):
 @get_callsign(Activity, 'activity')
 def activity(activity):
     '''Club Activity Page'''
-    return render_template('activity.html',
+    return render_template('activity/actintro.html',
                            title=activity.name,
                            activity=activity,
                            is_other_act=(activity.time == ActivityTime.UNKNOWN or
@@ -201,10 +201,10 @@ def activity_submit(activity):
     return redirect(url_for('.activity', activity=activity.callsign))
 
 
-@actblueprint.route('/<club>/hongmei')
+@actblueprint.route('/<club>/hongmei_status')
 @get_callsign(Club, 'club')
 @special_access_required
-def hongmei(club):
+def hongmei_status(club):
     '''Check HongMei Status'''
     schedule = []
     acts_obj = club.activities([ActivityTime.HONGMEI], (False, True))
@@ -222,7 +222,7 @@ def hongmei(club):
             members.append(member)
         act['members'] = members
         schedule.append(act)
-    return render_template('hongmei.html',
+    return render_template('activity/hmstatus.html',
                            title='HongMei',
                            club=club.name,
                            schedule=schedule)
@@ -233,7 +233,7 @@ def hongmei(club):
 @special_access_required
 def newhm(club):
     '''Input HongMei Plan'''
-    return render_template('newhm.html',
+    return render_template('activity/newhm.html',
                            title='HongMei Schedule',
                            club=club.name)
 
@@ -262,63 +262,13 @@ def newhm_submit(club):
 @special_access_required
 def actstatus(activity):
     '''Check Activity Status'''
-    club = activity.club
-    actname = activity.name
-    date = activity.date
-    intro = activity.descriptions
-    members = []
-    members_info = activity.signup_list()
-    for member_info in members_info:
-        member = {}
-        member_obj = member_info['user']
-        member['name'] = member_obj.nickname
-        member['email'] = member_obj.email
-        member['phone'] = member_obj.phone
-        member['consentform'] = member_info['consentform']
-        members.append(member)
     members_num = 0
-    for member in members:
+    for member in activity.signup_list():
         members_num += 1
-    return render_template('actstatus.html',
-                           title=actname,
-                           club=club.name,
-                           actname=actname,
-                           date=date,
-                           intro=intro,
-                           members=members,
+    return render_template('activity/actstatus.html',
+                           title=activity.name,
+                           activity=activity,
                            members_num=members_num)
-
-
-@actblueprint.route('/<club>/register_hongmei')
-@get_callsign(Club, 'club')
-@login_required
-def registerhm(club):
-    '''Register Page for HongMei Activites'''
-    schedule = []
-    acts_obj = club.activities([ActivityTime.HONGMEI], (False, True))
-    for act_obj in acts_obj:
-        act = {}
-        act['id'] = act_obj.id
-        act['date'] = act_obj.date
-        act['activity'] = act_obj.description
-        schedule.append(act)
-    return render_template('registerhm.html',
-                           title='Register for HongMei',
-                           club=club.name,
-                           schedule=schedule)
-
-
-@actblueprint.route('/<club>/register_hongmei/submit', methods=['POST'])
-@get_callsign(Club, 'club')
-@login_required
-def registerhm_submit(club):
-    '''Submit HongMei signup info to database'''
-    register = request.form['register']
-    for reg in register:
-        act = Activity(reg)
-        act.signup(current_user)
-    flash('Your application has been successfully submitted.', 'reghm')
-    return redirect(url_for('.registerhm', club=club.callsign))
 
 
 @actblueprint.route('/<activity>/input_attendance')
@@ -326,20 +276,9 @@ def registerhm_submit(club):
 @special_access_required
 def inputatten(activity):
     '''Input Attendance'''
-    club = activity.club
-    members_obj = activity.members
-    members = []
-    for member_obj in members_obj:
-        member = {}
-        member['passportname'] = member_obj.passportname
-        member['nick_name'] = member_obj.nickname
-        member['picture'] = member_obj.picture
-        member['id'] = member_obj.id
-        members.append(member)
-    return render_template('inputatten.html',
+    return render_template('activity/inputatten.html',
                            title='Input Attendance',
-                           club=club.name,
-                           members=members)
+                           activity=activity)
 
 
 @actblueprint.route('/<activity>/input_attendance/submit', methods=['POST'])
