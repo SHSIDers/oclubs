@@ -11,7 +11,7 @@ from flask import (
 )
 from flask_login import current_user, login_required
 
-from oclubs.objs import User, Club
+from oclubs.objs import User, Club, Upload
 from oclubs.enums import UserType, ClubType, ActivityTime
 from oclubs.shared import download_csv, upload_picture, get_callsign, special_access_required
 
@@ -142,6 +142,7 @@ def changeclubinfo_submit(club):
     upload_picture(club)
     club.intro = request.form['intro']
     club.desc = request.form['desc']
+    upload_picture(club)
     flash('The information about club has been successfully submitted.', 'success')
     return redirect(url_for('.changeclubinfo', club=club.callsign))
 

@@ -11,7 +11,7 @@ from flask_login import current_user, login_required, fresh_login_required
 
 from oclubs.objs import User, Club, Activity, Upload
 from oclubs.enums import UserType, ClubType, ActivityTime
-from oclubs.shared import get_callsign
+from oclubs.shared import get_callsign, special_access_required, download_csv
 
 userblueprint = Blueprint('userblueprint', __name__)
 
@@ -98,15 +98,17 @@ def personal():
                                castotal=castotal,
                                meetings=meetings,
                                activities=activities,
-                               leader_club=leader_club,
-                               UserType=UserType)
-    else:
+                               leader_club=leader_club)
+    elif current_user.type == UserType.TEACHER:
         myclubs = Club.get_clubs_special_access(current_user)
         return render_template('user/teacher.html',
                                title=current_user.nickname,
                                pictures=pictures,
                                myclubs=myclubs,
                                UserType=UserType)
+    else:
+        return render_template('user/admin.html',
+                               title=current_user.nickname)
 
 
 @userblueprint.route('/submit_info', methods=['POST'])
@@ -139,6 +141,39 @@ def personal_submit_password():
     else:
         flash('You have entered wrong old password. Please enter again.', 'status_pw')
     return redirect(url_for('.personal'))
+
+
+@userblueprint.route('/all_clubs_info')
+@login_required
+@special_access_required
+def all_clubs_info():
+    '''Allow admin to download all clubs' info'''
+    try:
+        header = ['Club ID', 'Name', 'Leader', 'Teacher', 'Introduction', 'Location', 'Is Active or Not', 'Type']
+        info = []
+        clubs = Club.allclubs()
+        for club in clubs:
+            info_each = []
+            info_each.append(club.id)
+            info_each.append(club.name)
+            info_each.append(club.leader.passportname)
+            info_each.append(club.teacher.passportname)
+            info_each.append(club.intro)
+            info_each.append(club.location)
+            info_each.append(str(club.is_active))
+            info_each.append(club.type.format_name)
+            info.append(info_each)
+        return download_csv('All Clubs Info.csv', header, info)
+    except:
+        __import__('traceback').print_exc()
+
+
+@userblueprint.route('/new_users', methods=['POST'])
+@login_required
+@special_access_required
+def new_users():
+    '''Upload excel file to create new users'''
+    pass
 
 
 @userblueprint.route('/forgot_password')

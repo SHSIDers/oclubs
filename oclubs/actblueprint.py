@@ -189,7 +189,10 @@ def activity(activity):
                            title=activity.name,
                            is_other_act=(activity.time == ActivityTime.UNKNOWN or
                                          activity.time == ActivityTime.OTHERS),
-                           is_past=date.today() >= activity.date)
+                           is_past=date.today() >= activity.date,
+                           has_access=(current_user == activity.club.leader or
+                                       current_user == activity.club.teacher or
+                                       current_user.type == UserType.ADMIN))
 
 
 @actblueprint.route('/<activity>/introduction/submit', methods=['POST'])

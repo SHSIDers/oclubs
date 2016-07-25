@@ -1,0 +1,33 @@
+{% extends "user/personal.html" %}
+{% block personal %}
+
+<h2 class="title_next">Administrator Functions</h2>
+<div class="col-sm-3 admin_function">
+	<h2 style="color:#f2f2f2">Download All Clubs' Info</h2>
+	<a href="{{ url_for('.all_clubs_info') }}" target="_blank">
+		<button class="btn btn-success" style="padding: 5%; font-size:125%">Download</button>
+	</a>
+</div>
+
+<div class="clearfix"></div>
+<br>
+<div class="clearfix clearfix-bordered"></div>
+<br>
+
+<div class="col-sm-3 admin_function">
+	<h2 style="color:#f2f2f2">Add New Users</h2>
+	<br>
+	<form action="{{ url_for('.new_users') }}">
+		<input type="file" name="excel" id="excel" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" style="width:0.1px; height:0.1px; opacity:0">
+		<label for="excel" class="upload_button">
+			<span class="glyphicon glyphicon-upload"></span>
+			<span>Choose an excel file...</span>
+		</label>
+		<div class="clearfix"></div>
+		<br>
+		<input type="submit" class="btn btn-primary btn-lg" value="Submit">
+	</form>
+</div>
+
+
+{% endblock %}
