@@ -46,7 +46,8 @@ app.jinja_env.globals['getpicture'] = get_picture
 
 
 def url_for_other_page(page):
-    args = request.args.copy()
+    args = request.view_args.copy()
+    args.update(request.args)
     args['page'] = page
     return url_for(request.endpoint, **args)
 app.jinja_env.globals['url_for_other_page'] = url_for_other_page
