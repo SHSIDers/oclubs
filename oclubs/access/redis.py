@@ -19,46 +19,46 @@ def done(commit=True):
     g.redisObjDict.clear()
 
 
-class RedisStuff(object):
-    def __new__(cls, key, timeout):
-        exist = g.get('redisObjDict', None)
-        if exist:
+class _RedisMetaclass(type):
+    def __call__(cls, key, timeout):
+        cached = g.get('redisObjDict', None)
+        if cached:
             if key in g.redisObjDict:
                 return g.redisObjDict[key]
         else:
             g.redisObjDict = {}
-        obj = super(RedisStuff, cls).__new__(cls)
-        obj._fresh = True
-        obj.key = key
-        obj.timeout = timeout
-        return obj
 
-    def __init__(self, loaded):
-        if self._fresh:
-            g.redisObjDict[self.key] = self
-            super(RedisStuff, self).__init__(loaded)
-            self._fresh = False
-            if isinstance(self, RedisCache):
-                self._initial = json.dumps(self.get())
-            else:
-                self._initial = json.dumps(self)
+        initial = cls.load(key)
+        data = cls.unserialize(initial)
+        self = super(_RedisMetaclass, cls).__call__(data)
+        self.key = key
+        self.timeout = timeout
+        self._initial = initial
 
-    def load(self):
-        val = r.get(self.key)
+        g.redisObjDict[key] = self
+
+        return self
+
+
+class RedisStuff(object):
+    __metaclass__ = _RedisMetaclass
+
+    @staticmethod
+    def load(key):
+        val = r.get(key)
         if val is None:
             return ''
+        return val
+
+    @staticmethod
+    def unserialize(data):
         try:
-            ret = json.loads(val)
+            return json.loads(data)
         except ValueError:
-            r.delete(self.key)
             return ''
-        return ret
 
     def save(self):
-        if isinstance(self, RedisCache):
-            dumped = json.dumps(self.get())
-        else:
-            dumped = json.dumps(val)
+        dumped = self.serialize(self)
         if self._initial != dumped:
             r.set(self.key, dumped)
         if self.timeout < 0:
@@ -66,18 +66,20 @@ class RedisStuff(object):
         else:
             r.expire(self.key, self.timeout)
 
+    @staticmethod
+    def serialize(obj):
+        return json.dumps(obj)
+
 
 class RedisDict(RedisStuff, dict):
-    def __init__(self, key, timeout):
-        super(RedisDict, self).__init__(dict(self.load()))
+    pass
 
 
 class RedisList(RedisStuff, list):
-    def __init__(self, key, timeout):
-        super(RedisList, self).__init__(list(self.load()))
+    pass
 
 
-class Cache(object):
+class RedisCache(RedisStuff):
     def __init__(self, value):
         self._value = value
 
@@ -87,7 +89,5 @@ class Cache(object):
     def get(self):
         return self._value
 
-
-class RedisCache(RedisStuff, Cache):
-    def __init__(self, key, timeout):
-        super(RedisCache, self).__init__(self.load())
+    def serialize(self, obj):
+        return super(RedisCache, self).serialize(obj.get())
