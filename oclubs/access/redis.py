@@ -13,10 +13,11 @@ r = Redis(host='localhost', port=6379, db=0)
 
 
 def done(commit=True):
-    if commit:
-        for stuff in g.redisObjDict.values():
-            stuff.save()
-    g.redisObjDict.clear()
+    if g.get('redisObjDict', None):
+        if commit:
+            for stuff in g.redisObjDict.values():
+                stuff.save()
+        g.redisObjDict.clear()
 
 
 class _RedisMetaclass(type):
