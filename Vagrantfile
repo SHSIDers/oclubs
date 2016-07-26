@@ -14,6 +14,9 @@ Vagrant.configure("2") do |config|
     vb.memory = "1024"
   end
 
+  config.vm.synced_folder ".", "/vagrant", type: "rsync",
+    rsync__exclude: [".git/", "oclubs/images"], rsync__chown: false
+
   config.vm.provision :puppet do |puppet|
     puppet.manifests_path = "provision/manifests"
 

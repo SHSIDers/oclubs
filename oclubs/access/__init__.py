@@ -8,7 +8,7 @@ from __future__ import absolute_import
 
 from oclubs.access import database
 from oclubs.access import elasticsearch
-from oclubs.access import email
+# from oclubs.access import email
 from oclubs.access import redis
 
 

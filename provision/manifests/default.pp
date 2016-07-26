@@ -211,9 +211,9 @@ file { '/srv/oclubs':
 
 file { '/srv/oclubs/images':
     ensure => directory,
-    mode   => '0777',
+    mode   => '0755',
     owner  => 'uwsgi',
-    group  => 'uwsgi'
+    group  => 'nginx'
 }
 
 file { '/srv/oclubs/secrets.ini':
