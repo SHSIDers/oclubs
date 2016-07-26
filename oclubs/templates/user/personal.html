@@ -55,7 +55,7 @@
 				<h4 class="modal-title">Change Basic Information</h4>
 			</div>
 			<div class="modal-body">
-				<form class="form-group" id="info_form" action="{{ url_for('.personal_submit_info') }}" method="post">
+				<form class="form-group" id="info_form" action="{{ url_for('.personalsubmitinfo') }}" method="post">
 					<label for="name">Nick Name:</label>
 					<input class="form-control" id="name" type="text" name="name" placeholder="{{ current_user.nickname }}">
 					<br>
@@ -92,7 +92,7 @@
 				<h4 class="modal-title">Change Password</h4>
 			</div>
 			<div class="modal-body">
-				<form class="form-group" id="pass_form" action="{{ url_for('userblueprint.personal_submit_password') }}" method="post">
+				<form class="form-group" id="pass_form" action="{{ url_for('userblueprint.personalsubmitpassword') }}" method="post">
 					<label for="old">Old Password:</label>
 					<input class="form-control" id="old" name="old" type="password">
 					<br>
