@@ -12,6 +12,7 @@ from elasticsearch.exceptions import NotFoundError
 from oclubs.app import app
 from oclubs.access import database, elasticsearch, done
 from oclubs.objs import Activity, Club
+from oclubs.objs.base import Property
 
 clses = [Club, Activity]
 
@@ -51,7 +52,7 @@ with app.app_context():
         cls_searchprops = [
             prop.name for prop in [
                 getattr(cls, propname) for propname in dir(cls)
-            ] if hasattr(prop, 'search') and prop.search
+            ] if isinstance(prop, Property) and prop.search
         ]
 
         for i in xrange(1, max_id + 1):
