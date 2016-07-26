@@ -4,7 +4,7 @@
 
 <!-- Below Navbar -->
 <div class="large_container">
-	<form class="form-group" action="{{ url_for('.changeclubinfo_submit', club=g.club.callsign) }}" method="post" style="color:#f2f2f2">
+	<form class="form-group" action="{{ url_for('.changeclubinfo_submit', club=g.club.callsign) }}" method="post" enctype="multipart/form-data" style="color:#f2f2f2">
 		<h1 class="title">Change Club Info</h1>
 		<h2 class="title_next">{{ g.club.name }}</h2>
 		{% if messages %}

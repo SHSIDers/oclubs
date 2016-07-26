@@ -54,7 +54,8 @@ class Upload(BaseObject):
         try:
             # Don't use mimetypes.guess_type(temppath) -- Faked extensions
             mime = subprocess.check_output(
-                ['/usr/bin/file', '-bi', temppath]).strip()
+                ['/usr/bin/file', '-bi', temppath]).split(';')[0].strip()
+            print mime
             if mime not in cls._mimedict:
                 raise UploadNotSupported
 
@@ -75,6 +76,7 @@ class Upload(BaseObject):
         obj.club = club
         obj.uploader = user
         obj._location = filename
+        obj.mime = mime
         return obj.create()
 
     @staticmethod

@@ -209,10 +209,15 @@ file { '/srv/oclubs':
     target => '/vagrant/oclubs'
 }
 
-file { '/srv/oclubs/images':
+file { '/srv/images':
     ensure => directory,
     owner  => 'uwsgi',
-    group  => 'uwsgi'
+    group  => 'nginx'
+}
+
+file { '/srv/oclubs/images':
+    ensure => link,
+    target => '/srv/images'
 }
 
 file { '/srv/oclubs/secrets.ini':
