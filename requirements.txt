@@ -13,3 +13,4 @@ importlib
 unicodecsv
 elasticsearch
 pycrypto
+sendgrid
