@@ -6,7 +6,7 @@
 		<h2 class="title_next">Add New Users</h2>
 		<br>
 		<!-- TODO: Format -->
-		<form action="{{ url_for('.new_users') }}">
+		<form action="{{ url_for('.newusers') }}">
 			<input type="file" name="excel" id="excel" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" style="width:0.1px; height:0.1px; opacity:0">
 			<label for="excel" class="upload_button">
 				<span class="glyphicon glyphicon-upload"></span>
@@ -21,7 +21,7 @@
 		<h2 class="title_next">Add New Clubs</h2>
 		<br>
 		<!-- TODO: Format -->
-		<form action="{{ url_for('.new_clubs') }}">
+		<form action="{{ url_for('.newclubs') }}">
 			<input type="file" name="excel" id="excel" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" style="width:0.1px; height:0.1px; opacity:0">
 			<label for="excel" class="upload_button">
 				<span class="glyphicon glyphicon-upload"></span>

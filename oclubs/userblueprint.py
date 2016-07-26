@@ -114,7 +114,7 @@ def personal():
 
 @userblueprint.route('/submit_info', methods=['POST'])
 @login_required
-def personal_submit_info():
+def personalsubmitinfo():
     '''Change user's information in database'''
     if request.form['name'] != '':
         current_user.nickname = request.form['name']
@@ -130,7 +130,7 @@ def personal_submit_info():
 
 @userblueprint.route('/submit_password', methods=['POST'])
 @login_required  # FIXME: fresh_login_required
-def personal_submit_password():
+def personalsubmitpassword():
     '''Change user's password in database'''
     user_login = User.attempt_login(current_user.studentid, request.form['old'])
     if user_login is not None:
@@ -147,7 +147,7 @@ def personal_submit_password():
 @userblueprint.route('/all_clubs_info')
 @login_required
 @special_access_required
-def all_clubs_info():
+def allclubsinfo():
     '''Allow admin to download all clubs' info'''
     header = ['Club ID', 'Name', 'Leader', 'Teacher', 'Introduction', 'Location', 'Is Active or Not', 'Type']
     info = []
@@ -169,7 +169,7 @@ def all_clubs_info():
 @userblueprint.route('/all_activities_info')
 @login_required
 @special_access_required
-def all_activities_info():
+def allactivitiesinfo():
     '''Allow admin to download all activities' info'''
     header = ['Activity ID', 'Name', 'Club', 'Date', 'Time (Type)', 'Location', 'CAS Hours']
     info = []
@@ -199,7 +199,7 @@ def new():
 @userblueprint.route('/new_users', methods=['POST'])
 @login_required
 @special_access_required
-def new_users():
+def newusers():
     '''Upload excel file to create new users'''
     pass
 
@@ -207,7 +207,7 @@ def new_users():
 @userblueprint.route('/new_clubs', methods=['POST'])
 @login_required
 @special_access_required
-def new_clubs():
+def newclubs():
     '''Upload excel file to create new clubs'''
     pass
 
@@ -215,7 +215,7 @@ def new_clubs():
 @userblueprint.route('/adjust_clubs')
 @login_required
 @special_access_required
-def adjust_clubs():
+def adjustclubs():
     '''Allow admin to change clubs' status'''
     return render_template('user/adjustclubs.html',
                            title='Adjust Clubs')

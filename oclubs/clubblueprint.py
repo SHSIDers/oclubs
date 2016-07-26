@@ -126,11 +126,7 @@ def memberinfo_download(club):
 def changeclubinfo(club):
     '''Change Club's Info'''
     return render_template('club/changeclubinfo.html',
-                           title='Change Club Info',
-                           club=club.name,
-                           intro=club.intro,
-                           picture=club.picture,
-                           desc=club.description.formatted)
+                           title='Change Club Info')
 
 
 @clubblueprint.route('/<club>/change_club_info/submit', methods=['POST'])
@@ -138,10 +134,11 @@ def changeclubinfo(club):
 @special_access_required
 def changeclubinfo_submit(club):
     '''Change club's info'''
-    upload_picture(club)
-    club.intro = request.form['intro']
-    club.desc = request.form['desc']
-    upload_picture(club)
+    if request.form['intro'] != '':
+        club.intro = request.form['intro']
+    if request.form['description'] != '':
+        club.desc = request.form['description']
+    # upload_picture(club)
     flash('The information about club has been successfully submitted.', 'success')
     return redirect(url_for('.changeclubinfo', club=club.callsign))
 

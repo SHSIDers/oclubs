@@ -24,6 +24,8 @@ from oclubs.enums import UserType
 @login_required
 def upload_picture(club):
     '''Handle upload object'''
+    if request.files['picture'] == '':
+        return
     file = request.files['picture']
     oclubs.objs.Upload.handle(current_user, club, file)
 
