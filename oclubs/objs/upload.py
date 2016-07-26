@@ -55,7 +55,6 @@ class Upload(BaseObject):
             # Don't use mimetypes.guess_type(temppath) -- Faked extensions
             mime = subprocess.check_output(
                 ['/usr/bin/file', '-bi', temppath]).split(';')[0].strip()
-            print mime
             if mime not in cls._mimedict:
                 raise UploadNotSupported
 
