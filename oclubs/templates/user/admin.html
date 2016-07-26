@@ -20,19 +20,20 @@
 <div class="clearfix clearfix-bordered"></div>
 
 <h2 class="title_next">Adjust Database</h2>
-<div class="col-sm-3 admin_function">
-	<h2 style="color:#f2f2f2">Add New Users</h2>
-	<br>
-	<form action="{{ url_for('.new_users') }}">
-		<input type="file" name="excel" id="excel" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" style="width:0.1px; height:0.1px; opacity:0">
-		<label for="excel" class="upload_button">
-			<span class="glyphicon glyphicon-upload"></span>
-			<span>Choose an excel file...</span>
-		</label>
-		<div class="clearfix"></div>
-		<br>
-		<input type="submit" class="btn btn-primary btn-lg" value="Submit">
-	</form>
+<div class="admin_button">
+	<a href="{{ url_for('.new') }}">
+        <button class="btn btn-success">Add New User/Clubs</button>
+    </a>
+</div>
+<div class="admin_button">
+	<a href="{{ url_for('.adjust_clubs') }}">
+        <button class="btn btn-success">Adjust Clubs (Excellence, Activeness)</button>
+    </a>
+</div>
+<div class="admin_button">
+	<a href="{{ url_for('.new') }}">
+        <button class="btn btn-success">Access to Clubs' Management</button>
+    </a>
 </div>
 
 

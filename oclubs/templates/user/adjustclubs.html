@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+{% with messages = get_flashed_messages(category_filter=["clubs"]) %}
+
+<!-- Below Navbar -->
+<div class="container">
+    <h1 class="title">Adjust Clubs</h1>
+    {% if messages %}
+    <ul class="list-group">
+        {% for message in messages %}
+        <li class="list-group-item">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <table class="table table-hover table-bordered" style="font-size:150%">
+        <thead class="list">
+            <tr style="background-color:#bfbfbf">
+                <th style="width:5%">Picture</th>
+                <th>Nick Name</th>
+                <th>Official Name</th>
+                <th>Student ID</th>
+                <th>Operation</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in g.club.members %}
+            {% if member != g.club.leader %}
+            <tr class="act" id="{{ member.passportname }}">
+                <td>
+                    <img src="{{ member.picture.location_external }}" class="img-responsive" alt="{{ member.nickname }}" style="width:3em">
+                </td>
+                <td>{{ member.nickname }}</td>
+                <td>{{ member.passportname }}</td>
+                <td>{{ member.studentid }}</td>
+                <td><form action="{{ url_for('.adjustmember_submit', club=g.club.callsign, studentid=member.id) }}" method="post"><input type="submit" class="btn btn-danger" name="expel" value="Expel" style="font-size:110%"></form>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endwith %}
+{% endblock %}

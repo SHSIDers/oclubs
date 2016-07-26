@@ -997,3 +997,13 @@ thead.darklist {
 	border-radius: 5px;
 	border-width: 5px;
 }
+
+.admin_button {
+	margin: 1em;
+	float: left;
+}
+
+.admin_button button {
+	padding: 0.75em;
+	font-size: 200%;
+}

@@ -220,14 +220,23 @@ def _search_gettext(obj, name):
 @app.route('/')
 def homepage():
     '''Homepage'''
-    # Three excellent clubs
-    ex_clubs = [{'name': 'Website Club', 'picture': '1', 'intro': 'We create platform for SHSID.'},
-                {'name': 'Art Club', 'picture': '2', 'intro': 'We invite people to the world of arts.'},
-                {'name': 'Photo Club', 'picture': '3', 'intro': 'We search for the beauty in this world.'}]
+    ex_clubs = Club.excellentclubs(3)
+    pictures = []
+    acts = Activity.all_activities()
+    count = 0
+    for act in acts:
+        try:
+            pictures.append({'activity': act, 'picture': act.pictures[0]})
+            count += 1
+        except IndexError:
+            continue
+        if count == 3:
+            break
     return render_template('static/homepage.html',
                            title='Here you come',
                            is_home=True,
-                           ex_clubs=ex_clubs)
+                           ex_clubs=ex_clubs,
+                           pictures=pictures)
 
 
 @app.route('/about')

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+	<div class="col-sm-5 admin_function">
+		<h2 class="title_next">Add New Users</h2>
+		<br>
+		<!-- TODO: Format -->
+		<form action="{{ url_for('.new_users') }}">
+			<input type="file" name="excel" id="excel" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" style="width:0.1px; height:0.1px; opacity:0">
+			<label for="excel" class="upload_button">
+				<span class="glyphicon glyphicon-upload"></span>
+				<span>Choose an excel file...</span>
+			</label>
+			<div class="clearfix"></div>
+			<br>
+			<input type="submit" class="btn btn-primary btn-lg" value="Submit">
+		</form>
+	</div>
+	<div class="col-sm-5 admin_function">
+		<h2 class="title_next">Add New Clubs</h2>
+		<br>
+		<!-- TODO: Format -->
+		<form action="{{ url_for('.new_clubs') }}">
+			<input type="file" name="excel" id="excel" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" style="width:0.1px; height:0.1px; opacity:0">
+			<label for="excel" class="upload_button">
+				<span class="glyphicon glyphicon-upload"></span>
+				<span>Choose an excel file...</span>
+			</label>
+			<div class="clearfix"></div>
+			<br>
+			<input type="submit" class="btn btn-primary btn-lg" value="Submit">
+		</form>
+	</div>
+</div>
+
+{% endblock %}

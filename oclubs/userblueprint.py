@@ -108,7 +108,8 @@ def personal():
                                UserType=UserType)
     else:
         return render_template('user/admin.html',
-                               title=current_user.nickname)
+                               title=current_user.nickname,
+                               pictures=pictures)
 
 
 @userblueprint.route('/submit_info', methods=['POST'])
@@ -186,12 +187,38 @@ def all_activities_info():
     return download_csv('All Activities\' Info.csv', header, info)
 
 
+@userblueprint.route('/new')
+@login_required
+@special_access_required
+def new():
+    '''Allow admin to create new user or clubs'''
+    return render_template('user/new.html',
+                           title='New Contents')
+
+
 @userblueprint.route('/new_users', methods=['POST'])
 @login_required
 @special_access_required
 def new_users():
     '''Upload excel file to create new users'''
     pass
+
+
+@userblueprint.route('/new_clubs', methods=['POST'])
+@login_required
+@special_access_required
+def new_clubs():
+    '''Upload excel file to create new clubs'''
+    pass
+
+
+@userblueprint.route('/adjust_clubs')
+@login_required
+@special_access_required
+def adjust_clubs():
+    '''Allow admin to change clubs' status'''
+    return render_template('user/adjustclubs.html',
+                           title='Adjust Clubs')
 
 
 @userblueprint.route('/forgot_password')

@@ -73,6 +73,7 @@ def clubactivities(club, page):
                            acts=acts,
                            pagination=pagination)
 
+
 @actblueprint.route('/photos/<int:page>')
 def allphotos(page):
     pic_num = 20
