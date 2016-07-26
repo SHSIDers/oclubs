@@ -4,6 +4,8 @@
 
 from __future__ import absolute_import, unicode_literals
 
+import random
+
 from oclubs.access import database, redis
 from oclubs.enums import ClubType, UserType
 from oclubs.objs.base import BaseObject, Property, ListProperty
@@ -35,9 +37,20 @@ class Club(BaseObject):
             num += 1
         return num
 
+    # We can't use @property because fails with Club.excellentclubs = []
     @classmethod
-    def excellentclubs(cls):
-        return [cls(item) for item in redis.RedisList('excellentclubs', -1)]
+    def excellentclubs(cls, amount=None):
+        ret = [cls(item) for item in redis.RedisList('excellentclubs', -1)]
+        if amount:
+            amount = min(len(ret), amount)
+            return random.sample(ret, amount)
+        return ret
+
+    @staticmethod
+    def set_excellentclubs(newval):
+        newval = [item.id for item in newval]
+        lst = redis.RedisList('excellentclubs', -1)
+        lst[:] = newval
 
     @classmethod
     def randomclubs(cls, amount, types=None):
