@@ -6,15 +6,13 @@ from ConfigParser import ConfigParser
 from functools import wraps
 from math import ceil
 import re
-import unicodecsv
-# from pyexcel_xlsx import save_data
 from StringIO import StringIO
 import xlsxwriter
 
 from Crypto.Cipher import AES
 from Crypto import Random
 
-from flask import session, abort, request, make_response, g, send_file
+from flask import session, abort, request, make_response, g
 from flask_login import current_user, login_required
 from werkzeug.datastructures import Headers
 from werkzeug.wrappers import Response
@@ -41,22 +39,6 @@ class MemoryLine():
         self.line_value = value
 
 
-def download_csv(filename, header, info):
-    '''Create csv file for given info and download it'''
-    # header as list, info as list of list
-    def generate():
-        m = MemoryLine()
-        w = unicodecsv.writer(m, encoding='GB2312')
-        w.writerow(header)
-        yield m.line_value
-        for row in info:
-            w.writerow(row)
-            yield m.line_value
-    headers = Headers()
-    headers.set('Content-Disposition', 'attachment', filename=filename)
-    return Response(generate(), mimetype='text/csv', headers=headers)
-
-
 def _stringfy(string):
     if isinstance(string, unicode):
         return string.encode('utf-8')
@@ -73,7 +55,6 @@ def download_xlsx(filename, info):
     print info
     for row in info:
         for grid in row:
-            # print grid
             worksheet.write(row_num, col_num, grid)
             col_num += 1
         col_num = 0

@@ -186,14 +186,18 @@ def newact_submit(club):
 @get_callsign(Activity, 'activity')
 def activity(activity):
     '''Club Activity Page'''
+    if current_user.is_authenticated:
+        has_access = (current_user == activity.club.leader or
+                      current_user == activity.club.teacher or
+                      current_user.type == UserType.ADMIN)
+    else:
+        has_access = False
     return render_template('activity/actintro.html',
                            title=activity.name,
                            is_other_act=(activity.time == ActivityTime.UNKNOWN or
                                          activity.time == ActivityTime.OTHERS),
                            is_past=date.today() >= activity.date,
-                           has_access=(current_user == activity.club.leader or
-                                       current_user == activity.club.teacher or
-                                       current_user.type == UserType.ADMIN))
+                           has_access=has_access)
 
 
 @actblueprint.route('/<activity>/introduction/submit', methods=['POST'])
