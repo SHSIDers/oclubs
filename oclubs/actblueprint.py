@@ -15,7 +15,7 @@ from copy import deepcopy
 from datetime import datetime, date
 
 from oclubs.enums import UserType, ClubType, ActivityTime
-from oclubs.shared import get_callsign, special_access_required, Pagination, download_csv
+from oclubs.shared import get_callsign, special_access_required, Pagination, download_xlsx
 from oclubs.objs import User, Club, Activity, Upload, FormattedText
 
 actblueprint = Blueprint('actblueprint', __name__)
@@ -315,8 +315,8 @@ def checkatten(activity):
 @special_access_required
 def checkatten_download(activity):
     '''Download activity's attendance'''
-    header = ['Nick Name', 'Student ID', 'Attendance']
     result = []
+    result.append(['Nick Name', 'Student ID', 'Attendance'])
     attendance = activity.attendance
     attend = []
     absent = []
@@ -337,4 +337,4 @@ def checkatten_download(activity):
         result_each.append(member.studentid)
         result_each.append('Absent')
         result.append(result_each)
-    return download_csv('Attendance for ' + activity.name + '.csv', header, result)
+    return download_xlsx('Attendance for ' + activity.name + '.xlsx', result)

@@ -7,7 +7,7 @@ from functools import wraps
 from math import ceil
 import re
 import unicodecsv
-from pyexcel_xlsx import save_data
+# from pyexcel_xlsx import save_data
 from StringIO import StringIO
 import xlsxwriter
 
@@ -65,27 +65,21 @@ def _stringfy(string):
 
 def download_xlsx(filename, info):
     '''Çreate xlsx file for given info and download it '''
-    # data = {'Sheet 1': [map(_stringfy, row) for row in info]}
-    # print data
-    # io = StringIO()
-    # save_data(io, data)
     output = StringIO()
     workbook = xlsxwriter.Workbook(output, {'in_memory': True})
     worksheet = workbook.add_worksheet()
-    row_num = 1
-    col_num = 1
+    row_num = 0
+    col_num = 0
     print info
     for row in info:
         for grid in row:
-            print grid
-            worksheet.write_string(row_num, col_num, grid)
+            # print grid
+            worksheet.write(row_num, col_num, grid)
             col_num += 1
-        col_num = 1
+        col_num = 0
         row_num += 1
     workbook.close()
-    raise RuntimeError(len(output.getvalue()))
     output.seek(0)
-    # return send_file(output, mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", as_attachment=True, attachment_filename=filename)
     headers = Headers()
     headers.set('Content-Disposition', 'attachment', filename=filename)
     return Response(output.read(), mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', headers=headers)

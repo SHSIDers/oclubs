@@ -11,7 +11,7 @@ from flask_login import current_user, login_required, fresh_login_required
 
 from oclubs.objs import User, Club, Activity, Upload
 from oclubs.enums import UserType, ClubType, ActivityTime
-from oclubs.shared import get_callsign, special_access_required, download_csv
+from oclubs.shared import get_callsign, special_access_required, download_xlsx
 
 userblueprint = Blueprint('userblueprint', __name__)
 
@@ -149,8 +149,8 @@ def personalsubmitpassword():
 @special_access_required
 def allclubsinfo():
     '''Allow admin to download all clubs' info'''
-    header = ['Club ID', 'Name', 'Leader', 'Teacher', 'Introduction', 'Location', 'Is Active or Not', 'Type']
     info = []
+    info.append(['Club ID', 'Name', 'Leader', 'Teacher', 'Introduction', 'Location', 'Is Active or Not', 'Type'])
     clubs = Club.allclubs()
     for club in clubs:
         info_each = []
@@ -163,7 +163,7 @@ def allclubsinfo():
         info_each.append(str(club.is_active))
         info_each.append(club.type.format_name)
         info.append(info_each)
-    return download_csv('All Clubs\' Info.csv', header, info)
+    return download_xlsx('All Clubs\' Info.xlsx', info)
 
 
 @userblueprint.route('/all_activities_info')
@@ -171,8 +171,8 @@ def allclubsinfo():
 @special_access_required
 def allactivitiesinfo():
     '''Allow admin to download all activities' info'''
-    header = ['Activity ID', 'Name', 'Club', 'Date', 'Time (Type)', 'Location', 'CAS Hours']
     info = []
+    info.append(['Activity ID', 'Name', 'Club', 'Date', 'Time (Type)', 'Location', 'CAS Hours'])
     acts = Activity.all_activities()
     for act in acts:
         info_each = []
@@ -184,7 +184,7 @@ def allactivitiesinfo():
         info_each.append(act.location)
         info_each.append(act.cas)
         info.append(info_each)
-    return download_csv('All Activities\' Info.csv', header, info)
+    return download_xlsx('All Activities\' Info.xlsx', info)
 
 
 @userblueprint.route('/new')
