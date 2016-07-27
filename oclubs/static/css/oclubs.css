@@ -830,19 +830,24 @@ thead.darklist {
 	color:#f2f2f2;
 }
 
-.creators .bg {
-	background-color:#e6e6ff;
+.creators p {
+	font-size: 150%;
 }
 
-.creators p {
-	font-size: 125%;
+.creators .panel {
+	border-style: solid;
+	border-color: #337ab7;
+}
+
+.creators .bg {
+	background-color: transparent;
 }
 
 .creators .blue {
 	color: #f2f2f2;
-	background-color: #337ab7;
+	background-color: #009999;
 	border-style: solid;
-	border-color: #337ab7;
+	border-color: #009999;
 	font-size: 150%;
 	font-family: 'Georgia'
 }
