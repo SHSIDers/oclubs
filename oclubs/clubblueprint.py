@@ -13,7 +13,7 @@ from flask_login import current_user, login_required
 
 from oclubs.objs import User, Club, Upload
 from oclubs.enums import UserType, ClubType, ActivityTime
-from oclubs.shared import download_csv, upload_picture, get_callsign, special_access_required
+from oclubs.shared import download_xlsx, upload_picture, get_callsign, special_access_required
 
 clubblueprint = Blueprint('clubblueprint', __name__)
 
@@ -107,8 +107,8 @@ def memberinfo(club):
 @special_access_required
 def memberinfo_download(club):
     '''Download members' info'''
-    header = ['Nick Name', 'Student ID', 'Passport Name', 'Email']
     info = []
+    info.append(['Nick Name', 'Student ID', 'Passport Name', 'Email'])
     members = club.members
     for member in members:
         info_each = []
@@ -117,7 +117,10 @@ def memberinfo_download(club):
         info_each.append(member.passportname)
         info_each.append(member.email)
         info.append(info_each)
-    return download_csv('Member Info.csv', header, info)
+        
+    # info.append(['哈哈哈', '哈哈哈', '哈哈哈'])
+    # info.append(['🐇', '🐇', '🐇'])
+    return download_xlsx('Member Info.xlsx', info)
 
 
 @clubblueprint.route('/<club>/change_club_info')

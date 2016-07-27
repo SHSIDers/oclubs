@@ -7,11 +7,14 @@ from functools import wraps
 from math import ceil
 import re
 import unicodecsv
+from pyexcel_xlsx import save_data
+from StringIO import StringIO
+import xlsxwriter
 
 from Crypto.Cipher import AES
 from Crypto import Random
 
-from flask import session, abort, request, make_response, g
+from flask import session, abort, request, make_response, g, send_file
 from flask_login import current_user, login_required
 from werkzeug.datastructures import Headers
 from werkzeug.wrappers import Response
@@ -52,6 +55,40 @@ def download_csv(filename, header, info):
     headers = Headers()
     headers.set('Content-Disposition', 'attachment', filename=filename)
     return Response(generate(), mimetype='text/csv', headers=headers)
+
+
+def _stringfy(string):
+    if isinstance(string, unicode):
+        return string.encode('utf-8')
+    return string
+
+
+def download_xlsx(filename, info):
+    '''Çreate xlsx file for given info and download it '''
+    # data = {'Sheet 1': [map(_stringfy, row) for row in info]}
+    # print data
+    # io = StringIO()
+    # save_data(io, data)
+    output = StringIO()
+    workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+    worksheet = workbook.add_worksheet()
+    row_num = 1
+    col_num = 1
+    print info
+    for row in info:
+        for grid in row:
+            print grid
+            worksheet.write_string(row_num, col_num, grid)
+            col_num += 1
+        col_num = 1
+        row_num += 1
+    workbook.close()
+    raise RuntimeError(len(output.getvalue()))
+    output.seek(0)
+    # return send_file(output, mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", as_attachment=True, attachment_filename=filename)
+    headers = Headers()
+    headers.set('Content-Disposition', 'attachment', filename=filename)
+    return Response(output.read(), mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', headers=headers)
 
 
 def get_callsign(objtype, kw):
