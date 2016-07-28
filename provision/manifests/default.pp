@@ -217,11 +217,12 @@ file { '/srv/oclubs/images':
 }
 
 file { '/srv/oclubs/secrets.ini':
-    ensure => file,
-    mode   => '0644',
-    owner  => 'root',
-    group  => 'root',
-    source => '/vagrant/provision/secrets.ini'
+    ensure  => file,
+    replace => 'no',
+    mode    => '0644',
+    owner   => 'root',
+    group   => 'root',
+    source  => '/vagrant/provision/secrets.ini'
 }
 
 service { 'iptables':
