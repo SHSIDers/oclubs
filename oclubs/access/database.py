@@ -9,7 +9,6 @@ import MySQLdb
 import MySQLdb.constants.CLIENT
 
 from oclubs.access import get_secret
-
 from oclubs.exceptions import NoRow, AlreadyExists
 
 

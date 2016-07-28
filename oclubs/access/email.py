@@ -8,7 +8,8 @@ from __future__ import absolute_import, unicode_literals
 
 import sendgrid
 from sendgrid.helpers.mail import Email, Content, Mail
-from oclubs.shared import get_secret
+
+from oclubs.access import get_secret
 
 sg = sendgrid.SendGridAPIClient(apikey=get_secret('sendgrid_key'))
 from_email = Email("no-reply@oclubs.shsid.org", "oClubs")

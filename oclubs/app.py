@@ -15,7 +15,7 @@ from flask import (
 from flask_login import LoginManager, login_user, logout_user, current_user
 
 from oclubs.objs import User, Club, Activity, Upload
-from oclubs.access import done as db_done
+from oclubs.access import done as db_done, get_secret
 from oclubs.userblueprint import userblueprint
 from oclubs.clubblueprint import clubblueprint
 from oclubs.actblueprint import actblueprint
@@ -23,7 +23,7 @@ from oclubs.enums import UserType, ClubType, ActivityTime
 from oclubs.exceptions import NoRow
 
 from oclubs.redissession import RedisSessionInterface
-from oclubs.shared import get_secret, encrypt, Pagination
+from oclubs.shared import encrypt, Pagination
 
 app = Flask(__name__)
 
