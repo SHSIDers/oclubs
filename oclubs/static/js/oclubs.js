@@ -52,5 +52,13 @@
 				.click( function() {
 					location.reload();
 				} );
+
+			$( '.drag' )
+				.draggable( {
+					handle:'.drag-point',
+					containment: '.homepage_image',
+					stack: '.drag',
+					revert: true
+				} );
 		} );
 } )( jQuery );

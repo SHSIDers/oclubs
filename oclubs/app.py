@@ -220,23 +220,30 @@ def _search_gettext(obj, name):
 @app.route('/')
 def homepage():
     '''Homepage'''
-    ex_clubs = Club.excellentclubs(3)
-    pictures = []
-    acts = Activity.all_activities()
+    top_pic = []
+    col = []
     count = 0
-    for act in acts:
-        try:
-            pictures.append({'activity': act, 'picture': act.pictures[0]})
+    for act in Activity.get_activities_conditions(require_photos=True,
+                                                  limit=(0, 12)):
+        if count % 3 != 0:
+            col.append(act)
             count += 1
-        except IndexError:
-            continue
-        if count == 3:
-            break
+        else:
+            top_pic.append(col)
+            col = []
+    if count < 3:
+        top_pic.append(col)
+    ex_clubs = Club.excellentclubs(3)
+    pic_acts = []
+    for act in Activity.get_activities_conditions(require_photos=True,
+                                                  limit=(0, 3)):
+        pic_acts.append(act)
     return render_template('static/homepage.html',
                            title='Here you come',
                            is_home=True,
+                           top_pic=top_pic,
                            ex_clubs=ex_clubs,
-                           pictures=pictures)
+                           pic_acts=pic_acts)
 
 
 @app.route('/about')

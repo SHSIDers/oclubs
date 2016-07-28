@@ -46,8 +46,21 @@
 </div> -->
 <div class="container">
 	<div class="homepage_image">
-		<img src="images/1.jpg" alt="1" class="img-responsive img-thumbnail">
-		
+		{% for col in top_pic %}
+		<div class="col-sm-3">
+			{% for act in col %}
+			<div class="drag" style="top:{{act*16}}em">
+				<span class="drag-point">&nbsp;</span>
+				<div class="picture">
+					<a href="{{ url_for('actblueprint.activity', activity=act.callsign) }}">
+						<img src="{{ act.pictures[0].location_external }}" alt="{{ act.name }}">
+					</a>
+				</div>
+				<p>Lorem ipsum</p>
+			</div>
+			{% endfor %}
+		</div>
+		{% endfor %}
 	</div>
 </div>
 
@@ -97,9 +110,9 @@
 			<br>
 			<div class="homepage_block">
 				<h1 class="text-center title_next">Club Photos</h1>
-				{% for pic in pictures %}
+				{% for act in pic_acts %}
 				<div class="col-sm-4">
-					<a href="{{ url_for('actblueprint.activity', activity=pic.activity.callsign) }}"><img src="{{ pic.picture.location_external }}" class="img-responsive img-thumbnail" alt="{{ pic.activity.name }}"></a>
+					<a href="{{ url_for('actblueprint.activity', activity=act.callsign) }}"><img src="{{ act.pictures[0].location_external }}" class="img-responsive img-thumbnail" alt="{{ act.name }}"></a>
 				</div>
 				{% endfor %}
 				<div class="clearfix"></div>
