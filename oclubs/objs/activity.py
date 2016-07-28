@@ -94,8 +94,9 @@ class Activity(BaseObject):
 
     @classmethod
     def get_activities_conditions(cls, times=(), additional_conds=None,
-                                  dates=(True, True), order_by_time=True,
-                                  club_types=(), require_photos=False):
+                                  dates=(True, True), club_types=(),
+                                  require_photos=False, order_by_time=True,
+                                  limit=None):
         conds = {}
         if additional_conds:
             conds.update(additional_conds)
@@ -124,6 +125,9 @@ class Activity(BaseObject):
         if order_by_time:
             conds['order'] = conds.get('order', [])
             conds['order'].append(('act_date', True))
+
+        if limit:
+            conds['limit'] = limit
 
         acts = database.fetch_onecol(
             'activity',

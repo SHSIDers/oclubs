@@ -56,7 +56,7 @@ def _parse_comp_cond(cond, forcelimit=None):
         'group': [],  # list of vars
         'having': [],  # same as where
         'order': [],  # tuple (var, is_asc)
-        'limit': None  # None or num or (lo, hi)
+        'limit': None  # None or count or (offset, count)
     }
     if isinstance(cond, list):
         # this is a simple cond
