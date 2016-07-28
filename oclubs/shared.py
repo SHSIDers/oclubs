@@ -2,7 +2,6 @@
 # -*- coding: UTF-8 -*-
 #
 
-from ConfigParser import ConfigParser
 from functools import wraps
 from math import ceil
 import re
@@ -18,6 +17,7 @@ from werkzeug.datastructures import Headers
 from werkzeug.wrappers import Response
 
 import oclubs
+from oclubs.access import get_secret
 from oclubs.exceptions import NoRow
 from oclubs.enums import UserType
 
@@ -106,12 +106,6 @@ def special_access_required(func):
         return func(*args, **kwargs)
 
     return decorated_function
-
-
-def get_secret(name):
-    config = ConfigParser()
-    config.read('/srv/oclubs/secrets.ini')
-    return config.get('secrets', name)
 
 
 def _strify(st):

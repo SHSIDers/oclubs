@@ -66,6 +66,19 @@ service { 'mysql':
     require => Exec['install-mariadb'],
 }
 
+$mysql_password = 'TacOrnibVeeHoFrej2RindofDic5faquavrymebZaidEytCojPhuanEr'
+
+exec { 'sql-set-root-pw':
+    command => "/usr/bin/mysqladmin -u root password ${mysql_password}",
+    unless  => "/usr/bin/mysqladmin -u root -p${mysql_password} status",
+    require => Service['mysql'],
+}
+
+exec { 'sql-import':
+    command => "/usr/bin/mysql -u root -p${mysql_password} < /vagrant/oclubs-tables.sql",
+    require => Exec['sql-set-root-pw'],
+}
+
 package { 'java-1.8.0-openjdk':
     ensure  => present,
     require => Package['epel-release'],
@@ -107,11 +120,6 @@ file { '/etc/elasticsearch/elasticsearch.yml':
 service { 'elasticsearch':
     ensure => running,
     enable => true,
-}
-
-exec { 'sql-import':
-    command => '/usr/bin/mysql -u root < /vagrant/oclubs-tables.sql',
-    require => Service['mysql'],
 }
 
 file { '/etc/selinux/config':

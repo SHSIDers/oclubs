@@ -6,6 +6,7 @@
 
 from __future__ import absolute_import
 
+from oclubs.access.secrets import get_secret
 from oclubs.access import database
 from oclubs.access import elasticsearch
 from oclubs.access import email
@@ -17,4 +18,4 @@ def done(commit=True):
     redis.done(commit)
 
 
-__all__ = ['database', 'elasticsearch', 'email', 'redis', 'done']
+__all__ = ['get_secret', 'database', 'elasticsearch', 'email', 'redis', 'done']

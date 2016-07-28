@@ -8,6 +8,8 @@ from flask import g
 import MySQLdb
 import MySQLdb.constants.CLIENT
 
+from oclubs.access import get_secret
+
 from oclubs.exceptions import NoRow, AlreadyExists
 
 
@@ -36,14 +38,14 @@ def ___parse_cond(cond):
         if const is None:
             op = {'=': 'IS', '!=': 'IS NOT'}.get(op, op)
         return ' '.join([_encode_name(var), _strify(op), _encode(const)])
-    elif op.lower() in ["and", "or"]:
+    elif op.lower() in ['and', 'or']:
         return (' %s ' % op.upper()).join(
             [__parse_cond(one_cond) for one_cond in conds])
-    elif op.lower() == "range":
+    elif op.lower() == 'range':
         # [lo, hi)
         var, (lo, hi) = conds
         return __parse_cond('and', ('>=', var, lo), ('<', var, hi))
-    elif op.lower() == "in":
+    elif op.lower() == 'in':
         var, const = conds
         const = ','.join([_encode(elemt) for elemt in const])
         return '%s IN (%s)' % (_encode_name(var), const)
@@ -147,9 +149,10 @@ def _execute(sql, write=False, ret='fetch'):
     db = g.get('dbconnection', None)
     if not db:
         db = MySQLdb.connect(
-            host="localhost",
-            user="root",
-            db="oclubs",
+            host='localhost',
+            user='root',
+            passwd=get_secret('mariadb_pw'),
+            db='oclubs',
             charset='utf8',
             use_unicode=True,
         )
