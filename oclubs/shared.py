@@ -26,8 +26,8 @@ from oclubs.enums import UserType
 @login_required
 def upload_picture(club):
     '''Handle upload object'''
-    if request.files['picture'] == '':
-        return club.picture
+    # if request.files['picture'] is None:
+    #     return club.picture
     file = request.files['picture']
     return Upload.handle(current_user, club, file)
 
@@ -70,8 +70,9 @@ def download_xlsx(filename, info):
 def read_xlsx(filename):
     '''Read xlsx and return a list of data'''
     if request.files['excel'] == '':
-        raise 
-    data = get_data(filename)
+        raise ValueError
+    data = get_data(request.files['excel'])
+    
 
 
 def get_callsign(objtype, kw):

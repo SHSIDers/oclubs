@@ -77,26 +77,12 @@ def clubactivities(club, page):
 @actblueprint.route('/photos/<int:page>')
 def allphotos(page):
     pic_num = 20
-    acts_obj = Activity.all_activities()
+    acts_obj = Activity.get_activities_conditions(require_photos=True)
     act_recent = ''
     if page == 1:
-        for act in acts_obj:
-            try:
-                assert act.pictures[0].location_external
-                act_recent = act
-            except IndexError:
-                continue
-            else:
-                break
-    acts = []
-    for act in acts_obj:
-        try:
-            assert act.pictures[0]
-        except IndexError:
-            continue
-        acts.append(act)
+        act_recent = acts_obj[0]
     all_pictures = []
-    for act in acts:
+    for act in acts_obj:
         each_block = {}
         each_block['activity'] = act
         each_block['club'] = act.club
@@ -106,7 +92,7 @@ def allphotos(page):
             all_pictures.append(each)
 
     pagination = Pagination(page, pic_num, len(all_pictures))
-    acts = acts[(page-1)*pic_num: page*pic_num]
+    all_pictures = all_pictures[(page-1)*pic_num: page*pic_num]
     return render_template('activity/photos.html',
                            title='All Photos',
                            is_photos=True,

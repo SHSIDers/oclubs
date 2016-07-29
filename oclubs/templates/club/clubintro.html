@@ -54,11 +54,19 @@
                         <button class="btn btn-info btn-lg" style="width:80%">Photos</button>
                     </a></center>
                 </div>
+                {% if not current_user in g.club.members %}
                 <div class="col-sm-4">
                     <center><a href="{{ url_for('clubblueprint.clubintro_submit', club=g.club.callsign) }}" style="text-decoration:none">
                         <button class="btn btn-info btn-lg" style="width:80%">Join</button>
                     </a></center>
                 </div>
+                {% else %}
+                <div class="col-sm-4">
+                    <center><a href="{{ url_for('clubblueprint.memberinfo') }}">
+                        <button class="btn btn-info btn-lg" style="width:80%">Member List</button>
+                    </a></center>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>

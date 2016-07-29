@@ -162,7 +162,7 @@ def search():
                                  lambda obj: obj.pictures[0]
                                  if obj.pictures else None)
 
-    search_result = cls.search(keywords, offset=(page-1)/10, size=10)
+    search_result = cls.search(keywords, offset=(page-1)*10, size=10)
 
     results = []
     for result in search_result['results']:

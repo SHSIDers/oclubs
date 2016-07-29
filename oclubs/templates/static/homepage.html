@@ -46,14 +46,14 @@
 </div> -->
 <div class="container">
 	<div class="homepage_image">
-		{% for col in top_pic %}
+		{% for col in range(4) %}
 		<div class="col-sm-3">
-			{% for act in col %}
+			{% for act in range(3) %}
 			<div class="drag" style="top:{{act*16}}em">
 				<span class="drag-point">&nbsp;</span>
 				<div class="picture">
-					<a href="{{ url_for('actblueprint.activity', activity=act.callsign) }}">
-						<img src="{{ act.pictures[0].location_external }}" alt="{{ act.name }}">
+					<a href="">
+						<img src="{{ url_for('static', filename='images/1.jpg') }}" alt="">
 					</a>
 				</div>
 				<p>Lorem ipsum</p>
