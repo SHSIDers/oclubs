@@ -138,7 +138,7 @@ def changeclubinfo_submit(club):
         club.intro = request.form['intro']
     if request.form['description'] != '':
         club.desc = request.form['description']
-    upload_picture(club)
+    club.picture = upload_picture(club)
     flash('The information about club has been successfully submitted.', 'success')
     return redirect(url_for('.changeclubinfo', club=club.callsign))
 

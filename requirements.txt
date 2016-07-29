@@ -10,7 +10,8 @@ Pillow
 markdown
 bleach
 importlib
-unicodecsv
 elasticsearch
 pycrypto
 sendgrid
+xlsxwriter
+pyexcel-xlsx

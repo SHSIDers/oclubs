@@ -7,16 +7,17 @@ from math import ceil
 import re
 from StringIO import StringIO
 import xlsxwriter
+from pyexcel_xlsx import get_data
 
 from Crypto.Cipher import AES
 from Crypto import Random
 
-from flask import session, abort, request, make_response, g
+from flask import abort, request, g
 from flask_login import current_user, login_required
 from werkzeug.datastructures import Headers
 from werkzeug.wrappers import Response
 
-import oclubs
+from oclubs.objs import Upload
 from oclubs.access import get_secret
 from oclubs.exceptions import NoRow
 from oclubs.enums import UserType
@@ -26,9 +27,9 @@ from oclubs.enums import UserType
 def upload_picture(club):
     '''Handle upload object'''
     if request.files['picture'] == '':
-        return
+        return club.picture
     file = request.files['picture']
-    oclubs.objs.Upload.handle(current_user, club, file)
+    return Upload.handle(current_user, club, file)
 
 
 class MemoryLine():
@@ -64,6 +65,13 @@ def download_xlsx(filename, info):
     headers = Headers()
     headers.set('Content-Disposition', 'attachment', filename=filename)
     return Response(output.read(), mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', headers=headers)
+
+
+def read_xlsx(filename):
+    '''Read xlsx and return a list of data'''
+    if request.files['excel'] == '':
+        raise 
+    data = get_data(filename)
 
 
 def get_callsign(objtype, kw):
