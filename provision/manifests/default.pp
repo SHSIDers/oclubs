@@ -22,6 +22,7 @@ $redis_password = 'rhupwegPadroc)QuaysDigdobGotachOpbaljiebGadMyn1Drojryt'
 exec { 'redis-set-pw':
     command => "/bin/sed -ie 's/# requirepass foobared/requirepass ${redis_password}/' /etc/redis.conf",
     notify  => Service['redis'],
+    require => Package['redis'],
 }
 
 package { 'nginx':
