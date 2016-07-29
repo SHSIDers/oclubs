@@ -8,8 +8,9 @@ from redis import Redis
 from flask import g
 import json
 
+from oclubs.access import get_secret
 
-r = Redis(host='localhost', port=6379, db=0)
+r = Redis(host='localhost', port=6379, db=0, password=get_secret('redis_pw'))
 
 
 def done(commit=True):
