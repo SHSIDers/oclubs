@@ -62,7 +62,7 @@
                 </div>
                 {% else %}
                 <div class="col-sm-4">
-                    <center><a href="{{ url_for('clubblueprint.memberinfo') }}">
+                    <center><a href="{{ url_for('clubblueprint.memberinfo', club=g.club.callsign) }}">
                         <button class="btn btn-info btn-lg" style="width:80%">Member List</button>
                     </a></center>
                 </div>

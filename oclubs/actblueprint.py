@@ -78,9 +78,11 @@ def clubactivities(club, page):
 def allphotos(page):
     pic_num = 20
     acts_obj = Activity.get_activities_conditions(require_photos=True)
-    act_recent = ''
     if page == 1:
-        act_recent = acts_obj[0]
+        try:
+            act_recent = acts_obj[0]
+        except IndexError:
+            act_recent = ''
     all_pictures = []
     for act in acts_obj:
         each_block = {}

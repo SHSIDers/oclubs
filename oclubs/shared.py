@@ -23,15 +23,6 @@ from oclubs.exceptions import NoRow
 from oclubs.enums import UserType
 
 
-@login_required
-def upload_picture(club):
-    '''Handle upload object'''
-    # if request.files['picture'] is None:
-    #     return club.picture
-    file = request.files['picture']
-    return Upload.handle(current_user, club, file)
-
-
 class MemoryLine():
     def __init__(self):
         self.line_value = None

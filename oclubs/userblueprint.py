@@ -61,14 +61,13 @@ def personal():
         meetings = []
         for meeting_obj in meetings_obj:
             meeting = {}
-            meeting['club'] = meeting_obj.club
+            meeting['act'] = meeting_obj
             time_int = meeting_obj.time
             if time_int == ActivityTime.NOON:
                 time = "Noon"
             else:
                 time = "Afternoon"
             meeting['time'] = meeting_obj.date.strftime('%Y-%m-%d') + ": " + time
-            meeting['location'] = meeting_obj.location
             meetings.append(meeting)
         activities_obj = current_user.activities_reminder([ActivityTime.UNKNOWN,
                                                            ActivityTime.HONGMEI,
@@ -76,7 +75,7 @@ def personal():
         activities = []
         for act_obj in activities_obj:
             act = {}
-            act['club'] = act_obj.club
+            act['act'] = act_obj
             time_int = act_obj.time
             if time_int == ActivityTime.UNKNOWN:
                 time = "Unknown time"
@@ -85,7 +84,6 @@ def personal():
             else:
                 time = "Individual club activity"
             act['time'] = str(act_obj.date) + ": " + time
-            act['location'] = act_obj.location
             activities.append(act)
         leader_club = []
         for club_obj in clubs:

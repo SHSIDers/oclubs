@@ -13,7 +13,7 @@ from flask_login import current_user, login_required
 
 from oclubs.objs import User, Club, Upload
 from oclubs.enums import UserType, ClubType, ActivityTime
-from oclubs.shared import download_xlsx, upload_picture, get_callsign, special_access_required
+from oclubs.shared import download_xlsx, get_callsign, special_access_required
 
 clubblueprint = Blueprint('clubblueprint', __name__)
 
@@ -94,7 +94,6 @@ def newleader_submit(club):
 
 @clubblueprint.route('/<club>/member_info')
 @get_callsign(Club, 'club')
-@special_access_required
 def memberinfo(club):
     '''Check Members' Info'''
     return render_template('club/memberinfo.html',
@@ -138,7 +137,8 @@ def changeclubinfo_submit(club):
         club.intro = request.form['intro']
     if request.form['description'] != '':
         club.desc = request.form['description']
-    club.picture = upload_picture(club)
+    if request.files['picture'].filename != '':
+        club.picture = Upload.handle(current_user, club, request.files['picture'])
     flash('The information about club has been successfully submitted.', 'success')
     return redirect(url_for('.changeclubinfo', club=club.callsign))
 
