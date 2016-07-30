@@ -1,0 +1,11 @@
+{% extends "base" %}
+{% block main %}
+
+{{ current_user.nickname }} ({{ current_user.studentid }}) has quit {{ club.name }}. 
+
+Below is his/her reason for quitting:
+{{ reason }}
+
+You can download the information of all members in your club by accessing club management page (Check Members’ Info), so you do not have to save this page.
+
+{% endblock %}
