@@ -1,0 +1,35 @@
+{% extends "base" %}
+{% block main %}
+
+For privacy reason, even we cannot access your original password.
+
+Therefore, we have reset your password temporarily. Please immediately go to your personal page and change your password. 
+
+Your information:
+Student ID number: {{ current_user.studentid }}
+New temporary password: {{ temp_password }}
+
+Thank you for using oClubs.
+
+Sincerely,
+oClubs Production Team
+
+REGISTER HONGMEI:
+Title: Submitted Plan for HongMei
+
+Hi {{ current_user.nickname }},
+
+You have successfully submitted your HongMei plan.
+
+Below is your schedule:
+
+Club: {{ club.name }}
+
+{% for day in plan %}
+Date: {{ day.date }}
+Content: {{ day.description }}
+{% endfor %}
+
+Please remember to attend these HongMei activities.
+
+{% endblock %}
