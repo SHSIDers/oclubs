@@ -206,6 +206,24 @@ def actpost(activity):
                            title='Activity Post')
 
 
+@actblueprint.route('/<activity>/change_activity_post')
+@get_callsign(Activity, 'activity')
+@special_access_required
+def changeactpost(activity):
+    '''Page for club leader to change activity post'''
+    return render_template('activity/changeactpost.html',
+                           title='Change Activity Post',
+                           act=activity)
+
+
+@actblueprint.route('/<activity>/change_activity_post/submit', methods=['POST'])
+@get_callsign(Activity, 'activity')
+@special_access_required
+def changeactpost_submit(activity):
+    '''Input info into database'''
+    pass
+
+
 @actblueprint.route('/<club>/hongmei_status')
 @get_callsign(Club, 'club')
 @special_access_required

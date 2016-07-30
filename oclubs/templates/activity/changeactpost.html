@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+{% with messages = get_flashed_messages(category_filter=["success"]) %}
+
+<!-- Below Navbar -->
+<div class="large_container">
+	<form class="form-group" action="{{ url_for('.changeactpost_submit', activity=act.callsign) }}" method="post" enctype="multipart/form-data" style="color:#f2f2f2">
+		<h1 class="title">Change Activity Info</h1>
+		<h2 class="title_next">{{ act.club.name }}</h2>
+		<h2 class="title_next">{{ act.name }}</h2>
+		{% if messages %}
+		<ul class="list-group" style="color:black">
+			{% for message in messages %}
+			<li class="list-group-item">{{ message }}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+		<p>*Please input below.</p>
+		<label for="picture" style="font-size:200%">Picture:</label>
+		<input type="file" name="picture" id="picture" accept="image/*" style="width:0.1px; height:0.1px; opacity:0">
+		<label for="picture" class="upload_button">
+			<span class="glyphicon glyphicon-upload"></span>
+			<span>Choose images...</span>
+		</label>
+		<br>		
+		<label for="post" style="font-size:200%">Activity Post Contents:</label>
+		<p>Current:</p>
+		{{ act.post.formatted }}
+		<p>New:</p>
+		<textarea class="form-control" rows="10" name="post" id="post"></textarea>
+		<br>
+		<p>*We support markdown in this post.</p>
+		<br>
+		<input type="submit" class="btn btn-primary" value="Submit">
+	</form>
+</div>
+
+<div class="clearfix"></div>
+
+{% endwith %}
+{% endblock %}
