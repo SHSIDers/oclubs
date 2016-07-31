@@ -8,6 +8,7 @@ import re
 from StringIO import StringIO
 import xlsxwriter
 from pyexcel_xlsx import get_data
+import json
 
 from Crypto.Cipher import AES
 from Crypto import Random
@@ -58,12 +59,26 @@ def download_xlsx(filename, info):
     return Response(output.read(), mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', headers=headers)
 
 
-def read_xlsx(filename):
+def read_xlsx(filename, data_type):
     '''Read xlsx and return a list of data'''
-    if request.files['excel'] == '':
+    if request.files['excel'].filename == '':
         raise ValueError
-    data = get_data(request.files['excel'])
-    
+    raw = get_data(request.files['excel'])
+    data = json.loads(raw)[data_type]
+    if data_type == 'Users':
+        if data[0] != ['Student ID', 'Passport Name', 'Email Address']:
+            raise ValueError
+    else:
+        if data[0] != ['Club Name',
+                       'CL Student ID',
+                       'CL Passport Name',
+                       'CT ID',
+                       'CT Passport Name',
+                       'Club Location',
+                       'Club Type']:
+            raise ValueError
+    contents = data[1:]
+    return contents
 
 
 def get_callsign(objtype, kw):

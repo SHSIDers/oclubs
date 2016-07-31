@@ -1003,6 +1003,12 @@ thead.darklist {
 	border-width: 5px;
 }
 
+.admin_function p {
+
+	color: #f2f2f2;
+	font-family: 'Georgia';
+}
+
 .admin_button {
 	margin: 1em;
 	float: left;
