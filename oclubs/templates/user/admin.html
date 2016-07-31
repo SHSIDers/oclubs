@@ -1,7 +1,7 @@
 {% extends "user/personal.html" %}
 {% block personal %}
 
-<h2 class="title_next">Administrator Functions</h2>
+<h2 class="title_next">Download</h2>
 <div class="col-sm-3 admin_function">
 	<h2 class="text-center" style="color:#f2f2f2">Download All Clubs' Info</h2>
 	<center><a href="{{ url_for('.allclubsinfo') }}" target="_blank">
@@ -19,7 +19,7 @@
 <br>
 <div class="clearfix clearfix-bordered"></div>
 
-<h2 class="title_next">Adjust Database</h2>
+<h2 class="title_next">Other Administrative Functions</h2>
 <div class="admin_button">
 	<a href="{{ url_for('.newusers') }}">
 		<button class="btn btn-success">Add New Users</button>
