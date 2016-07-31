@@ -62,7 +62,7 @@ def download_xlsx(filename, info):
 def read_xlsx(file, data_type):
     '''Read xlsx and return a list of data'''
     raw = get_data(file)
-    data = json.loads(json.dumps(raw))[data_type]
+    data = raw[data_type]
     if data_type == 'Users':
         if data[0] != ['Student ID', 'Passport Name', 'Email Address']:
             raise ValueError

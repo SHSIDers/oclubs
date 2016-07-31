@@ -203,7 +203,11 @@ def newusers():
     '''Upload excel file to create new users'''
     if request.files['excel'].filename == '':
         raise ValueError
-    contents = read_xlsx(request.files['excel'], 'Users')
+    try:
+        contents = read_xlsx(request.files['excel'], 'Users')
+    except KeyError:
+        flash('Please change sheet name to "Users"', 'newusers')
+        return redirect(url_for('.new'))
     info = []
     info.append(['Login Name', 'Password'])
     for info_new in contents:
@@ -224,13 +228,24 @@ def newusers():
         parameters = {'user': u, 'password': password}
         contents = pystache.render(data, parameters)
         u.email_user('Your Account on oClubs', contents)
+    flash('New users have been successfully created.', 'newusers')
     return redirect(url_for('.new'))
 
 
-@userblueprint.route('/new_clubs', methods=['POST'])
+@userblueprint.route('/new_club')
+@login_required
+def newclub():
+    '''Allow teacher or admin to create new club'''
+    if current_user.type == UserType.STUDENT:
+        abort(403)
+    return render_template('user/newclub.html',
+                           title='New Club')
+
+
+@userblueprint.route('/new_club/submit', methods=['POST'])
 @login_required
 @special_access_required
-def newclubs():
+def newclub_submit():
     '''Upload excel file to create new clubs'''
     pass
 

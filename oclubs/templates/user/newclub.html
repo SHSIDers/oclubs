@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+{% with messages = get_flashed_messages(category_filter=["success"]) %}
+
+<!-- Below Navbar -->
+<div class="large_container">
+	<form class="form-group" action="{{ url_for('.newclub_submit') }}" method="post" enctype="multipart/form-data" style="color:#f2f2f2">
+		<h1 class="title">Add New Club</h1>
+		<h2 class="title_next">Club Teacher: {{ current_user.nickname }}</h2>
+		{% if messages %}
+		<ul class="list-group" style="color:black">
+			{% for message in messages %}
+			<li class="list-group-item">{{ message }}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+		<p>*Please input below.</p>
+		<label for="clubname" style="font-size:200%">Club Name:</label>
+		<input type="text" class="form-control" name="clubname" id="clubname">
+		<br>		
+		<label for="description" style="font-size:200%">Club Leader:</label>
+		<p>Student ID:</p>
+		<input type="text" class="form-control" name="studentid" id="studentid">
+		<br>
+		<p>Passport Name:</p>
+		<input type="text" class="form-control" name="passportname" id="passportname">
+		<br>
+		<input type="submit" class="btn btn-primary btn-lg" value="Create Club">
+	</form>
+</div>
+
+<div class="clearfix"></div>
+
+{% endwith %}
+{% endblock %}

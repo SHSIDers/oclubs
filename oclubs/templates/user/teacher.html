@@ -25,7 +25,13 @@
 	<label class="clearfix"></label>
 	{% endfor %}
 </div>
-<div class="clearfix"></div>
+<div class="clearfix clearfix-bordered"></div>
+<br>
 
+<center><a href="{{ url_for('.newclub') }}">
+	<button class="btn btn-success large_button">Add New Club</button>
+</a></center>
+
+<div class="clearfix"></div>
 
 {% endblock %}
