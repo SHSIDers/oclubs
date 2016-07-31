@@ -28,7 +28,7 @@ class Club(BaseObject):
 
     @property
     def is_excellent(self):
-        return self.id in self.excellentclubs()
+        return self in self.excellentclubs()
 
     @property
     def members_num(self):

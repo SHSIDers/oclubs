@@ -8,7 +8,6 @@ import re
 from StringIO import StringIO
 import xlsxwriter
 from pyexcel_xlsx import get_data
-import json
 
 from Crypto.Cipher import AES
 from Crypto import Random
@@ -63,18 +62,8 @@ def read_xlsx(file, data_type):
     '''Read xlsx and return a list of data'''
     raw = get_data(file)
     data = raw[data_type]
-    if data_type == 'Users':
-        if data[0] != ['Student ID', 'Passport Name', 'Email Address']:
-            raise ValueError
-    else:
-        if data[0] != ['Club Name',
-                       'CL Student ID',
-                       'CL Passport Name',
-                       'CT ID',
-                       'CT Passport Name',
-                       'Club Location',
-                       'Club Type']:
-            raise ValueError
+    if data_type == 'Users' and data[0] != ['Student ID', 'Passport Name', 'Email Address']:
+        raise ValueError
     contents = data[1:]
     return contents
 

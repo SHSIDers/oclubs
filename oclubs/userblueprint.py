@@ -237,8 +237,27 @@ def newclub_submit():
 @special_access_required
 def adjustclubs():
     '''Allow admin to change clubs' status'''
+    clubs = Club.allclubs()
     return render_template('user/adjustclubs.html',
-                           title='Adjust Clubs')
+                           title='Adjust Clubs',
+                           clubs=clubs)
+
+
+@userblueprint.route('/adjust_clubs/submit', methods=['POST'])
+@login_required
+@special_access_required
+def adjustclubs_submit():
+    '''Input change in clubs into database'''
+    exc_clubs = Club.excellentclubs()
+    print exc_clubs
+    club = Club(request.form['clubid'])
+    if club in exc_clubs:
+        exc_clubs.remove(club)
+    else:
+        exc_clubs.append(club)
+    Club.set_excellentclubs(exc_clubs)
+    flash('The change has been successfully submitted', 'adjustclubs')
+    return redirect(url_for('.adjustclubs'))
 
 
 @userblueprint.route('/forgot_password')

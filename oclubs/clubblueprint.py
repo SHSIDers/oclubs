@@ -68,7 +68,7 @@ def clubintro_submit(club):
         data = textfile.read()
     parameters = {'club': club, 'current_user': current_user}
     contents = pystache.render(data, parameters)
-    email.send('derril1998@qq.com', 'New Club Member - ' + club.name, contents)
+    club.leader.email_user('New Club Member - ' + club.name, contents)
     flash('You have successfully joined ' + club.name + '.', 'join')
     return redirect(url_for('.clubintro', club=club.callsign))
 
