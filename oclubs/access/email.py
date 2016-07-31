@@ -17,8 +17,8 @@ from_email = Email("no-reply@oclubs.shsid.org", "oClubs")
 
 def send(to_email, subject, content):
     content = Content("text/plain", content)
-    if isinstance(to_email, tuple):
-        to_email = Email(*to_email)
+    if isinstance(to_email, dict):
+        to_email = Email(**to_email)
     else:
         to_email = Email(to_email)
     mail = Mail(from_email, subject, to_email, content)
