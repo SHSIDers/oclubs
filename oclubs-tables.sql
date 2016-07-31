@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS user (
 	user_email tinytext NOT NULL,
 	user_phone bigint,
 	user_type tinyint NOT NULL, # 1=student 2=teacher 3=admin
-	user_grad_year int # NULL for teachers
+	user_grade tinyint, # NULL for teachers
+	user_class tinyint # NULL for teachers
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS user_login_name ON user (user_login_name);

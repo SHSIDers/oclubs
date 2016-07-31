@@ -15,3 +15,5 @@ pycrypto
 sendgrid
 xlsxwriter
 pyexcel-xlsx
+xkcdpass
+argparse

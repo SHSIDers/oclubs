@@ -6,6 +6,7 @@ from __future__ import absolute_import, unicode_literals
 
 from flask_login import UserMixin
 from passlib.context import CryptContext
+from xkcdpass import xkcd_password as xp
 
 from oclubs.access import database
 from oclubs.enums import UserType
@@ -13,6 +14,7 @@ from oclubs.exceptions import NoRow
 from oclubs.objs.base import BaseObject, Property, ListProperty
 
 _crypt = CryptContext(schemes=['bcrypt'])  # , 'sha512_crypt', 'pbkdf2_sha512'
+_words = xp.generate_wordlist(wordfile=xp.locate_wordfile())
 
 
 class User(BaseObject, UserMixin):
@@ -85,3 +87,23 @@ class User(BaseObject, UserMixin):
                 return User(data['id'])
             else:
                 return
+
+    @staticmethod
+    def find_user(studentid, passportname):
+        try:
+            data = database.fetch_onerow(
+                'user',
+                {'user_id': 'id', 'user_passport_name': 'passportname'},
+                [('=', 'user_login_name', studentid)]
+            )
+        except NoRow:
+            return
+        else:
+            if _crypt.verify(passportname, data['passportname']):
+                return User(data['id'])
+            else:
+                return
+
+    @staticmethod
+    def generate_password():
+        return xp.generate_xkcdpassword(_words)

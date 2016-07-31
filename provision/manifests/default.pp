@@ -17,6 +17,14 @@ service { 'redis':
     require => Package['redis'],
 }
 
+$redis_password = 'rhupwegPadroc)QuaysDigdobGotachOpbaljiebGadMyn1Drojryt'
+
+exec { 'redis-set-pw':
+    command => "/bin/sed -ie 's/# requirepass foobared/requirepass ${redis_password}/' /etc/redis.conf",
+    notify  => Service['redis'],
+    require => Package['redis'],
+}
+
 package { 'nginx':
     ensure  => present,
     require => Package['epel-release']
@@ -68,7 +76,7 @@ service { 'mysql':
 
 $mysql_password = 'TacOrnibVeeHoFrej2RindofDic5faquavrymebZaidEytCojPhuanEr'
 
-exec { 'sql-set-root-pw':
+exec { 'db-set-root-pw':
     command => "/usr/bin/mysqladmin -u root password ${mysql_password}",
     unless  => "/usr/bin/mysqladmin -u root -p${mysql_password} status",
     require => Service['mysql'],
@@ -76,7 +84,7 @@ exec { 'sql-set-root-pw':
 
 exec { 'sql-import':
     command => "/usr/bin/mysql -u root -p${mysql_password} < /vagrant/oclubs-tables.sql",
-    require => Exec['sql-set-root-pw'],
+    require => Exec['db-set-root-pw'],
 }
 
 package { 'java-1.8.0-openjdk':
@@ -227,9 +235,9 @@ file { '/srv/oclubs/images':
 file { '/srv/oclubs/secrets.ini':
     ensure  => file,
     replace => 'no',
-    mode    => '0644',
-    owner   => 'root',
-    group   => 'root',
+    mode    => '0440',
+    owner   => 'uwsgi',
+    group   => 'vagrant',
     source  => '/vagrant/provision/secrets.ini'
 }
 

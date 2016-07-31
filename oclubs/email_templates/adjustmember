@@ -1,0 +1,6 @@
+{% extends "base" %}
+{% block main %}
+
+We are sorry to inform you. You have been expelled from {{ club.name }}. If you have any further question, please contact club leader for more information.
+
+{% endblock %}

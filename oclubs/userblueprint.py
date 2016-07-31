@@ -11,7 +11,7 @@ from flask_login import current_user, login_required, fresh_login_required
 
 from oclubs.objs import User, Club, Activity, Upload
 from oclubs.enums import UserType, ClubType, ActivityTime
-from oclubs.shared import get_callsign, special_access_required, download_xlsx
+from oclubs.shared import get_callsign, special_access_required, download_xlsx, read_xlsx
 
 userblueprint = Blueprint('userblueprint', __name__)
 
@@ -61,14 +61,13 @@ def personal():
         meetings = []
         for meeting_obj in meetings_obj:
             meeting = {}
-            meeting['club'] = meeting_obj.club
+            meeting['act'] = meeting_obj
             time_int = meeting_obj.time
             if time_int == ActivityTime.NOON:
                 time = "Noon"
             else:
                 time = "Afternoon"
             meeting['time'] = meeting_obj.date.strftime('%Y-%m-%d') + ": " + time
-            meeting['location'] = meeting_obj.location
             meetings.append(meeting)
         activities_obj = current_user.activities_reminder([ActivityTime.UNKNOWN,
                                                            ActivityTime.HONGMEI,
@@ -76,7 +75,7 @@ def personal():
         activities = []
         for act_obj in activities_obj:
             act = {}
-            act['club'] = act_obj.club
+            act['act'] = act_obj
             time_int = act_obj.time
             if time_int == ActivityTime.UNKNOWN:
                 time = "Unknown time"
@@ -85,7 +84,6 @@ def personal():
             else:
                 time = "Individual club activity"
             act['time'] = str(act_obj.date) + ": " + time
-            act['location'] = act_obj.location
             activities.append(act)
         leader_club = []
         for club_obj in clubs:
@@ -201,7 +199,26 @@ def new():
 @special_access_required
 def newusers():
     '''Upload excel file to create new users'''
-    pass
+    if request.files['excel'].filename == '':
+        raise ValueError
+    contents = read_xlsx(request.files['excel'], 'Users')
+    info = []
+    info.append(['Login Name', 'Password'])
+    for info_new in contents:
+        u = User.new()
+        u.studentid = info_new[0]
+        u.passportname = info_new[1]
+        u.email = info_new[2]
+        password = User.generate_password()
+        u.password = password
+        info.append([u.studentid, password])
+        u.nickname = 'Please Change This'
+        u.phone = 1234567890
+        u.picture = Upload(-1)
+        u.type = UserType.STUDENT
+        u.gradyear = None
+        u.create()
+    return download_xlsx('New Accounts', info)
 
 
 @userblueprint.route('/new_clubs', methods=['POST'])

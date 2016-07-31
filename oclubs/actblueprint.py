@@ -77,26 +77,14 @@ def clubactivities(club, page):
 @actblueprint.route('/photos/<int:page>')
 def allphotos(page):
     pic_num = 20
-    acts_obj = Activity.all_activities()
-    act_recent = ''
+    acts_obj = Activity.get_activities_conditions(require_photos=True)
     if page == 1:
-        for act in acts_obj:
-            try:
-                assert act.pictures[0].location_external
-                act_recent = act
-            except IndexError:
-                continue
-            else:
-                break
-    acts = []
-    for act in acts_obj:
         try:
-            assert act.pictures[0]
+            act_recent = acts_obj[0]
         except IndexError:
-            continue
-        acts.append(act)
+            act_recent = ''
     all_pictures = []
-    for act in acts:
+    for act in acts_obj:
         each_block = {}
         each_block['activity'] = act
         each_block['club'] = act.club
@@ -106,7 +94,7 @@ def allphotos(page):
             all_pictures.append(each)
 
     pagination = Pagination(page, pic_num, len(all_pictures))
-    acts = acts[(page-1)*pic_num: page*pic_num]
+    all_pictures = all_pictures[(page-1)*pic_num: page*pic_num]
     return render_template('activity/photos.html',
                            title='All Photos',
                            is_photos=True,
@@ -169,8 +157,8 @@ def newact_submit(club):
         if request.form['description']:
             a.description = FormattedText.handle(current_user, club, request.form['description'])
         else:
-            a.description = None
-        a.post = None
+            a.description = FormattedText(0)
+        a.post = FormattedText(0)
         a.date = datetime.strptime(request.form['date'], '%Y-%m-%d')
         a.time = ActivityTime[request.form['act_type'].upper()]
         a.location = request.form['location']
@@ -216,6 +204,24 @@ def actpost(activity):
     '''Activity Post Page'''
     return render_template('activity/actpost.html',
                            title='Activity Post')
+
+
+@actblueprint.route('/<activity>/change_activity_post')
+@get_callsign(Activity, 'activity')
+@special_access_required
+def changeactpost(activity):
+    '''Page for club leader to change activity post'''
+    return render_template('activity/changeactpost.html',
+                           title='Change Activity Post',
+                           act=activity)
+
+
+@actblueprint.route('/<activity>/change_activity_post/submit', methods=['POST'])
+@get_callsign(Activity, 'activity')
+@special_access_required
+def changeactpost_submit(activity):
+    '''Input info into database'''
+    pass
 
 
 @actblueprint.route('/<club>/hongmei_status')

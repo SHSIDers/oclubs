@@ -1,0 +1,6 @@
+{% extends "base" %}
+{% block main %}
+
+{{ leader_old.nickname }} has selected {{ club.leader.nickname }} as new club leader for {{ club.name }}.
+
+{% endblock %}

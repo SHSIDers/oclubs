@@ -1,0 +1,10 @@
+Hi {{ target_user.nickname }},
+{% block main %}{% endblock %}
+This is an automatically generated email. Please do not reply.
+
+Thank you for using oClubs.
+
+Sincerely,
+oClubs Production Team
+
+http://www.oclubs.shsid.org/

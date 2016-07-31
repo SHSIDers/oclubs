@@ -11,9 +11,10 @@ from flask import (
 )
 from flask_login import current_user, login_required
 
-from oclubs.objs import User, Club, Upload
+from oclubs.objs import User, Club, Upload, FormattedText
 from oclubs.enums import UserType, ClubType, ActivityTime
-from oclubs.shared import download_xlsx, upload_picture, get_callsign, special_access_required
+from oclubs.shared import download_xlsx, get_callsign, special_access_required
+from oclubs.access.email import send
 
 clubblueprint = Blueprint('clubblueprint', __name__)
 
@@ -62,6 +63,9 @@ def clubintro(club):
 def clubintro_submit(club):
     '''Add new member'''
     club.add_member(current_user)
+    send('derril1998@qq.com',
+         'New Club Member' + club.name, 'test')
+         # render_template('/email_templates/joinclubs'))
     flash('You have successfully joined ' + club.name + '.', 'join')
     return redirect(url_for('.clubintro', club=club.callsign))
 
@@ -94,7 +98,6 @@ def newleader_submit(club):
 
 @clubblueprint.route('/<club>/member_info')
 @get_callsign(Club, 'club')
-@special_access_required
 def memberinfo(club):
     '''Check Members' Info'''
     return render_template('club/memberinfo.html',
@@ -137,8 +140,9 @@ def changeclubinfo_submit(club):
     if request.form['intro'] != '':
         club.intro = request.form['intro']
     if request.form['description'] != '':
-        club.desc = request.form['description']
-    club.picture = upload_picture(club)
+        club.description = FormattedText.handle(current_user, club, request.form['description'])
+    if request.files['picture'].filename != '':
+        club.picture = Upload.handle(current_user, club, request.files['picture'])
     flash('The information about club has been successfully submitted.', 'success')
     return redirect(url_for('.changeclubinfo', club=club.callsign))
 

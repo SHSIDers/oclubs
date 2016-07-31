@@ -8,6 +8,7 @@ import re
 from StringIO import StringIO
 import xlsxwriter
 from pyexcel_xlsx import get_data
+import json
 
 from Crypto.Cipher import AES
 from Crypto import Random
@@ -21,15 +22,6 @@ from oclubs.objs import Upload
 from oclubs.access import get_secret
 from oclubs.exceptions import NoRow
 from oclubs.enums import UserType
-
-
-@login_required
-def upload_picture(club):
-    '''Handle upload object'''
-    if request.files['picture'] == '':
-        return club.picture
-    file = request.files['picture']
-    return Upload.handle(current_user, club, file)
 
 
 class MemoryLine():
@@ -67,11 +59,24 @@ def download_xlsx(filename, info):
     return Response(output.read(), mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', headers=headers)
 
 
-def read_xlsx(filename):
+def read_xlsx(file, data_type):
     '''Read xlsx and return a list of data'''
-    if request.files['excel'] == '':
-        raise 
-    data = get_data(filename)
+    raw = get_data(file)
+    data = json.loads(json.dumps(raw))[data_type]
+    if data_type == 'Users':
+        if data[0] != ['Student ID', 'Passport Name', 'Email Address']:
+            raise ValueError
+    else:
+        if data[0] != ['Club Name',
+                       'CL Student ID',
+                       'CL Passport Name',
+                       'CT ID',
+                       'CT Passport Name',
+                       'Club Location',
+                       'Club Type']:
+            raise ValueError
+    contents = data[1:]
+    return contents
 
 
 def get_callsign(objtype, kw):

@@ -155,14 +155,16 @@ def search():
     page = int(request.args.get('page', 1))
 
     if search_type == 'club':
-        cls, title, desc, pic = (Club, 'name', ['intro', 'description'],
-                                 lambda obj: obj.picture)
+        cls, title, desc, pic, extras = (
+            Club, 'name', ['intro', 'description'], lambda obj: obj.picture,
+            [])
     else:
-        cls, title, desc, pic = (Activity, 'name', ['description', 'post'],
-                                 lambda obj: obj.pictures[0]
-                                 if obj.pictures else None)
+        cls, title, desc, pic, extras = (
+            Activity, 'name', ['description', 'post'],
+            lambda obj: obj.pictures[0] if obj.pictures else None,
+            [('date', lambda obj: obj.date.isoformat())])
 
-    search_result = cls.search(keywords, offset=(page-1)/10, size=10)
+    search_result = cls.search(keywords, offset=(page-1)*10, size=10)
 
     results = []
     for result in search_result['results']:
@@ -170,12 +172,16 @@ def search():
         highlight = result['highlight']
 
         try:
-            results.append({
+            resultdict = {
                 'obj': obj,
                 'name': _search_hl_or_attr(obj, highlight, [title]),
                 'desc': _search_hl_or_attr(obj, highlight, desc),
                 'pic': pic(obj)
-            })
+            }
+            for key, func in extras:
+                resultdict[key] = func(obj)
+
+            results.append(resultdict)
         except NoRow:  # database unsyncronized
             continue
 

@@ -27,7 +27,7 @@
 	<br>
 	{% for result in results %}
 	<div class="search_block clickable" data-href="{% if search_type == 'club' %}{{ url_for('clubblueprint.clubintro', club=result.obj.callsign) }}{% else %}{{ url_for('actblueprint.activity', activity=result.obj.callsign) }}{% endif %}">
-		<h1>{{ result.name }}</h1>
+		<h1>{{ result.name }}{% if result.date %} - <span style="font-size:80%">{{ result.date }}</span>{% endif %}</h1>
 		{% if result.pic %}
 		<div class="col-sm-2">
 			<img src="{{ result.pic.location_external }}" class="img-responsive img-thumbnail" alt="{{ result.name }}">
