@@ -144,7 +144,6 @@ def personalsubmitpassword():
 
 
 @userblueprint.route('/all_clubs_info')
-@login_required
 @special_access_required
 def allclubsinfo():
     '''Allow admin to download all clubs' info'''
@@ -166,7 +165,6 @@ def allclubsinfo():
 
 
 @userblueprint.route('/all_activities_info')
-@login_required
 @special_access_required
 def allactivitiesinfo():
     '''Allow admin to download all activities' info'''
@@ -184,6 +182,25 @@ def allactivitiesinfo():
         info_each.append(act.cas)
         info.append(info_each)
     return download_xlsx('All Activities\' Info.xlsx', info)
+
+
+@userblueprint.route('/all_users_info')
+@special_access_required
+def allusersinfo():
+    '''Allow admin to download all users' info'''
+    info = []
+    info.append(['ID', 'Student ID', 'Nick Name', 'Passport Name', 'Email', 'Phone'])
+    users = User.allusers()
+    for user in users:
+        info_each = []
+        info_each.append(user.id)
+        info_each.append(user.studentid)
+        info_each.append(user.nickname)
+        info_each.append(user.passportname)
+        info_each.append(user.email)
+        info_each.append(str(user.phone))
+        info.append(info_each)
+    return download_xlsx('All Users\' Info.xlsx', info)
 
 
 @userblueprint.route('/new_users')
