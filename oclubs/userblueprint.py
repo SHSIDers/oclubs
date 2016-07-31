@@ -186,19 +186,19 @@ def allactivitiesinfo():
     return download_xlsx('All Activities\' Info.xlsx', info)
 
 
-@userblueprint.route('/new')
-@login_required
-@special_access_required
-def new():
-    '''Allow admin to create new user or clubs'''
-    return render_template('user/new.html',
-                           title='New Contents')
-
-
-@userblueprint.route('/new_users', methods=['POST'])
+@userblueprint.route('/new_users')
 @login_required
 @special_access_required
 def newusers():
+    '''Allow admin to create new user or clubs'''
+    return render_template('user/newusers.html',
+                           title='New Users')
+
+
+@userblueprint.route('/new_users/submit', methods=['POST'])
+@login_required
+@special_access_required
+def newusers_submit():
     '''Upload excel file to create new users'''
     if request.files['excel'].filename == '':
         raise ValueError
@@ -211,7 +211,7 @@ def newusers():
     from oclubs.worker import create_user
     for info_new in contents:
         create_user.delay(*info_new)
-    return redirect(url_for('.new'))
+    return redirect(url_for('.newusers'))
 
 
 @userblueprint.route('/new_club')
@@ -225,15 +225,23 @@ def newclub():
 
 
 @userblueprint.route('/new_club/submit', methods=['POST'])
-@login_required
 @special_access_required
 def newclub_submit():
     '''Upload excel file to create new clubs'''
     pass
 
 
+@userblueprint.route('/club_management_list')
+@special_access_required
+def clubmanagementlist():
+    '''Allow admin to access club management list'''
+    clubs = Club.allclubs()
+    return render_template('user/clubmanagementlist.html',
+                           title='Club Management List',
+                           clubs=clubs)
+
+
 @userblueprint.route('/adjust_clubs')
-@login_required
 @special_access_required
 def adjustclubs():
     '''Allow admin to change clubs' status'''
@@ -244,7 +252,6 @@ def adjustclubs():
 
 
 @userblueprint.route('/adjust_clubs/submit', methods=['POST'])
-@login_required
 @special_access_required
 def adjustclubs_submit():
     '''Input change in clubs into database'''
