@@ -45,62 +45,66 @@
 	<h2 style="color:#f2f2f2">Club Meetings</h2>
 	<br>
 	<table class="table table-hover table-bordered">
-        <thead class="list">
-            <tr style="background-color:#bfbfbf">
-                <th>Club</th>
-                <th>Time</th>
-                <th>Location</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for meeting in meetings %}
-            <tr class="clickable act" data-href="{{ url_for('actblueprint.activity', activity=meeting.act.callsign) }}">
-                <td>{{ meeting.act.club.name }}</td>
-                <td>{{ meeting.time }}</td>
-                <td>{{ meeting.act.location }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+		<thead class="list">
+			<tr style="background-color:#bfbfbf">
+				<th>Club</th>
+				<th>Time</th>
+				<th>Location</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for meeting in meetings %}
+			<tr class="clickable act" data-href="{{ url_for('actblueprint.activity', activity=meeting.act.callsign) }}">
+				<td>{{ meeting.act.club.name }}</td>
+				<td>{{ meeting.time }}</td>
+				<td>{{ meeting.act.location }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 	<br>
-    <h3 style="color:#f2f2f2">Check activities page to see more.</h3>
-    <h3 style="color:#f2f2f2">No need for signup.</h3>
+	<h3 style="color:#f2f2f2">Check activities page to see more.</h3>
+	<h3 style="color:#f2f2f2">No need for signup.</h3>
 </div>
 <div class="col-sm-6">
 	<h2 style="color:#f2f2f2">Activities</h2>
 	<br>
 	<table class="table table-hover table-bordered">
-        <thead class="list">
-            <tr style="background-color:#bfbfbf">
-                <th>Club</th>
-                <th>Time</th>
-                <th>Location</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for act in activities %}
-            <tr class="clickable act" data-href="{{ url_for('actblueprint.activity', activity=act.act.callsign) }}">
-                <td>{{ act.act.club.name }}</td>
-                <td>{{ act.time }}</td>
-                <td>{{ act.act.location }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <center><a href="{{ url_for('actblueprint.allactivities', club_type='all', page='1') }}">
-        <button class="btn btn-info" style="padding:5% 10% 5% 10%; font-size:125%">Register More</button>
-    </a></center>
+		<thead class="list">
+			<tr style="background-color:#bfbfbf">
+				<th>Club</th>
+				<th>Time</th>
+				<th>Location</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for act in activities %}
+			<tr class="clickable act" data-href="{{ url_for('actblueprint.activity', activity=act.act.callsign) }}">
+				<td>{{ act.act.club.name }}</td>
+				<td>{{ act.time }}</td>
+				<td>{{ act.act.location }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<center><a href="{{ url_for('actblueprint.allactivities', club_type='all', page='1') }}">
+		<button class="btn btn-info" style="padding:5% 10% 5% 10%; font-size:125%">Register Individual Club Activities</button>
+	</a></center>
+	<br>
+	<center><a href="{{ url_for('clubblueprint.clublist', club_type='all') }}">
+		<button class="btn btn-info" style="padding:5% 10% 5% 10%; font-size:125%">Register HongMei Activities</button>
+	</a></center>
 </div>
 <div class="clearfix {% if leader_club %}clearfix-bordered{% endif %}"></div>
 
 {% if leader_club %}
 <br>
 <div class="container">
-    {% for club in leader_club %}
-    <a href="{{ url_for('clubblueprint.club', club=club.callsign) }}">
-    	<button class="btn btn-success" style="padding:2%;font-size:125%">Manage {{ club.name }}</button>
-    </a>
-    {% endfor %}
+	{% for club in leader_club %}
+	<a href="{{ url_for('clubblueprint.club', club=club.callsign) }}">
+		<button class="btn btn-success" style="padding:2%;font-size:125%">Manage {{ club.name }}</button>
+	</a>
+	{% endfor %}
 </div>
 {% endif %}
 
