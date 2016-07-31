@@ -4,12 +4,11 @@
 
 from __future__ import absolute_import, unicode_literals
 
-import pystache
-
 from flask import (
     Blueprint, render_template, url_for, request, session, redirect, abort, flash
 )
 from flask_login import current_user, login_required, fresh_login_required
+import pystache
 
 from oclubs.objs import User, Club, Activity, Upload
 from oclubs.enums import UserType, ClubType, ActivityTime
@@ -208,27 +207,10 @@ def newusers():
     except KeyError:
         flash('Please change sheet name to "Users"', 'newusers')
         return redirect(url_for('.new'))
-    info = []
-    info.append(['Login Name', 'Password'])
+
+    from oclubs.worker import create_user
     for info_new in contents:
-        u = User.new()
-        u.studentid = info_new[0]
-        u.passportname = info_new[1]
-        u.email = info_new[2]
-        password = User.generate_password()
-        u.password = password
-        u.nickname = info_new[1]
-        u.phone = None
-        u.picture = Upload(-1)
-        u.type = UserType.STUDENT
-        u.gradyear = None
-        u.create()
-        with open('/srv/oclubs/email_templates/newuser', 'r') as textfile:
-            data = textfile.read()
-        parameters = {'user': u, 'password': password}
-        contents = pystache.render(data, parameters)
-        u.email_user('Your Account on oClubs', contents)
-    flash('New users have been successfully created.', 'newusers')
+        create_user.delay(*info_new)
     return redirect(url_for('.new'))
 
 

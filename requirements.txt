@@ -17,3 +17,5 @@ xlsxwriter
 pyexcel-xlsx
 xkcdpass
 argparse
+celery[redis]
+pystache

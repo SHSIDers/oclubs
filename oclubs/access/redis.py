@@ -11,6 +11,7 @@ import json
 from oclubs.access import get_secret
 
 r = Redis(host='localhost', port=6379, db=0, password=get_secret('redis_pw'))
+r_url_celery = 'redis://:' + get_secret('redis_pw') + '@localhost:6379/'
 
 
 def done(commit=True):

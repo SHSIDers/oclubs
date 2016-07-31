@@ -235,9 +235,9 @@ file { '/srv/oclubs/images':
 file { '/srv/oclubs/secrets.ini':
     ensure  => file,
     replace => 'no',
-    mode    => '0440',
-    owner   => 'uwsgi',
-    group   => 'vagrant',
+    mode    => '0644',
+    owner   => 'root',
+    group   => 'root',
     source  => '/vagrant/provision/secrets.ini'
 }
 
@@ -246,7 +246,6 @@ service { 'iptables':
     enable => true,
 }
 
-
 file { '/etc/sysconfig/iptables':
     ensure => file,
     mode   => '0600',
@@ -254,4 +253,37 @@ file { '/etc/sysconfig/iptables':
     group  => 'root',
     source => '/vagrant/provision/iptables',
     notify => Service['iptables']
+}
+
+
+user { 'celery':
+    ensure  => present,
+    comment => 'Celery service user',
+    home    => '/srv',
+    shell   => '/bin/bash',
+    require => Exec['pip-install-requirements'],
+    before  => Service['celeryd'],
+}
+
+file { '/etc/init.d/celeryd':
+    ensure => file,
+    mode   => '0755',
+    owner  => 'root',
+    group  => 'root',
+    source => '/vagrant/provision/celeryd',
+    notify => Service['celeryd'],
+}
+
+file { '/etc/default/celeryd':
+    ensure => file,
+    mode   => '0644',
+    owner  => 'root',
+    group  => 'root',
+    source => '/vagrant/provision/celeryd-config',
+    notify => Service['celeryd'],
+}
+
+service { 'celeryd':
+    ensure => running,
+    enable => true,
 }
