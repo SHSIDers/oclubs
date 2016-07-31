@@ -212,8 +212,8 @@ def newusers():
         password = User.generate_password()
         u.password = password
         info.append([u.studentid, password])
-        u.nickname = 'Please Change This'
-        u.phone = 1234567890
+        u.nickname = info_new[1]
+        u.phone = None
         u.picture = Upload(-1)
         u.type = UserType.STUDENT
         u.gradyear = None

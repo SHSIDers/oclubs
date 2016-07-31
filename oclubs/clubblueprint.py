@@ -5,6 +5,7 @@
 from __future__ import absolute_import, unicode_literals
 
 import re
+import pystache
 
 from flask import (
     Blueprint, render_template, url_for, request, session, redirect, flash, abort
@@ -14,7 +15,7 @@ from flask_login import current_user, login_required
 from oclubs.objs import User, Club, Upload, FormattedText
 from oclubs.enums import UserType, ClubType, ActivityTime
 from oclubs.shared import download_xlsx, get_callsign, special_access_required
-from oclubs.access.email import send
+from oclubs.access import email
 
 clubblueprint = Blueprint('clubblueprint', __name__)
 
@@ -63,9 +64,11 @@ def clubintro(club):
 def clubintro_submit(club):
     '''Add new member'''
     club.add_member(current_user)
-    send('derril1998@qq.com',
-         'New Club Member' + club.name, 'test')
-         # render_template('/email_templates/joinclubs'))
+    with open('/srv/oclubs/email_templates/joinclubs', 'r') as textfile:
+        data = textfile.read()
+    parameters = {'club': club}
+    contents = pystache.render(data, parameters)
+    email.send('derril1998@qq.com', 'New Club Member' + club.name, contents)
     flash('You have successfully joined ' + club.name + '.', 'join')
     return redirect(url_for('.clubintro', club=club.callsign))
 
