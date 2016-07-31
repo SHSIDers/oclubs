@@ -291,8 +291,16 @@ def registerhm(club):
 def registerhm_submit(club):
     '''Submit HongMei signup info to database'''
     register = request.form['register']
+    plan = ''
     for reg in register:
         act = Activity(reg)
         act.signup(current_user)
+        plan += 'Date: ' + act.date.strftime('%b-%d-%y') + '\n\n' + \
+            'Content: ' + act.name + '\n\n'
+    with open('/srv/oclubs/email_templates/registerhm', 'r') as textfile:
+        data = textfile.read()
+    parameters = {'user': current_user, 'club': club, 'plan': plan}
+    contents = pystache.render(data, parameters)
+    current_user.email_user('HongMei Plan - ' + club.name, contents)
     flash('Your application has been successfully submitted.', 'reghm')
     return redirect(url_for('.registerhm', club=club.callsign))

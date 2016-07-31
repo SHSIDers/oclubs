@@ -1,5 +1,4 @@
-{% extends "base" %}
-{% block main %}
+Hi {{ user.nickname }},
 
 You have successfully submitted your HongMei plan.
 
@@ -7,11 +6,13 @@ Below is your schedule:
 
 Club: {{ club.name }}
 
-{% for day in plan %}
-Date: {{ day.date }}
-Content: {{ day.description }}
-{% endfor %}
+{{ plan }}
 
 Please remember to attend these HongMei activities.
 
-{% endblock %}
+Thank you for using oClubs.
+
+
+Sincerely,
+
+oClubs Production Team
