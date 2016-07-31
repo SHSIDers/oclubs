@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
+<meta floatmenu="viewport" content="width=device-width, initial-scale=1.0">
 <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" media="all">
 <script src="{{ url_for('static', filename='js/jquery-2.2.2.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
@@ -12,13 +12,36 @@
 
 <link href="{{ url_for('static', filename='css/oclubs.css') }}" rel="stylesheet" type="text/css" media="all">
 <script src="{{ url_for('static', filename='js/oclubs.js') }}"></script>
-
+<script src="{{ url_for('static', filename='js/jquery-2.2.2.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery-ui.js') }}"></script>
+<script language="javascript">
+function openNav() {
+    document.getElementById("mySidenav").style.width = (document.body.clientWidth/2) + "px";
+}
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+}
+</script>
+<style type="text/css">
+</style>
 <title>{{ title }} - oClubs!</title>
 
 </head>
 
 <body>
+	<div id="mySidenav" class="sidenav" style="z-index:2">
+  	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  	<a href="{{ url_for('homepage') }}">Home</a>
+  	<a href="{{ url_for('clubblueprint.clublist', club_type='all') }}">Club List</a>
+  	<a href="{{ url_for('actblueprint.allactivities', club_type='all', page='1') }}">Activities</a>
+  	<a href="{{ url_for('actblueprint.allphotos', page='1') }}">Photos</a>
+  	<a href="{{ url_for('about') }}">About</a>
+</div>
+<span class="glyphicon glyphicon-list" id="floatmenu" onclick="openNav()"></span>
+
 <div class="header">
+
+
 	<div class="container">
 		<div class="logo">
 			<a href="/"><img src="{{ url_for('static', filename='images/logo.png') }}" class="img-responsive" alt=""></a>
@@ -43,11 +66,11 @@
 		
 		<div class="login">
 			{% if current_user.is_authenticated %}
-			<span id="loginanimation" style="display: block;">
+			<span style="display: block;">
 				<a href="{{ url_for('userblueprint.personal') }}" style="text-decoration:none"><span class="glyphicon glyphicon-user"></span>&nbsp;{{ current_user.nickname }}</a>
 			</span>
 			{% else %}
-			<span id="loginanimation" style="display: block;">
+			<span id="loginanimation">
 				<a href="{{ url_for('login') }}" style="text-decoration:none"><span class="glyphicon glyphicon-log-in"></span>&nbsp;Login</a>
 			</span>
 			{% endif %}

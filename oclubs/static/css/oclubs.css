@@ -66,12 +66,12 @@ body {
 
 .logo {
 	float: left;
-	width: 15%;
 	margin: 1em 0 0;
+	width: 15%;
 }
 .top-nav {
 	float: left;
-	width: 48%;
+	width: 45%;
 }
 .top-nav ul {
 	padding:0;
@@ -79,9 +79,9 @@ body {
 }
 .top-nav ul  li {
 	display: inline-block;
-	width: 16.66%;
+	width: 20%;
 	float: left;
-	padding: 3em 0em 1.5em 0em;
+	padding: 3em 0.2em 1.5em 0.2em;
 }
 .top-nav ul  li.active {
 	background: #66a3ff;
@@ -176,11 +176,15 @@ body {
 .login {
 	float: right;
 	background: #0000b3;
-	width: 15%;
 	margin: 1.6em 0 0;
 	font-size: 18px;
 	background-color: #222;
 	font-family: "MV Boli";
+}
+
+#loginanimation {
+	float: right;
+	display: block;
 }
 
 .login a {
@@ -193,9 +197,9 @@ body {
 	padding: 0.25em 0;
 	background: #0000b3;
 	float: left;
-	width: 16%;
-	margin: 2em 0 0 0;
+	margin: 2em  0 0;
 	background-color: #222;
+	width: 20%;
 }
 .search input[type="text"] {
 	width: 80%;
@@ -220,20 +224,6 @@ body {
 	background-color:inherit;
 }
 
-#loginanimation.swing {
-	-webkit-animation-name: swing;
-	-moz-animation-name: swing;
-	-ms-animation-name: swing;
-	animation-name: swing;
-}
-
-#loginanimation {
-	animation-duration: 1s;
-			animation-delay: .2s;
-			animation-timing-function: ease;
-			animation-fill-mode: both;
-}
-/*till here is former header.css*/
 .blockpic{
 	float: left;
 	padding: 0;
@@ -1064,4 +1054,87 @@ thead.darklist {
 	text-align: center;
 	padding-top: 8px;
 	border-top: 1px dashed #000;
+}
+
+
+.sidenav {
+    height: 100%; 
+    width: 0; 
+    position: fixed; /
+    z-index: 2; 
+    top: 0;
+    left: 0;
+    background-color: #111; 
+    overflow-x: hidden; 
+    padding-top: 60px; 
+    transition: 0.5s; 
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s
+}
+
+.sidenav a:hover, .offcanvas a:focus{
+    color: #f1f1f1;
+}
+
+.closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+#floatmenu{
+	float:right;
+    position:absolute;
+    top: 150px;
+    z-index: 1;
+    border:2px solid #a1a1a1;
+    padding:10px; 
+    background:#ffffff;
+	border-radius:25px;
+	visibility: hidden;
+}
+
+#main {
+    transition: margin-left .5s;
+    padding: 20px;
+    position: fixed
+}
+
+
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+
+@media screen and (max-width: 650px) {
+	.sweep {
+		font-size:0.8em;
+	}
+}
+@media screen and (max-width: 500px) {
+	.top-nav {
+		width:0%;
+		visibility: hidden;
+		height: 0px;
+		transition: 0.8s;
+	}
+	#floatmenu {
+		visibility: visible;
+	}
+	.login {
+		width:20%;
+	}
+	.search {
+		width: 40%;
+		margin: 2em 2em 0;
+	}
 }
