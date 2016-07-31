@@ -157,8 +157,8 @@ def newact_submit(club):
         if request.form['description']:
             a.description = FormattedText.handle(current_user, club, request.form['description'])
         else:
-            a.description = None
-        a.post = None
+            a.description = FormattedText(0)
+        a.post = FormattedText(0)
         a.date = datetime.strptime(request.form['date'], '%Y-%m-%d')
         a.time = ActivityTime[request.form['act_type'].upper()]
         a.location = request.form['location']
