@@ -8,7 +8,7 @@ from flask_login import UserMixin
 from passlib.context import CryptContext
 from xkcdpass import xkcd_password as xp
 
-from oclubs.access import database
+from oclubs.access import database, email
 from oclubs.enums import UserType
 from oclubs.exceptions import NoRow
 from oclubs.objs.base import BaseObject, Property, ListProperty
@@ -66,6 +66,9 @@ class User(BaseObject, UserMixin):
                 dates=(False, True),
                 order_by_time=True
             )
+
+    def email_user(self, title, contents):
+        email.send((self.email, self.passportname), title, contents)
 
     @staticmethod
     def attempt_login(studentid, password):
