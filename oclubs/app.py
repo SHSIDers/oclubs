@@ -39,12 +39,6 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 
-def get_picture(picture, ext='jpg'):
-    return url_for('static', filename='images/' + picture + '.' + ext)
-
-app.jinja_env.globals['getpicture'] = get_picture
-
-
 def url_for_other_page(page):
     args = request.view_args.copy()
     args.update(request.args)
