@@ -5,7 +5,6 @@
 	<div class="col-sm-5 admin_function">
 		<h2 class="title_next">Add New Users</h2>
 		<br>
-		<!-- TODO: Format -->
 		<form action="{{ url_for('.newusers') }}" method="post" enctype="multipart/form-data">
 			<p>Please upload a xlsx file with a sheet named "Users".</p>
 			<p>Required information in xlsx(in exact order): Student ID, Passport Name, Email Address</p>
@@ -39,7 +38,6 @@
 	<div class="col-sm-5 admin_function">
 		<h2 class="title_next">Add New Clubs</h2>
 		<br>
-		<!-- TODO: Format -->
 		<form action="{{ url_for('.newclubs') }}" method="post" enctype="multipart/form-data">
 			<p>Please upload a xlsx file with a sheet named "Clubs".</p>
 			<p>Required information in xlsx(in exact order): Club Name, CL Student ID, CL Passport Name, CT ID, CT Passport Name, Club Location, Club Type</p>

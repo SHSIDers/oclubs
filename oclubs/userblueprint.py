@@ -221,9 +221,9 @@ def newusers():
         u.create()
         with open('/srv/oclubs/email_templates/newuser', 'r') as textfile:
             data = textfile.read()
-        parameters = {'user': u}
+        parameters = {'user': u, 'password': password}
         contents = pystache.render(data, parameters)
-        u.email_user('Your Account', )
+        u.email_user('Your Account on oClubs', contents)
     return redirect(url_for('.new'))
 
 
