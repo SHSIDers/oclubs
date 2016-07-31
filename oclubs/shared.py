@@ -59,12 +59,10 @@ def download_xlsx(filename, info):
     return Response(output.read(), mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', headers=headers)
 
 
-def read_xlsx(filename, data_type):
+def read_xlsx(file, data_type):
     '''Read xlsx and return a list of data'''
-    if request.files['excel'].filename == '':
-        raise ValueError
-    raw = get_data(request.files['excel'])
-    data = json.loads(raw)[data_type]
+    raw = get_data(file)
+    data = json.loads(json.dumps(raw))[data_type]
     if data_type == 'Users':
         if data[0] != ['Student ID', 'Passport Name', 'Email Address']:
             raise ValueError

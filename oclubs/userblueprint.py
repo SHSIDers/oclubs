@@ -11,7 +11,7 @@ from flask_login import current_user, login_required, fresh_login_required
 
 from oclubs.objs import User, Club, Activity, Upload
 from oclubs.enums import UserType, ClubType, ActivityTime
-from oclubs.shared import get_callsign, special_access_required, download_xlsx
+from oclubs.shared import get_callsign, special_access_required, download_xlsx, read_xlsx
 
 userblueprint = Blueprint('userblueprint', __name__)
 
@@ -199,7 +199,26 @@ def new():
 @special_access_required
 def newusers():
     '''Upload excel file to create new users'''
-    pass
+    if request.files['excel'].filename == '':
+        raise ValueError
+    contents = read_xlsx(request.files['excel'], 'Users')
+    info = []
+    info.append(['Login Name', 'Password'])
+    for info_new in contents:
+        u = User.new()
+        u.studentid = info_new[0]
+        u.passportname = info_new[1]
+        u.email = info_new[2]
+        password = User.generate_password()
+        u.password = password
+        info.append([u.studentid, password])
+        u.nickname = 'Please Change This'
+        u.phone = 1234567890
+        u.picture = Upload(-1)
+        u.type = UserType.STUDENT
+        u.gradyear = None
+        u.create()
+    return download_xlsx('New Accounts', info)
 
 
 @userblueprint.route('/new_clubs', methods=['POST'])
