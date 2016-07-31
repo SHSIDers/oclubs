@@ -5,9 +5,9 @@
 from __future__ import absolute_import, unicode_literals
 
 import os
-import subprocess
 
 from PIL import Image
+import magic
 
 from oclubs.exceptions import UploadNotSupported
 from oclubs.objs.base import BaseObject, Property
@@ -53,8 +53,7 @@ class Upload(BaseObject):
 
         try:
             # Don't use mimetypes.guess_type(temppath) -- Faked extensions
-            mime = subprocess.check_output(
-                ['/usr/bin/file', '-bi', temppath]).split(';')[0].strip()
+            mime = magic.from_file(temppath, mime=True)
             if mime not in cls._mimedict:
                 raise UploadNotSupported
 

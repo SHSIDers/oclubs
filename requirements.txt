@@ -19,3 +19,4 @@ xkcdpass
 argparse
 celery[redis]
 pystache
+python-magic
