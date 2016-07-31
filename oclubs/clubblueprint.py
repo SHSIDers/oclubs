@@ -66,9 +66,9 @@ def clubintro_submit(club):
     club.add_member(current_user)
     with open('/srv/oclubs/email_templates/joinclubs', 'r') as textfile:
         data = textfile.read()
-    parameters = {'club': club}
+    parameters = {'club': club, 'current_user': current_user}
     contents = pystache.render(data, parameters)
-    email.send('derril1998@qq.com', 'New Club Member' + club.name, contents)
+    email.send('derril1998@qq.com', 'New Club Member - ' + club.name, contents)
     flash('You have successfully joined ' + club.name + '.', 'join')
     return redirect(url_for('.clubintro', club=club.callsign))
 
