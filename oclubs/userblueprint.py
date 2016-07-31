@@ -284,17 +284,34 @@ def adjustclubs_submit():
     return redirect(url_for('.adjustclubs'))
 
 
+@userblueprint.route('/change_password')
+@special_access_required
+def changepassword():
+    '''Allow admin to change users' password'''
+    users = User.allusers()
+    return render_template('user/changepassword.html',
+                           title='Change Password',
+                           users=users)
+
+
+@userblueprint.route('/change_password/submit', methods=['POST'])
+@special_access_required
+def changepassword_submit():
+    '''Input new password into database'''
+    password = request.form['password']
+    if password == '':
+        flash('Please input valid password.', 'password')
+        return redirect(url_for('.changepassword'))
+    user = User(request.form['id'])
+    user.password = password
+    flash(user.nickname + '\'s password has been successfully set to ' + password + '.', 'password')
+    return redirect(url_for('.changepassword'))
+
 @userblueprint.route('/forgot_password')
 def forgotpw():
     '''Page for retrieving password'''
     return render_template('user/forgotpassword.html',
-                           title='Retrieve Password')
-
-
-@userblueprint.route('/forgot_password/submit', methods=['POST'])
-def forgotpw_submit():
-    # TODO: accept input  to retrieve password
-    pass
+                           title='Forgot Password')
 
 
 @userblueprint.route('/<club>/register_hongmei')
