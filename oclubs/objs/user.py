@@ -77,7 +77,7 @@ class User(BaseObject, UserMixin):
             data = database.fetch_onerow(
                 'user',
                 {'user_id': 'id', 'user_password': 'password'},
-                [('=', 'user_login_name', studentid)]
+                {'user_login_name': studentid}
             )
         except NoRow:
             # to gave some delay, verify empty password and discard the results
@@ -98,7 +98,7 @@ class User(BaseObject, UserMixin):
             data = database.fetch_onerow(
                 'user',
                 {'user_id': 'id', 'user_passport_name': 'passportname'},
-                [('=', 'user_login_name', studentid)]
+                {'user_login_name': studentid}
             )
         except NoRow:
             return
@@ -107,6 +107,15 @@ class User(BaseObject, UserMixin):
                 return User(data['id'])
             else:
                 return
+
+    @classmethod
+    def allusers(cls):
+        tempdata = database.fetch_onecol(
+            cls.table,
+            cls.identifier,
+            []
+        )
+        return [cls(item) for item in tempdata]
 
     @staticmethod
     def generate_password():
