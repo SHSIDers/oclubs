@@ -4,6 +4,8 @@
 
 from __future__ import absolute_import, unicode_literals
 
+import pystache
+
 from flask import (
     Blueprint, render_template, url_for, request, session, redirect, abort, flash
 )
@@ -211,14 +213,18 @@ def newusers():
         u.email = info_new[2]
         password = User.generate_password()
         u.password = password
-        info.append([u.studentid, password])
         u.nickname = info_new[1]
         u.phone = None
         u.picture = Upload(-1)
         u.type = UserType.STUDENT
         u.gradyear = None
         u.create()
-    return download_xlsx('New Accounts', info)
+        with open('/srv/oclubs/email_templates/newuser', 'r') as textfile:
+            data = textfile.read()
+        parameters = {'user': u}
+        contents = pystache.render(data, parameters)
+        u.email_user('Your Account', )
+    return redirect(url_for('.new'))
 
 
 @userblueprint.route('/new_clubs', methods=['POST'])
