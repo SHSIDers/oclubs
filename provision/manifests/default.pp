@@ -1,5 +1,19 @@
-Package {
-    provider => 'yum'
+file { '/etc/sysconfig/network':
+    ensure => present,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+    source => '/vagrant/provision/sysconfig-network',
+    before => Package['epel-release'],
+}
+
+file { '/etc/hosts':
+    ensure => present,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+    source => '/vagrant/provision/hosts',
+    before => Package['epel-release'],
 }
 
 package { 'epel-release':
