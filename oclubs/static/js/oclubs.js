@@ -61,21 +61,22 @@
 					revert: true
 				} );
 
-			$( '.edit a' )
-				.click( function() {
-					var parent = $(this).parents('td').eq(0);
-					var content = parent.find('.content p').html();
-					parent.find('.content').html('<input type="text" class="input_content" name="content" value="' + content + '">');
-					parent.find('.content .input_content').focus();
-					parent.find('.edit').html('<button class="btn btn-success check"><span class="glyphicon glyphicon-ok"></span></button>' +
-						'<button class="btn btn-danger cross"><span class="glyphicon glyphicon-remove"></span></button>');
-					parent.find('.edit .cross').bind('click', function() {
-						var parent = $(this).parents('td').eq(0);
-						var content = parent.find('.content input').value();
-						parent.find('.content').html('<p>' + content + '</p>');
-						parent.find('.edit').html('<a style="cursor:pointer">Edit</a>');
-					});
-				} );
+			edit_user_info = function() {
+				var item = $(this).parents('td').eq(0);
+				var content = item.find('.content p').text();
+				item.find('.content p').replaceWith($('<input type="text" class="input_content" name="content">').attr('value', content));
+				item.find('.content .input_content').focus();
+				item.find('.edit').empty()
+					.append($('<button class="btn btn-success"><span class="glyphicon glyphicon-ok"></span></button>'))
+					.append($('<button class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>'));
+				
+			};
+
+			edit_user_info_undo = function() {
+				var item = $(this).parents('td').eq(0);
+				item.find('.content input').replaceWith($('<p>'));
+				$('<a style="cursor:pointer">Edit</a>').replaceAll(item.find('.edit button'));
+			};
 
 		} );
 } )( jQuery );
