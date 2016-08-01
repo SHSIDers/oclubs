@@ -5,9 +5,9 @@
 <h1 class="title text-center">{{ g.club.name }}</h1>
 <div class="huge_block">
     <h1>Current Club Leader</h1>
-    <img src="{{ current_user.picture.location_external }}" class="img-responsive img-circle" alt="{{ current_user.nick_name }}">
-    <h2>{{ current_user.nickname }}</h2>
-    <h3>{{ current_user.passportname }}</h3>
+    <img src="{{ g.club.leader.picture.location_external }}" class="img-responsive img-circle" alt="{{ g.club.leader.nick_name }}">
+    <h2>{{ g.club.leader.nickname }}</h2>
+    <h3>{{ g.club.leader.passportname }}</h3>
 </div>
 
 <div class="clearfix"></div>
@@ -17,7 +17,7 @@
 <div class="container">
     <form id="leader_radio" action="{{ url_for('.newleader_submit', club=g.club.callsign)}}">
         {% for member in g.club.members %}
-        {% if member != current_user %}
+        {% if member != g.club.leader %}
         <label class="radio_block" for="leader">
             <img src="{{ member.picture.location_external }}" class="img-responsive" alt="">
             <p>{{ member.passportname }}</p>
