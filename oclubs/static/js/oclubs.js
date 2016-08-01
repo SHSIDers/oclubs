@@ -15,7 +15,7 @@
 							.html( "<p>Your choice is " + checked.val() + ".</p>" );
 						$( ".modal .modal-footer" )
 							.html( "<button type='button' class='btn btn-default' data-dismiss='modal'>Reselect</button>" +
-									'<input type="submit" class="btn btn-primary" form="leader_radio" name="change_leader" value="Confirm">' );
+								'<input type="submit" class="btn btn-primary" form="leader_radio" name="change_leader" value="Confirm">' );
 					} else {
 						$( ".modal .modal-body" )
 							.html( "<p>Please select one memeber as next club leader!</p>" );
@@ -38,13 +38,20 @@
 
 			$( ".updatehm" )
 				.click( function() {
-					var date = $( "#date" ).val();
-					var contents = $( "#contents" ).val();
+					var date = $( "#date" )
+						.val();
+					var contents = $( "#contents" )
+						.val();
 					if ( date !== '' && contents !== '' ) {
 						$( "#schedule tbody" )
-							.append( "<tr><td>" + date + "</td><td>" + contents + "</td><td><button class='btn btn-primary' id='" + contents + "'>Delete</button></td></tr>");
+							.append( "<tr><td>" + date + "</td><td>" + contents + "</td><td><button class='btn btn-primary' id='" + contents + "'>Delete</button></td></tr>" );
 						$( "#" + contents )
-							.click( function() {$( this ).parents("tr").eq(0).remove();});
+							.click( function() {
+								$( this )
+									.parents( "tr" )
+									.eq( 0 )
+									.remove();
+							} );
 					}
 				} );
 
@@ -55,47 +62,81 @@
 
 			$( '.drag' )
 				.draggable( {
-					handle:'.drag-point',
+					handle: '.drag-point',
 					containment: '.homepage_image',
 					stack: '.drag',
 					revert: true
 				} );
 
-			edit_user_info = function() {
-				var item = $(this).parents('td').eq(0);
-				var content = item.find('.content p').text();
-				item.find('.content p').replaceWith($('<input type="text" class="input_content" name="content">').attr('value', content));
-				item.find('.content .input_content').focus();
-				item.find('.edit').empty()
-					.append($('<button class="btn btn-success"><span class="glyphicon glyphicon-ok"></span></button>'))
-					.append($('<button class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>'));
-				
-			};
-
-			edit_user_info_undo = function() {
-				var item = $(this).parents('td').eq(0);
-				item.find('.content input').replaceWith($('<p>'));
-				$('<a style="cursor:pointer">Edit</a>').replaceAll(item.find('.edit button'));
-			};
-
+			if ( /\/change_user_info/.test( window.location.href ) ) {
+				var init_view = function( item, content ) {
+					item.empty()
+						.append( $( '<div class="col-sm-8 content"><p></p></div>' ) )
+						.append( $( '<div class="col-sm-4 edit"><a style="cursor:pointer">Edit</a></div>' ) );
+					item.find( 'p' )
+						.text( content );
+					item.find( 'a' )
+						.click( function( argument ) {
+							init_edit( item, content );
+						} );
+				};
+				var init_edit = function( item, content ) {
+					item.empty()
+						.append( $( '<div class="col-sm-8 content"><input type="text" class="input_content" name="content"></div>' ) )
+						.append( $( '<div class="col-sm-4 edit"><a style="cursor:pointer">Edit</a></div>' ) );
+					item.find( 'input.input_content' )
+						.attr( 'value', content )
+						.focus();
+					item.find( '.edit' )
+						.empty()
+						.append( $( '<button class="btn btn-success"><span class="glyphicon glyphicon-ok"></span></button>' ) )
+						.append( $( '<button class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>' ) );
+					item.find( '.edit .btn-success' )
+						.click( function( argument ) {
+							// TODO
+						} );
+					item.find( '.edit .btn-danger' )
+						.click( function( argument ) {
+							init_view( item, content );
+						} );
+				};
+				$( '#admin_user_table td.admin_user_info' )
+					.each( function() {
+						var item = $( this );
+						init_view( item, item.text() );
+					} );
+			}
 		} );
 } )( jQuery );
 
 
 var menuYloc = null;
-	$(document).ready(function(){
-		document.querySelector('#floatmenu').style.left = (window.innerWidth -75) + "px";
-		document.querySelector('#floatmenu').style.top = (window.innerHeight -125) + "px";
-		menuYloc = parseInt($('#floatmenu').css("top").substring(0,$('#floatmenu').css("top").indexOf("p")));
-			$(window).scroll(function () {
-				if(window.innerWidth<=500){
-					document.querySelector('#floatmenu').style.top = menuYloc+$(document).scrollTop()+"px";
+$( document )
+	.ready( function() {
+		document.querySelector( '#floatmenu' )
+			.style.left = ( window.innerWidth - 75 ) + "px";
+		document.querySelector( '#floatmenu' )
+			.style.top = ( window.innerHeight - 125 ) + "px";
+		menuYloc = parseInt( $( '#floatmenu' )
+			.css( "top" )
+			.substring( 0, $( '#floatmenu' )
+				.css( "top" )
+				.indexOf( "p" ) ) );
+		$( window )
+			.scroll( function() {
+				if ( window.innerWidth <= 500 ) {
+					document.querySelector( '#floatmenu' )
+						.style.top = menuYloc + $( document )
+						.scrollTop() + "px";
 				}
-			});
-			$(window).resize(function () {
-				if(window.innerWidth<=500){
-					document.querySelector('#floatmenu').style.left = (window.innerWidth -75) + "px";
-					document.querySelector('#floatmenu').style.top = (window.innerHeight -125) + "px";
+			} );
+		$( window )
+			.resize( function() {
+				if ( window.innerWidth <= 500 ) {
+					document.querySelector( '#floatmenu' )
+						.style.left = ( window.innerWidth - 75 ) + "px";
+					document.querySelector( '#floatmenu' )
+						.style.top = ( window.innerHeight - 125 ) + "px";
 				}
-			});
-	});
+			} );
+	} );
