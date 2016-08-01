@@ -307,11 +307,29 @@ def changepassword_submit():
     flash(user.nickname + '\'s password has been successfully set to ' + password + '.', 'password')
     return redirect(url_for('.changepassword'))
 
+
 @userblueprint.route('/forgot_password')
 def forgotpw():
     '''Page for retrieving password'''
     return render_template('user/forgotpassword.html',
                            title='Forgot Password')
+
+
+@userblueprint.route('/change_user_info')
+@special_access_required
+def changeuserinfo():
+    '''Allow admin to change users' information'''
+    users = User.allusers()
+    return render_template('user/changeuserinfo.html',
+                           title='Change Users\' Info',
+                           users=users)
+
+
+@userblueprint.route('/change_user_info/submit')
+@special_access_required
+def changeuserinfo_submit():
+    '''Input change of info into database'''
+    pass
 
 
 @userblueprint.route('/<club>/register_hongmei')

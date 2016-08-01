@@ -60,15 +60,32 @@
 					stack: '.drag',
 					revert: true
 				} );
+
+			$( '.edit a' )
+				.click( function() {
+					var parent = $(this).parents('td').eq(0);
+					var content = parent.find('.content p').html();
+					parent.find('.content').html('<input type="text" class="input_content" name="content" value="' + content + '">');
+					parent.find('.content .input_content').focus();
+					parent.find('.edit').html('<button class="btn btn-success check"><span class="glyphicon glyphicon-ok"></span></button>' +
+						'<button class="btn btn-danger cross"><span class="glyphicon glyphicon-remove"></span></button>');
+					parent.find('.edit .cross').bind('click', function() {
+						var parent = $(this).parents('td').eq(0);
+						var content = parent.find('.content input').value();
+						parent.find('.content').html('<p>' + content + '</p>');
+						parent.find('.edit').html('<a style="cursor:pointer">Edit</a>');
+					});
+				} );
+
 		} );
 } )( jQuery );
 
 
 var menuYloc = null;
 	$(document).ready(function(){
-		document.querySelector('#floatmenu').style.left = (window.innerWidth -75) + "px"
-		document.querySelector('#floatmenu').style.top = (window.innerHeight -125) + "px"
-		menuYloc = parseInt($('#floatmenu').css("top").substring(0,$('#floatmenu').css("top").indexOf("p")))
+		document.querySelector('#floatmenu').style.left = (window.innerWidth -75) + "px";
+		document.querySelector('#floatmenu').style.top = (window.innerHeight -125) + "px";
+		menuYloc = parseInt($('#floatmenu').css("top").substring(0,$('#floatmenu').css("top").indexOf("p")));
 			$(window).scroll(function () {
 				if(window.innerWidth<=500){
 					document.querySelector('#floatmenu').style.top = menuYloc+$(document).scrollTop()+"px";
@@ -80,4 +97,4 @@ var menuYloc = null;
 					document.querySelector('#floatmenu').style.top = (window.innerHeight -125) + "px";
 				}
 			});
-	})
+	});
