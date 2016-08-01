@@ -687,7 +687,6 @@ thead.darklist {
 }
 
 .homepage_function img {
-	margin: 20px 0 0;
 	width: 7vw;
 	height: 7vw;
 }
@@ -1148,17 +1147,12 @@ thead.darklist {
 	.header {
 		font-size:77.5%;
 	}
-	.search {
-		width: 15%;
-	}
 }
 @media screen and (max-width: 575px) {
 	.header {
 		font-size:70%;
 	}
-	.search {
-		width: 12%;
-	}
+
 }
 @media screen and (max-width: 500px) {
 	.top-nav {
@@ -1174,6 +1168,10 @@ thead.darklist {
 		width: 40% !important;
 		margin: 2em 0 0 4em;
 	}
+	.header > .container {
+		padding: 0 0 0.5em 0;
+	}
+}
 
 @media screen and (max-height: 450px) {
     .sidenav {padding-top: 15px;}
@@ -1185,9 +1183,7 @@ thead.darklist {
 	padding: 0 0.5em 0 0;
 }
 
-.header > .container {
-	padding: 0 0 0.5em 0;
-}
+
 @media screen and (max-width:720px){
 	.homepage_function .col-xs-3 {
 		width:40%;
