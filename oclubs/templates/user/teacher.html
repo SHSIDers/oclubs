@@ -14,11 +14,14 @@
 			<h2>Members: {{ club.members_num }}</h2>
 			<p>Intro: {{ club.intro }}</p>
 			<div class="clearfix"></div>
-			<div class="col-sm-6">
+			<div class="col-sm-4">
 				<a href="{{ url_for('actblueprint.clubactivities', club=club.callsign, page=1) }}"><button class="btn btn-primary">Activities Status</button></a>
 			</div>
-			<div class="col-sm-6">
+			<div class="col-sm-4">
 				<a href="{{ url_for('actblueprint.hongmei_status', club=club.callsign) }}"><button class="btn btn-primary">HongMei Status</button></a>
+			</div>
+			<div class="col-sm-4">
+				<a href="{{ url_for('clubblueprint.club', club=club.callsign) }}"><button class="btn btn-primary">Club Management</button></a>
 			</div>
 		</div>
 	</div>

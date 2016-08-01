@@ -3,7 +3,7 @@
 {% with messages = get_flashed_messages(category_filter=["success"]) %}
 
 <!-- Below Navbar -->
-<div class="large_container">
+<div class="container">
 	<form class="form-group" action="{{ url_for('.changeclubinfo_submit', club=g.club.callsign) }}" method="post" enctype="multipart/form-data" style="color:#f2f2f2">
 		<h1 class="title">Change Club Info</h1>
 		<h2 class="title_next">{{ g.club.name }}</h2>
@@ -14,12 +14,10 @@
 			{% endfor %}
 		</ul>
 		{% endif %}
-		<p>*Please input below.</p>
 		<label for="intro" style="font-size:200%">One sentence intro:</label>
-		<p>Current:</p>
-		<p>{{ g.club.intro }}</p>
-		<p>New:</p>
-		<input type="text" class="form-control" name="intro" id="intro">
+		<input type="text" class="form-control" name="intro" id="intro" value="{{ g.club.intro }}">
+		<br>
+		<p>The shorter the better.</p>
 		<br>
 		<label for="picture" style="font-size:200%">Picture:</label>
 		<input type="file" name="picture" id="picture" accept="image/*" style="width:0.1px; height:0.1px; opacity:0">
@@ -27,12 +25,10 @@
 			<span class="glyphicon glyphicon-upload"></span>
 			<span>Choose an image...</span>
 		</label>
+		<br>
 		<br>		
 		<label for="description" style="font-size:200%">Introduction Paragraphs:</label>
-		<p>Current:</p>
-		{{ g.club.description.formatted }}
-		<p>New:</p>
-		<textarea class="form-control" rows="10" name="description" id="description"></textarea>
+		<textarea class="form-control" rows="10" name="description" id="description" value="{{ g.club.description.raw }}"></textarea>
 		<br>
 		<p>*We support markdown in description.</p>
 		<br>
