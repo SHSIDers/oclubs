@@ -62,20 +62,25 @@
 
 				<div class="clearfix"></div>
 				<br>
-				{% if has_access %}
+				{% if has_access and is_past %}
 				<div class="col-sm-6">
-					{% if is_past %}
 					<a href="{{ url_for('.inputatten', activity=g.activity.callsign) }}">
 						<button class="btn btn-info btn-lg" style="width:80%">Input Attendance</button>
 					</a>
-					{% endif %}
 				</div>
 				<div class="col-sm-6">
-					{% if is_past %}
 					<a href="{{ url_for('.checkatten', activity=g.activity.callsign) }}">
 						<button class="btn btn-info btn-lg" style="width:80%">Check Attendance</button>
 					</a>
-					{% endif %}
+				</div>
+
+				<div class="clearfix"></div>
+				<br>
+
+				<div class="col-sm-6">
+					<a href="{{ url_for('.changeactpost', activity=g.activity.callsign) }}">
+						<button class="btn btn-info btn-lg" style="width:80%">Change Activity Post</button>
+					</a>
 				</div>
 				{% endif %}
 			</div>
