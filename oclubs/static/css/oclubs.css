@@ -66,7 +66,7 @@ body {
 
 .logo {
 	float: left;
-	margin: 1.8em 0.5em 0;
+	margin: 1em 0.5em 0;
 	width: 15%;
 }
 .top-nav {
@@ -199,7 +199,7 @@ body {
 	padding: 0.25em 0;
 	background: #0000b3;
 	float: left;
-	margin: 2.5em 0 0 2em;
+	margin: 2em 0 0 2em;
 	background-color: #222;
 }
 .search input[type="text"] {
@@ -1166,7 +1166,10 @@ thead.darklist {
 	}
 	.search {
 		width: 40% !important;
-		margin: 2em 0 0 4em;
+		margin: 1.5em 0 0 4em;
+	}
+	.login {
+		margin-top: 1.5em;
 	}
 	.header > .container {
 		padding: 0 0 0.5em 0;
