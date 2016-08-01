@@ -43,7 +43,7 @@
 		{% endif %}
 	</table>
 	<br>
-	{% if current_user.id == g.club.leader.id %}
+	{% if has_access %}
 	<center><a href="{{ url_for('.memberinfo_download', club=g.club.callsign) }}" target="_blank">
 		<button class="btn btn-success" style="padding: 3%; font-size:200%">Download as Excel Document</button>
 	</a></center>

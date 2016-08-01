@@ -110,9 +110,13 @@ def newleader_submit(club):
 @get_callsign(Club, 'club')
 def memberinfo(club):
     '''Check Members' Info'''
+    has_access = (current_user.id == club.leader.id or
+                  current_user.id == club.teacher.id or
+                  current_user.type == UserType.ADMIN)
     return render_template('club/memberinfo.html',
                            title='Member Info',
-                           club=club)
+                           club=club,
+                           has_access=has_access)
 
 
 @clubblueprint.route('/<club>/member_info/download')
