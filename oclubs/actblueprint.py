@@ -243,6 +243,27 @@ def hongmei_status(club):
                            acts=acts)
 
 
+@actblueprint.route('/<club>/hongmei_status/download')
+@get_callsign(Club, 'club')
+@special_access_required
+def hongmei_status_download(club):
+    '''Download HongMei status'''
+    result = []
+    result.append(['Date', 'Members'])
+    hongmei = club.activities([ActivityTime.HONGMEI], (False, True))
+    for each in hongmei:
+        result_each = []
+        result_each.append(each.date.strftime('%b-%d-%y'))
+        members = each.signup_list()
+        members_result = ''
+        for member in members:
+            members_result += member.user.nickname + ' (Consent From Handed? '\
+                              + member.consentform + ')\n'
+        result_each.append(members_result)
+        result.append(result_each)
+    return download_xlsx('HongMei Status - ' + club.name + '.xlsx', result)
+
+
 @actblueprint.route('/<club>/newhm')
 @get_callsign(Club, 'club')
 @special_access_required
