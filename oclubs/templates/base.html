@@ -29,13 +29,13 @@ function closeNav() {
 </head>
 
 <body>
-	<div id="mySidenav" class="sidenav" style="z-index:2">
-  	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  	<a href="{{ url_for('homepage') }}">Home</a>
-  	<a href="{{ url_for('clubblueprint.clublist', club_type='all') }}">Club List</a>
-  	<a href="{{ url_for('actblueprint.allactivities', club_type='all', page='1') }}">Activities</a>
-  	<a href="{{ url_for('actblueprint.allphotos', page='1') }}">Photos</a>
-  	<a href="{{ url_for('about') }}">About</a>
+<div id="mySidenav" class="sidenav" style="z-index:2">
+	<a href="javascript:void(0)" class="closebtn " onclick="closeNav()">&times;</a>
+	<a href="{{ url_for('homepage') }}" class="{% if is_home %}active{% endif %}">Home</a>
+ 	<a href="{{ url_for('clubblueprint.clublist', club_type='all') }}" class="{% if is_list %}active{% endif %}">Club List</a>
+ 	<a href="{{ url_for('actblueprint.allactivities', club_type='all', page='1') }}" class="{% if is_allact %}active{% endif %}"">Activities</a>
+ 	<a href="{{ url_for('actblueprint.allphotos', page='1') }}" class="{% if is_photos %}active{% endif %}">Photos</a>
+ 	<a href="{{ url_for('about') }}" class="{% if is_about %}active{% endif %}">About</a>
 </div>
 <span class="glyphicon glyphicon-list" id="floatmenu" onclick="openNav()"></span>
 

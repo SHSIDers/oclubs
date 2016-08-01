@@ -1076,7 +1076,7 @@ thead.darklist {
 .sidenav {
     height: 100%; 
     width: 0; 
-    position: fixed; /
+    position: fixed; 
     z-index: 2; 
     top: 0;
     left: 0;
@@ -1096,6 +1096,10 @@ thead.darklist {
     transition: 0.3s
 }
 
+.sidenav .active  {
+	color: #f1f1f1;
+}
+
 .sidenav a:hover, .offcanvas a:focus{
     color: #f1f1f1;
 }
@@ -1110,7 +1114,7 @@ thead.darklist {
 
 #floatmenu{
 	float:right;
-    position:absolute;
+    position: absolute;
     top: 150px;
     z-index: 1;
     border:2px solid #a1a1a1;
@@ -1125,6 +1129,7 @@ thead.darklist {
     padding: 20px;
     position: fixed
 }
+
 
 
 
@@ -1158,7 +1163,7 @@ thead.darklist {
 @media screen and (max-width: 500px) {
 	.top-nav {
 		width:0%;
-		visibility: hidden;
+		visibility: hidden !important;
 		height: 0px;
 		transition: 0.8s;
 	}
