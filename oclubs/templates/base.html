@@ -27,6 +27,49 @@ function closeNav() {
 }
 </script>
 <style type="text/css">
+.slidecont {
+	transition: 0.5s;
+	width: 60%;
+}
+@media screen and (max-width: 600px){
+	.slidecont {
+		width: 65%;
+		font-size: 95%;
+
+	}
+	}
+	.carousel-caption {
+		padding-bottom: 15px;
+	}
+}
+@media screen and (max-width: 500px){
+	.slidecont {
+		width: 70%;
+		font-size: 90%;
+	}
+	.carousel-caption {
+		padding-bottom: 10px;
+	}
+}
+
+@media screen and (max-width: 400px){
+	.slidecont {
+		width: 80%;
+		font-size: 85%;
+	}
+	.carousel-caption {
+		padding-bottom: 5px;
+	}
+}
+
+.carousel-indicators {
+	bottom: 0;
+}
+.carousel-caption h3 {
+	font-size: 175%;
+}
+
+
 </style>
 <title>{{ title }} - oClubs!</title>
 
