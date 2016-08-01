@@ -1,5 +1,4 @@
-{% extends "base" %}
-{% block main %}
+Hi {{ member.nickname }},
 
 {{ club.name }} is going to host {{ act.name }}.
 
@@ -13,8 +12,14 @@ Location: {{ act.location }}
 CAS hour: {{ act.cas }}
 
 Description: 
-{{ act.description }}
+{{ act.description.formatted }}
 
 If you want to participate, please search {{ act.name }} on oClubs and join this activity on its introduction page.
 
-{% endblock %}
+
+Thank you for using oClubs.
+
+
+Sincerely,
+
+oClubs Production Team

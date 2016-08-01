@@ -1,0 +1,19 @@
+To Admin,
+
+{{ advicer_name }} has given you some advice.
+
+
+His/her contact information:
+
+{{ advicer_contact }}
+
+
+The advice:
+
+{{ advice }}
+
+
+Please improve your website accordingly.
+
+
+oClubs

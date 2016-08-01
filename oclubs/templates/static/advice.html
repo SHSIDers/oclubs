@@ -1,27 +1,37 @@
 {% extends "base.html" %}
 {% block content %}
+{% with messages = get_flashed_messages(category_filter=["advice"]) %}
 
 <!-- Below Navbar -->
 <div class="container">
-    <div class="col-sm-4">
-        <img src="static/images/advice.jpg" class="img-responsive img-thumbnail" alt="Advice">
-    </div>
-    <div class="col-sm-8">
-    	<div class="form-group" style="color:#f2f2f2">
-            <h1>Your advice is important to us</h1>
-            <p>*Name and contact can be left blank if you want to stay anonymous.</p>
-    		<label for="name">Your Name:</label>
-        	<input type="text" class="form-control" id="name">
-            <br>
-            <label for="cont">Contact (email/wechat):</label>
-        	<input type="text" class="form-control" id="cont">
-            <br>
-            <label for="adv">*Advice:</label>
-        	<textarea class="form-control" rows="10" id="adv"></textarea>
-            <br>
-            <input type="submit" class="btn btn-success large_button" value="Submit">
-        </div>
-    </div>
+	<div class="col-sm-4">
+		<img src="static/images/advice.jpg" class="img-responsive img-thumbnail" alt="Advice">
+	</div>
+	<div class="col-sm-8">
+		<form class="form-group" style="color:#f2f2f2" action="{{ url_for('advice_submit') }}" method="post">
+			<h1>Your advice is important to us</h1>
+			{% if messages %}
+			<ul class="list-group" style="color:black">
+				{% for message in messages %}
+				<li class="list-group-item">{{ message }}</li>
+				{% endfor %}
+			</ul>
+			<br>
+			{% endif %}
+			<p>*Name and contact can be left blank if you want to stay anonymous.</p>
+			<label for="name">Your Name:</label>
+			<input type="text" class="form-control" name="name" id="name">
+			<br>
+			<label for="contact">Contact (email/wechat):</label>
+			<input type="text" class="form-control" name="contact" id="contact">
+			<br>
+			<label for="advice">*Advice:</label>
+			<textarea class="form-control" rows="10" name="advice" id="advice"></textarea>
+			<br>
+			<input type="submit" class="btn btn-success large_button" value="Submit">
+		</form>
+	</div>
 </div>
 
+{% endwith %}
 {% endblock %}

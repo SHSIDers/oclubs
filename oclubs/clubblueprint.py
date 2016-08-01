@@ -89,12 +89,19 @@ def newleader(club):
 @special_access_required
 def newleader_submit(club):
     '''Change leader in database'''
+    leader_old = club.leader
     members_obj = club.members
     leader_name = request.form['leader']
     for member_obj in members_obj:
         if leader_name == member_obj.passportname:
             club.leader = member_obj
             break
+    with open('/srv/oclubs/email_templates/newleader', 'r') as textfile:
+        data = textfile.read()
+    for member in club.members:
+        parameters = {'user': member, 'club': club, 'leader_old': leader_old}
+        contents = pystache.render(data, parameters)
+        member.email_user('New Leader - ' + club.name, contents)
     return render_template('club/success.html',
                            title='Success')
 
@@ -146,6 +153,12 @@ def changeclubinfo_submit(club):
         club.description = FormattedText.handle(current_user, club, request.form['description'])
     if request.files['picture'].filename != '':
         club.picture = Upload.handle(current_user, club, request.files['picture'])
+    with open('/srv/oclubs/email_templates/changeclubinfo', 'r') as textfile:
+        data = textfile.read()
+    for member in club.members:
+        parameters = {'user': member, 'club': club}
+        contents = pystache.render(data, parameters)
+        member.email_user('Change Club Info - ' + club.name, contents)
     flash('The information about club has been successfully submitted.', 'success')
     return redirect(url_for('.changeclubinfo', club=club.callsign))
 
@@ -159,12 +172,17 @@ def adjustmember(club):
                            title='Adjust Members')
 
 
-@clubblueprint.route('/<club>/adjust_member/submit/<studentid>', methods=['POST'])
+@clubblueprint.route('/<club>/adjust_member/submit', methods=['POST'])
 @get_callsign(Club, 'club')
 @special_access_required
-def adjustmember_submit(club, studentid):
+def adjustmember_submit(club):
     '''Input adjustment of club members'''
-    member_obj = User(studentid)
-    club.remove_member(member_obj)
-    flash(member_obj.nickname + ' has been expelled.', 'expelled')
+    member = User(request.form['studentid'])
+    club.remove_member(member)
+    with open('/srv/oclubs/email_templates/adjustmember', 'r') as textfile:
+        data = textfile.read()
+    parameters = {'member': member, 'club': club}
+    contents = pystache.render(data, parameters)
+    member.email_user('Member Adjustment - ' + club.name, contents)
+    flash(member.nickname + ' has been expelled.', 'expelled')
     return redirect(url_for('.adjustmember', club=club.callsign))
