@@ -199,7 +199,7 @@ body {
 	padding: 0.25em 0;
 	background: #0000b3;
 	float: left;
-	margin: 2.em 0 0 2em;
+	margin: 2em 0 0 2em;
 	background-color: #222;
 }
 .search input[type="text"] {
@@ -1140,6 +1140,12 @@ thead.darklist {
 		width: 18%;
 	}
 
+@media screen and (max-width:720px){
+	.homepage_function .col-xs-3 {
+		width:40%;
+	}
+}
+
 }@media screen and (max-width: 650px) {
 	.sweep {
 		font-size:0.8em;
@@ -1181,25 +1187,18 @@ thead.darklist {
     .sidenav a {font-size: 18px
 }
 
-.search > form > span {
-	float: right;
-	padding: 0 0.5em 0 0;
-}
-
-
-@media screen and (max-width:720px){
-	.homepage_function .col-xs-3 {
-		width:40%;
-	}
-}
-
-#emptyclose {
+.emptyclose {
 	height: 100%; 
     width: 0;
     position: fixed;
-    z-index:100
+    z-index:100;
     top: 0;
     left: 0;
     background-color: transparent;
     overflow-x: hidden;
+}
+
+.search > form > span {
+	float: right;
+	padding: 0 0.5em 0 0;
 }

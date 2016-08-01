@@ -27,16 +27,6 @@ function closeNav() {
 }
 </script>
 <style type="text/css">
-#emptyclose {
-	height: 100%; 
-    width: 0;
-    position: fixed;
-    z-index:100;
-    top: 0;
-    left: 0;
-    background-color: transparent;
-    overflow-x: hidden;
-}
 </style>
 <title>{{ title }} - oClubs!</title>
 
@@ -51,7 +41,7 @@ function closeNav() {
  	<a href="{{ url_for('actblueprint.allphotos', page='1') }}" class="{% if is_photos %}active{% endif %}">Photos</a>
  	<a href="{{ url_for('about') }}" class="{% if is_about %}active{% endif %}">About</a>
 </div>
-<div id="emptyclose" onclick="closeNav()"></div> 
+<div id="emptyclose" class="emptyclose" onclick="closeNav()"></div> 
 <span class="glyphicon glyphicon-list" id="floatmenu" onclick="openNav()"></span>
 
 <div class="header">
