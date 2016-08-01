@@ -68,7 +68,7 @@ class User(BaseObject, UserMixin):
             )
 
     def email_user(self, title, contents):
-        email.send({'email': self.email, 'name': self.passportname},
+        email.send((self.email, self.passportname),
                    title, contents)
 
     @staticmethod
