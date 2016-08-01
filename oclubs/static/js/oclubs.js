@@ -60,6 +60,16 @@
 					location.reload();
 				} );
 
+			$( 'form #picture')
+				.change( function() {
+					$( 'form #upload_content' ).text($('form #picture').val());
+				} );
+
+			$( 'form #excel' )
+				.change( function() {
+					$( 'form #upload_content' ).text($('form #excel').val());
+				} );
+
 			$( '.drag' )
 				.draggable( {
 					handle: '.drag-point',

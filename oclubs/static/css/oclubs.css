@@ -868,10 +868,18 @@ thead.darklist {
 	padding: 10px;
 	border-radius: 5px;
 	cursor: pointer;
+	float: left;
 }
 
 .upload_button:hover {
 	background-color: #0099cc;
+}
+
+.upload_content {
+	color: #f2f2f2;
+	font-size: 150%;
+	font-weight: bold;
+	margin: 0.3em 0 0 9em;
 }
 
 .login_block {

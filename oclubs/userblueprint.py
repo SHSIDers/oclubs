@@ -44,7 +44,7 @@ def quitclub_submit():
         data = textfile.read()
     parameters = {'user': current_user, 'club': club, 'reason': reason}
     contents = pystache.render(data, parameters)
-    club.leader.email_user('Quit Club - ' + current_user.nickname, contents)
+    # club.leader.email_user('Quit Club - ' + current_user.nickname, contents)
     flash('You have successfully quitted ' + club.name + '.', 'quit')
     return redirect(url_for('.quitclub'))
 
@@ -366,6 +366,6 @@ def registerhm_submit(club):
         data = textfile.read()
     parameters = {'user': current_user, 'club': club, 'plan': plan}
     contents = pystache.render(data, parameters)
-    current_user.email_user('HongMei Plan - ' + club.name, contents)
+    # current_user.email_user('HongMei Plan - ' + club.name, contents)
     flash('Your application has been successfully submitted.', 'reghm')
     return redirect(url_for('.registerhm', club=club.callsign))

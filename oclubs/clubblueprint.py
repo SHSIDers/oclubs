@@ -68,7 +68,7 @@ def clubintro_submit(club):
         data = textfile.read()
     parameters = {'club': club, 'current_user': current_user}
     contents = pystache.render(data, parameters)
-    club.leader.email_user('New Club Member - ' + club.name, contents)
+    # club.leader.email_user('New Club Member - ' + club.name, contents)
     flash('You have successfully joined ' + club.name + '.', 'join')
     return redirect(url_for('.clubintro', club=club.callsign))
 
@@ -101,7 +101,7 @@ def newleader_submit(club):
     for member in club.members:
         parameters = {'user': member, 'club': club, 'leader_old': leader_old}
         contents = pystache.render(data, parameters)
-        member.email_user('New Leader - ' + club.name, contents)
+        # member.email_user('New Leader - ' + club.name, contents)
     return render_template('club/success.html',
                            title='Success')
 
@@ -162,7 +162,7 @@ def changeclubinfo_submit(club):
     for member in club.members:
         parameters = {'user': member, 'club': club}
         contents = pystache.render(data, parameters)
-        member.email_user('Change Club Info - ' + club.name, contents)
+        # member.email_user('Change Club Info - ' + club.name, contents)
     flash('The information about club has been successfully submitted.', 'success')
     return redirect(url_for('.changeclubinfo', club=club.callsign))
 
@@ -187,6 +187,6 @@ def adjustmember_submit(club):
         data = textfile.read()
     parameters = {'member': member, 'club': club}
     contents = pystache.render(data, parameters)
-    member.email_user('Member Adjustment - ' + club.name, contents)
+    # member.email_user('Member Adjustment - ' + club.name, contents)
     flash(member.nickname + ' has been expelled.', 'expelled')
     return redirect(url_for('.adjustmember', club=club.callsign))
