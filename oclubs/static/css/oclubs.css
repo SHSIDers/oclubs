@@ -95,7 +95,7 @@ body {
 	width: 100%;
 	font-family: 'MV Boli';
 	font-weight: bold;
-	 white-space:nowrap;
+	white-space:nowrap;
 }
 .top-nav ul li a:hover {
 	text-decoration:none;
@@ -181,7 +181,7 @@ body {
 	font-size: 1.2em;
 	background-color: #222;
 	font-family: "MV Boli";
-	padding: 0 0.5em 0;
+	padding: 0 0.5em 0.5em;
 }
 
 #loginanimation {
@@ -687,7 +687,7 @@ thead.darklist {
 }
 
 .homepage_function img {
-	margin: 1.6em;
+	margin: 20px 0 0;
 	width: 7vw;
 	height: 7vw;
 }
@@ -1183,4 +1183,13 @@ thead.darklist {
 .search > form > span {
 	float: right;
 	padding: 0 0.5em 0 0;
+}
+
+.header > .container {
+	padding: 0 0 0.5em 0;
+}
+@media screen and (max-width:720px){
+	.homepage_function .col-xs-3 {
+		width:40%;
+	}
 }
