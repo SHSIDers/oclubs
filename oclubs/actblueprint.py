@@ -264,7 +264,7 @@ def hongmei_status_download(club):
     return download_xlsx('HongMei Status - ' + club.name + '.xlsx', result)
 
 
-@actblueprint.route('/<club>/newhm')
+@actblueprint.route('/<club>/new_hongmei_schedule')
 @get_callsign(Club, 'club')
 @special_access_required
 def newhm(club):
@@ -274,7 +274,7 @@ def newhm(club):
                            club=club.name)
 
 
-@actblueprint.route('/<club>/newhm/submit', methods=['POST'])
+@actblueprint.route('/<club>/new_hongmei_schedule/submit', methods=['POST'])
 @get_callsign(Club, 'club')
 @special_access_required
 def newhm_submit(club):

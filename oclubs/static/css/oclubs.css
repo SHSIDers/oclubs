@@ -28,9 +28,9 @@ body {
 
 .smallBlock > div,
 .smallBlock > a {
-	width: 25em;
+	width: 24em;
 	height: 10em;
-	padding: 2.5%;
+	padding: 1.5em;
 	float: left;
 	background-color: #f5f5f5;
 	border: 1px solid #e3e3e3;
@@ -57,8 +57,8 @@ body {
 }
 
 .smallBlock img {
-	width: 9em;
-	height: 6em;
+	max-width: 9em;
+	max-height: 6.5em;
 	vertical-align: middle;
 	margin-right: 10%;
 	float: left;
