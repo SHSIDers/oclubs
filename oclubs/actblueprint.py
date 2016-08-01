@@ -174,7 +174,7 @@ def newact_submit(club):
         for member in club.members:
             parameters = {'member': member, 'club': club, 'act': activity}
             contents = pystache.render(data, parameters)
-            member.email_user('HongMei Plan - ' + club.name, contents)
+            # member.email_user('HongMei Plan - ' + club.name, contents)
     return redirect(url_for('.newact', club=club.callsign))
 
 
