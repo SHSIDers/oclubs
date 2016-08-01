@@ -199,7 +199,7 @@ body {
 	padding: 0.25em 0;
 	background: #0000b3;
 	float: left;
-	margin: 2em 0 0 2em;
+	margin: 2.em 0 0 2em;
 	background-color: #222;
 }
 .search input[type="text"] {
@@ -1075,15 +1075,15 @@ thead.darklist {
 .sidenav {
     height: 100%; 
     width: 0; 
-    position: fixed; 
-    z-index: 2; 
+    position: fixed;
+    z-index: 100;
     top: 0;
     left: 0;
-    background-color: #111; 
-    overflow-x: hidden; 
-    padding-top: 60px; 
+    background-color: #111;
+    overflow-x: hidden;
+    padding-top: 60px;
     transition: 0.5s;
-    white-space:nowrap;
+    white-space: nowrap;
 }
 
 .sidenav a {
@@ -1191,4 +1191,15 @@ thead.darklist {
 	.homepage_function .col-xs-3 {
 		width:40%;
 	}
+}
+
+#emptyclose {
+	height: 100%; 
+    width: 0;
+    position: fixed;
+    z-index:100
+    top: 0;
+    left: 0;
+    background-color: transparent;
+    overflow-x: hidden;
 }
