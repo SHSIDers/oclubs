@@ -10,7 +10,6 @@ from datetime import timedelta
 from uuid import uuid4
 from flask.sessions import SessionInterface, SessionMixin
 
-from oclubs.compat import total_seconds
 from oclubs.access.redis import RedisDict
 
 
@@ -48,7 +47,7 @@ class RedisSessionInterface(SessionInterface):
 
     def save_session(self, app, session, response):
         redis_exp = self.get_redis_expiration_time(app, session)
-        session.timeout = int(total_seconds(redis_exp))
+        session.timeout = int(redis_exp.total_seconds())
         session.save()
 
         domain = self.get_cookie_domain(app)

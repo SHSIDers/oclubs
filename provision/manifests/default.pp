@@ -152,11 +152,77 @@ file { '/etc/selinux/config':
     source => '/vagrant/provision/selinux',
 }
 
+package { 'git':
+    ensure => installed,
+    before => Exec['git-clone-pyenv'],
+}
+
+exec { 'git-clone-pyenv':
+    command => '/usr/bin/git clone --depth=1 https://github.com/yyuu/pyenv.git /srv/oclubs/pyenv',
+    creates => '/srv/oclubs/pyenv',
+    require => File['/srv/oclubs'],
+}
+
+file { '/home/vagrant/.bash_profile':
+    ensure  => file,
+    mode    => '0644',
+    owner   => 'vagrant',
+    group   => 'vagrant',
+    source  => '/vagrant/provision/vagrant_bash_profile',
+    require => Exec['git-clone-pyenv'],
+}
+
+exec { 'pyenv-init':
+    command     => '/srv/oclubs/pyenv/bin/pyenv init -',
+    environment => 'PYENV_ROOT=/srv/oclubs/pyenv',
+    creates     => '/srv/oclubs/pyenv/versions/',
+    require     => Exec['git-clone-pyenv'],
+}
+
+# everything needed to compile python
 package { [
-    'python-pip',
-    'python-devel',
+    'patch',
     'zlib-devel',
+    'bzip2-devel',
     'openssl-devel',
+    'sqlite-devel',
+    'readline-devel'
+]:
+    ensure => present,
+    before => Exec['pyenv-install-python'],
+}
+
+exec { 'pyenv-install-python':
+    command     => '/srv/oclubs/pyenv/bin/pyenv install /vagrant/provision/python-pyenv',
+    environment => 'PYENV_ROOT=/srv/oclubs/pyenv',
+    creates     => '/srv/oclubs/pyenv/versions/python-pyenv/',
+    require     => [
+        Exec['pyenv-init'],
+        Service['nginx'],
+    ],
+}
+
+file { '/root/.pip':
+    ensure => directory,
+}
+
+file { '/root/.pip/pip.conf':
+    ensure => file,
+    source => '/vagrant/provision/pip.conf',
+    before => Exec['install-pip-tools'],
+}
+
+exec { 'install-pip-tools':
+    command => '/srv/oclubs/pyenv/versions/python-pyenv/bin/pip install pip-tools',
+    creates => '/srv/oclubs/pyenv/versions/python-pyenv/bin/pip-sync',
+    tries   => 5,
+    require => Exec['pyenv-install-python'],
+}
+
+package { [
+    'python-devel',
+    # 'zlib-devel',
+    # 'openssl-devel',
     'libffi-devel',
     'libjpeg-turbo-devel',
     'libpng-devel',
@@ -167,10 +233,13 @@ package { [
 }
 
 exec { 'pip-install-requirements':
-    command => 'pip install -r /vagrant/requirements.txt',
-    path    => '/usr/bin',
+    command => '/srv/oclubs/pyenv/versions/python-pyenv/bin/pip-sync /vagrant/requirements.txt',
     tries   => 5,
-    require => Package['MariaDB-devel'],
+    require => [
+        Package['MariaDB-devel'],
+        Exec['pyenv-install-python'],
+        Exec['install-pip-tools']
+    ],
 }
 
 user { 'uwsgi':
@@ -283,13 +352,19 @@ user { 'celery':
     before  => Service['celeryd'],
 }
 
+exec { 'get-celeryd':
+    command => '/usr/bin/wget https://github.com/celery/celery/raw/3.1/extra/generic-init.d/celeryd -O /etc/init.d/celeryd',
+    creates => '/etc/init.d/celeryd'
+}
+
 file { '/etc/init.d/celeryd':
-    ensure => file,
-    mode   => '0755',
-    owner  => 'root',
-    group  => 'root',
-    source => '/vagrant/provision/celeryd',
-    notify => Service['celeryd'],
+    ensure  => file,
+    replace => 'no',
+    mode    => '0755',
+    owner   => 'root',
+    group   => 'root',
+    notify  => Service['celeryd'],
+    require => Exec['get-celeryd']
 }
 
 file { '/etc/default/celeryd':

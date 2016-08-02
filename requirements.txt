@@ -6,16 +6,16 @@
 #
 amqp==1.4.9               # via kombu
 anyjson==0.3.3            # via kombu
-argparse==1.4.0
 bcrypt==3.1.0
 billiard==3.3.0.23        # via celery
 bleach==1.4.3
 celery[redis]==3.1.23
 cffi==1.7.0               # via bcrypt
-click==6.6                # via flask
+click==6.6                # via flask, pip-tools
 elasticsearch==2.3.0
 enum34==1.1.6
 et-xmlfile==1.0.1         # via openpyxl
+first==2.0.1              # via pip-tools
 flask-login==0.3.2
 flask==0.11.1
 html5lib==0.9999999       # via bleach
@@ -31,6 +31,7 @@ mysql==0.0.1
 openpyxl==2.3.5           # via pyexcel-xlsx
 passlib==1.6.5
 Pillow==3.3.0
+pip-tools==1.7.0
 pycparser==2.14           # via cffi
 pycrypto==2.6.1
 pyexcel-io==0.2.1         # via pyexcel-xlsx
@@ -41,7 +42,7 @@ python-magic==0.4.12
 pytz==2016.6.1            # via celery
 redis==2.10.5
 sendgrid==3.1.10
-six==1.10.0               # via bcrypt, bleach, html5lib
+six==1.10.0               # via bcrypt, bleach, html5lib, pip-tools
 urllib3==1.16             # via elasticsearch
 uwsgi==2.0.13.1
 Werkzeug==0.11.10         # via flask

@@ -16,7 +16,7 @@ sendgrid
 xlsxwriter
 pyexcel-xlsx
 xkcdpass
-argparse
 celery[redis]
 pystache
 python-magic
+pip-tools
