@@ -5,7 +5,6 @@
 from __future__ import absolute_import, unicode_literals
 
 import re
-import pystache
 
 from flask import (
     Blueprint, render_template, url_for, request, session, redirect, flash, abort
@@ -14,7 +13,9 @@ from flask_login import current_user, login_required
 
 from oclubs.objs import User, Club, Upload, FormattedText
 from oclubs.enums import UserType, ClubType, ActivityTime
-from oclubs.shared import download_xlsx, get_callsign, special_access_required
+from oclubs.shared import (
+    download_xlsx, get_callsign, special_access_required, render_email_template
+)
 from oclubs.access import email
 
 clubblueprint = Blueprint('clubblueprint', __name__)
@@ -64,10 +65,8 @@ def clubintro(club):
 def clubintro_submit(club):
     '''Add new member'''
     club.add_member(current_user)
-    with open('/srv/oclubs/email_templates/joinclubs', 'r') as textfile:
-        data = textfile.read()
     parameters = {'club': club, 'current_user': current_user}
-    contents = pystache.render(data, parameters)
+    contents = render_email_template('joinclubs', parameters)
     # club.leader.email_user('New Club Member - ' + club.name, contents)
     flash('You have successfully joined ' + club.name + '.', 'join')
     return redirect(url_for('.clubintro', club=club.callsign))
@@ -96,11 +95,9 @@ def newleader_submit(club):
         if leader_name == member_obj.passportname:
             club.leader = member_obj
             break
-    with open('/srv/oclubs/email_templates/newleader', 'r') as textfile:
-        data = textfile.read()
     for member in club.members:
         parameters = {'user': member, 'club': club, 'leader_old': leader_old}
-        contents = pystache.render(data, parameters)
+        contents = render_email_template('newleader', parameters)
         # member.email_user('New Leader - ' + club.name, contents)
     return render_template('club/success.html',
                            title='Success')
@@ -157,11 +154,9 @@ def changeclubinfo_submit(club):
         club.description = FormattedText.handle(current_user, club, request.form['description'])
     if request.files['picture'].filename != '':
         club.picture = Upload.handle(current_user, club, request.files['picture'])
-    with open('/srv/oclubs/email_templates/changeclubinfo', 'r') as textfile:
-        data = textfile.read()
     for member in club.members:
         parameters = {'user': member, 'club': club}
-        contents = pystache.render(data, parameters)
+        contents = render_email_template('changeclubinfo', parameters)
         # member.email_user('Change Club Info - ' + club.name, contents)
     flash('The information about club has been successfully submitted.', 'success')
     return redirect(url_for('.changeclubinfo', club=club.callsign))
@@ -183,10 +178,8 @@ def adjustmember_submit(club):
     '''Input adjustment of club members'''
     member = User(request.form['studentid'])
     club.remove_member(member)
-    with open('/srv/oclubs/email_templates/adjustmember', 'r') as textfile:
-        data = textfile.read()
     parameters = {'member': member, 'club': club}
-    contents = pystache.render(data, parameters)
+    contents = render_email_template('adjustmember', parameters)
     # member.email_user('Member Adjustment - ' + club.name, contents)
     flash(member.nickname + ' has been expelled.', 'expelled')
     return redirect(url_for('.adjustmember', club=club.callsign))

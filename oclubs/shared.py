@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 #
 
+import os
 from functools import wraps
 from math import ceil
 import re
@@ -16,6 +17,8 @@ from flask import abort, request, g
 from flask_login import current_user, login_required
 from werkzeug.datastructures import Headers
 from werkzeug.wrappers import Response
+
+import pystache
 
 from oclubs.objs import Upload
 from oclubs.access import get_secret
@@ -161,3 +164,11 @@ class Pagination(object):
                     yield None
                 yield num
                 last = num
+
+
+def render_email_template(name, parameters):
+    with open(os.path.join(
+            '/srv/oclubs/oclubs/email_templates/', name), 'r') as textfile:
+        data = textfile.read()
+
+    return pystache.render(data, parameters)

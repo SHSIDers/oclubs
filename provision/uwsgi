@@ -13,11 +13,13 @@ prog=uwsgi
 config=/etc/uwsgi/uwsgi.ini
 lockfile=/var/lock/subsys/uwsgi
 
+workdir=/srv/oclubs
+
 start() {
     [ -x $exec ] || exit 5
     [ -f $config ] || exit 6
 
-    cd /srv && action "Starting $prog" $exec --daemonize --ini /etc/uwsgi/uwsgi.ini
+    cd $workdir && action "Starting $prog" $exec --daemonize --ini /etc/uwsgi/uwsgi.ini
     retval=$?
     [ $retval -eq 0 ] && touch $lockfile
     return $retval

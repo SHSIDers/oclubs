@@ -8,11 +8,10 @@ from flask import (
     Blueprint, render_template, url_for, request, session, redirect, abort, flash
 )
 from flask_login import current_user, login_required, fresh_login_required
-import pystache
 
 from oclubs.objs import User, Club, Activity, Upload
 from oclubs.enums import UserType, ClubType, ActivityTime
-from oclubs.shared import get_callsign, special_access_required, download_xlsx, read_xlsx
+from oclubs.shared import get_callsign, special_access_required, download_xlsx, read_xlsx, render_email_template
 
 userblueprint = Blueprint('userblueprint', __name__)
 
@@ -40,10 +39,8 @@ def quitclub_submit():
     club = Club(request.form['clubs'])
     club.remove_member(current_user)
     reason = request.form['reason']
-    with open('/srv/oclubs/email_templates/quiclub', 'r') as textfile:
-        data = textfile.read()
     parameters = {'user': current_user, 'club': club, 'reason': reason}
-    contents = pystache.render(data, parameters)
+    contents = render_email_template('quitclub', parameters)
     # club.leader.email_user('Quit Club - ' + current_user.nickname, contents)
     flash('You have successfully quitted ' + club.name + '.', 'quit')
     return redirect(url_for('.quitclub'))
@@ -362,10 +359,8 @@ def registerhm_submit(club):
         act.signup(current_user)
         plan += 'Date: ' + act.date.strftime('%b-%d-%y') + '\n\n' + \
             'Content: ' + act.name + '\n\n'
-    with open('/srv/oclubs/email_templates/registerhm', 'r') as textfile:
-        data = textfile.read()
     parameters = {'user': current_user, 'club': club, 'plan': plan}
-    contents = pystache.render(data, parameters)
+    contents = render_email_template('registerhm', parameters)
     # current_user.email_user('HongMei Plan - ' + club.name, contents)
     flash('Your application has been successfully submitted.', 'reghm')
     return redirect(url_for('.registerhm', club=club.callsign))

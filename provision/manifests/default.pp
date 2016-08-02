@@ -176,7 +176,7 @@ exec { 'pip-install-requirements':
 user { 'uwsgi':
     ensure  => present,
     comment => 'uWSGI service user',
-    home    => '/srv',
+    home    => '/srv/oclubs',
     shell   => '/sbin/nologin',
     require => Exec['pip-install-requirements'],
 }
@@ -235,6 +235,10 @@ service { 'uwsgi':
 }
 
 file { '/srv/oclubs':
+    ensure => directory,
+}
+
+file { '/srv/oclubs/oclubs':
     ensure => link,
     target => '/vagrant/oclubs'
 }
@@ -273,7 +277,7 @@ file { '/etc/sysconfig/iptables':
 user { 'celery':
     ensure  => present,
     comment => 'Celery service user',
-    home    => '/srv',
+    home    => '/srv/oclubs',
     shell   => '/bin/bash',
     require => Exec['pip-install-requirements'],
     before  => Service['celeryd'],

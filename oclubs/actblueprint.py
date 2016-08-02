@@ -13,10 +13,9 @@ import re
 import math
 from copy import deepcopy
 from datetime import datetime, date
-import pystache
 
 from oclubs.enums import UserType, ClubType, ActivityTime
-from oclubs.shared import get_callsign, special_access_required, Pagination, download_xlsx
+from oclubs.shared import get_callsign, special_access_required, Pagination, download_xlsx, render_email_template
 from oclubs.objs import User, Club, Activity, Upload, FormattedText
 
 actblueprint = Blueprint('actblueprint', __name__)
@@ -169,11 +168,9 @@ def newact_submit(club):
     except ValueError:
         flash('Please input all information to create a new activity.', 'newact')
     else:
-        with open('/srv/oclubs/email_templates/registerhm', 'r') as textfile:
-            data = textfile.read()
         for member in club.members:
             parameters = {'member': member, 'club': club, 'act': activity}
-            contents = pystache.render(data, parameters)
+            contents = render_email_template('registerhm', parameters)
             # member.email_user('HongMei Plan - ' + club.name, contents)
     return redirect(url_for('.newact', club=club.callsign))
 

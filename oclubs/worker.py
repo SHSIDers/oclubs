@@ -5,13 +5,13 @@
 from __future__ import absolute_import, unicode_literals
 
 import celery
-import pystache
 
 from oclubs.access import done
 from oclubs.access.redis import r_url_celery
 from oclubs.app import app as flask_app
 from oclubs.enums import UserType
 from oclubs.objs import User, Upload
+from oclubs.shared import render_email_template
 
 app = celery.Celery(
     'oclubsbackend',
@@ -39,10 +39,8 @@ def create_user(self, stidentid, passportname, email):
         u.create()
 
         # FIXME
-        # with open('/srv/oclubs/email_templates/newuser', 'r') as textfile:
-        #     data = textfile.read()
         # parameters = {'user': u}
-        # contents = pystache.render(data, parameters)
+        # contents = render_email_template('newuser', parameters)
         # u.email_user('Your Account', contents)
 
         print 'EMAIL USER ID %d NAME %s WITH PASSWORD %s' % (u.id, u.passportname, password)
