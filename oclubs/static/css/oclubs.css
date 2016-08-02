@@ -1162,6 +1162,22 @@ thead.darklist {
 		font-size:77.5%;
 	}
 }
+
+@media screen and (max-width: 600px){
+	.slidecont {
+		width: 65%;
+		font-size: 95%;
+
+	}
+	.carousel-caption {
+		padding-bottom: 15px;
+	}
+	.carousel-indicators li {
+		width:9px !important;
+		height:9px !important;
+	}
+}
+
 @media screen and (max-width: 575px) {
 	.header {
 		font-size:70%;
@@ -1188,12 +1204,37 @@ thead.darklist {
 	.header > .container {
 		padding: 0 0 0.5em 0;
 	}
+	.slidecont {
+		width: 70%;
+		font-size: 90%;
+	}
+	.carousel-caption {
+		padding-bottom: 10px;
+	}
+	.carousel-indicators li, .carousel-indicators .active {
+		width:8px !important;
+		height:8px !important;
+	}
 }
 
 @media screen and (max-height: 450px) {
     .sidenav {padding-top: 15px;}
     .sidenav a {font-size: 18px
 }
+
+@media screen and (max-width: 400px){
+	.slidecont {
+		width: 80%;
+		font-size: 85%;
+	}
+	.carousel-caption {
+		padding-bottom: 5px;
+	}
+	.carousel-indicators li {
+		width:7px !important;
+		height:7px !important;
+	}
+
 
 .emptyclose {
 	height: 100%; 
@@ -1209,4 +1250,17 @@ thead.darklist {
 .search > form > span {
 	float: right;
 	padding: 0 0.5em 0 0;
+}
+
+.slidecont {
+	transition: 0.5s;
+	width: 60%;
+}
+
+
+.carousel-indicators {
+	bottom: 0;
+}
+.carousel-caption h3 {
+	font-size: 175%;
 }
