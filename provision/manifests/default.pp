@@ -240,10 +240,6 @@ exec { 'pip-install-requirements':
         Exec['pyenv-install-python'],
         Exec['install-pip-tools']
     ],
-    notify  => [
-        Service['uwsgi'],
-        Service['celeryd'],
-    ],
 }
 
 user { 'uwsgi':
