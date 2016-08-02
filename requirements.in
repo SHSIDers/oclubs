@@ -9,7 +9,6 @@ enum34
 Pillow
 markdown
 bleach
-importlib
 elasticsearch
 pycrypto
 sendgrid
