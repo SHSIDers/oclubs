@@ -12,6 +12,7 @@ bleach
 elasticsearch
 pycrypto
 envelopes
+sendgrid
 xlsxwriter
 pyexcel-xlsx
 xkcdpass
