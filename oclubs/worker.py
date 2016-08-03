@@ -65,7 +65,7 @@ def handle_app_context(func):
 @handle_app_context
 def refresh_user():
     authority = db2.allstudents()
-    authority = {data['UNIONID']: data for data in authority}
+    authority = {data['UNIONID'].strip(): data for data in authority}
 
     ours = database.fetch_multirow(
         'user',
@@ -106,8 +106,8 @@ def _refresh_user_disable_account(uid):
 
 
 def _refresh_user__refresh(u, authority):
-    u.studentid = authority['UNIONID'].strip()
-    u.passportname = authority['NAMEEN'].strip()
+    u.studentid = authority['UNIONID']
+    u.passportname = authority['NAMEEN']
     u.grade = int(authority['GRADENAME'])
     u.currentclass = int(authority['STUCLASSNAME'])
 

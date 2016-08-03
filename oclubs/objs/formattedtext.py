@@ -56,7 +56,6 @@ class FormattedText(BaseObject):
 
     @classmethod
     def handle(cls, user, club, text):
-        text = text.strip()
         if not text:
             return cls.emptytext()
         obj = cls.new()

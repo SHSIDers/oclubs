@@ -56,6 +56,12 @@ class Property(object):
         except AttributeError:
             pass
 
+        # Make strings simple
+        try:
+            value = value.strip()
+        except AttributeError:
+            pass
+
         self._cache[prop.name] = value
 
         dbvalue = prop.exp(value)

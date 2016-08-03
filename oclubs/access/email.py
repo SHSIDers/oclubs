@@ -14,7 +14,7 @@ from_email = ('no-reply@oclubs.shsid.org', 'oClubs')
 
 
 def send(to_email, subject, content):
-    if to_email[0].strip().endswith('@gmail.com'):
+    if to_email[0].endswith('@gmail.com'):
         sg = sendgrid.SendGridAPIClient(apikey=get_secret('sendgrid_key'))
         content = Content('text/plain', content)
         mail = Mail(Email(*from_email), subject, Email(*to_email), content)
