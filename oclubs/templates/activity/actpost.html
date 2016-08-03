@@ -29,6 +29,10 @@
             <div style="font-size:150%;color:#f2f2f2">
                 <p>Time: {{ g.activity.date }}</p>
                 <br>
+                {% for pic in g.activity.pictures %}
+                <center><img src="{{ pic.location_external }}" class="img-thumbnail" alt="{{ g.activity.name }}"></center>
+                <br>
+                {% endfor %}
                 <p>Post:</p>
                 {% if g.activity.post.raw %}
                 {{ g.activity.post.formatted }}
