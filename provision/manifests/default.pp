@@ -2,6 +2,11 @@ package { 'epel-release':
     ensure => present,
 }
 
+package { 'man':
+    ensure  => present,
+}
+
+
 package { 'redis':
     ensure  => present,
     require => Package['epel-release']
