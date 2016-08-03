@@ -17,12 +17,19 @@ _crypt = CryptContext(schemes=['bcrypt'])  # , 'sha512_crypt', 'pbkdf2_sha512'
 _words = xp.generate_wordlist(wordfile=xp.locate_wordfile())
 
 
+def _encrypt(password):
+    if password is None:
+        return ''
+    else:
+        return _crypt.encrypt(password)
+
+
 class User(BaseObject, UserMixin):
     table = 'user'
     identifier = 'user_id'
     studentid = Property('user_login_name')
     passportname = Property('user_passport_name')
-    password = Property('user_password', (NotImplemented, _crypt.encrypt))
+    password = Property('user_password', (NotImplemented, _encrypt))
     nickname = Property('user_nick_name', rediscached=True)
     email = Property('user_email')
     phone = Property('user_phone')
@@ -74,6 +81,17 @@ class User(BaseObject, UserMixin):
 
     @staticmethod
     def attempt_login(studentid, password):
+        def emptypw():
+            # to gave some delay, verify empty password and discard the results
+            _crypt.verify(
+                password,
+                '$2a$12$mf04JOZtIxRtPFw793AGyeYGHGuiN2ikL/HO9fEKdCIilJqwRZKg.'
+            )
+
+        if not password:
+            emptypw()
+            return
+
         try:
             data = database.fetch_onerow(
                 'user',
@@ -81,14 +99,13 @@ class User(BaseObject, UserMixin):
                 {'user_login_name': studentid}
             )
         except NoRow:
-            # to gave some delay, verify empty password and discard the results
-            _crypt.verify(
-                password,
-                '$2a$12$mf04JOZtIxRtPFw793AGyeYGHGuiN2ikL/HO9fEKdCIilJqwRZKg.'
-            )
+            emptypw()
             return
         else:
-            if _crypt.verify(password, data['password']):
+            if not data['password']:
+                emptypw()
+                return
+            elif _crypt.verify(password, data['password']):
                 return User(data['id'])
             else:
                 return

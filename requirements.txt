@@ -20,6 +20,7 @@ first==2.0.1              # via pip-tools
 flask-login==0.3.2
 flask==0.11.1
 html5lib==0.9999999       # via bleach
+ibm-db==2.0.7
 itsdangerous==0.24        # via flask
 jdcal==1.2                # via openpyxl
 Jinja2==2.8               # via flask

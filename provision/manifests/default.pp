@@ -359,8 +359,38 @@ file { '/etc/default/celeryd':
 }
 
 service { 'celeryd':
-    ensure => running,
-    enable => true,
+    ensure  => running,
+    enable  => true,
+}
+
+exec { 'get-celerybeat':
+    command => '/usr/bin/wget https://github.com/celery/celery/raw/3.1/extra/generic-init.d/celerybeat -O /etc/init.d/celerybeat',
+    creates => '/etc/init.d/celerybeat'
+}
+
+file { '/etc/init.d/celerybeat':
+    ensure  => file,
+    replace => 'no',
+    mode    => '0755',
+    owner   => 'root',
+    group   => 'root',
+    notify  => Service['celerybeat'],
+    require => Exec['get-celerybeat']
+}
+
+file { '/etc/default/celerybeat':
+    ensure => file,
+    mode   => '0644',
+    owner  => 'root',
+    group  => 'root',
+    source => '/vagrant/provision/celerybeat-config',
+    notify => Service['celerybeat'],
+}
+
+service { 'celerybeat':
+    ensure  => running,
+    enable  => true,
+    require => Service['celeryd']
 }
 
 

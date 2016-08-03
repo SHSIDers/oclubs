@@ -1,0 +1,7 @@
+CELERY_BIN="/srv/oclubs/pyenv/versions/python-pyenv/bin/celery"
+CELERY_APP="oclubs.worker:app"
+CELERYD_CHDIR="/srv/oclubs"
+CELERYD_OPTS="--time-limit=300 --concurrency=4"
+CELERYD_USER="celery"
+CELERYD_GROUP="celery"
+CELERYBEAT_OPTS="--schedule=/var/run/celery/celerybeat-schedule"
