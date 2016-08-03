@@ -4,8 +4,9 @@
 <!-- Below Navbar -->
 <div class="container">
 	<h1 class="title">Information Successfully Submitted</h1>
-	<img src="../static/images/success.jpg" class="img-responsive img-thumbnail" alt="SUccess">
-	<p style="font-size:125%">The information you have written has been successfully changed in our database.</p>
+	<center><img src="{{ url_for('static', filename='images/success.jpg') }}" class="img-responsive img-thumbnail" alt="SUccess"></center>
+    <br>
+	<p class="text-center" style="font-size:150%; color:#f2f2f2">The information you have written has been successfully changed in our database.</p>
 </div>
 
 {% endblock %}

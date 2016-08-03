@@ -116,7 +116,7 @@ def clubphoto(club, page):
     pagination = Pagination(page, pic_num, len(acts_obj))
     acts = []
     acts_obj = acts_obj[(page-1)*pic_num-pic_num: page*pic_num]
-    for i in range(pic_num / 2):
+    for i in range(int(pic_num / 2)):
         act = {}
         try:
             act['image1'] = acts_obj[2*i+1].pictures[0].location_external
@@ -161,7 +161,11 @@ def newact_submit(club):
         a.date = datetime.strptime(request.form['date'], '%Y-%m-%d')
         a.time = ActivityTime[request.form['act_type'].upper()]
         a.location = request.form['location']
-        a.cas = request.form['cas']
+        time_type = request.form['time_type']
+        if time_type == 'hours':
+            a.cas = request.form['cas']
+        else:
+            a.cas = request.form['cas'] / 60
         a.create()
         flash(a.name + ' has been successfully created.', 'newact')
     except ValueError:

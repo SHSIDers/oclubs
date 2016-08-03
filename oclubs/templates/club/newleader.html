@@ -15,14 +15,14 @@
 <br><br>
 
 <div class="container">
-    <form id="leader_radio" action="{{ url_for('.newleader_submit', club=g.club.callsign)}}">
+    <form id="leader_radio" action="{{ url_for('.newleader_submit', club=g.club.callsign)}}" method="post">
         {% for member in g.club.members %}
         {% if member != g.club.leader %}
-        <label class="radio_block" for="leader">
+        <label class="radio_block" for="{{ member.id }}">
             <img src="{{ member.picture.location_external }}" class="img-responsive" alt="">
             <p>{{ member.passportname }}</p>
             <p>{{ member.nickname }}</p>
-            <center><input type="radio" id="leader" name="leader" value="{{ member.passportname }}"></center>
+            <center><input type="radio" id="{{ member.id }}" name="leader" value="{{ member.passportname }}"></center>
         </label>
         {% endif %}
         {% endfor %}

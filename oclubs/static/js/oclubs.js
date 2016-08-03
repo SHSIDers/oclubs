@@ -70,14 +70,6 @@
 					$( 'form #upload_content' ).text($('form #excel').val());
 				} );
 
-			$( '.drag' )
-				.draggable( {
-					handle: '.drag-point',
-					containment: '.homepage_image',
-					stack: '.drag',
-					revert: true
-				} );
-
 			if ( /\/change_user_info/.test( window.location.href ) ) {
 				var init_view = function( item, content ) {
 					item.empty()
@@ -103,7 +95,20 @@
 						.append( $( '<button class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>' ) );
 					item.find( '.edit .btn-success' )
 						.click( function( argument ) {
-							// TODO
+							new_content = $( item ).find( '.input_content' ).val();
+							$.post( '/user/change_user_info/submit', {
+								userid: $( item ).parents('tr').eq(0).find('.userid').text(),
+								type: item.attr('property-type'),
+								content: new_content
+							})
+								.done( function(data) {
+									if (data.result == 'success') {
+										init_view( item, new_content );
+									} else {
+										init_view( item, content );
+										alert(data.result);
+									}
+								} );
 						} );
 					item.find( '.edit .btn-danger' )
 						.click( function( argument ) {

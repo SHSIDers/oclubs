@@ -227,18 +227,7 @@ def _search_gettext(obj, name):
 def homepage():
     '''Homepage'''
     top_pic = []
-    col = []
-    count = 0
-    for act in Activity.get_activities_conditions(require_photos=True,
-                                                  limit=(0, 12)):
-        if count % 3 != 0:
-            col.append(act)
-            count += 1
-        else:
-            top_pic.append(col)
-            col = []
-    if count < 3:
-        top_pic.append(col)
+    # TODO: get top_pic
     ex_clubs = Club.excellentclubs(3)
     pic_acts = []
     for act in Activity.get_activities_conditions(require_photos=True,

@@ -28,7 +28,7 @@ class User(BaseObject, UserMixin):
     phone = Property('user_phone')
     picture = Property('user_picture', 'Upload')
     type = Property('user_type', UserType)
-    gradyear = Property('user_grad_year')
+    grade = Property('user_grade')
     currentclass = Property('user_class')
     clubs = ListProperty('club_member', 'cm_user', 'cm_club', 'Club')
 

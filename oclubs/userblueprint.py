@@ -3,9 +3,10 @@
 #
 
 from __future__ import absolute_import, unicode_literals
+import traceback
 
 from flask import (
-    Blueprint, render_template, url_for, request, session, redirect, abort, flash
+    Blueprint, render_template, url_for, request, session, redirect, abort, flash, jsonify
 )
 from flask_login import current_user, login_required, fresh_login_required
 
@@ -220,17 +221,16 @@ def newusers():
 @special_access_required
 def newusers_submit():
     '''Upload excel file to create new users'''
-    if request.files['excel'].filename == '':
-        raise ValueError
-    try:
-        contents = read_xlsx(request.files['excel'], 'Users')
-    except KeyError:
-        flash('Please change sheet name to "Users"', 'newusers')
-        return redirect(url_for('.new'))
+    # if request.files['excel'].filename == '':
+    #     raise ValueError
+    # try:
+    #     contents = read_xlsx(request.files['excel'], 'Users')
+    # except KeyError:
+    #     flash('Please change sheet name to "Users"', 'newusers')
+    #     return redirect(url_for('.new'))
 
-    from oclubs.worker import create_user
-    for info_new in contents:
-        create_user.delay(*info_new)
+    from oclubs.worker import refresh_user
+    refresh_user.delay()
     return redirect(url_for('.newusers'))
 
 
@@ -328,11 +328,21 @@ def changeuserinfo():
                            users=users)
 
 
-@userblueprint.route('/change_user_info/submit')
+@userblueprint.route('/change_user_info/submit', methods=['POST'])
 @special_access_required
 def changeuserinfo_submit():
     '''Input change of info into database'''
-    pass
+    property_type = request.form['type']
+    content = request.form['content']
+    userid = request.form['userid']
+    try:
+        setattr(User(userid), property_type, content)
+    except Exception as e:
+        status = type(e).__name__
+        traceback.print_exc()
+    else:
+        status = 'success'
+    return jsonify({'result': status})
 
 
 @userblueprint.route('/<club>/register_hongmei')

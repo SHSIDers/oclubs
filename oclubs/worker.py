@@ -23,19 +23,20 @@ app.conf.CELERY_TASK_RESULT_EXPIRES = 30 * 24 * 3600
 
 
 @app.task(bind=True)
-def create_user(self, stidentid, passportname, email):
+def refresh_user(self, studentid, passportname, grade, currentclass):
     with flask_app.app_context():
         u = User.new()
-        u.studentid = stidentid
+        u.studentid = studentid
         u.passportname = passportname
-        u.email = email
+        u.email = None
         password = User.generate_password()
         u.password = password
-        u.nickname = stidentid
+        u.nickname = passportname
         u.phone = None
         u.picture = Upload(-1)
         u.type = UserType.STUDENT
-        u.gradyear = None
+        u.grade = None
+        u.currentclass = None
         u.create()
 
         # FIXME
