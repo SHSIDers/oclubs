@@ -117,7 +117,7 @@ def _refresh_user__refresh(u, authority):
 def _refresh_user_create_account(authority):
     u = User.new()
     _refresh_user__refresh(u, authority)
-    u.email = 'unknown@localhost'
+    u.email = ''
     password = User.generate_password()
     u.password = password
     u.nickname = u.passportname

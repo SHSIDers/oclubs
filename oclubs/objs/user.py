@@ -76,8 +76,8 @@ class User(BaseObject, UserMixin):
             )
 
     def email_user(self, title, contents):
-        email.send((self.email, self.passportname),
-                   title, contents)
+        address = self.email or 'root@localhost'
+        email.send((address, self.passportname), title, contents)
 
     @staticmethod
     def attempt_login(studentid, password):
