@@ -87,7 +87,7 @@ def refresh_user():
             if sid in ours:
                 _refresh_user_update_account.delay(ours[sid], authority[sid])
             else:
-                _refresh_user_create_account.delay(ours[sid], authority[sid])
+                _refresh_user_create_account.delay(authority[sid])
         else:
             if sid in ours:
                 _refresh_user_disable_account.delay(ours[sid])
@@ -114,7 +114,7 @@ def _refresh_user__refresh(u, authority):
 
 @app.task()
 @handle_app_context
-def _refresh_user_create_account(uid, authority):
+def _refresh_user_create_account(authority):
     u = User.new()
     _refresh_user__refresh(u, authority)
     u.email = 'unknown@localhost'

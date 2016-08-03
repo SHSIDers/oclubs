@@ -359,8 +359,8 @@ file { '/etc/default/celeryd':
 }
 
 service { 'celeryd':
-    ensure  => running,
-    enable  => true,
+    ensure => running,
+    enable => true,
 }
 
 exec { 'get-celerybeat':
