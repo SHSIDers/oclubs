@@ -3,6 +3,7 @@
 
 Vagrant.configure("2") do |config|
   config.vm.box = "centos6"
+  config.vm.hostname = "oclubs.shsid.org"
   config.vm.network "forwarded_port", guest: 80, host: 8080
   # config.vm.network "private_network", ip: "192.168.8.201"
 
@@ -15,8 +16,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.synced_folder ".", "/vagrant", type: "rsync",
-    rsync__exclude: [".git/", "oclubs/images", "oclubs/secrets.ini"],
-    rsync__chown: false
+    rsync__exclude: [".git/"], rsync__chown: false
 
   config.vm.provision :puppet do |puppet|
     puppet.manifests_path = "provision/manifests"

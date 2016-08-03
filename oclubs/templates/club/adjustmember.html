@@ -34,7 +34,8 @@
 				<td>{{ member.passportname }}</td>
 				<td>{{ member.studentid }}</td>
 				<td>
-					<form action="{{ url_for('.adjustmember_submit', club=g.club.callsign, studentid=member.id) }}" method="post">
+					<form action="{{ url_for('.adjustmember_submit', club=g.club.callsign) }}" method="post">
+						<input type="hidden" name="studentid" value="{{ member.id }}">
 						<input type="submit" class="btn btn-danger" name="expel" value="Expel" style="font-size:110%">
 					</form>
 				</td>

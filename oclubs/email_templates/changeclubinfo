@@ -1,13 +1,24 @@
-{% extends "base" %}
-{% block main %}
+Hi {{ member.nickname }},
 
-{{ club.name }} has changed club information.
+{{ club.leader.nickname }} has changed {{ club.name }}'s information.
 
-Below is the newest update:
 
-Introduction: 
+Below is the newest update.
+
+
+Introduction:
+
 {{ club.intro }}
-Description: 
-{{ club.description }}
 
-{% endblock %}
+
+Description:
+
+{{ club.description.formatted }}
+
+
+Thank you for using oClubs.
+
+
+Sincerely,
+
+oClubs Production Team

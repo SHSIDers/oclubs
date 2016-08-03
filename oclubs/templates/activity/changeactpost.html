@@ -22,12 +22,12 @@
 			<span class="glyphicon glyphicon-upload"></span>
 			<span>Choose images...</span>
 		</label>
-		<br>		
+		<p class="upload_content" id="upload_content"></p>
+		<br>
+		<div class="clearfix"></div>
+		<br>
 		<label for="post" style="font-size:200%">Activity Post Contents:</label>
-		<p>Current:</p>
-		{{ act.post.formatted }}
-		<p>New:</p>
-		<textarea class="form-control" rows="10" name="post" id="post"></textarea>
+		<textarea class="form-control" rows="10" name="post" id="post" value="{{ act.post.raw }}"></textarea>
 		<br>
 		<p>*We support markdown in this post.</p>
 		<br>

@@ -267,6 +267,17 @@ def advice():
                            title='Advice')
 
 
+@app.route('/advice/submit', methods=['POST'])
+def advice_submit():
+    '''Send advice to us'''
+    advicer_name = request.form['name']
+    advicer_contact = request.form['contact']
+    advice = request.form['advice']
+    # TODO: send email to us
+    flash('Thank you for your advice.', 'advice')
+    return redirect(url_for('.advice'))
+
+
 @app.route('/creators')
 def creators():
     '''Introduction Page about Us'''

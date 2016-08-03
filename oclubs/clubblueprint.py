@@ -5,7 +5,6 @@
 from __future__ import absolute_import, unicode_literals
 
 import re
-import pystache
 
 from flask import (
     Blueprint, render_template, url_for, request, session, redirect, flash, abort
@@ -14,7 +13,9 @@ from flask_login import current_user, login_required
 
 from oclubs.objs import User, Club, Upload, FormattedText
 from oclubs.enums import UserType, ClubType, ActivityTime
-from oclubs.shared import download_xlsx, get_callsign, special_access_required
+from oclubs.shared import (
+    download_xlsx, get_callsign, special_access_required, render_email_template
+)
 from oclubs.access import email
 
 clubblueprint = Blueprint('clubblueprint', __name__)
@@ -64,11 +65,9 @@ def clubintro(club):
 def clubintro_submit(club):
     '''Add new member'''
     club.add_member(current_user)
-    with open('/srv/oclubs/email_templates/joinclubs', 'r') as textfile:
-        data = textfile.read()
     parameters = {'club': club, 'current_user': current_user}
-    contents = pystache.render(data, parameters)
-    club.leader.email_user('New Club Member - ' + club.name, contents)
+    contents = render_email_template('joinclubs', parameters)
+    # club.leader.email_user('New Club Member - ' + club.name, contents)
     flash('You have successfully joined ' + club.name + '.', 'join')
     return redirect(url_for('.clubintro', club=club.callsign))
 
@@ -89,12 +88,17 @@ def newleader(club):
 @special_access_required
 def newleader_submit(club):
     '''Change leader in database'''
+    leader_old = club.leader
     members_obj = club.members
     leader_name = request.form['leader']
     for member_obj in members_obj:
         if leader_name == member_obj.passportname:
             club.leader = member_obj
             break
+    for member in club.members:
+        parameters = {'user': member, 'club': club, 'leader_old': leader_old}
+        contents = render_email_template('newleader', parameters)
+        # member.email_user('New Leader - ' + club.name, contents)
     return render_template('club/success.html',
                            title='Success')
 
@@ -103,9 +107,13 @@ def newleader_submit(club):
 @get_callsign(Club, 'club')
 def memberinfo(club):
     '''Check Members' Info'''
+    has_access = (current_user.id == club.leader.id or
+                  current_user.id == club.teacher.id or
+                  current_user.type == UserType.ADMIN)
     return render_template('club/memberinfo.html',
                            title='Member Info',
-                           club=club)
+                           club=club,
+                           has_access=has_access)
 
 
 @clubblueprint.route('/<club>/member_info/download')
@@ -146,6 +154,10 @@ def changeclubinfo_submit(club):
         club.description = FormattedText.handle(current_user, club, request.form['description'])
     if request.files['picture'].filename != '':
         club.picture = Upload.handle(current_user, club, request.files['picture'])
+    for member in club.members:
+        parameters = {'user': member, 'club': club}
+        contents = render_email_template('changeclubinfo', parameters)
+        # member.email_user('Change Club Info - ' + club.name, contents)
     flash('The information about club has been successfully submitted.', 'success')
     return redirect(url_for('.changeclubinfo', club=club.callsign))
 
@@ -159,12 +171,15 @@ def adjustmember(club):
                            title='Adjust Members')
 
 
-@clubblueprint.route('/<club>/adjust_member/submit/<studentid>', methods=['POST'])
+@clubblueprint.route('/<club>/adjust_member/submit', methods=['POST'])
 @get_callsign(Club, 'club')
 @special_access_required
-def adjustmember_submit(club, studentid):
+def adjustmember_submit(club):
     '''Input adjustment of club members'''
-    member_obj = User(studentid)
-    club.remove_member(member_obj)
-    flash(member_obj.nickname + ' has been expelled.', 'expelled')
+    member = User(request.form['studentid'])
+    club.remove_member(member)
+    parameters = {'member': member, 'club': club}
+    contents = render_email_template('adjustmember', parameters)
+    # member.email_user('Member Adjustment - ' + club.name, contents)
+    flash(member.nickname + ' has been expelled.', 'expelled')
     return redirect(url_for('.adjustmember', club=club.callsign))

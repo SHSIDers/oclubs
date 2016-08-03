@@ -8,23 +8,25 @@
 # Source function library.
 . /etc/rc.d/init.d/functions
 
-exec=/usr/bin/uwsgi
+exec=/srv/oclubs/pyenv/versions/python-pyenv/bin/uwsgi
 prog=uwsgi
 config=/etc/uwsgi/uwsgi.ini
 lockfile=/var/lock/subsys/uwsgi
+
+workdir=/srv/oclubs
 
 start() {
     [ -x $exec ] || exit 5
     [ -f $config ] || exit 6
 
-    cd /srv && action "Starting $prog" $exec --daemonize --ini /etc/uwsgi/uwsgi.ini
+    cd $workdir && action "Starting $prog" $exec --daemonize --ini /etc/uwsgi/uwsgi.ini
     retval=$?
     [ $retval -eq 0 ] && touch $lockfile
     return $retval
 }
 
 stop() {
-    action "Stopping $prog" uwsgi --stop /var/run/uwsgi/uwsgi.pid
+    action "Stopping $prog" $exec --stop /var/run/uwsgi/uwsgi.pid
     retval=$?
     [ $retval -eq 0 ] && rm -f $lockfile
     return $retval
@@ -45,7 +47,7 @@ restart() {
 }
 
 reload() {
-    action "Reloading $prog" uwsgi --reload /var/run/uwsgi/uwsgi.pid
+    action "Reloading $prog" $exec --reload /var/run/uwsgi/uwsgi.pid
     return $?
 }
 

@@ -8,11 +8,10 @@ from flask import (
     Blueprint, render_template, url_for, request, session, redirect, abort, flash
 )
 from flask_login import current_user, login_required, fresh_login_required
-import pystache
 
 from oclubs.objs import User, Club, Activity, Upload
 from oclubs.enums import UserType, ClubType, ActivityTime
-from oclubs.shared import get_callsign, special_access_required, download_xlsx, read_xlsx
+from oclubs.shared import get_callsign, special_access_required, download_xlsx, read_xlsx, render_email_template
 
 userblueprint = Blueprint('userblueprint', __name__)
 
@@ -39,6 +38,10 @@ def quitclub_submit():
     '''Delete connection between user and club in database'''
     club = Club(request.form['clubs'])
     club.remove_member(current_user)
+    reason = request.form['reason']
+    parameters = {'user': current_user, 'club': club, 'reason': reason}
+    contents = render_email_template('quitclub', parameters)
+    # club.leader.email_user('Quit Club - ' + current_user.nickname, contents)
     flash('You have successfully quitted ' + club.name + '.', 'quit')
     return redirect(url_for('.quitclub'))
 
@@ -307,11 +310,29 @@ def changepassword_submit():
     flash(user.nickname + '\'s password has been successfully set to ' + password + '.', 'password')
     return redirect(url_for('.changepassword'))
 
+
 @userblueprint.route('/forgot_password')
 def forgotpw():
     '''Page for retrieving password'''
     return render_template('user/forgotpassword.html',
                            title='Forgot Password')
+
+
+@userblueprint.route('/change_user_info')
+@special_access_required
+def changeuserinfo():
+    '''Allow admin to change users' information'''
+    users = User.allusers()
+    return render_template('user/changeuserinfo.html',
+                           title='Change Users\' Info',
+                           users=users)
+
+
+@userblueprint.route('/change_user_info/submit')
+@special_access_required
+def changeuserinfo_submit():
+    '''Input change of info into database'''
+    pass
 
 
 @userblueprint.route('/<club>/register_hongmei')
@@ -338,10 +359,8 @@ def registerhm_submit(club):
         act.signup(current_user)
         plan += 'Date: ' + act.date.strftime('%b-%d-%y') + '\n\n' + \
             'Content: ' + act.name + '\n\n'
-    with open('/srv/oclubs/email_templates/registerhm', 'r') as textfile:
-        data = textfile.read()
     parameters = {'user': current_user, 'club': club, 'plan': plan}
-    contents = pystache.render(data, parameters)
-    current_user.email_user('HongMei Plan - ' + club.name, contents)
+    contents = render_email_template('registerhm', parameters)
+    # current_user.email_user('HongMei Plan - ' + club.name, contents)
     flash('Your application has been successfully submitted.', 'reghm')
     return redirect(url_for('.registerhm', club=club.callsign))

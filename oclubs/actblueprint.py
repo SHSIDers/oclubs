@@ -15,7 +15,7 @@ from copy import deepcopy
 from datetime import datetime, date
 
 from oclubs.enums import UserType, ClubType, ActivityTime
-from oclubs.shared import get_callsign, special_access_required, Pagination, download_xlsx
+from oclubs.shared import get_callsign, special_access_required, Pagination, download_xlsx, render_email_template
 from oclubs.objs import User, Club, Activity, Upload, FormattedText
 
 actblueprint = Blueprint('actblueprint', __name__)
@@ -167,6 +167,11 @@ def newact_submit(club):
         flash(a.name + ' has been successfully created.', 'newact')
     except ValueError:
         flash('Please input all information to create a new activity.', 'newact')
+    else:
+        for member in club.members:
+            parameters = {'member': member, 'club': club, 'act': activity}
+            contents = render_email_template('registerhm', parameters)
+            # member.email_user('HongMei Plan - ' + club.name, contents)
     return redirect(url_for('.newact', club=club.callsign))
 
 
@@ -235,7 +240,28 @@ def hongmei_status(club):
                            acts=acts)
 
 
-@actblueprint.route('/<club>/newhm')
+@actblueprint.route('/<club>/hongmei_status/download')
+@get_callsign(Club, 'club')
+@special_access_required
+def hongmei_status_download(club):
+    '''Download HongMei status'''
+    result = []
+    result.append(['Date', 'Members'])
+    hongmei = club.activities([ActivityTime.HONGMEI], (False, True))
+    for each in hongmei:
+        result_each = []
+        result_each.append(each.date.strftime('%b-%d-%y'))
+        members = each.signup_list()
+        members_result = ''
+        for member in members:
+            members_result += member.user.nickname + ' (Consent From Handed? '\
+                              + member.consentform + ')\n'
+        result_each.append(members_result)
+        result.append(result_each)
+    return download_xlsx('HongMei Status - ' + club.name + '.xlsx', result)
+
+
+@actblueprint.route('/<club>/new_hongmei_schedule')
 @get_callsign(Club, 'club')
 @special_access_required
 def newhm(club):
@@ -245,7 +271,7 @@ def newhm(club):
                            club=club.name)
 
 
-@actblueprint.route('/<club>/newhm/submit', methods=['POST'])
+@actblueprint.route('/<club>/new_hongmei_schedule/submit', methods=['POST'])
 @get_callsign(Club, 'club')
 @special_access_required
 def newhm_submit(club):

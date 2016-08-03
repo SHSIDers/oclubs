@@ -13,7 +13,7 @@ body {
 
 .title {
 	margin-bottom: 2%;
-	font-family: 'Brush Script MT';
+	font-family: 'Brush Script MT', 'Georgia';
 	font-weight: bold;
 	font-size: 500%;
 	color: #f2f2f2;
@@ -21,16 +21,16 @@ body {
 
 .title_next {
 	margin-bottom: 2%;
-	font-family: 'Brush Script MT';
+	font-family: 'Brush Script MT', 'Georgia';
 	font-size: 300%;
 	color: #f2f2f2;
 }
 
 .smallBlock > div,
 .smallBlock > a {
-	width: 25em;
+	width: 24em;
 	height: 10em;
-	padding: 2.5%;
+	padding: 1.5em;
 	float: left;
 	background-color: #f5f5f5;
 	border: 1px solid #e3e3e3;
@@ -57,8 +57,8 @@ body {
 }
 
 .smallBlock img {
-	width: 9em;
-	height: 6em;
+	max-width: 9em;
+	max-height: 6.5em;
 	vertical-align: middle;
 	margin-right: 10%;
 	float: left;
@@ -95,7 +95,7 @@ body {
 	width: 100%;
 	font-family: 'MV Boli';
 	font-weight: bold;
-	 white-space:nowrap;
+	white-space:nowrap;
 }
 .top-nav ul li a:hover {
 	text-decoration:none;
@@ -177,11 +177,11 @@ body {
 .login {
 	float: right;
 	background: #0000b3;
-	margin: 1.6em 0 0;
+	margin: 2em 0 0;
 	font-size: 1.2em;
 	background-color: #222;
 	font-family: "MV Boli";
-	padding: 0.5em;
+	padding: 0 0.5em 0.5em;
 }
 
 #loginanimation {
@@ -199,7 +199,7 @@ body {
 	padding: 0.25em 0;
 	background: #0000b3;
 	float: left;
-	margin: 2.5em 0 0 2em;
+	margin: 2em 0 0 2em;
 	background-color: #222;
 }
 .search input[type="text"] {
@@ -687,7 +687,6 @@ thead.darklist {
 }
 
 .homepage_function img {
-	margin: 1.6em;
 	width: 7vw;
 	height: 7vw;
 }
@@ -869,10 +868,18 @@ thead.darklist {
 	padding: 10px;
 	border-radius: 5px;
 	cursor: pointer;
+	float: left;
 }
 
 .upload_button:hover {
 	background-color: #0099cc;
+}
+
+.upload_content {
+	color: #f2f2f2;
+	font-size: 150%;
+	font-weight: bold;
+	margin: 0.3em 0 0 9em;
 }
 
 .login_block {
@@ -1076,15 +1083,15 @@ thead.darklist {
 .sidenav {
     height: 100%; 
     width: 0; 
-    position: fixed; /
-    z-index: 2; 
+    position: fixed;
+    z-index: 100;
     top: 0;
     left: 0;
-    background-color: #111; 
-    overflow-x: hidden; 
-    padding-top: 60px; 
+    background-color: #111;
+    overflow-x: hidden;
+    padding-top: 60px;
     transition: 0.5s;
-    white-space:nowrap;
+    white-space: nowrap;
 }
 
 .sidenav a {
@@ -1094,6 +1101,10 @@ thead.darklist {
     color: #818181;
     display: block;
     transition: 0.3s
+}
+
+.sidenav .active  {
+	color: #f1f1f1;
 }
 
 .sidenav a:hover, .offcanvas a:focus{
@@ -1110,7 +1121,7 @@ thead.darklist {
 
 #floatmenu{
 	float:right;
-    position:absolute;
+    position: absolute;
     top: 150px;
     z-index: 1;
     border:2px solid #a1a1a1;
@@ -1128,6 +1139,7 @@ thead.darklist {
 
 
 
+
 @media screen and (max-width: 992px) {
 	.header {
 		font-size:90%;
@@ -1136,6 +1148,12 @@ thead.darklist {
 		width: 18%;
 	}
 
+@media screen and (max-width:720px){
+	.homepage_function .col-xs-3 {
+		width:40%;
+	}
+}
+
 }@media screen and (max-width: 650px) {
 	.sweep {
 		font-size:0.8em;
@@ -1143,42 +1161,106 @@ thead.darklist {
 	.header {
 		font-size:77.5%;
 	}
-	.search {
-		width: 15%;
+}
+
+@media screen and (max-width: 600px){
+	.slidecont {
+		width: 65%;
+		font-size: 95%;
+
+	}
+	.carousel-caption {
+		padding-bottom: 15px;
+	}
+	.carousel-indicators li {
+		width:9px !important;
+		height:9px !important;
 	}
 }
+
 @media screen and (max-width: 575px) {
 	.header {
 		font-size:70%;
 	}
-	.search {
-		width: 12%;
-	}
+
 }
 @media screen and (max-width: 500px) {
 	.top-nav {
 		width:0%;
-		visibility: hidden;
+		visibility: hidden !important;
 		height: 0px;
 		transition: 0.8s;
 	}
 	#floatmenu {
 		visibility: visible;
 	}
-	.login {
-		width:30%;
-	}
 	.search {
 		width: 40% !important;
-		margin: 2em 2em 0;
+		margin: 1.5em 0 0 4em;
 	}
+	.login {
+		margin-top: 1.5em;
+	}
+	.header > .container {
+		padding: 0 0 0.5em 0;
+	}
+	.slidecont {
+		width: 70%;
+		font-size: 90%;
+	}
+	.carousel-caption {
+		padding-bottom: 10px;
+	}
+	.carousel-indicators li, .carousel-indicators .active {
+		width:8px !important;
+		height:8px !important;
+	}
+}
 
 @media screen and (max-height: 450px) {
     .sidenav {padding-top: 15px;}
     .sidenav a {font-size: 18px
 }
 
+@media screen and (max-width: 400px){
+	.slidecont {
+		width: 80%;
+		font-size: 85%;
+	}
+	.carousel-caption {
+		padding-bottom: 5px;
+	}
+	.carousel-indicators li {
+		width:7px !important;
+		height:7px !important;
+	}
+
+
+.emptyclose {
+	height: 100%; 
+    width: 0;
+    position: fixed;
+    z-index:100;
+    top: 0;
+    left: 0;
+    background-color: transparent;
+    overflow-x: hidden;
+}
+
 .search > form > span {
 	float: right;
 	padding: 0 0.5em 0 0;
+}
+
+.slidecont {
+	transition: 0.5s;
+	width: 60%;
+}
+
+
+.carousel-indicators {
+	bottom: 0;
+}
+.carousel-caption h3 {
+	font-size: 175%;
 }

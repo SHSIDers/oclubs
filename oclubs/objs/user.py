@@ -29,6 +29,7 @@ class User(BaseObject, UserMixin):
     picture = Property('user_picture', 'Upload')
     type = Property('user_type', UserType)
     gradyear = Property('user_grad_year')
+    currentclass = Property('user_class')
     clubs = ListProperty('club_member', 'cm_user', 'cm_club', 'Club')
 
     def cas_in_club(self, club):

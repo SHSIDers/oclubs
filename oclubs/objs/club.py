@@ -96,6 +96,20 @@ class Club(BaseObject):
             order_by_time=True
         )
 
+    def allactphotos(self):
+        from oclubs.objs import Upload
+
+        tempdata = database.fetch_onecol(
+            'act_pic',
+            'actpic_upload',
+            {
+                'join': [('inner', 'activity', [('actpic_act', 'act_id')])],
+                'where': [('=', 'act_club', self.id)],
+            }
+        )
+
+        return [Upload(item) for item in tempdata]
+
     def add_member(self, user):
         database.insert_row('club_member',
                             {'cm_club': self.id, 'cm_user': user.id})
