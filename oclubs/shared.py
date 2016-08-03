@@ -61,11 +61,11 @@ def download_xlsx(filename, info):
     return Response(output.read(), mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', headers=headers)
 
 
-def read_xlsx(file, data_type):
+def read_xlsx(file, data_type, header):
     '''Read xlsx and return a list of data'''
     raw = get_data(file)
     data = raw[data_type]
-    if data_type == 'Users' and data[0] != ['Student ID', 'Passport Name', 'Email Address']:
+    if data[0] != header:
         raise ValueError
     contents = data[1:]
     return contents

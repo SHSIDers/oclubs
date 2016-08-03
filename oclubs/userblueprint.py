@@ -13,6 +13,7 @@ from flask_login import current_user, login_required, fresh_login_required
 from oclubs.objs import User, Club, Activity, Upload
 from oclubs.enums import UserType, ClubType, ActivityTime
 from oclubs.shared import get_callsign, special_access_required, download_xlsx, read_xlsx, render_email_template
+from oclubs.exceptions import AlreadyExists
 
 userblueprint = Blueprint('userblueprint', __name__)
 
@@ -207,27 +208,56 @@ def allusersinfo():
     return download_xlsx('All Users\' Info.xlsx', info)
 
 
-# @userblueprint.route('/new_users')
-# @login_required
-# @special_access_required
-# def newusers():
-#     '''Allow admin to create new user or clubs'''
-#     return render_template('user/newusers.html',
-#                            title='New Users')
+@userblueprint.route('/new_teachers')
+@special_access_required
+def newteachers():
+    '''Allow admin to create new user or clubs'''
+    return render_template('user/newteachers.html',
+                           title='New teachers')
+
+
+@userblueprint.route('/new_teachers/submit', methods=['POST'])
+@special_access_required
+def newteachers_submit():
+    '''Create new teacher accounts with xlsx'''
+    if request.files['excel'].filename == '':
+        raise ValueError
+    try:
+        contents = read_xlsx(request.files['excel'], 'Teachers', ['ID', 'Official Name', 'Email Address'])
+    except KeyError:
+        flash('Please change sheet name to "Teachers"', 'newteachers')
+        return redirect(url_for('.newteachers'))
+    except ValueError:
+        flash('Please input in the correct order.', 'newteachers')
+        return redirect(url_for('.newteachers'))
+    for each in contents:
+        try:
+            t = User.new()
+            t.studentid = each[0]
+            t.passportname = each[1]
+            password = User.generate_password()
+            t.password = password
+            t.nickname = each[1]
+            t.email = each[2]
+            t.phone = None
+            t.picture = Upload(-1)
+            t.type = UserType.TEACHER
+            t.grade = None
+            t.currentclass = None
+            t.create()
+            parameters = {'user': t, 'password': password}
+            contents = render_email_template('newuser', parameters)
+            # t.email_user('Welcome to oClubs', contents)
+        except AlreadyExists:
+            continue
+    flash('New teacher accounts have been successfully created. Their passwords have been sent to their accounts.', 'newteachers')
+    return redirect(url_for('.newteachers'))
 
 
 @userblueprint.route('/refresh_users/submit', methods=['POST'])
 @special_access_required
 def refreshusers_submit():
     '''Upload excel file to create new users'''
-    # if request.files['excel'].filename == '':
-    #     raise ValueError
-    # try:
-    #     contents = read_xlsx(request.files['excel'], 'Users')
-    # except KeyError:
-    #     flash('Please change sheet name to "Users"', 'newusers')
-    #     return redirect(url_for('.new'))
-
     from oclubs.worker import refresh_user
     refresh_user.delay()
     flash('Student accounts\' information has been successfully refreshed', 'refresh_users')

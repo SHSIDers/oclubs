@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
-{% with messages = get_flashed_messages(category_filter=["newusers"]) %}
+{% with messages = get_flashed_messages(category_filter=["newteachers"]) %}
 
 <div class="container">
 	<div class="admin_function">
-		<h2 class="title_next">Add New Users</h2>
+		<h2 class="title_next">Add New Teachers</h2>
 		<br>
 		{% if messages %}
 		<ul class="list-group">
@@ -14,26 +14,27 @@
 		</ul>
 		<br>
 		{% endif %}
-		<form action="{{ url_for('.newusers_submit') }}" method="post" enctype="multipart/form-data">
-			<p>Please upload a xlsx file with a sheet named "Users".</p>
-			<p>Required information in xlsx(in exact order): Student ID, Passport Name, Email Address</p>
+		<form action="{{ url_for('.newteachers_submit') }}" method="post" enctype="multipart/form-data">
+			<p>Please upload a xlsx file with a sheet named "Teachers".</p>
+			<p>Required information in xlsx(in exact order): ID (login name), Official Name, Email Address</p>
 			<p>Below is an example in excel file.</p>
 			<table class="table table-hover table-bordered">
 				<thead class="list">
 					<tr style="background-color:#bfbfbf">
-						<th>Student ID</th>
-						<th>Passport Name</th>
+						<th>ID</th>
+						<th>Official Name</th>
 						<th>Email Address</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr class="act">
-						<td>G2010010123</td>
-						<td>Dheeraj Kumar</td>
-						<td>i_am_indian@gmail.com</td>
+						<td>T123123123</td>
+						<td>Example Example</td>
+						<td>example@example.com</td>
 					</tr>
 				</tbody>
 			</table>
+			<p>Teacher accounts that have already been created will not be created again.</p>
 			<input type="file" name="excel" id="excel" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, .csv, application/vnd.ms-excel" style="width:0.1px; height:0.1px; opacity:0">
 			<label for="excel" class="upload_button">
 				<span class="glyphicon glyphicon-upload"></span>
