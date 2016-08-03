@@ -207,19 +207,18 @@ def allusersinfo():
     return download_xlsx('All Users\' Info.xlsx', info)
 
 
-@userblueprint.route('/new_users')
-@login_required
-@special_access_required
-def newusers():
-    '''Allow admin to create new user or clubs'''
-    return render_template('user/newusers.html',
-                           title='New Users')
+# @userblueprint.route('/new_users')
+# @login_required
+# @special_access_required
+# def newusers():
+#     '''Allow admin to create new user or clubs'''
+#     return render_template('user/newusers.html',
+#                            title='New Users')
 
 
-@userblueprint.route('/new_users/submit', methods=['POST'])
-@login_required
+@userblueprint.route('/refresh_users/submit', methods=['POST'])
 @special_access_required
-def newusers_submit():
+def refreshusers_submit():
     '''Upload excel file to create new users'''
     # if request.files['excel'].filename == '':
     #     raise ValueError
@@ -231,7 +230,8 @@ def newusers_submit():
 
     from oclubs.worker import refresh_user
     refresh_user.delay()
-    return redirect(url_for('.newusers'))
+    flash('Student accounts\' information has been successfully refreshed', 'refresh_users')
+    return redirect(url_for('.peronsal'))
 
 
 @userblueprint.route('/new_club')

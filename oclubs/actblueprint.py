@@ -163,9 +163,9 @@ def newact_submit(club):
         a.location = request.form['location']
         time_type = request.form['time_type']
         if time_type == 'hours':
-            a.cas = request.form['cas']
+            a.cas = int(request.form['cas'])
         else:
-            a.cas = request.form['cas'] / 60
+            a.cas = int(request.form['cas']) / 60
         a.create()
         flash(a.name + ' has been successfully created.', 'newact')
     except ValueError:
@@ -188,10 +188,11 @@ def activity(activity):
                       current_user.type == UserType.ADMIN)
     else:
         has_access = False
+    is_other_act = (activity.time == ActivityTime.UNKNOWN or
+                    activity.time == ActivityTime.OTHERS)
     return render_template('activity/actintro.html',
                            title=activity.name,
-                           is_other_act=(activity.time == ActivityTime.UNKNOWN or
-                                         activity.time == ActivityTime.OTHERS),
+                           is_other_act=is_other_act,
                            is_past=date.today() >= activity.date,
                            has_access=has_access)
 

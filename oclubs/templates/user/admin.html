@@ -1,5 +1,6 @@
 {% extends "user/personal.html" %}
 {% block personal %}
+{% with messages = get_flashed_messages(category_filter=["refresh_users"]) %}
 
 <h2 class="title_next">Download</h2>
 <div class="col-sm-3 admin_function">
@@ -26,11 +27,13 @@
 <div class="clearfix clearfix-bordered"></div>
 
 <h2 class="title_next">Other Administrative Functions</h2>
-<div class="admin_button">
-	<a href="{{ url_for('.newusers') }}">
-		<button class="btn btn-success">Refresh Student Accounts</button>
-	</a>
-</div>
+{% if messages %}
+<ul class="list-group">
+	{% for message in messages %}
+	<li class="list-group-item">{{ message }}</li>
+	{% endfor %}
+</ul>
+{% endif %}
 <div class="admin_button">
 	<a href="{{ url_for('.newclub') }}">
 		<button class="btn btn-success">Add New Club</button>
@@ -57,4 +60,34 @@
 	</a>
 </div>
 
+<div class="clearfix"></div>
+<br>
+<div class="clearfix clearfix-bordered"></div>
+
+<h2 class="title_next">Please be careful with following operation</h2>
+<div class="admin_button">
+	<button class="btn btn-warning" data-toggle="modal" data-target="#confirm_refresh">Refresh Student Accounts</button>
+</div>
+
+<div id="confirm_refresh" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Confirmation</h4>
+			</div>
+			<div class="modal-body">
+				<p>Please do not refresh users' information during school day to avoid any other operation to database. Please make sure no one else is using oClubs at this period.</p>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-success" data-dismiss="modal" style="float:left">Cancel</button>
+				<form action="{{ url_for('.refreshusers_submit') }}" method="post">
+					<input type="submit" class="btn btn-danger" value="Refresh">
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endwith %}
 {% endblock %}

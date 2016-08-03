@@ -40,12 +40,12 @@
 		</div>
 		<div class="container">
 			{% if messages_signup %}
-            <ul class="list-group">
-                {% for message in messages_signup %}
-                <li class="list-group-item">{{ message }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
+			<ul class="list-group">
+				{% for message in messages_signup %}
+				<li class="list-group-item">{{ message }}</li>
+				{% endfor %}
+			</ul>
+			{% endif %}
 			<div class="intro_function">
 				<div class="col-sm-6">
 					<a href="{{ url_for('clubblueprint.clubintro', club=g.activity.club.callsign) }}">
@@ -53,7 +53,7 @@
 					</a>
 				</div>
 				<div class="col-sm-6">
-					{% if is_other_act %}
+					{% if is_other_act and not is_past %}
 					<form action="{{ url_for('.activity_submit', activity=g.activity.callsign) }}" method="post">
 						<input class="btn btn-info btn-lg" type="submit" style="width:80%" value="Join">
 					</form>
