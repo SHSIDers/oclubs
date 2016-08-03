@@ -11,7 +11,7 @@ markdown
 bleach
 elasticsearch
 pycrypto
-sendgrid
+envelopes
 xlsxwriter
 pyexcel-xlsx
 xkcdpass

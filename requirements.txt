@@ -14,6 +14,7 @@ cffi==1.7.0               # via bcrypt
 click==6.6                # via flask, pip-tools
 elasticsearch==2.3.0
 enum34==1.1.6
+envelopes==0.4
 et-xmlfile==1.0.1         # via openpyxl
 first==2.0.1              # via pip-tools
 flask-login==0.3.2
@@ -36,11 +37,9 @@ pycrypto==2.6.1
 pyexcel-io==0.2.1         # via pyexcel-xlsx
 pyexcel-xlsx==0.2.1
 pystache==0.5.4
-python-http-client==2.1.1  # via sendgrid
 python-magic==0.4.12
 pytz==2016.6.1            # via celery
 redis==2.10.5
-sendgrid==3.1.10
 six==1.10.0               # via bcrypt, bleach, html5lib, pip-tools
 urllib3==1.16             # via elasticsearch
 uwsgi==2.0.13.1

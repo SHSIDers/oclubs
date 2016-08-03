@@ -362,3 +362,23 @@ service { 'celeryd':
     ensure => running,
     enable => true,
 }
+
+
+package { 'postfix':
+    ensure => present,
+    before => Package['epel-release'],
+}
+
+file { '/etc/postfix/main.cf':
+    ensure => file,
+    mode   => '0644',
+    owner  => 'root',
+    group  => 'root',
+    source => '/vagrant/provision/postfix-main.cf',
+    notify => Service['postfix'],
+}
+
+service { 'postfix':
+    ensure => running,
+    enable => true,
+}
