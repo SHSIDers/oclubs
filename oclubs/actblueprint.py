@@ -26,17 +26,15 @@ def allactivities(club_type, page):
     '''All Activities'''
     act_num = 20
     if club_type == 'all':
-        acts_obj = Activity.all_activities()
+        acts_obj = Activity.get_activities_conditions(limit=((page-1)*act_num, act_num))
         acts_obj.reverse()
     else:
         try:
-            acts_obj = Activity.get_activities_conditions(club_types=[ClubType[club_type.upper()]])
+            acts_obj = Activity.get_activities_conditions(club_types=[ClubType[club_type.upper()]], limit=((page-1)*act_num, act_num))
             acts_obj.reverse()
         except KeyError:
             abort(404)
-
     pagination = Pagination(page, act_num, len(acts_obj))
-    acts_obj = acts_obj[(page-1)*act_num: page*act_num]
     return render_template('activity/allact.html',
                            title='All Activities',
                            is_allact=True,
@@ -66,6 +64,7 @@ def clubactivities(club, page):
         club_pic['image1'] = Upload(-1)
         club_pic['image2'] = Upload(-2)
         club_pic['image3'] = Upload(-3)
+    # FIXME: change slice action to using class method
     return render_template('activity/clubact.html',
                            title=club.name,
                            club=club,
