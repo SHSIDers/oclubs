@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-{% with messages = get_flashed_messages(category_filter=["success"]) %}
+{% with messages = get_flashed_messages(category_filter=["actpost"]) %}
 
 <!-- Below Navbar -->
 <div class="large_container">
@@ -17,7 +17,7 @@
 		{% endif %}
 		<p>*Please input below.</p>
 		<label for="picture" style="font-size:200%">Picture:</label>
-		<input type="file" name="picture" id="picture" accept="image/*" style="width:0.1px; height:0.1px; opacity:0">
+		<input type="file" multiple="multiple" name="picture" id="picture" accept="image/*" style="width:0.1px; height:0.1px; opacity:0">
 		<label for="picture" class="upload_button">
 			<span class="glyphicon glyphicon-upload"></span>
 			<span>Choose images...</span>

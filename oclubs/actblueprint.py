@@ -230,7 +230,15 @@ def changeactpost(activity):
 @special_access_required
 def changeactpost_submit(activity):
     '''Input info into database'''
-    pass
+    pictures = request.form['picture']
+    content = request.form['post']
+    if pictures != '':
+        for pic in pictures:
+            activity.add_picture(Upload.handle(current_user, activity.club, pic))
+    if content != '':
+        activity.post = FormattedText.handle(current_user, activity.club, content)
+    flash('Activity post has been successfully modified.', 'actpost')
+    return redirect(url_for('.changeactpost', activity=activity.callsign))
 
 
 @actblueprint.route('/<club>/hongmei_status')

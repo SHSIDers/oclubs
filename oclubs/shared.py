@@ -34,10 +34,10 @@ class MemoryLine():
         self.line_value = value
 
 
-def _stringfy(string):
-    if isinstance(string, unicode):
-        return string.encode('utf-8')
-    return string
+# def _stringfy(string):
+#     if isinstance(string, unicode):
+#         return string.encode('utf-8')
+#     return string
 
 
 def download_xlsx(filename, info):
