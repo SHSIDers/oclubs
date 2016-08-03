@@ -4,7 +4,7 @@
 
 from __future__ import absolute_import
 
-from ibm_db import connect, fetch_assoc, exec_immediate
+from ibm_db import close, connect, exec_immediate, fetch_assoc
 
 from oclubs.access import get_secret
 
@@ -20,7 +20,10 @@ def _results(command):
 
 def _execute(sql):
     connection = connect(get_secret('db2_conn'), '', '')
-    return _results(exec_immediate(connection, sql))
+    try:
+        return _results(exec_immediate(connection, sql))
+    finally:
+        close(connection)
 
 
 def allstudents():
