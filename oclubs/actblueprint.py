@@ -232,8 +232,9 @@ def changeactpost(activity):
 def changeactpost_submit(activity):
     '''Input info into database'''
     if request.files['picture'].filename != '':
-        for pic in request.files['picture']:
-            activity.add_picture(Upload.handle(current_user, activity.club, pic))
+        # for pic in request.files['picture']:
+        print request.files['picture']
+        activity.add_picture(Upload.handle(current_user, activity.club, request.files['picture']))
     if request.form['post'] != '':
         print request.form['post']
         activity.post = FormattedText.handle(current_user, activity.club, request.form['post'])
