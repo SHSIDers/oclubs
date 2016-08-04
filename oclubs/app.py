@@ -12,7 +12,7 @@ import math
 from flask import (
     Flask, redirect, request, render_template, url_for, session, jsonify, g, abort, flash, Markup
 )
-from flask_login import LoginManager, login_user, logout_user, current_user
+from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 
 from oclubs.objs import User, Club, Activity, Upload
 from oclubs.access import done as db_done, get_secret
@@ -272,6 +272,21 @@ def creators():
     '''Introduction Page about Us'''
     return render_template('static/creators.html',
                            title='Creators')
+
+
+@app.route('/complaints')
+@login_required
+def complaints():
+    '''Complaints Page'''
+    return render_template('static/complaints.html',
+                           title='Complaints')
+
+
+@app.route('/complaints/submit')
+@login_required
+def complaints_submit():
+    '''Submit complaints'''
+    pass
 
 
 if __name__ == '__main__':
