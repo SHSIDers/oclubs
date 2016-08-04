@@ -13,6 +13,7 @@ import re
 import math
 from copy import deepcopy
 from datetime import datetime, date
+import traceback
 
 from oclubs.enums import UserType, ClubType, ActivityTime
 from oclubs.shared import get_callsign, special_access_required, Pagination, download_xlsx, render_email_template
@@ -230,13 +231,12 @@ def changeactpost(activity):
 @special_access_required
 def changeactpost_submit(activity):
     '''Input info into database'''
-    pictures = request.form['picture']
-    content = request.form['post']
-    if pictures != '':
-        for pic in pictures:
+    if request.files['picture'].filename != '':
+        for pic in request.files['picture']:
             activity.add_picture(Upload.handle(current_user, activity.club, pic))
-    if content != '':
-        activity.post = FormattedText.handle(current_user, activity.club, content)
+    if request.form['post'] != '':
+        print request.form['post']
+        activity.post = FormattedText.handle(current_user, activity.club, request.form['post'])
     flash('Activity post has been successfully modified.', 'actpost')
     return redirect(url_for('.changeactpost', activity=activity.callsign))
 
