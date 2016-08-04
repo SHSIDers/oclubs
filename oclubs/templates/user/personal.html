@@ -5,7 +5,7 @@
 
 <!-- Below Navbar -->
 <div class="container">
-	<h2 class="title_next" style="padding-left: 3%; margin-bottom:0;">{{ current_user.nickname }} {% if activities %}<span style="font-size:50%">({{ current_user.studentid }})</span>{% endif %}<a href="{{ url_for('logout') }}" style="color:#f2f2f2; float:right; font-size:50%; margin-right:4%" onMouseOver="this.style.color='#cccccc'" onMouseOut="this.style.color='#f2f2f2'"><span class="glyphicon glyphicon-log-out">&nbsp;Logout</span></a></h2>
+	<h2 class="title_next" style="padding-left: 3%; margin-bottom:0;">{{ current_user.passportname }} {% if activities %}<span style="font-size:50%">&nbsp;&nbsp;&nbsp;{{ current_user.studentid }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Class {{ current_user.grade }} - {{ current_user.currentclass }}</span>{% endif %}<a href="{{ url_for('logout') }}" style="color:#f2f2f2; float:right; font-size:50%; margin-right:4%" onMouseOver="this.style.color='#cccccc'" onMouseOut="this.style.color='#f2f2f2'"><span class="glyphicon glyphicon-log-out">&nbsp;Logout</span></a></h2>
 	<div class="clearfix clearfix-bordered"></div>
 	{% if status_info %}
 	<br>
@@ -29,7 +29,7 @@
 		<br><br>
 	</div>
 	<div class="col-sm-9 personal_info">
-		<h2>Official Name: {{ current_user.passportname }}</h2>
+		<h2>Nick Name: {{ current_user.nickname }}</h2>
 		<h2>Email Address: {{ current_user.email }}</h2>
 		<h2>Phone Number: {{ current_user.phone }}</h2>
 		<br>
