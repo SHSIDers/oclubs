@@ -113,18 +113,16 @@ class User(BaseObject, UserMixin):
     @staticmethod
     def find_user(studentid, passportname):
         try:
-            data = database.fetch_onerow(
+            return User(database.fetch_oneentry(
                 'user',
-                {'user_id': 'id', 'user_passport_name': 'passportname'},
-                {'user_login_name': studentid}
-            )
+                'user_id',
+                {
+                    'user_login_name': studentid,
+                    'user_passport_name': passportname
+                }
+            ))
         except NoRow:
             return
-        else:
-            if _crypt.verify(passportname, data['passportname']):
-                return User(data['id'])
-            else:
-                return
 
     @classmethod
     def allusers(cls):
