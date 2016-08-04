@@ -4,19 +4,19 @@
 <!-- Below Navbar -->
 <div class="container">
 	<h1 class="title">{{ club }}</h1>
-	<div class="col-sm-3 function_block clickable" data-href="{{ url_for('clubblueprint.memberinfo', club=g.club.callsign) }}" style="cursor:pointer">
+	<div class="col-xs-3 function_block clickable" data-href="{{ url_for('clubblueprint.memberinfo', club=g.club.callsign) }}" style="cursor:pointer">
 		<img src="{{ url_for('static', filename='images/club1.jpg') }}" class="img-responsive img-thumbnail" alt="Club1">
 		<div style="background-color:rgba(77, 77, 77, 0.5)">
 			<p>Check Members' Info</p>
 		</div>
 	</div>
-	<div class="col-sm-3 function_block clickable" data-href="{{ url_for('.changeclubinfo', club=g.club.callsign, page='1') }}" style="cursor:pointer">
+	<div class="col-xs-3 function_block clickable" data-href="{{ url_for('.changeclubinfo', club=g.club.callsign, page='1') }}" style="cursor:pointer">
 		<img src="{{ url_for('static', filename='images/club2.jpg') }}" class="img-responsive img-thumbnail" alt="Club2">
 		<div style="background-color:rgba(0, 153, 153, 0.5)">
 			<p>Change Club Info</p>
 		</div>
 	</div>
-	<div class="col-sm-3 function_block clickable" data-href="#adjust" data-toggle="modal" data-target="#adjust" style="cursor:pointer">
+	<div class="col-xs-3 function_block clickable" data-href="#adjust" data-toggle="modal" data-target="#adjust" style="cursor:pointer">
 		<img src="{{ url_for('static', filename='images/club3.jpg') }}" class="img-responsive img-thumbnail" alt="Club3">
 		<div style="background-color:rgba(153, 0, 61, 0.5)">
 			<p>Adjust Leader/Members</p>
@@ -24,20 +24,20 @@
 	</div>
 	<div class="clearfix"></div>
 	
-	<div class="container" style="margin:0 12.5% 0 12.5%">
-		<div class="col-sm-4 function_block clickable" data-href="{{ url_for('actblueprint.newact', club=g.club.callsign) }}" style="cursor:pointer">
+	<div class="container" id="clubmanage">
+		<div class="col-xs-4 function_block clickable" data-href="{{ url_for('actblueprint.newact', club=g.club.callsign) }}" style="cursor:pointer">
 			<img src="{{ url_for('static', filename='images/club4.jpg') }}" class="img-responsive img-thumbnail" alt="Club4">
 			<div style="background-color:rgba(38, 153, 0, 0.5)">
 				<p>Host New Activity</p>
 			</div>
 		</div>
-		<div class="col-sm-4 function_block clickable" data-href="{{ url_for('actblueprint.clubactivities', club=g.club.callsign, page=1) }}" style="cursor:pointer">
+		<div class="col-xs-4 function_block clickable" data-href="{{ url_for('actblueprint.clubactivities', club=g.club.callsign, page=1) }}" style="cursor:pointer">
 			<img src="{{ url_for('static', filename='images/club5.jpg') }}" class="img-responsive img-thumbnail" alt="Club5">
 			<div style="background-color:rgba(0, 0, 153, 0.5)">
 				<p>Check or Manage Hosted Activity</p>
 			</div>
 		</div>
-		<div class="col-sm-4 function_block clickable" data-href="#hongmei" data-toggle="modal" data-target="#hongmei" style="cursor:pointer">
+		<div class="col-xs-4 function_block clickable" data-href="#hongmei" data-toggle="modal" data-target="#hongmei" style="cursor:pointer">
 			<img src="{{ url_for('static', filename='images/club6.jpg') }}" class="img-responsive img-thumbnail" alt="Club6">
 			<div style="background-color:rgba(115, 77, 38, 0.5)">
 				<p>Manage HongMei Activities</p>

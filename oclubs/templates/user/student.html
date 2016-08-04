@@ -11,12 +11,12 @@
 	{% endfor %}
 </div>
 <div class="clearfix"></div>
-<div class="col-sm-6">
+<div class="col-xs-6">
 	<center><a href="{{ url_for('clubblueprint.clublist', club_type='all') }}">
 		<button class="btn btn-info" style="padding:5% 10% 5% 10%; font-size:125%">Join Clubs</button>
 	</a></center>
 </div>
-<div class="col-sm-6">
+<div class="col-xs-6">
 	<center><a href="{{ url_for('userblueprint.quitclub') }}">
 		<button class="btn btn-info" style="padding:5% 10% 5% 10%; font-size:125%">Quit Clubs</button>
 	</a></center>
@@ -29,8 +29,8 @@
 <br>
 <div class="smallBlock">
 	{% for club in clubs %}
-	<div>
-		<p style="font-size:150%">{{ club.name }}</p>
+	<div style="width:30%">
+		<p style="font-size:150%" class="clubname">{{ club.name }}</p>
 		<p>CAS Hours: {{ current_user.cas_in_club(club) }}</p>
 	</div>
 	{% endfor %}
