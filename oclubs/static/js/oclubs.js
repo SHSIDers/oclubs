@@ -137,21 +137,19 @@ $( document )
 			.substring( 0, $( '#floatmenu' )
 				.css( "top" )
 				.indexOf( "p" ) ) );
-		$( window )
-			.scroll( function() {
+		$( window ).scroll( function() {
 				if ( window.innerWidth <= 500 ) {
 					document.querySelector( '#floatmenu' )
 						.style.top = menuYloc + $( document )
 						.scrollTop() + "px";
 				}
-			} );
-		$( window )
-			.resize( function() {
+		} );
+		$( window ).resize( function() {
 				if ( window.innerWidth <= 500 ) {
 					document.querySelector( '#floatmenu' )
-						.style.left = ( window.innerWidth - 75 ) + "px";
+						.style.left = ( window.innerWidth *0.8 ) + "px";
 					document.querySelector( '#floatmenu' )
-						.style.top = ( window.innerHeight - 125 ) + "px";
+						.style.top = ( window.innerHeight *0.85  ) + "px";
 				}
-			} );
-	} );
+		} );
+} );

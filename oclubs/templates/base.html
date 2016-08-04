@@ -25,6 +25,34 @@ function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
     document.getElementById("emptyclose").style.width = "0";
 }
+function swapinnerhtml(a, b) {
+	tempa = a.innerHTML
+	a.innerHTML = b.innerHTML
+	b.innerHTML = tempa
+}
+$( document )
+	.ready( function() {
+		if(document.title == "About - oClubs!") {
+			if (document.getElementById( "aboutpic" ).offsetTop != document.getElementById("aboutlist").offsetTop){
+				swapinnerhtml(document.getElementById( "aboutpic") , document.getElementById("aboutlist"));
+			}
+			var hadequaltop;
+			hadequaltop = (document.getElementById( "aboutpic" ).offsetTop == document.getElementById("aboutlist").offsetTop);
+			$( window ).
+				resize( function() {
+					var isequaltop = (document.getElementById( "aboutpic" ).offsetTop == document.getElementById("aboutlist").offsetTop);
+					if(hadequaltop != isequaltop){
+						swapinnerhtml(document.getElementById( "aboutpic") , document.getElementById("aboutlist"));
+						hadequaltop = !hadequaltop;
+					}
+		
+			} );
+		}
+		if(document.title == "Creators - oClubs!"){
+			document.getElementsByClassName('btn')[0]
+		}
+
+} );
 </script>
 <style type="text/css">
 </style>
@@ -65,7 +93,7 @@ function closeNav() {
 				<input type="hidden" name="search_type" value="club">
 				<input type="hidden" name="page" value="1">
 				<input type="text" name="keywords" placeholder="Search">
-				<span class="glyphicon glyphicon-search"><input type="submit" value=""></span>
+				<span class="glyphicon glyphicon-search" style="float:right"><input type="submit" value=""></span>
 			</form>
 		</div>
 		

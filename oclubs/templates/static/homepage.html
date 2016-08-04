@@ -1,42 +1,42 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container">
-	<div class="col-md-3 blockpic clickable" data-href="#">
+	<div class="col-xs-3 blockpic clickable" data-href="#">
 		<img src="static/images/intro1.jpg" class="img-responsive" alt="" />
 		<div class="mask">
 			<h2>Letraset sheets</h2>
 			<p>with the release Letraset sheets Lorem</p>
 		</div>
 	</div>
-	<div class="col-md-6 blockpic clickable" data-href="#">
+	<div class="col-xs-6 blockpic clickable" data-href="#">
 		<img src="static/images/intro9.jpg" class="img-responsive" alt="" />
 		<div class="mask">
 			<h2>sheets Lorem Ipsum containing</h2>
 			<p> Letraset sheets with the release Letraset</p>
 		</div>
 	 </div>
-	<div class="col-md-3 blockpic clickable" data-href="#">
+	<div class="col-xs-3 blockpic clickable" data-href="#">
 		<img src="static/images/intro3.jpg" class="img-responsive" alt="" />
 		<div class="mask">
 			<h2>sheets release</h2>
 			<p>with the release Letraset sheets Lorem </p>
 		</div>
 	 </div>
-	<div class="col-md-6 blockpic clickable" data-href="#">
+	<div class="col-xs-6 blockpic clickable" data-href="#">
 		<img src="static/images/intro7.jpg" class="img-responsive" alt="" />
 		<div class="mask">
 			<h2>Letraset sheets with</h2>
 			<p>Lorem Ipsum containing Lorem Ipsum passages</p>
 		</div>
 	 </div>
-	 <div class="col-md-3 blockpic clickable" data-href="#">
+	 <div class="col-xs-3 blockpic clickable" data-href="#">
 		<img src="static/images/intro8.jpg" class="img-responsive" alt="" />
 		<div class="mask">
 			<h2>containing Lorem</h2>
 			<p> sheets Lorem Ipsum containing Lorem passages</p>
 		</div>
 	 </div>
-	 <div class="col-md-3 blockpic clickable" data-href="#">
+	 <div class="col-xs-3 blockpic clickable" data-href="#">
 		<img src="static/images/intro2.jpg" class="img-responsive" alt="" />
 		<div class="mask">
 			<h2>with the release</h2>
@@ -53,7 +53,7 @@
 		<div class="col-sm-4">
 			<div class="panel" style="border-style:none">
 				<div class="panel-heading" style="background-color:#1a75ff">
-					<h2 class="title_next">Excellent Clubs</h2>
+					<h2 class="title_next" style="font-size:250%">Excellent Clubs</h2>
 				</div>
 				<div class="panel-body" style="background-color:#66a3ff">
 					<div class="list-group">
@@ -73,14 +73,14 @@
 		</div>
 		<div class="col-sm-8">
 			<div class="homepage_block">
-				<div class="col-sm-3">
+				<div class="col-xs-3">
 					<img src="static/images/cover.jpg" class="img-responsive img-thumbnail" alt="SHSID|Times Cover">
 				</div>
-				<div class="col-sm-9">
-					<div class="col-sm-10" style="padding-left:0">
+				<div class="col-xs-9">
+					<div class="col-xs-10">
 						<h1 class="title_next">Clubs in SHSID</h1>
 					</div>
-					<div class="col-sm-2" style="padding-right:0">
+					<div class="col-xs-2">
 						<a href="{{ url_for('clubblueprint.clublist', club_type='all') }}"><h1><span class="glyphicon glyphicon-list text-right"></span></h1></a>
 					</div>
 					<h3>Student-led, creative, and surprising</h3>
@@ -92,7 +92,7 @@
 			<div class="homepage_block">
 				<h1 class="text-center title_next">Club Photos</h1>
 				{% for act in pic_acts %}
-				<div class="col-sm-4">
+				<div class="col-xs-4">
 					<a href="{{ url_for('actblueprint.activity', activity=act.callsign) }}"><img src="{{ act.pictures[0].location_external }}" class="img-responsive img-thumbnail" alt="{{ act.name }}"></a>
 				</div>
 				{% endfor %}
