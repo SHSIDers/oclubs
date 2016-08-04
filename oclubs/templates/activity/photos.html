@@ -6,12 +6,17 @@
 	<h1 class="text-center title">All Photos</h1>
 	{% if act_recent %}
 	<div class="jumbotron">
-		<img src="{{ act_recent.pictures[0].location_external }}" class="img-responsive img-thumbnail" alt="Image" style="float:left;width:24%;height:18%;margin-left:5%;margin-right:5%">
-		<h1>{{ act_recent.club.name }}</h1>
-		<h1>{{ act_recent.name }}</h1>
-		<h3>Recent Event - This activity is most recently happened event with pictures.</h3>
-		<h3>Feel free to click it to check the activity.</h3>
-		<h3>Below are other fantastic photos from clubs.</h3>
+		<div class="col-sm-4">
+			<img src="{{ act_recent.pictures[0].location_external }}" class="img-responsive img-thumbnail" alt="Image" style="float:left;width:100%;margin-left:5%;">
+		</div>
+		<div class="col-sm-7" style="margin-left:2em">
+			<h1>{{ act_recent.club.name }}</h1>
+			<h1>{{ act_recent.name }}</h1>
+			<h3>Recent Event - This activity is most recently happened event with pictures.</h3>
+			<h3>Feel free to click it to check the activity.</h3>
+			<h3>Below are other fantastic photos from clubs.</h3>
+		</div>
+		<div class="clearfix"></div>
 	</div>
 	<br>
 	{% endif %}
