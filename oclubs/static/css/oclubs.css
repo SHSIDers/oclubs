@@ -1191,6 +1191,7 @@ thead.darklist {
 	}
 	.creators .panel-heading {
 		font-size: 125% !important;
+		height: 65px;
 	}
 	.panel-heading {
 		padding: 9px 9px;
@@ -1203,7 +1204,7 @@ thead.darklist {
 		padding-right:2px;
 	}
 	.creators p {
-		font-size:125%;
+		font-size:110%;
 	}
 	.creators .panel-heading {
 		font-size: 150% !important;
