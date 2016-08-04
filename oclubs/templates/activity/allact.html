@@ -18,7 +18,17 @@
 	</div>
 
 	<div class="col-sm-10">
-		<h1 class="title">Activites - {{ club_type.replace('_', ' ').title() }}</h1>
+		<h1 class="title" style="clear:right">Activites - {{ club_type.replace('_', ' ').title() }}</h1>
+		<select onchange="window.location=this.value;">
+			<option value="{{ url_for('.allactivities', club_type='all', page='1') }}" {% if club_type=='all' %}selected="selected"{% endif %}>All</option>
+			<option value="{{ url_for('.allactivities', club_type='academics', page='1') }}"{% if club_type=='academics' %}selected="selected"{% endif %}>Academics</option>
+			<option value="{{ url_for('.allactivities', club_type='sports', page='1') }}"{% if club_type=='sports' %}selected="selected"{% endif %}>Sports</option>
+			<option value="{{ url_for('.allactivities', club_type='arts', page='1') }}"{% if club_type=='arts' %}selected="selected"{% endif %}>The Arts</option>
+			<option value="{{ url_for('.allactivities', club_type='services', page='1') }}"{% if club_type=='services' %}selected="selected"{% endif %}>Services</option>
+			<option value="{{ url_for('.allactivities', club_type='entertainment', page='1') }}"{% if club_type=='entertainment' %}selected="selected"{% endif %}>Entertainment</option>
+			<option value="{{ url_for('.allactivities', club_type='others', page='1') }}"{% if club_type=='others' %}selected="selected"{% endif %}>Others</option>
+			<option value="{{ url_for('.allactivities', club_type='school_teams', page='1') }}"{% if club_type=='school_teams' %}selected="selected"{% endif %}>School Team</option>
+		</select>
 		<table class="table table-hover table-bordered">
 			<thead class="list">
 				<tr style="background-color:#bfbfbf">

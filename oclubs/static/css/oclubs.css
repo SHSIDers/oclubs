@@ -997,10 +997,6 @@ thead.darklist {
 	background-color: #003380;
 }
 
-.img-thumbnail {
-	padding: 0;
-}
-
 .admin_function {
 	padding: 0 2% 2% 2%;
 	margin: 0 3% 0 3%;
@@ -1126,6 +1122,15 @@ thead.darklist {
 	.blockpic {
 		height: 250px;
 	}
+	.large_container select {
+		visibility: visible !important;
+		height: auto !important;
+	}
+	.large_container .list-group{
+		visibility: hidden;
+		height: 0px;
+		width: 0px;
+	}
 }
 
 @media screen and (max-width:720px){
@@ -1212,14 +1217,24 @@ thead.darklist {
 	.panel-heading {
 		padding: 9px 9px;
 	}
+
+	.img-thumbnail {
+		padding: 0;
+	}
+	.large_container, .large_container > .col-sm-10 {
+		padding-left:0;
+		padding-right:0;
+	}
 }
 
 @media screen and (max-width: 525px){	
 	.top-nav {
-		width:0%;
 		visibility: hidden !important;
 		height: 0px;
 		transition: 0.8s;
+	}
+	.top-nav li {
+		width: 0%;
 	}
 	#floatmenu {
 		visibility: visible;
@@ -1301,12 +1316,25 @@ thead.darklist {
 		height:7px !important;
 	}
 	.title {
-		font-size: 200%;
+		font-size: 180%;
 	}
 	.title_next {
-		font-size: 150%;
+		font-size: 140%;
 	}
 	.blockpic {
 		height: 100px;
 	}
+}
+
+.large_container select {
+	padding: 0.5em;
+	font-size: 120%;
+	border-style: solid;
+	border-color: #337ab7;
+	border-radius: 5px;
+	width: 49%;
+	border-width: 3px;
+
+	visibility: hidden;
+	height: 0px;
 }
