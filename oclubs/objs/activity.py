@@ -129,13 +129,18 @@ class Activity(BaseObject):
         if limit:
             conds['limit'] = limit
 
-        acts = database.fetch_onecol(
-            'activity',
-            'act_id',
-            conds
-        )
+        ret = database.fetch_onecol('activity', 'act_id', conds)
+        ret = [cls(item) for item in ret]
 
-        return [cls(act) for act in acts]
+        if limit:
+            return database.fetch_oneentry(
+                'activity',
+                database.RawSQL('COUNT(`act_id`)'),
+                conds
+            ), ret
+        else:
+            return ret
+
 
     @classmethod
     def all_activities(cls):
