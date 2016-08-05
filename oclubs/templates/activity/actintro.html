@@ -20,8 +20,8 @@
 	</div>
 
 	<!-- Main Content -->
-	<div class="col-sm-10" style="padding-right:50px">
-		<div class="container">
+	<div class="col-md-10" style="padding-right:3em">
+		<div class="container" style="max-width: 100%">
 			<div class="jumbotron" style="background-color:#3366ff;color:#e6e6e6">
 				<h1 class="title">{{ g.activity.name }}</h1>
 				<p>{{ g.activity.club.name }}</p>
@@ -38,7 +38,7 @@
 				<br>
 			</div>
 		</div>
-		<div class="container">
+		<div class="container" style="max-width: 100%">
 			{% if messages_signup %}
 			<ul class="list-group">
 				{% for message in messages_signup %}
@@ -46,48 +46,46 @@
 				{% endfor %}
 			</ul>
 			{% endif %}
+			<center>
 			<div class="intro_function">
 				<div class="col-sm-6">
 					<a href="{{ url_for('clubblueprint.clubintro', club=g.activity.club.callsign) }}">
-						<button class="btn btn-info btn-lg" style="width:80%">Club Introduction</button>
+						<button class="btn btn-info btn-lg">Club Introduction</button>
 					</a>
 				</div>
 				<div class="col-sm-6">
 					{% if is_other_act and not is_past %}
 					<form action="{{ url_for('.activity_submit', activity=g.activity.callsign) }}" method="post">
-						<input class="btn btn-info btn-lg" type="submit" style="width:80%" value="Join">
+						<input class="btn btn-info btn-lg" type="submit" value="Join">
 					</form>
 					{% elif is_past %}
 					<a href="{{ url_for('.actpost', activity=g.activity.callsign) }}">
-						<button class="btn btn-info btn-lg" style="width:80%">Activity Post</button>
+						<button class="btn btn-info btn-lg">Activity Post</button>
 					</a>
 					{% endif %}
 				</div>
 
-				<div class="clearfix"></div>
-				<br>
 				{% if has_access and is_past %}
 				<div class="col-sm-6">
 					<a href="{{ url_for('.inputatten', activity=g.activity.callsign) }}">
-						<button class="btn btn-info btn-lg" style="width:80%">Input Attendance</button>
+						<button class="btn btn-info btn-lg">Input Attendance</button>
 					</a>
 				</div>
 				<div class="col-sm-6">
 					<a href="{{ url_for('.checkatten', activity=g.activity.callsign) }}">
-						<button class="btn btn-info btn-lg" style="width:80%">Check Attendance</button>
+						<button class="btn btn-info btn-lg">Check Attendance</button>
 					</a>
 				</div>
 
-				<div class="clearfix"></div>
-				<br>
 
 				<div class="col-sm-6">
 					<a href="{{ url_for('.changeactpost', activity=g.activity.callsign) }}">
-						<button class="btn btn-info btn-lg" style="width:80%">Change Activity Post</button>
+						<button class="btn btn-info btn-lg">Change Activity Post</button>
 					</a>
 				</div>
 				{% endif %}
 			</div>
+			</center>
 		</div>
 	</div>
 </div>

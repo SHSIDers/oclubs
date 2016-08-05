@@ -79,6 +79,21 @@ $( document )
 	width: 32%;
 	min-width: 240px;
 }
+.smallBlock > a{
+	max-width: 100%;
+}
+.intro_function > .col-sm-6 > a > button {
+	width:80%;
+}
+.intro_function > .col-sm-6 {
+	padding-bottom: 0.75em;
+}
+#stuclubmeeting {
+	border-right-style:solid;
+}
+.function_block > div > p {
+	margin: 0;
+}
 
 @media screen and (max-width:992px){
 	.function_block p {
@@ -87,9 +102,6 @@ $( document )
 	.function_block {
 		margin:1%;
 	}
-		.large_container > .col-sm-2 > img {
-	width: 100px;
-}
 }
 @media screen and (max-width:800px){
 	#clubmanage {
@@ -104,16 +116,32 @@ $( document )
 	}
 	#memberinfotable{
 	font-size:125%;
+}	
+#actinfotable{
+	font-size:90%;
+}
+.logo {
+	width: 16%;
 }
 }
 @media screen and (max-width:768px) {
 	.homepage_block > .col-xs-9 {
 		padding-left:0;
 	}
+	#stuclubmeeting {
+		border-right-style:none;
+		border-bottom-style:;
+	}
+	.large_container > .col-sm-2 > img {
+		width: 30%;
+	}
 }
 @media screen and (max-width:720px){
 	.personal_info > h2 {
 		font-size:24px;
+	}
+	#profilepic {
+		max-height: 122px;
 	}
 	.function_block p {
 		font-size:90%;
@@ -136,7 +164,9 @@ $( document )
 	.panel-heading > h2 {
 		margin-top:10px;
 	}
-
+	.photo {
+	width: 33%;
+}
 
 
 }
@@ -154,9 +184,17 @@ $( document )
 	#memberinfotable{
 	font-size:100%;
 }
+#actinfotable{
+	font-size:80%;
+}
 	.footer{
 		font-size: 100%;
 	}
+	.logo {
+	width: 20%;
+	}
+
+
 }
 @media screen and (max-width:600px) {
 	#currentleader {
@@ -165,11 +203,26 @@ $( document )
 	.teacher_club .col-xs-4 button {
 	width: 90%;
 	font-size: 100%;
-}
+	}
+	.smallBlock > a{
+		padding: 1em;
+	}
+	.smallBlock > a > img{
+		margin-right: 0.7em;
+	}
+	.creators .bg {
+		padding: 10px;
+	}
+	.function_block > div {
+		margin:1px;
+	}
 }
 @media screen and (max-width:525px){
 	.personal_info > h2 {
-		font-size:18px;
+		font-size:20px;
+	}
+	#profilepic {
+		max-height: 110px;
 	}
 	#hminfoinput {
 		width: 90%;
@@ -180,6 +233,9 @@ $( document )
 	.teacher_club h2 {
 		font-size: 150%;
 	}
+	#profilepic{
+		padding: 0;
+	}
 }
 @media screen and (max-width:500px){
 	.function_block p {
@@ -188,12 +244,49 @@ $( document )
 	#memberinfotable{
 		font-size:85%;
 	}
+	#actinfotable{
+	font-size:75%;
+}
+	.photo {
+	width: 50%;
+}
 
 }
 @media screen and (max-width:450px){
 	.function_block p {
 		font-size:75%;
 	}
+	.intro_function > .col-sm-6 > a > button {
+		width:100%;
+		font-size:15px;
+	}
+	.intro_function > .col-sm-6 {
+	padding-left: 0;
+	padding-right: 0;
+}
+	.personal_info > h2 {
+		font-size:16px;
+	}
+	#profilepic {
+		max-height: 98px;
+	}
+		#onecas {
+		width:50% !important;
+	}
+	.creators .bg {
+		padding: 5px;
+	}
+	.function_block > div {
+	height: auto;
+}
+}
+@media screen and (max-width:400px){
+	#memberinfotable {
+    font-size: 75%;
+}
+#actinfotable{
+	font-size:70%;
+}
 }
 
 
@@ -231,7 +324,7 @@ $( document )
 			</ul>
 		</div>
 		<div class="search">
-			<form action="{{ url_for('search') }}" method="get" style="display:inline-block">
+			<form action="{{ url_for('search') }}" method="get" style="display:inline-block; width:100%">
 				<input type="hidden" name="search_type" value="club">
 				<input type="hidden" name="page" value="1">
 				<input type="text" name="keywords" placeholder="Search">
@@ -252,7 +345,7 @@ $( document )
 		</div>
 	</div>
 </div>
-<div style="min-height:45em">
+<div style="min-height:calc(100vh - 450px)">
 {% block content %}{% endblock %}
 </div>
 <div class="clearfix"></div>

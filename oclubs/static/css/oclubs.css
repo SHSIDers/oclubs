@@ -66,8 +66,8 @@ body {
 
 .logo {
 	float: left;
-	margin: 1.5em 0.5em 0;
-	width: 15%;
+	margin: 1.5em 0.5em 0 0.5em;
+	width: 12%;
 }
 .top-nav {
 	float: left;
@@ -197,9 +197,9 @@ body {
 	position: relative;
 	border: 1px solid #a6a6a6;
 	padding: 0.25em 0;
-	background: #0000b3;
 	float: left;
-	margin: 2em 0 0 1em;
+	margin-top: 2em;
+	margin-left: calc(21.5% - 135px - 1em)
 	background-color: #222;
 }
 .search input[type="text"] {
@@ -1140,6 +1140,9 @@ thead.darklist {
 		font-size: 250%;
 	}
 }
+@media screen and (max-width:768px){
+
+}
 @media screen and (max-width:720px){
 	.homepage_function .col-xs-3 {
 		width:45%;
@@ -1195,15 +1198,12 @@ thead.darklist {
 		padding-left: 2px;
 		padding-right:2px;
 	}
-	.creators p {
-		font-size:125%;
-	}
 	.creators .panel-heading {
 		font-size: 125% !important;
 		height: 65px;
 	}
 	.panel-heading {
-		padding: 9px 9px;
+		padding: 9px;
 	}
 	.blockpic {
 		height: 160px;
@@ -1214,9 +1214,6 @@ thead.darklist {
 	}
 	.creators p {
 		font-size:110%;
-	}
-	.panel-heading {
-		padding: 9px 9px;
 	}
 
 	.img-thumbnail {
@@ -1245,7 +1242,8 @@ thead.darklist {
 	}
 	.search {
 		width: 40% !important;
-		margin: 1.5em 0 0 4em;
+		margin-top: 1.5em;
+		margin-left: calc(20% - 1em - 50px)
 	}
 	.login {
 		margin-top: 1.5em;
@@ -1326,6 +1324,13 @@ thead.darklist {
 	}
 	.blockpic {
 		height: 100px;
+	}
+	.creators .panel-heading {
+		font-size: 80% !important;
+		height: 65px;
+	}
+	.panel-heading {
+		padding: 5px;
 	}
 }
 

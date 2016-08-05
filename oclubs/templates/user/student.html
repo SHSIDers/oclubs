@@ -29,7 +29,7 @@
 <br>
 <div class="smallBlock">
 	{% for club in clubs %}
-	<div style="width:30%">
+	<div id="onecas">
 		<p style="font-size:150%" class="clubname">{{ club.name }}</p>
 		<p>CAS Hours: {{ current_user.cas_in_club(club) }}</p>
 	</div>
@@ -41,7 +41,7 @@
 </div>
 <div class="clearfix clearfix-bordered"></div>
 
-<div class="col-sm-6" style="border-right-style:solid;border-right-color:#f2f2f2">
+<div class="col-sm-6" id="stuclubmeeting" style="border-color:#f2f2f2">
 	<h2 style="color:#f2f2f2">Club Meetings</h2>
 	<br>
 	<table class="table table-hover table-bordered">
