@@ -229,10 +229,8 @@ def homepage():
     top_pic = []
     # TODO: get top_pic
     ex_clubs = Club.excellentclubs(3)
-    pic_acts = []
-    for act in Activity.get_activities_conditions(require_photos=True,
-                                                  limit=(0, 3)):
-        pic_acts.append(act)
+    pic_acts = Activity.get_activities_conditions(require_photos=True,
+                                                  limit=(0, 3))
     return render_template('static/homepage.html',
                            title='Here you come',
                            is_home=True,
