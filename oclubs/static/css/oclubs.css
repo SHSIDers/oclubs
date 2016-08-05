@@ -13,7 +13,7 @@ body {
 
 .title {
 	margin-bottom: 2%;
-	font-family: 'Brush Script MT', 'Georgia';
+	font-family: 'Georgia';
 	font-weight: bold;
 	font-size: 500%;
 	color: #f2f2f2;
@@ -21,7 +21,7 @@ body {
 
 .title_next {
 	margin-bottom: 2%;
-	font-family: 'Brush Script MT', 'Georgia';
+	font-family: 'Georgia';
 	font-size: 300%;
 	color: #f2f2f2;
 }
