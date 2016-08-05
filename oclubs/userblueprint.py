@@ -261,7 +261,7 @@ def refreshusers_submit():
     from oclubs.worker import refresh_user
     refresh_user.delay()
     flash('Student accounts\' information has been successfully refreshed', 'refresh_users')
-    return redirect(url_for('.peronsal'))
+    return redirect(url_for('.personal'))
 
 
 @userblueprint.route('/new_club')

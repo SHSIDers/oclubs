@@ -28,14 +28,18 @@ def allactivities(club_type, page):
     act_num = 20
     if club_type == 'all':
         acts_obj = Activity.get_activities_conditions(limit=((page-1)*act_num, act_num))
-        acts_obj.reverse()
+        count = acts_obj[0]
+        acts = acts_obj[1]
+        acts.reverse()
     else:
         try:
             acts_obj = Activity.get_activities_conditions(club_types=[ClubType[club_type.upper()]], limit=((page-1)*act_num, act_num))
-            acts_obj.reverse()
+            count = acts_obj[0]
+            acts = acts_obj[1]
+            acts.reverse()
         except KeyError:
             abort(404)
-    pagination = Pagination(page, act_num, len(acts_obj))
+    pagination = Pagination(page, act_num, count)
     return render_template('activity/allact.html',
                            title='All Activities',
                            is_allact=True,
@@ -78,13 +82,14 @@ def clubactivities(club, page):
 def allphotos(page):
     pic_num = 20
     acts_obj = Activity.get_activities_conditions(require_photos=True)
+    acts = acts_obj[1]
     if page == 1:
         try:
-            act_recent = acts_obj[0]
+            act_recent = acts[0]
         except IndexError:
             act_recent = ''
     all_pictures = []
-    for act in acts_obj:
+    for act in acts:
         each_block = {}
         each_block['activity'] = act
         each_block['club'] = act.club
@@ -108,31 +113,12 @@ def allphotos(page):
 def clubphoto(club, page):
     '''Individual Club's Photo Page'''
     pic_num = 20
-    photos = []
-    acts_obj = club.activities([ActivityTime.UNKNOWN,
-                                ActivityTime.NOON,
-                                ActivityTime.AFTERSCHOOL,
-                                ActivityTime.OTHERS])
-
-    pagination = Pagination(page, pic_num, len(acts_obj))
-    acts = []
-    acts_obj = acts_obj[(page-1)*pic_num-pic_num: page*pic_num]
-    for i in range(int(pic_num / 2)):
-        act = {}
-        try:
-            act['image1'] = acts_obj[2*i+1].pictures[0].location_external
-            act['image2'] = acts_obj[2*i].pictures[0].location_external
-        except IndexError:
-            break
-        act['actname1'] = acts_obj[2*i+1].name
-        act['id1'] = acts_obj[2*i+1].id
-        act['actname2'] = acts_obj[2*i].name
-        act['id2'] = acts_obj[2*i].id
-        acts.append(act)
+    uploads = club.allactphotos()
+    pagination = Pagination(page, pic_num, len(uploads))
+    uploads = uploads[(page-1)*pic_num-pic_num: page*pic_num]
     return render_template('activity/clubphoto.html',
                            title=club.name,
-                           club=club,
-                           photos=photos,
+                           uploads=uploads,
                            pagination=pagination)
 
 

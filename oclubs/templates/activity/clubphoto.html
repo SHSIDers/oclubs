@@ -3,20 +3,15 @@
 
 <!-- Below Navbar -->
 <div class="large_container">
-	<h1 class="text-center title">Photos of {{ club.name }}</h1>
+	<h1 class="text-center title">Photos of {{ g.club.name }}</h1>
 	{% if acts %}
-	{% for act in acts %}
-	<div class="photo clickable bright" data-href="#">
-		<img src="{{ act.image1 }}" class="img-responsive" alt="{{ act.actname1 }}">
-		<h2>{{ act.actname1 }}</h2>
-	</div>
-	<div class="photo clickable dark" data-href="#" style="cursor:pointer">
-		<img src="{{ act.image2 }}" class="img-responsive" alt="{{ act.actname2 }}">
-		<h2>{{ act.actname2 }}</h2>
+	{% for upload in uploads %}
+	<div class="photo bright">
+		<img src="{{ upload.location_external }}" class="img-responsive" alt="{{ upload.club.name }}">
 	</div>
 	{% endfor %}
 	{% else %}
-	<p class="text-center" style="font-size:125%; color:#f2f2f2">{{ club.name }} does not have any activity with photos yet.</p>
+	<p class="text-center" style="font-size:125%; color:#f2f2f2">{{ g.club.name }} does not have any activity with photos yet.</p>
 	{% endif %}
 	<br>
 	<center>{{ render_pagination(pagination) }}</center>
