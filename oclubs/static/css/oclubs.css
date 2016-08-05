@@ -199,7 +199,7 @@ body {
 	padding: 0.25em 0;
 	background: #0000b3;
 	float: left;
-	margin: 2em 0 0 0em;
+	margin: 2em 0 0 1em;
 	background-color: #222;
 }
 .search input[type="text"] {
@@ -883,11 +883,12 @@ thead.darklist {
 
 .login_block {
 	padding: 2%;
-	margin: 4% 30%;
+	margin: 4% auto;
 	border-radius: 10px;
 	color: #f2f2f2;
 	border-style: solid;
 	border-color: #337ab7;
+	width: 35%;
 }
 
 .login_block a,
@@ -1127,6 +1128,9 @@ thead.darklist {
 		height: 0px;
 		width: 0px;
 	}
+	.login_block {
+		width: 50%;
+	}
 }
 @media screen and (max-width:800px){
 	.title {
@@ -1148,7 +1152,7 @@ thead.darklist {
 	}
 
 	.login_block {
-		margin: 4% 10%;
+		width: 80%;
 	}
 	.blockpic {
 		height: 200px;
@@ -1211,9 +1215,6 @@ thead.darklist {
 	.creators p {
 		font-size:110%;
 	}
-	.creators .panel-heading {
-		font-size: 150% !important;
-	}
 	.panel-heading {
 		padding: 9px 9px;
 	}
@@ -1224,6 +1225,9 @@ thead.darklist {
 	.large_container, .large_container > .col-sm-10 {
 		padding-left:0;
 		padding-right:0;
+	}
+	.search {
+	margin: 2em 0 0 0.5em;
 	}
 }
 

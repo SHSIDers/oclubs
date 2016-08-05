@@ -38,7 +38,7 @@
 		</select>
 		<select onchange="window.location=this.value;">
 			<option value="{{ url_for('.clublist', club_type='all') }}" {% if club_type=='all' %}selected="selected"{% endif %}>All Clubs</option>
-			<option value="{{ url_for('.clublist', club_type='excellent') }}"{% if club_type=='all' %}selected="selected"{% endif %}>Excellent Clubs</option>
+			<option value="{{ url_for('.clublist', club_type='excellent') }}"{% if club_type=='excellent' %}selected="selected"{% endif %}>Excellent Clubs</option>
 		</select>
 		<div class="clearfix"></div>
 		<div class="smallBlock">
