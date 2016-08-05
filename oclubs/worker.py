@@ -124,7 +124,7 @@ def _refresh_user_create_account(authority):
     u.phone = None
     u.picture = Upload(-1)
     u.type = UserType.STUDENT
-    u.create()
+    u.create(True)
 
     # FIXME
     # parameters = {'user': u}

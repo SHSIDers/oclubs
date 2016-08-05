@@ -168,13 +168,18 @@ class _BaseMetaclass(type):
 
         dct['_data'] = _data
 
-        def create(self):
+        def create(self, dup_key_update=False):
             if self.is_real:
                 raise NotImplementedError
             data = {}
             for key, value in _propsdb.items():
                 data[key] = self._dbdata[value]
-            self._id = database.insert_row(self.table, data)
+
+            if dup_key_update:
+                self._id = database.insert_or_update_row(self.table, data,
+                                                         data)
+            else:
+                self._id = database.insert_row(self.table, data)
 
             if _esfields:
                 _esdata = {}
