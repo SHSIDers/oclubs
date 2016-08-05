@@ -1133,7 +1133,7 @@ thead.darklist {
 		font-size: 400%;
 	}
 	.title_next {
-		font-size: 300%;
+		font-size: 250%;
 	}
 }
 @media screen and (max-width:720px){
@@ -1155,7 +1155,8 @@ thead.darklist {
 	}
 }
 
-}@media screen and (max-width: 650px) {
+}
+@media screen and (max-width: 650px) {
 	.sweep {
 		font-size:0.8em;
 	}
@@ -1271,7 +1272,6 @@ thead.darklist {
 		margin-left: 0%;
 	}
 	.footer {
-		font-size: 75%;
 		padding: 2.5em 0;
 	}
 	.blockpic {
@@ -1315,10 +1315,10 @@ thead.darklist {
 		height:7px !important;
 	}
 	.title {
-		font-size: 180%;
+		font-size: 200%;
 	}
 	.title_next {
-		font-size: 140%;
+		font-size: 150%;
 	}
 	.blockpic {
 		height: 100px;

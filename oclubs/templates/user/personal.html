@@ -29,12 +29,12 @@
 		<br><br>
 	</div>
 	<div class="col-xs-9 personal_info">
-		<h2>Nick Name: {{ current_user.nickname }}</h2>
+		<h2 style="margin-top:0px">Nick Name: {{ current_user.nickname }}</h2>
 		<h2>Email Address: {{ current_user.email }}</h2>
 		<h2>Phone Number: {{ current_user.phone }}</h2>
 		<br>
 		<a href="#changeInfo" data-toggle="modal" data-target="#changeInfo">
-			<button class="btn btn-info">Edit your basic information</button>
+			<button class="btn btn-info" style="margin-right:10px">Edit your basic information</button>
 		</a>
 		<a href="#changePass" data-toggle="modal" data-target="#changePass" style="margin-top:10px">
 			<button class="btn btn-info">Change your password</button>

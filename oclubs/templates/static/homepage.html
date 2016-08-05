@@ -53,10 +53,10 @@
 		<div class="col-sm-4">
 			<div class="panel" style="border-style:none">
 				<div class="panel-heading" style="background-color:#1a75ff">
-					<h2 class="title_next" style="font-size:250%">Excellent Clubs</h2>
+					<h2 class="title_next">Excellent Clubs</h2>
 				</div>
 				<div class="panel-body" style="background-color:#66a3ff">
-					<div class="list-group">
+					<div class="list-group" id="hpexlist">
 						{% for club in ex_clubs %}
 						<a href="{{ url_for('clubblueprint.clubintro', club=club.callsign) }}" class="list-group-item">
 							<img src="{{ club.picture.location_external }}" class="img-responsive img-thumbnail" alt="Excellent Club" style="float:left; margin-right:2%" width="35%" height="35%">
@@ -65,7 +65,7 @@
 						</a>
 						{% endfor %}
 						<a href="{{ url_for('clubblueprint.clublist', club_type='excellent') }}" class="list-group-item">
-							<h3 class="text-center" style="margin-top: 10px">More</h3>
+							<h3 class="text-center">More</h3>
 						</a>
 					</div>
 				</div>

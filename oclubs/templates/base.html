@@ -72,6 +72,13 @@ $( document )
 .large_container > .col-sm-2 > img {
 	width: 250px;
 }
+#hpexlist h3 {
+	margin-top:10px;
+}
+.personal_info button {
+	width: 32%;
+	min-width: 240px;
+}
 
 @media screen and (max-width:992px){
 	.function_block p {
@@ -115,6 +122,15 @@ $( document )
 	.teacher_club h2 {
 		font-size: 175%;
 	}
+	#hpexlist h3 {
+		margin:0px;
+	}
+	#hpexlist {
+		margin-bottom:0;
+	}
+	.panel-heading > h2 {
+		margin-top:10px;
+	}
 
 
 
@@ -133,6 +149,9 @@ $( document )
 	#memberinfotable{
 	font-size:100%;
 }
+	.footer{
+		font-size: 100%;
+	}
 }
 @media screen and (max-width:600px) {
 	#currentleader {
@@ -145,7 +164,7 @@ $( document )
 }
 @media screen and (max-width:525px){
 	.personal_info > h2 {
-		font-size:16px;
+		font-size:18px;
 	}
 	#hminfoinput {
 		width: 90%;
@@ -159,12 +178,17 @@ $( document )
 }
 @media screen and (max-width:500px){
 	.function_block p {
-		font-size:75%;
+		font-size:80%;
 	}
 	#memberinfotable{
-	font-size:85%;
-}
+		font-size:85%;
+	}
 
+}
+@media screen and (max-width:450px){
+	.function_block p {
+		font-size:75%;
+	}
 }
 
 
@@ -185,7 +209,7 @@ $( document )
 <div id="emptyclose" class="emptyclose" onclick="closeNav()"></div> 
 <span class="glyphicon glyphicon-list" id="floatmenu" onclick="openNav()"></span>
 
-<div class="header">
+<div class="header" style="margin-bottom:20px">
 
 
 	<div class="container">
@@ -216,16 +240,13 @@ $( document )
 				<a href="{{ url_for('userblueprint.personal') }}" style="text-decoration:none"><span class="glyphicon glyphicon-user"></span>&nbsp;{{ current_user.nickname }}</a>
 			</span>
 			{% else %}
-			<span id="loginanimation">
+			<span>
 				<a href="{{ url_for('login') }}" style="text-decoration:none"><span class="glyphicon glyphicon-log-in"></span>&nbsp;Login</a>
 			</span>
 			{% endif %}
 		</div>
 	</div>
 </div>
-
-<br><br>
-
 <div style="min-height:45em">
 {% block content %}{% endblock %}
 </div>
