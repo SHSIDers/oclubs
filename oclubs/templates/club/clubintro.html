@@ -4,69 +4,79 @@
 
 <!-- Below Navbar -->
 <div class="large_container">
-    <!-- Side Menu -->
+	<!-- Side Menu -->
 	<div class="col-sm-2">
-        <div class="list-group">
-            <li class="list-group-item active">Club Types</li>
-            <a href="{{ url_for('.clublist', club_type='all') }}" class="list-group-item {% if club_type=='all' %}selected{% endif %}">All</a>
-            <a href="{{ url_for('.clublist', club_type='academics') }}" class="list-group-item {% if club_type=='academics' %}selected{% endif %}">Academics</a>
-            <a href="{{ url_for('.clublist', club_type='sports') }}" class="list-group-item {% if club_type=='sports' %}selected{% endif %}">Sports</a>
-            <a href="{{ url_for('.clublist', club_type='arts') }}" class="list-group-item {% if club_type=='arts' %}selected{% endif %}">The Arts</a>
-            <a href="{{ url_for('.clublist', club_type='services') }}" class="list-group-item {% if club_type=='services' %}selected{% endif %}">Services</a>
-            <a href="{{ url_for('.clublist', club_type='entertainment') }}" class="list-group-item {% if club_type=='entertainment' %}selected{% endif %}">Entertainment</a>
-            <a href="{{ url_for('.clublist', club_type='others') }}" class="list-group-item {% if club_type=='others' %}selected{% endif %}">Others</a>
-            <a href="{{ url_for('.clublist', club_type='school_teams') }}" class="list-group-item {% if club_type=='school_teams' %}selected{% endif %}">School Teams</a>
-        </div>
-        <div class="list-group">
-            <li class="list-group-item active">This Club's</li>
-            <a href="{{ url_for('actblueprint.clubactivities', club=g.club.callsign, page='1') }}" class="list-group-item">Activities</a>
-            <a href="{{ url_for('actblueprint.clubphoto', club=g.club.callsign, page='1') }}" class="list-group-item">Photos</a>
-        </div>
-    </div>
-    <!-- Main Content -->
-    <div class="col-md-10">
-        <div class="jumbotron" style="background-color:#3366ff;color:#e6e6e6;border-radius:5px;padding-left:30px; padding-right:30px; ">
-            <h1 class="title">{{ g.club.name }}</h1>
-            <p>{{ g.club.intro }}</p>
-        </div>
-        <p class="text-right" style="color:#f2f2f2">Written by: {{ g.club.leader.nickname }}</p>
-        <center><img src="{{ g.club.picture.location_external }}" class="img-thumbnail" alt="Club Picture"></center>
-        
-        <div style="color:#f2f2f2; font-size:150%; margin: 1.25em 0;line-height:1.2"> {{g.club.description.formatted}}</div>
-        
-        <div class="intro_function">
-            {% if messages_join %}
-            <ul class="list-group">
-                {% for message in messages_join %}
-                <li class="list-group-item">{{ message }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-            <div class="col-sm-4" style="margin-bottom:10px">
-                <center><a href="{{ url_for('actblueprint.clubactivities', club=g.club.callsign, page='1') }}" style="text-decoration:none">
-                    <button class="btn btn-info btn-lg" style="width:80%">Activities</button>
-                </a></center>
-            </div>
-            <div class="col-sm-4" style="margin-bottom:10px">
-                <center><a href="{{ url_for('actblueprint.clubphoto', club=g.club.callsign, page='1') }}" style="text-decoration:none">
-                    <button class="btn btn-info btn-lg" style="width:80%">Photos</button>
-                </a></center>
-            </div>
-            {% if not current_user in g.club.members %}
-            <div class="col-sm-4">
-                <center><a href="{{ url_for('clubblueprint.clubintro_submit', club=g.club.callsign) }}" style="text-decoration:none">
-                    <button class="btn btn-info btn-lg" style="width:80%">Join</button>
-                </a></center>
-            </div>
-            {% else %}
-            <div class="col-sm-4">
-                <center><a href="{{ url_for('clubblueprint.memberinfo', club=g.club.callsign) }}">
-                    <button class="btn btn-info btn-lg" style="width:80%">Member List</button>
-                </a></center>
-            </div>
-            {% endif %}
-        </div>
-    </div>
+		<div class="list-group">
+			<li class="list-group-item active">Club Types</li>
+			<a href="{{ url_for('.clublist', club_type='all') }}" class="list-group-item {% if club_type=='all' %}selected{% endif %}">All</a>
+			<a href="{{ url_for('.clublist', club_type='academics') }}" class="list-group-item {% if club_type=='academics' %}selected{% endif %}">Academics</a>
+			<a href="{{ url_for('.clublist', club_type='sports') }}" class="list-group-item {% if club_type=='sports' %}selected{% endif %}">Sports</a>
+			<a href="{{ url_for('.clublist', club_type='arts') }}" class="list-group-item {% if club_type=='arts' %}selected{% endif %}">The Arts</a>
+			<a href="{{ url_for('.clublist', club_type='services') }}" class="list-group-item {% if club_type=='services' %}selected{% endif %}">Services</a>
+			<a href="{{ url_for('.clublist', club_type='entertainment') }}" class="list-group-item {% if club_type=='entertainment' %}selected{% endif %}">Entertainment</a>
+			<a href="{{ url_for('.clublist', club_type='others') }}" class="list-group-item {% if club_type=='others' %}selected{% endif %}">Others</a>
+			<a href="{{ url_for('.clublist', club_type='school_teams') }}" class="list-group-item {% if club_type=='school_teams' %}selected{% endif %}">School Teams</a>
+		</div>
+		<div class="list-group">
+			<li class="list-group-item active">This Club's</li>
+			<a href="{{ url_for('actblueprint.clubactivities', club=g.club.callsign, page='1') }}" class="list-group-item">Activities</a>
+			<a href="{{ url_for('actblueprint.clubphoto', club=g.club.callsign, page='1') }}" class="list-group-item">Photos</a>
+		</div>
+	</div>
+	<!-- Main Content -->
+	<div class="col-md-10">
+		<div class="jumbotron" style="background-color:#3366ff;color:#e6e6e6;border-radius:5px;padding-left:30px; padding-right:30px; ">
+			<h1 class="title">{{ g.club.name }}</h1>
+			<p>{{ g.club.intro }}</p>
+		</div>
+		<p class="text-right" style="color:#f2f2f2">Written by: {{ g.club.leader.nickname }}</p>
+		<center><img src="{{ g.club.picture.location_external }}" class="img-thumbnail" alt="Club Picture"></center>
+
+		<div style="color:#f2f2f2; font-size:150%; margin: 1.25em 0;line-height:1.2"> {{g.club.description.formatted}}</div>
+
+		<div class="intro_function">
+			{% if messages_join %}
+			<ul class="list-group">
+				{% for message in messages_join %}
+				<li class="list-group-item">{{ message }}</li>
+				{% endfor %}
+			</ul>
+			{% endif %}
+			<div class="col-sm-4" style="margin-bottom:10px">
+				<center><a href="{{ url_for('actblueprint.clubactivities', club=g.club.callsign, page='1') }}" style="text-decoration:none">
+					<button class="btn btn-info btn-lg" style="width:80%">Activities</button>
+				</a></center>
+			</div>
+			<div class="col-sm-4" style="margin-bottom:10px">
+				<center><a href="{{ url_for('actblueprint.clubphoto', club=g.club.callsign, page='1') }}" style="text-decoration:none">
+					<button class="btn btn-info btn-lg" style="width:80%">Photos</button>
+				</a></center>
+			</div>
+			<div class="col-sm-4">
+				{% if not current_user in g.club.members %}
+				<center><a href="{{ url_for('clubblueprint.clubintro_submit', club=g.club.callsign) }}" style="text-decoration:none">
+					<button class="btn btn-info btn-lg" style="width:80%">Join</button>
+				</a></center>
+				{% endif %}
+			</div>
+			<div class="clearfix"></div>
+
+			<div class="col-sm-4">
+				{% if current_user in g.club.members %}
+				<center><a href="{{ url_for('clubblueprint.memberinfo', club=g.club.callsign) }}">
+					<button class="btn btn-info btn-lg" style="width:80%">Member List</button>
+				</a></center>
+				{% endif %}
+			</div>
+			<div class="col-sm-4">
+				{% if current_user in g.club.members %}
+				<center><a href="{{ url_for('userblueprint.registerhm', club=g.club.callsign) }}">
+					<button class="btn btn-info btn-lg" style="width:80%">Register HongMei Activities</button>
+				</a></center>
+				{% endif %}
+			</div>
+		</div>
+	</div>
 </div>
 
 <div class="clearfix"></div>

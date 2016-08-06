@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-{% with reghm = get_flashed_messages(category_filter=["reghm"]) %}
+{% with messages = get_flashed_messages(category_filter=["reghm"]) %}
 
 <!-- Below Navbar -->
 <div class="container">
 	<h1 class="title">Register for HongMei Activities</h1>
 	<h2 class="title_next">{{ club }}</h2>
-	{% if reghm %}
+	{% if messages %}
 	<ul class="list-group">
-		{% for message in reghm %}
+		{% for message in messages %}
 		<li class="list-group-item">{{ message }}</li>
 		{% endfor %}
 	</ul>
@@ -18,7 +18,7 @@
 		<label for="{{ act.id }}">
 			<div class="col-sm-10">
 				<p style="font-size:150%">{{ act.date }}</p>
-				<p>{{ act.description }}</p>
+				{{ act.description.formatted }}
 			</div>
 			<div class="col-sm-2">
 				<input type="checkbox" name="register" value="{{ act.id }}"" id="{{ act.id }}">
@@ -30,4 +30,5 @@
 	<center><form action="{{ url_for('.registerhm_submit', club=g.club.callsign) }}"><input class="btn btn-info" type="submit" style="width:20%;padding: 3% 0 3% 0; font-size:200%" value="Submit"></form></button>
 </div>
 
+{% endwith %}
 {% endblock %}
