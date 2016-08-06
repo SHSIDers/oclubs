@@ -105,7 +105,7 @@ body {
   color: #fff;
 }
 .sweep {
-  display: inline-block;										   
+  display: inline-block;
   vertical-align: middle;
   -webkit-transform: translateZ(0);
 	-o-transform: translateZ(0);
@@ -141,7 +141,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: #66a3ff; 
+  background: #66a3ff;
   -webkit-transform: scaleY(0);
 	-o-transform: scaleY(0);
   -moz-transform: scaleY(0);
@@ -1022,8 +1022,8 @@ thead.darklist {
 }
 
 .sidenav {
-    height: 100%; 
-    width: 0; 
+    height: 100%;
+    width: 0;
     position: fixed;
     z-index: 100;
     top: 0;
@@ -1052,7 +1052,7 @@ thead.darklist {
     color: #f1f1f1;
 }
 
-.closebtn {
+#closebtn {
     position: absolute;
     top: 0;
     right: 25px;
@@ -1061,14 +1061,15 @@ thead.darklist {
 }
 
 #floatmenu{
-	float:right;
-    position: absolute;
-    top: 150px;
+	float: right;
+    position: fixed;
+    top: 65%;
+    right: 0;
     z-index: 100;
-    border:2px solid #a1a1a1;
-    padding:10px; 
-    background:#ffffff;
-	border-radius:25px;
+    border: 2px solid #a1a1a1;
+    padding: 10px;
+    background: #ffffff;
+	border-radius: 25px;
 	visibility: hidden;
 }
 
@@ -1078,11 +1079,8 @@ thead.darklist {
     position: fixed
 }
 
-
-
-
-.emptyclose {
-	height: 100%; 
+#emptyclose {
+	height: 100%;
     width: 0;
     position: fixed;
     z-index: 200;
@@ -1246,7 +1244,7 @@ thead.darklist {
 	}
 }
 
-@media screen and (max-width: 525px){	
+@media screen and (max-width: 525px){
 
 	.slidecont {
 		width: 80%;
@@ -1336,4 +1334,281 @@ thead.darklist {
 	border-width: 3px;
 	visibility: hidden;
 	height: 0px;
+}
+
+
+.large_container .list-group {
+	margin-top: 50px;
+}
+#clubmanage {
+	margin:0 12.5% 0 12.5%
+}
+#hminfoinput {
+	width: 50%;
+	padding:0;
+}
+#memberinfotable{
+	font-size:150%;
+}
+.downloadbtn {
+	padding: 3%;
+	font-size:200%
+}
+.teacher_club .col-xs-4 {
+	padding: 0;
+}
+.large_container > .col-sm-2 > img {
+	width: 250px;
+}
+#hpexlist h3 {
+	margin-top:10px;
+}
+.personal_info button {
+	width: 32%;
+	min-width: 240px;
+}
+.smallBlock > a{
+	max-width: 100%;
+}
+.intro_function > .col-sm-6 > a > button {
+	width:80%;
+}
+.intro_function > .col-sm-6 {
+	padding-bottom: 0.75em;
+}
+#stuclubmeeting {
+	border-right-style:solid;
+}
+.function_block > div > p {
+	margin: 0;
+}
+#newhm {
+	margin-top:20px;
+	margin-bottom:30px;
+}
+@media screen and (max-width:992px){
+	.function_block p {
+		font-size:120%;
+	}
+	.function_block {
+		margin:1%;
+	}
+	.search_block > h1 {
+		margin-top: 10px;
+	}
+	.large_container .list-group {
+		margin: 0px;
+	}
+	.large_container > .col-md-10 > .title {
+		margin-top:0;
+	}
+	.col-md-10 > center > img {
+		max-width:60%;
+	}
+
+}
+@media screen and (max-width:800px){
+	#clubmanage {
+		margin:0;
+		padding:0;
+	}
+	.function_block {
+		width:31%;
+	}
+	#hminfoinput {
+		width: 65%;
+	}
+	#memberinfotable{
+		font-size:125%;
+	}
+	#actinfotable{
+		font-size:90%;
+	}
+	.logo {
+		width: 16%;
+	}
+}
+@media screen and (max-width:768px) {
+	.homepage_block > .col-xs-9 {
+		padding-left:0;
+	}
+	#stuclubmeeting {
+		border-right-style:none;
+		border-bottom-style: solid;
+	}
+	.large_container > .col-sm-2 > img {
+		width: 30%;
+	}
+}
+@media screen and (max-width:720px){
+	.personal_info > h2 {
+		font-size:24px;
+	}
+	#profilepic {
+		max-height: 122px;
+	}
+	.function_block p {
+		font-size:90%;
+	}
+	.downloadbtn {
+		font-size:150%
+	}
+	.teacher_club h1 {
+		font-size: 250%;
+	}
+	.teacher_club h2 {
+		font-size: 175%;
+	}
+	#hpexlist h3 {
+		margin:0px;
+	}
+	#hpexlist {
+		margin-bottom:0;
+	}
+	.panel-heading > h2 {
+		margin-top:10px;
+	}
+	.photo {
+		width: 33%;
+	}
+
+}
+
+@media screen and (max-width:650px){
+	.smallBlock > div {
+		padding: 1em;
+	}
+	.smallBlock > div > .clubname{
+		font-size:125% !important;
+	}
+	#hminfoinput {
+		width: 80%;
+	}
+	#memberinfotable{
+		font-size:100%;
+	}
+	#actinfotable{
+		font-size:80%;
+	}
+	.footer{
+		font-size: 100%;
+	}
+	.logo {
+		width: 20%;
+	}
+	.title {
+		font-size: 300%;
+	}
+	.title_next {
+		font-size: 200%;
+	}
+
+
+}
+@media screen and (max-width:600px) {
+	#currentleader {
+		margin: 0 10%;
+	}
+	.teacher_club .col-xs-4 button {
+		width: 90%;
+		font-size: 100%;
+	}
+	.smallBlock > a{
+		padding: 1em;
+	}
+	.smallBlock > a > img{
+		margin-right: 0.7em;
+	}
+	.creators .bg {
+		padding: 10px;
+	}
+	.function_block > div {
+		margin:1px;
+	}
+}
+@media screen and (max-width:525px){
+	.personal_info > h2 {
+		font-size:20px;
+	}
+	#profilepic {
+		max-height: 110px;
+	}
+	#hminfoinput {
+		width: 90%;
+	}
+	.teacher_club h1 {
+		font-size: 200%;
+	}
+	.teacher_club h2 {
+		font-size: 150%;
+	}
+	#profilepic{
+		padding: 0;
+	}
+	.smallBlock > div {
+		padding: 0.5em;
+	}
+}
+@media screen and (max-width:500px){
+	.function_block p {
+		font-size:80%;
+	}
+	#memberinfotable{
+		font-size:85%;
+	}
+	#actinfotable{
+		font-size:75%;
+	}
+	.photo {
+		width: 50%;
+	}
+
+}
+@media screen and (max-width:450px){
+	.function_block p {
+		font-size:75%;
+	}
+	.intro_function > .col-sm-6 > a > button {
+		width:100%;
+		font-size:15px;
+	}
+	.intro_function > .col-sm-6 {
+		padding-left: 0;
+		padding-right: 0;
+	}
+	.personal_info > h2 {
+		font-size:16px;
+	}
+	#profilepic {
+		max-height: 98px;
+	}
+	#onecas {
+		width:47% !important;
+	}
+	.creators .bg {
+		padding: 5px;
+	}
+	.function_block > div {
+		height: auto;
+	}
+}
+@media screen and (max-width:400px){
+	#memberinfotable {
+    font-size: 75%;
+}
+	#actinfotable{
+		font-size:70%;
+	}
+	.title {
+		font-size: 200%;
+	}
+	.title_next {
+		font-size: 150%;
+	}
+	.smallBlock > div {
+		padding: 1px;
+	}
+	#newhm > h1 {
+		font-size:1.75em;
+	}
 }

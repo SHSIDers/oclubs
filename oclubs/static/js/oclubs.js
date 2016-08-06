@@ -1,54 +1,54 @@
 ( function( $ ) {
 	$( document )
 		.ready( function() {
-			$( ".clickable" )
+			$( '.clickable' )
 				.click( function() {
 					window.document.location = $( this )
-						.data( "href" );
+						.data( 'href' );
 				} );
 
-			$( "#updatecheck" )
+			$( '#updatecheck' )
 				.click( function() {
 					var checked = $( '#leader_radio input[type=radio]:checked' );
 					if ( checked.size() > 0 ) {
-						$( ".modal .modal-body" )
-							.html( "<p>Your choice is " + checked.val() + ".</p>" );
-						$( ".modal .modal-footer" )
-							.html( "<button type='button' class='btn btn-default' data-dismiss='modal'>Reselect</button>" +
+						$( '.modal .modal-body' )
+							.html( '<p>Your choice is ' + checked.val() + '.</p>' );
+						$( '.modal .modal-footer' )
+							.html( '<button type="button" class="btn btn-default" data-dismiss="modal">Reselect</button>' +
 								'<input type="submit" class="btn btn-primary" form="leader_radio" name="change_leader" value="Confirm">' );
 					} else {
-						$( ".modal .modal-body" )
-							.html( "<p>Please select one memeber as next club leader!</p>" );
-						$( ".modal .modal-footer" )
-							.html( "<button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>" );
+						$( '.modal .modal-body' )
+							.html( '<p>Please select one memeber as next club leader!</p>' );
+						$( '.modal .modal-footer' )
+							.html( '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>' );
 					}
 				} );
 
-			$( "#updatequit" )
+			$( '#updatequit' )
 				.click( function() {
 					var selected = $( '.form-group select option:selected' );
 					if ( selected.size() > 0 ) {
-						$( ".modal .modal-body" )
-							.html( "<p>Your choice is " + selected.text() + ".</p>" );
+						$( '.modal .modal-body' )
+							.html( '<p>Your choice is ' + selected.text() + '.</p>' );
 					} else {
-						$( ".modal .modal-body" )
-							.html( "<p>Please choose the club you want to quit.</p>" );
+						$( '.modal .modal-body' )
+							.html( '<p>Please choose the club you want to quit.</p>' );
 					}
 				} );
 
-			$( ".updatehm" )
+			$( '.updatehm' )
 				.click( function() {
-					var date = $( "#date" )
+					var date = $( '#date' )
 						.val();
-					var contents = $( "#contents" )
+					var contents = $( '#contents' )
 						.val();
 					if ( date !== '' && contents !== '' ) {
-						$( "#schedule tbody" )
-							.append( "<tr><td>" + date + "</td><td>" + contents + "</td><td><button class='btn btn-primary' id='" + contents + "'>Delete</button></td></tr>" );
-						$( "#" + contents )
+						$( '#schedule tbody' )
+							.append( '<tr><td>' + date + '</td><td>' + contents + '</td><td><button class="btn btn-primary" id="' + contents + '">Delete</button></td></tr>' );
+						$( '#' + contents )
 							.click( function() {
 								$( this )
-									.parents( "tr" )
+									.parents( 'tr' )
 									.eq( 0 )
 									.remove();
 							} );
@@ -60,14 +60,18 @@
 					location.reload();
 				} );
 
-			$( 'form #picture')
+			$( 'form #picture' )
 				.change( function() {
-					$( 'form #upload_content' ).text($('form #picture').val());
+					$( 'form #upload_content' )
+						.text( $( 'form #picture' )
+							.val() );
 				} );
 
 			$( 'form #excel' )
 				.change( function() {
-					$( 'form #upload_content' ).text($('form #excel').val());
+					$( 'form #upload_content' )
+						.text( $( 'form #excel' )
+							.val() );
 				} );
 
 			if ( /\/change_user_info/.test( window.location.href ) ) {
@@ -95,18 +99,24 @@
 						.append( $( '<button class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>' ) );
 					item.find( '.edit .btn-success' )
 						.click( function( argument ) {
-							new_content = $( item ).find( '.input_content' ).val();
+							new_content = $( item )
+								.find( '.input_content' )
+								.val();
 							$.post( '/user/change_user_info/submit', {
-								userid: $( item ).parents('tr').eq(0).find('.userid').text(),
-								type: item.attr('property-type'),
-								content: new_content
-							})
-								.done( function(data) {
-									if (data.result == 'success') {
+									userid: $( item )
+										.parents( 'tr' )
+										.eq( 0 )
+										.find( '.userid' )
+										.text(),
+									type: item.attr( 'property-type' ),
+									content: new_content
+								} )
+								.done( function( data ) {
+									if ( data.result == 'success' ) {
 										init_view( item, new_content );
 									} else {
 										init_view( item, content );
-										alert(data.result);
+										alert( data.result );
 									}
 								} );
 						} );
@@ -121,35 +131,20 @@
 						init_view( item, item.text() );
 					} );
 			}
+
+			$( '#floatmenu' )
+				.click( function() {
+					var halfscr = ( document.body.clientWidth / 2 ) + 'px';
+					$( '#mySidenav, #emptyclose' )
+						.css( 'width', halfscr );
+					$( '#emptyclose' )
+						.css( 'left', halfscr );
+				} );
+
+			$( '#emptyclose, #closebtn' )
+				.click( function() {
+					$( '#mySidenav, #emptyclose' )
+						.css( 'width', '0' );
+				} );
 		} );
 } )( jQuery );
-
-
-var menuYloc = null;
-$( document )
-	.ready( function() {
-		document.getElementById( 'floatmenu' )
-			.style.left = ( window.innerWidth - 75 ) + "px";
-		document.getElementById( 'floatmenu' )
-			.style.top = ( window.innerHeight - 125 ) + "px";
-		menuYloc = parseInt( $( '#floatmenu' )
-			.css( "top" )
-			.substring( 0, $( '#floatmenu' )
-				.css( "top" )
-				.indexOf( "p" ) ) );
-		$( window ).scroll( function() {
-				if ( window.innerWidth <= 600 ) {
-					document.getElementById( 'floatmenu' )
-						.style.top = menuYloc + $( document )
-						.scrollTop() + "px";
-				}
-		} );
-		$( window ).resize( function() {
-				if ( window.innerWidth <= 600 ) {
-					document.getElementById( 'floatmenu' )
-						.style.left = ( window.innerWidth *0.8 ) + "px";
-					document.getElementById( 'floatmenu' )
-						.style.top = ( window.innerHeight *0.85  ) + "px";
-				}
-		} );
-} );
