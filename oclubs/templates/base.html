@@ -14,7 +14,33 @@
 <script src="{{ url_for('static', filename='js/oclubs.js') }}"></script>
 <script src="{{ url_for('static', filename='js/jquery-2.2.2.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/jquery-ui.js') }}"></script>
+<style type="text/css">
+@media screen and (max-width:500px){
+	.admin_button button {
+		font-size:150%;
+		white-space: normal;
+	}
+}
+@media screen and (max-width:400px){
+	.table > tbody > tr > td, .table > thead > tr > th{
+		padding:4px !important;
+	}
+	.large_container > .col-md-10{
+		padding-right: 0;
+		padding-left: 0;
+	}
+	#stuclubmeeting {
+		padding-right: 0;
+		padding-left: 0;
+	}
+	.admin_button button {
+		font-size:100%;
+		white-space: normal;
+	}
+}
 
+
+</style>
 <title>{{ title }} - oClubs!</title>
 </head>
 
@@ -68,7 +94,7 @@
 		</div>
 	</div>
 </div>
-<div style="min-height:calc(100vh - 450px)">
+<div style="min-height:calc(100vh - 400px)">
 {% block content %}{% endblock %}
 </div>
 <div class="clearfix"></div>

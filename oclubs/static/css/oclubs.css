@@ -1594,8 +1594,8 @@ thead.darklist {
 }
 @media screen and (max-width:400px){
 	#memberinfotable {
-    font-size: 75%;
-}
+		font-size: 75%;
+	}
 	#actinfotable{
 		font-size:70%;
 	}

@@ -17,7 +17,7 @@
 		</div>
 	</div>
 
-	<div class="col-sm-10">
+	<div class="col-md-10">
 		<h1 class="title" style="clear:right">Activites - {{ club_type.replace('_', ' ').title() }}</h1>
 		<select onchange="window.location=this.value;">
 			<option value="{{ url_for('.allactivities', club_type='all', page='1') }}" {% if club_type=='all' %}selected="selected"{% endif %}>All</option>
