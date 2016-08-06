@@ -21,12 +21,12 @@
 	<br>
 	{% endif %}
 	<div class="clearfix"></div>
-	{% if all_pictures %}
-	{% for one_picture in all_pictures %}
-	<div class="photo clickable bright" data-href="{{ url_for('.activity', activity=one_picture.activity.callsign) }}" style="cursor:pointer">
-		<img src="{{ one_picture.picture.location_external }}" class="img-responsive" alt="{{ one_picture.name }}">
-		<h4>{{ one_picture.activity.name }}</h4>
-		<p>{{ one_picture.club.name }}</p>
+	{% if acts %}
+	{% for act in acts %}
+	<div class="photo clickable bright" data-href="{{ url_for('.actpost', activity=act.callsign) }}" style="cursor:pointer">
+		<img src="{{ act.pictures[0].location_external }}" class="img-responsive" alt="{{ act.name }}">
+		<h4>{{ act.name }}</h4>
+		<p>{{ act.club.name }}</p>
 	</div>
 	{% endfor %}
 	{% else %}

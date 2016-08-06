@@ -30,20 +30,18 @@ def allactivities(club_type, page):
         acts_obj = Activity.get_activities_conditions(limit=((page-1)*act_num, act_num))
         count = acts_obj[0]
         acts = acts_obj[1]
-        acts.reverse()
     else:
         try:
             acts_obj = Activity.get_activities_conditions(club_types=[ClubType[club_type.upper()]], limit=((page-1)*act_num, act_num))
             count = acts_obj[0]
             acts = acts_obj[1]
-            acts.reverse()
         except KeyError:
             abort(404)
     pagination = Pagination(page, act_num, count)
     return render_template('activity/allact.html',
                            title='All Activities',
                            is_allact=True,
-                           acts=acts_obj,
+                           acts=acts,
                            club_type=club_type,
                            pagination=pagination)
 
@@ -81,30 +79,20 @@ def clubactivities(club, page):
 @actblueprint.route('/photos/<int:page>')
 def allphotos(page):
     pic_num = 20
-    acts_obj = Activity.get_activities_conditions(require_photos=True)
+    acts_obj = Activity.get_activities_conditions(require_photos=True,
+                                                  limit=((page-1)*pic_num, pic_num))
     acts = acts_obj[1]
     if page == 1:
         try:
             act_recent = acts[0]
         except IndexError:
             act_recent = ''
-    all_pictures = []
-    for act in acts:
-        each_block = {}
-        each_block['activity'] = act
-        each_block['club'] = act.club
-        for pic in act.pictures:
-            each = deepcopy(each_block)
-            each['picture'] = pic
-            all_pictures.append(each)
-
-    pagination = Pagination(page, pic_num, len(all_pictures))
-    all_pictures = all_pictures[(page-1)*pic_num: page*pic_num]
+    pagination = Pagination(page, pic_num, acts_obj[0])
     return render_template('activity/photos.html',
                            title='All Photos',
                            is_photos=True,
                            act_recent=act_recent,
-                           all_pictures=all_pictures,
+                           acts=acts,
                            pagination=pagination)
 
 
