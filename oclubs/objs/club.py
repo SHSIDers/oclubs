@@ -53,11 +53,13 @@ class Club(BaseObject):
         lst[:] = newval
 
     @classmethod
-    def randomclubs(cls, amount, types=None):
+    def randomclubs(cls, amount, types=None, active_only=True):
         where = []
         if types:
             types = [_type.value for _type in types]
             where.append(('in', 'club_type', types))
+        if active_only:
+            where.append(('=', 'club_inactive', False))
         tempdata = database.fetch_onecol(
             cls.table,
             cls.identifier,
@@ -70,11 +72,13 @@ class Club(BaseObject):
         return [cls(item) for item in tempdata]
 
     @classmethod
-    def allclubs(cls, types=None):
+    def allclubs(cls, types=None, active_only=True):
         where = []
         if types:
             types = [_type.value for _type in types]
             where.append(('in', 'club_type', types))
+        if active_only:
+            where.append(('=', 'club_inactive', False))
         tempdata = database.fetch_onecol(
             cls.table,
             cls.identifier,
