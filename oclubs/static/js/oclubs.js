@@ -128,9 +128,9 @@
 var menuYloc = null;
 $( document )
 	.ready( function() {
-		document.querySelector( '#floatmenu' )
+		document.getElementById( 'floatmenu' )
 			.style.left = ( window.innerWidth - 75 ) + "px";
-		document.querySelector( '#floatmenu' )
+		document.getElementById( 'floatmenu' )
 			.style.top = ( window.innerHeight - 125 ) + "px";
 		menuYloc = parseInt( $( '#floatmenu' )
 			.css( "top" )
@@ -138,17 +138,17 @@ $( document )
 				.css( "top" )
 				.indexOf( "p" ) ) );
 		$( window ).scroll( function() {
-				if ( window.innerWidth <= 500 ) {
-					document.querySelector( '#floatmenu' )
+				if ( window.innerWidth <= 600 ) {
+					document.getElementById( 'floatmenu' )
 						.style.top = menuYloc + $( document )
 						.scrollTop() + "px";
 				}
 		} );
 		$( window ).resize( function() {
-				if ( window.innerWidth <= 500 ) {
-					document.querySelector( '#floatmenu' )
+				if ( window.innerWidth <= 600 ) {
+					document.getElementById( 'floatmenu' )
 						.style.left = ( window.innerWidth *0.8 ) + "px";
-					document.querySelector( '#floatmenu' )
+					document.getElementById( 'floatmenu' )
 						.style.top = ( window.innerHeight *0.85  ) + "px";
 				}
 		} );

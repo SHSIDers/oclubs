@@ -456,7 +456,7 @@ body {
 .footer {
   padding: 4em 0;
   background-color: #333333;
-  margin: 2em 0 0 0;
+  margin: 1.75em 0 0 0;
   position: relative;
   font-size: 125%;
 }
@@ -522,6 +522,8 @@ thead.darklist {
 	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
 			box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
 }
+
+
 
 .bright {
 	background-color: #f2f2f2;
@@ -1173,15 +1175,31 @@ thead.darklist {
 	.footer{
 		font-size: 100%;
 	}
-	.title {
-		font-size: 300%;
-	}
-	.title_next {
-		font-size: 200%;
-	}
 }
 
 @media screen and (max-width: 600px){
+	.top-nav {
+		visibility: hidden !important;
+		height: 0px;
+		transition: 0.8s;
+	}
+	.top-nav li {
+		width: 0%;
+	}
+	#floatmenu {
+		visibility: visible;
+	}
+	.search {
+		width: 40% !important;
+		margin-top: 1.5em;
+		margin-left: calc(20% - 1em - 50px)
+	}
+	.login {
+		margin-top: 1.5em;
+	}
+	.header > .container {
+		padding: 0 0 0.5em 0;
+	}
 	.slidecont {
 		width: 70%;
 
@@ -1224,33 +1242,12 @@ thead.darklist {
 		padding-right:0;
 	}
 	.search {
-	margin: 2em 0 0 0.5em;
+		margin: 2em 0 0 0.5em;
 	}
 }
 
 @media screen and (max-width: 525px){	
-	.top-nav {
-		visibility: hidden !important;
-		height: 0px;
-		transition: 0.8s;
-	}
-	.top-nav li {
-		width: 0%;
-	}
-	#floatmenu {
-		visibility: visible;
-	}
-	.search {
-		width: 40% !important;
-		margin-top: 1.5em;
-		margin-left: calc(20% - 1em - 50px)
-	}
-	.login {
-		margin-top: 1.5em;
-	}
-	.header > .container {
-		padding: 0 0 0.5em 0;
-	}
+
 	.slidecont {
 		width: 80%;
 	}
@@ -1316,12 +1313,7 @@ thead.darklist {
 		width:7px !important;
 		height:7px !important;
 	}
-	.title {
-		font-size: 200%;
-	}
-	.title_next {
-		font-size: 150%;
-	}
+
 	.blockpic {
 		height: 100px;
 	}

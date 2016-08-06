@@ -20,7 +20,6 @@
             
         </tbody>
     </table>
-    <br><br><br>
 
     <div class="container" id="hminfoinput">
         <form class="form-group" action="{{ url_for('.newhm_submit', club=g.club.callsign) }}" method="post" id="newhm" style="color:#f2f2f2; background-color:#66a3ff; padding:5%; border-style:solid; border-color:#b3cce6">
@@ -34,9 +33,8 @@
             <center><input class="btn btn-primary updatehm" value="Append" type="submit" style="font-size:125%; padding:3%"></center>
         </form>
     </div>
-    <br><br><br>
     <center><a href="{{ url_for('clubblueprint.club', club=g.club.callsign) }}" style="text-decoration:none">
-        <button class="btn btn-success" style="padding: 3%; font-size:200%">Submit the Schedule</button>
+        <button class="btn btn-success" style="padding: 3%; font-size:175%; max-width:100%; white-space: normal">Submit the Schedule</button>
     </a></center>
 </div>
 

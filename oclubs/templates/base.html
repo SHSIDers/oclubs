@@ -52,6 +52,9 @@ $( document )
 } );
 </script>
 <style type="text/css">
+.large_container .list-group {
+	margin-top: 50px;
+}
 #clubmanage {
 	margin:0 12.5% 0 12.5%
 }
@@ -94,7 +97,10 @@ $( document )
 .function_block > div > p {
 	margin: 0;
 }
-
+#newhm {
+	margin-top:20px;
+	margin-bottom:30px;
+}
 @media screen and (max-width:992px){
 	.function_block p {
 		font-size:120%;
@@ -102,6 +108,19 @@ $( document )
 	.function_block {
 		margin:1%;
 	}
+	.search_block > h1 {
+		margin-top: 10px;
+	}
+	.large_container .list-group {
+		margin: 0px;
+	}
+	.large_container > .col-md-10 > .title {
+		margin-top:0;
+	}
+	.col-md-10 > center > img {
+		max-width:60%;
+	}
+
 }
 @media screen and (max-width:800px){
 	#clubmanage {
@@ -116,13 +135,13 @@ $( document )
 	}
 	#memberinfotable{
 	font-size:125%;
-}	
-#actinfotable{
-	font-size:90%;
-}
-.logo {
-	width: 16%;
-}
+	}	
+	#actinfotable{
+		font-size:90%;
+	}
+	.logo {
+		width: 16%;
+	}
 }
 @media screen and (max-width:768px) {
 	.homepage_block > .col-xs-9 {
@@ -130,7 +149,7 @@ $( document )
 	}
 	#stuclubmeeting {
 		border-right-style:none;
-		border-bottom-style:;
+		border-bottom-style: solid;
 	}
 	.large_container > .col-sm-2 > img {
 		width: 30%;
@@ -168,12 +187,11 @@ $( document )
 	width: 33%;
 }
 
-
 }
 
 @media screen and (max-width:650px){
 	.smallBlock > div {
-		padding: 1px;
+		padding: 1em;
 	}
 	.smallBlock > div > .clubname{
 		font-size:125% !important;
@@ -192,6 +210,12 @@ $( document )
 	}
 	.logo {
 	width: 20%;
+	}
+	.title {
+		font-size: 300%;
+	}
+	.title_next {
+		font-size: 200%;
 	}
 
 
@@ -236,6 +260,9 @@ $( document )
 	#profilepic{
 		padding: 0;
 	}
+	.smallBlock > div {
+		padding: 0.5em;
+	}
 }
 @media screen and (max-width:500px){
 	.function_block p {
@@ -270,8 +297,8 @@ $( document )
 	#profilepic {
 		max-height: 98px;
 	}
-		#onecas {
-		width:50% !important;
+	#onecas {
+		width:47% !important;
 	}
 	.creators .bg {
 		padding: 5px;
@@ -287,6 +314,18 @@ $( document )
 #actinfotable{
 	font-size:70%;
 }
+	.title {
+		font-size: 200%;
+	}
+	.title_next {
+		font-size: 150%;
+	}
+		.smallBlock > div {
+		padding: 1px;
+	}
+	#newhm > h1 {
+		font-size:1.75em;
+	}
 }
 
 

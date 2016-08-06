@@ -5,7 +5,7 @@
 <div class="large_container">
 	<!-- Side Menu -->
 	<div class="col-sm-2" style="padding-left:30px">
-		<div class="list-group" style="margin-top:50px">
+		<div class="list-group">
 			<li class="list-group-item active">Achievement</li>
 			<a href="{{ url_for('.clublist', club_type='all') }}" class="list-group-item {% if club_type=='all' %}selected{% endif %}">All Clubs</a>
 			<a href="{{ url_for('.clublist', club_type='excellent') }}" class="list-group-item {% if club_type=='excellent' %}selected{% endif %}">Excellent Clubs</a>
@@ -24,7 +24,7 @@
 	</div>
 
 	<!-- Main Content -->
-	<div class="col-sm-10">
+	<div class="col-md-10">
 		<h1 class="title" style="clear:right">Clubs - {{ club_type.replace('_', ' ').title() }}</h1>
 		<select onchange="window.location=this.value;">
 			<option value="{{ url_for('.clublist', club_type='all', page='1') }}" {% if club_type=='all' %}selected="selected"{% endif %}>All</option>
