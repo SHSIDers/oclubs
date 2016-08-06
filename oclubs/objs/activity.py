@@ -124,7 +124,7 @@ class Activity(BaseObject):
 
         if order_by_time:
             conds['order'] = conds.get('order', [])
-            conds['order'].append(('act_date', True))
+            conds['order'].append(('act_date', False))
 
         if limit:
             conds['limit'] = limit
