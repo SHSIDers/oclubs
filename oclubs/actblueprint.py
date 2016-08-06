@@ -58,16 +58,14 @@ def clubactivities(club, page):
 
     pagination = Pagination(page, act_num, len(acts))
     acts = acts[(page-1)*act_num: page*act_num]
-    club_pic = {}
-    try:
-        club_pic['image1'] = acts[0].pictures[0].location_external
-        club_pic['image2'] = acts[1].pictures[0].location_external
-        club_pic['image3'] = acts[2].pictures[0].location_external
-    except IndexError:
-        club_pic['image1'] = Upload(-1)
-        club_pic['image2'] = Upload(-2)
-        club_pic['image3'] = Upload(-3)
-    # FIXME: change slice action to using class method
+    club_pic = []
+    for upload in club.allactphotos():
+        club_pic.append(upload)
+        if len(club_pic) == 3:
+            break
+    if len(club_pic) < 3:
+        for miss in range(3 - len(club_pic)):
+            club_pic.append(Upload(-101))
     return render_template('activity/clubact.html',
                            title=club.name,
                            club=club,

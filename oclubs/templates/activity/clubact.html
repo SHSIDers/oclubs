@@ -4,9 +4,9 @@
 <!-- Below Navbar -->
 <div class="large_container">
 	<div class="col-sm-2">
-		<img src="{{ club_pic.image1.location_external }}" class="img-responsive img-thumbnail" alt="Image1">
-		<img src="{{ club_pic.image2.location_external }}" class="img-responsive img-thumbnail" alt="Image2" style="margin:10px 0">
-		<img src="{{ club_pic.image3.location_external }}" class="img-responsive img-thumbnail" alt="Image3">
+		{% for pic in club_pic %}
+		<img src="{{ pic.location_external }}" class="img-responsive img-thumbnail" alt="Club Image">
+		{% endfor %}
 	</div>
 
 	<div class="col-sm-10">
