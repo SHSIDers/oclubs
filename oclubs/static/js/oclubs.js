@@ -135,16 +135,18 @@
 			$( '#floatmenu' )
 				.click( function() {
 					var halfscr = ( document.body.clientWidth / 2 ) + 'px';
-					$( '#mySidenav, #emptyclose' )
+					$( '#sidenav, #emptyclose' )
 						.css( 'width', halfscr );
 					$( '#emptyclose' )
 						.css( 'left', halfscr );
+					$( '#floatmenu' ).fadeOut();
 				} );
 
 			$( '#emptyclose, #closebtn' )
 				.click( function() {
-					$( '#mySidenav, #emptyclose' )
+					$( '#sidenav, #emptyclose' )
 						.css( 'width', '0' );
+					$( '#floatmenu' ).fadeIn();
 				} );
 		} );
 } )( jQuery );

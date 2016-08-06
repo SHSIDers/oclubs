@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" media="all">
 <script src="{{ url_for('static', filename='js/jquery-2.2.2.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
@@ -19,7 +19,7 @@
 </head>
 
 <body>
-<div id="mySidenav" class="sidenav">
+<div id="sidenav">
 	<a id="closebtn">&times;</a>
 	<a href="{{ url_for('homepage') }}" class="{% if is_home %}active{% endif %}">Home</a>
 	<a href="{{ url_for('clubblueprint.clublist', club_type='all') }}" class="{% if is_list %}active{% endif %}">Club List</a>
