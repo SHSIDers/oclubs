@@ -248,7 +248,7 @@ def homepage():
             size_count += 1
             fill['picture'] = Upload(-101)
             fill['actname'] = 'Default'
-            fill['content'] = 'Database does not have enough picture'
+            fill['content'] = 'Oops, we don\' have much picture'
             fill['link'] = '#'
             top_pic.append(fill)
     ex_clubs = Club.excellentclubs(3)
