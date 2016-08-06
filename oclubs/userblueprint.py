@@ -260,8 +260,38 @@ def refreshusers_submit():
     '''Upload excel file to create new users'''
     from oclubs.worker import refresh_user
     refresh_user.delay()
-    flash('Student accounts\' information has been successfully refreshed', 'refresh_users')
+    flash('Student accounts\' information has been successfully refreshed.', 'refresh_users')
     return redirect(url_for('.personal'))
+
+
+@userblueprint.route('/rebuild_elastic_search/submit', methods=['POST'])
+@special_access_required
+def rebuildsearch_submit():
+    '''Rebuild elastic search engine to fix asyncronized situation'''
+    from oclubs.worker import rebuild_elasticsearch
+    rebuild_elasticsearch.delay()
+    flash('Search engine has been fixed.', 'rebuild_search')
+    return redirect(url_for('.personal'))
+
+
+@userblueprint.route('/disable_accounts')
+@special_access_required
+def disableaccounts():
+    '''Allow admin to disable any account'''
+    users = User.allusers()
+    return render_template('user/disableaccounts.html',
+                           title='Disable Accounts',
+                           users=users)
+
+
+@userblueprint.route('/disable_accounts/submit', methods=['POST'])
+@special_access_required
+def disableaccounts_submit():
+    '''Input disabling information into database'''
+    user = User(request.form['id'])
+    user.password = None
+    flash(user.passportname + ' has been successfully disabled.', 'disableaccounts')
+    return redirect(url_for('.disableaccounts'))
 
 
 @userblueprint.route('/new_club')
