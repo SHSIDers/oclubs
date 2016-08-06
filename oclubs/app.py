@@ -227,7 +227,30 @@ def _search_gettext(obj, name):
 def homepage():
     '''Homepage'''
     top_pic = []
-    # TODO: get top_pic
+    acts = Activity.get_activities_conditions(require_photos=True, limit=(0, 6))[1]
+    sizes = [3, 6, 3, 6, 3, 3]
+    size_count = 0
+    for act in acts:
+        if len(top_pic) == 6:
+            break
+        each = {}
+        each['size'] = sizes[size_count]
+        size_count += 1
+        each['picture'] = act.pictures[0]
+        each['actname'] = act.name
+        each['content'] = act.description.formatted
+        each['link'] = url_for('actblueprint.activity', activity=act.callsign)
+        top_pic.append(each)
+    if size_count < 5:
+        for miss in range(6 - size_count):
+            fill = {}
+            fill['size'] = sizes[size_count]
+            size_count += 1
+            fill['picture'] = Upload(-101)
+            fill['actname'] = 'Default'
+            fill['content'] = 'Database does not have enough picture'
+            fill['link'] = '#'
+            top_pic.append(fill)
     ex_clubs = Club.excellentclubs(3)
     pic_acts = Activity.get_activities_conditions(require_photos=True,
                                                   limit=(0, 3))

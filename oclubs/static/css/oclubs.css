@@ -256,9 +256,10 @@ body {
 .blockpic img {
 	display: block;
 	position: relative;
-	width: 100%;
-	height: 100%;
-
+	width: auto;
+	height: auto;
+	max-width: 100%;
+	max-height: 100%
 }
 .blockpic h2 {
 	text-transform: uppercase;
@@ -320,7 +321,6 @@ body {
    transition: all 0.2s ease-in-out 0.1s;
 }
 .blockpic p {
-   color: #333;
    -webkit-transform: translateY(-200px);
    -moz-transform: translateY(-200px);
    -o-transform: translateY(-200px);
