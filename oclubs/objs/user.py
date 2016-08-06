@@ -17,19 +17,12 @@ _crypt = CryptContext(schemes=['bcrypt'])  # , 'sha512_crypt', 'pbkdf2_sha512'
 _words = xp.generate_wordlist(wordfile=xp.locate_wordfile())
 
 
-def _encrypt(password):
-    if password is None:
-        return ''
-    else:
-        return _crypt.encrypt(password)
-
-
 class User(BaseObject, UserMixin):
     table = 'user'
     identifier = 'user_id'
     studentid = Property('user_login_name')
     passportname = Property('user_passport_name')
-    password = Property('user_password', (NotImplemented, _encrypt))
+    password = Property('user_password', (NotImplemented, _crypt.encrypt))
     nickname = Property('user_nick_name', rediscached=True)
     email = Property('user_email')
     phone = Property('user_phone')

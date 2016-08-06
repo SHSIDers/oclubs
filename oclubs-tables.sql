@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS user (
 	user_login_name varchar(255) NOT NULL, # Student ID
 	user_nick_name varchar(255) NOT NULL,
 	user_passport_name varchar(255) NOT NULL,
-	user_password tinyblob NOT NULL,
+	user_password tinyblob,
 	user_picture int NOT NULL, # Foreign key to upload.upload_id
 	user_email tinytext NOT NULL,
 	user_phone bigint,
