@@ -43,4 +43,12 @@ class ActivityTime(Enum):
                 'Others'][self.value]
 
 
-__all__ = ['UserType', 'ClubType', 'ActivityTime']
+class ClubJoinMode(Enum):
+    FREE_JOIN = 1
+    BY_INVITATION = 2
+
+    @property
+    def format_name(self):
+        return ['', 'Free Join', 'By Invitation'][self.value]
+
+__all__ = ['UserType', 'ClubType', 'ActivityTime', 'ClubJoinMode']

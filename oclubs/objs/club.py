@@ -7,7 +7,7 @@ from __future__ import absolute_import, unicode_literals
 import random
 
 from oclubs.access import database, redis
-from oclubs.enums import ClubType, UserType
+from oclubs.enums import ClubType, UserType, ClubJoinMode
 from oclubs.objs.base import BaseObject, Property, ListProperty
 
 
@@ -23,6 +23,7 @@ class Club(BaseObject):
     intro = Property('club_intro', search=True)
     picture = Property('club_picture', 'Upload')
     type = Property('club_type', ClubType)
+    joinmode = Property('club_joinmode', ClubJoinMode)
     members = ListProperty('club_member', 'cm_club', 'cm_user', 'User')
     all_act = ListProperty('activities', 'act_club', 'act_id', 'Activity')
 

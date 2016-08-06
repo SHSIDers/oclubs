@@ -28,7 +28,8 @@ CREATE TABLE IF NOT EXISTS club (
 	club_desc int NOT NULL, # Foreign key to text.text_id
 	club_location varchar(255) NOT NULL, # stores object in JSON
 	club_inactive boolean NOT NULL,
-	club_type tinyint NOT NULL # 1 = academics, 2 = sports, 3 = arts, 4 = services, 5 = entertainment, 6 = others, 7 = school teams
+	club_type tinyint NOT NULL, # 1 = academics, 2 = sports, 3 = arts, 4 = services, 5 = entertainment, 6 = others, 7 = school teams
+	club_joinmode tinyint NOT NULL # 1 = free join, 2 = by invitation
 );
 
 CREATE INDEX IF NOT EXISTS club_name ON club (club_name);
