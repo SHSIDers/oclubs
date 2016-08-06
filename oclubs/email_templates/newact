@@ -11,7 +11,7 @@ Time: {{ act.time }}
 Location: {{ act.location }}
 CAS hour: {{ act.cas }}
 
-Description: 
+Description:
 {{ act.description.formatted }}
 
 If you want to participate, please search {{ act.name }} on oClubs and join this activity on its introduction page.

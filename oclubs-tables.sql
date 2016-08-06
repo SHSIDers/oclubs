@@ -131,4 +131,4 @@ CREATE TABLE IF NOT EXISTS signup (
 );
 
 CREATE INDEX IF NOT EXISTS signup_act ON signup (signup_act);
-CREATE INDEX IF NOT EXISTS signup_user ON signup (signup_user); 
+CREATE INDEX IF NOT EXISTS signup_user ON signup (signup_user);

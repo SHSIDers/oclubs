@@ -1,6 +1,6 @@
 Hi {{ club.leader.nickname }},
 
-{{ current_user.nickname }} has joined {{ club.name }}. 
+{{ current_user.nickname }} has joined {{ club.name }}.
 
 
 Below is his/her information:

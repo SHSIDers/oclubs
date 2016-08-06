@@ -2,7 +2,7 @@ Hi {{ user.nickname }},
 
 Welcome to oClubs.
 
-This is an online club exhibition and management platform made purely by students. 
+This is an online club exhibition and management platform made purely by students.
 
 
 Your Login ID: {{ user.studentid }}
@@ -12,7 +12,7 @@ Your Initial Password: {{ password }}
 
 For all students:
 
-oClubs saves you the time to find the clubs you want to join one by one. Once a club registers on oClubs, you can easily find its information through Club List page. You can also join a club by just clicking one button on Club Introduction page without any further application. Then club leaders will know you through their emails. 
+oClubs saves you the time to find the clubs you want to join one by one. Once a club registers on oClubs, you can easily find its information through Club List page. You can also join a club by just clicking one button on Club Introduction page without any further application. Then club leaders will know you through their emails.
 
 In addition, all activities of clubs will be displayed on Activities page. For non-meeting activities, you can also join by clicking one button on Activity Introduction page. All activities' CAS hours will be automatically calculated, and you can check it at any time on your personal page.
 

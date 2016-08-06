@@ -1,6 +1,6 @@
 Hi {{ club.leader.nickname }},
 
-{{ user.nickname }} ({{ user.studentid }}) has quit {{ club.name }}. 
+{{ user.nickname }} ({{ user.studentid }}) has quit {{ club.name }}.
 
 
 Below is his/her reason for quitting:
