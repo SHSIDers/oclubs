@@ -651,9 +651,12 @@ thead.darklist {
 	display: inline-block;
 	cursor: pointer;
 }
+.checkbox_block p {
+	 font-size:150%
+}
 
 .checkbox_block input[type=checkbox] {
-	transform: scale(2);
+	transform: scale(1.5);
 	padding: 10%;
 }
 
@@ -1023,9 +1026,9 @@ thead.darklist {
 
 .slidecont {
 	transition: 0.5s;
-	padding: 0 40px;
+	width: 45%;
+	max-width: 1170px;
 }
-
 
 .carousel-indicators {
 	bottom: 0;
@@ -1099,9 +1102,18 @@ thead.darklist {
 	margin-bottom: 30px;
 }
 
-@media screen and (max-width: 1200px){
+@media screen and (max-width: 1500px) {
+	.slidecont {
+		width: 55%;
+	}
+}
+
+@media screen and (max-width: 1200px) {
 	.homepage_function {
 		font-size: 80%;
+	}
+	.slidecont {
+		width: 65%;
 	}
 }
 @media screen and (max-width: 992px) {
@@ -1150,6 +1162,15 @@ thead.darklist {
 	.col-md-10 > center > img {
 		max-width: 60%;
 	}
+	.slidecont {
+		width: 75%;
+	}
+	.checkbox_block p {
+		font-size:125%
+	}
+	.checkbox_block input[type=checkbox] {
+	transform: scale(1.25);
+	}
 }
 @media screen and (max-width:800px){
 	.title {
@@ -1188,6 +1209,9 @@ thead.darklist {
 	}
 	.large_container > .col-sm-2 > img {
 		width: 30%;
+	}
+	.slidecont {
+		width: 85%;
 	}
 
 }
@@ -1283,6 +1307,12 @@ thead.darklist {
 	.title_next {
 		font-size: 200%;
 	}
+	.checkbox_block p {
+	 	font-size:100%
+	}
+	.checkbox_block input[type=checkbox] {
+	transform: scale(1);
+	}
 }
 
 @media screen and (max-width: 600px){
@@ -1371,6 +1401,11 @@ thead.darklist {
 		margin: 1px;
 	}
 }
+@media screen and (max-width: 550px){
+	.checkbox_block > label {
+		width: 31%;
+	}
+}
 
 @media screen and (max-width: 525px){
 
@@ -1452,6 +1487,12 @@ thead.darklist {
 	.smallBlock > div {
 		padding: 0.5em;
 	}
+	.title {
+		font-size: 250%;
+	}
+	.title_next {
+		font-size: 175%;
+	}
 }
 @media screen and (max-width:500px) {
 	.function_block p {
@@ -1470,7 +1511,9 @@ thead.darklist {
 		font-size: 150%;
 		white-space: normal;
 	}
-
+	.slidecont {
+		width: 95%;
+	}
 }
 
 @media screen and (max-height: 450px) {
@@ -1503,7 +1546,14 @@ thead.darklist {
 		height: auto;
 	}
 }
-
+@media screen and (max-width: 425px){
+	.checkbox_block p {
+		font-size:80%
+	}
+	.checkbox_block input[type=checkbox] {
+		transform: scale(0.8);
+	}
+}
 @media screen and (max-width: 400px){
 	.carousel-caption {
 		padding-bottom: 5px;

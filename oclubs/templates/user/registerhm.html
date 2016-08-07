@@ -17,18 +17,18 @@
 	<div class="checkbox_block">
 		{% for act in acts %}
 		<label for="{{ act.id }}">
-			<div class="col-sm-10">
-				<p style="font-size:150%">{{ act.date }}</p>
+			<div class="col-xs-10" style="padding:0; width:auto">
+				<p>{{ act.date }}</p>
 				{{ act.description.formatted }}
 			</div>
-			<div class="col-sm-2">
+			<div class="col-xs-2" style="float:right; padding:0">
 				<input type="checkbox" name="register" value="{{ act.id }}"" id="{{ act.id }}" form="registerhm">
 			</div>
 		</label>
 		{% endfor %}
 	</div>
 	<br>
-	<center><form action="{{ url_for('.registerhm_submit', club=g.club.callsign) }}" method="post" id="registerhm"><input class="btn btn-info" type="submit" style="width:20%;padding: 3% 0 3% 0; font-size:200%" value="Submit"></form></button>
+	<center><form action="{{ url_for('.registerhm_submit', club=g.club.callsign) }}" method="post" id="registerhm"><input class="btn btn-info" type="submit" style="width:20%;padding: 3% 0 3% 0; font-size:200%;min-width:120px" value="Submit"></form></button>
 </div>
 
 {% endwith %}
