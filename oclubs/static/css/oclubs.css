@@ -251,15 +251,13 @@ body {
 	left: 0;
 	padding-top: 115px;
 }
-.blockpic img {
+.blockpic .img {
 	display: block;
 	position: relative;
 	min-width: 100%;
 	min-height: 100%;
-	top: 50%;
-	left: 50%;
-	-webkit-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
+	background-position: center;
+	background-size: cover;
 }
 .blockpic h2 {
 	text-transform: uppercase;

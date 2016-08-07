@@ -3,7 +3,7 @@
 <div class="container">
 	{% for pic in top_pic %}
 	<div class="col-xs-{{ pic.size }} blockpic clickable" data-href="{{ pic.link }}">
-		<img src="{{ pic.picture.location_external }}" alt="" />
+		<div class="img" style="background-image: url('{{ pic.picture.location_external }}')" alt=""></div>
 		<div class="mask">
 			<h2>{{ pic.actname }}</h2>
 			<p>{{ pic.content }}</p>
