@@ -121,15 +121,8 @@ def memberinfo(club):
 def memberinfo_download(club):
     '''Download members' info'''
     info = []
-    info.append(['Nick Name', 'Student ID', 'Passport Name', 'Email'])
-    members = club.members
-    for member in members:
-        info_each = []
-        info_each.append(member.nickname)
-        info_each.append(member.studentid)
-        info_each.append(member.passportname)
-        info_each.append(member.email)
-        info.append(info_each)
+    info.append(('Nick Name', 'Student ID', 'Passport Name', 'Email'))
+    info.extend([(member.nickname, member.studentid, member.passportname, member.email) for member in club.members])
     return download_xlsx('Member Info.xlsx', info)
 
 

@@ -22,15 +22,8 @@ userblueprint = Blueprint('userblueprint', __name__)
 @login_required
 def quitclub():
     '''Quit Club Page'''
-    clubs_obj = current_user.clubs
-    clubs = []
-    for club_obj in clubs_obj:
-        club = {}
-        club['id'] = club_obj.id
-        club['name'] = club_obj.name
-        clubs.append(club)
     return render_template('user/quitclub.html',
-                           clubs=clubs)
+                           clubs=current_user.clubs)
 
 
 @userblueprint.route('/quit_club/submit', methods=['POST'])
@@ -51,17 +44,10 @@ def quitclub_submit():
 @login_required
 def personal():
     '''Student Personal Page'''
-    pictures = []
-    for num in range(1, 21):
-        pictures.append(Upload(-num))
+    pictures = [Upload(-num) for num in range(1, 21)]
     if current_user.type == UserType.STUDENT:
         clubs = current_user.clubs
-        castotal = 0
-        cas_clubs = []
-        for club in clubs:
-            cas_clubs.append(current_user.cas_in_club(club))
-        for cas in cas_clubs:
-            castotal += cas
+        castotal = sum(current_user.cas_in_club(club) for club in current_user.clubs)
         meetings_obj = current_user.activities_reminder([ActivityTime.NOON, ActivityTime.AFTERSCHOOL])
         meetings = []
         for meeting_obj in meetings_obj:
@@ -90,10 +76,7 @@ def personal():
                 time = "Individual club activity"
             act['time'] = str(act_obj.date) + ": " + time
             activities.append(act)
-        leader_club = []
-        for club_obj in clubs:
-            if current_user == club_obj.leader:
-                leader_club.append(club_obj)
+        leader_club = filter(lambda club_obj: current_user == club_obj.leader, clubs)
         return render_template('user/student.html',
                                pictures=pictures,
                                clubs=clubs,
@@ -174,19 +157,9 @@ def toactive(club):
 def allclubsinfo():
     '''Allow admin to download all clubs' info'''
     info = []
-    info.append(['Club ID', 'Name', 'Leader', 'Teacher', 'Introduction', 'Location', 'Is Active or Not', 'Type'])
-    clubs = Club.allclubs()
-    for club in clubs:
-        info_each = []
-        info_each.append(club.id)
-        info_each.append(club.name)
-        info_each.append(club.leader.passportname)
-        info_each.append(club.teacher.passportname)
-        info_each.append(club.intro)
-        info_each.append(club.location)
-        info_each.append(str(club.is_active))
-        info_each.append(club.type.format_name)
-        info.append(info_each)
+    info.append(('Club ID', 'Name', 'Leader', 'Teacher', 'Introduction', 'Location', 'Is Active or Not', 'Type'))
+    info.extend([(club.id, club.name, club.leader.passportname, club.teacher.passportname, club.intro, club.location, str(club.is_active), club.type.format_name) for club in Club.allclubs()])
+
     return download_xlsx('All Clubs\' Info.xlsx', info)
 
 
@@ -195,18 +168,9 @@ def allclubsinfo():
 def allactivitiesinfo():
     '''Allow admin to download all activities' info'''
     info = []
-    info.append(['Activity ID', 'Name', 'Club', 'Date', 'Time (Type)', 'Location', 'CAS Hours'])
-    acts = Activity.all_activities()
-    for act in acts:
-        info_each = []
-        info_each.append(act.id)
-        info_each.append(act.name)
-        info_each.append(act.club.name)
-        info_each.append(act.date.strftime('%b-%d-%y'))
-        info_each.append(act.time.format_name)
-        info_each.append(act.location)
-        info_each.append(act.cas)
-        info.append(info_each)
+    info.append(('Activity ID', 'Name', 'Club', 'Date', 'Time (Type)', 'Location', 'CAS Hours'))
+    info.extend([(act.id, act.name, act.club.name, act.date.strftime('%b-%d-%y'), act.time.format_name, act.location, act.cas) for act in Activity.all_activities()])
+
     return download_xlsx('All Activities\' Info.xlsx', info)
 
 
@@ -215,17 +179,9 @@ def allactivitiesinfo():
 def allusersinfo():
     '''Allow admin to download all users' info'''
     info = []
-    info.append(['ID', 'Student ID', 'Nick Name', 'Passport Name', 'Email', 'Phone'])
-    users = User.allusers()
-    for user in users:
-        info_each = []
-        info_each.append(user.id)
-        info_each.append(user.studentid)
-        info_each.append(user.nickname)
-        info_each.append(user.passportname)
-        info_each.append(user.email)
-        info_each.append(str(user.phone))
-        info.append(info_each)
+    info.append(('ID', 'Student ID', 'Nick Name', 'Passport Name', 'Email', 'Phone'))
+    info.extend([(user.id, user.studentid, user.nickname, user.passportname, user.email, str(user.phone)) for user in User.allusers()])
+
     return download_xlsx('All Users\' Info.xlsx', info)
 
 

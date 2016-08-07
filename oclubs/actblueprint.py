@@ -16,7 +16,7 @@ from datetime import datetime, date
 import traceback
 
 from oclubs.enums import UserType, ClubType, ActivityTime
-from oclubs.shared import get_callsign, special_access_required, Pagination, download_xlsx, render_email_template
+from oclubs.shared import get_callsign, special_access_required, Pagination, download_xlsx, render_email_template, partition
 from oclubs.objs import User, Club, Activity, Upload, FormattedText
 
 actblueprint = Blueprint('actblueprint', __name__)
@@ -54,13 +54,8 @@ def clubactivities(club, page):
     pagination = Pagination(page, act_num, len(acts))
     acts = acts[(page-1)*act_num: page*act_num]
     club_pic = []
-    for upload in club.allactphotos():
-        club_pic.append(upload)
-        if len(club_pic) == 3:
-            break
-    if len(club_pic) < 3:
-        for miss in range(3 - len(club_pic)):
-            club_pic.append(Upload(-101))
+    club_pic.extend(club.allactphotos(limit=3)[1])
+    club_pic.extend([Upload(-101) for _ in range(3 - len(club_pic))])
     return render_template('activity/clubact.html',
                            club_pic=club_pic,
                            acts=acts,
@@ -332,13 +327,7 @@ def inputatten_submit(activity):
 def checkatten(activity):
     '''Check attendance'''
     attendance = activity.attendance
-    attend = []
-    absent = []
-    for member in activity.signup_list():
-        if member['user'] in attendance:
-            attend.append(member['user'])
-        else:
-            absent.append(member['user'])
+    attend, absent = partition(activity.signup_list(), lambda member: member['user'] in attendance)
     return render_template('/activity/checkatten.html',
                            attend=attend,
                            absent=absent)
@@ -350,25 +339,10 @@ def checkatten(activity):
 def checkatten_download(activity):
     '''Download activity's attendance'''
     result = []
-    result.append(['Nick Name', 'Student ID', 'Attendance'])
+    result.append(('Nick Name', 'Student ID', 'Attendance'))
     attendance = activity.attendance
-    attend = []
-    absent = []
-    for member in activity.signup_list():
-        if member['user'] in attendance:
-            attend.append(member['user'])
-        else:
-            absent.append(member['user'])
-    for member in attend:
-        result_each = []
-        result_each.append(member.nickname)
-        result_each.append(member.studentid)
-        result_each.append('Attended')
-        result.append(result_each)
-    for member in absent:
-        result_each = []
-        result_each.append(member.nickname)
-        result_each.append(member.studentid)
-        result_each.append('Absent')
-        result.append(result_each)
+    attend, absent = partition(activity.signup_list(), lambda member: member['user'] in attendance)
+
+    result.append([(member.nickname, member.studentid, 'Attended') for member in attend])
+    result.append([(member.nickname, member.studentid, 'Absent') for member in absent])
     return download_xlsx('Attendance for ' + activity.name + '.xlsx', result)

@@ -106,10 +106,13 @@ class Club(BaseObject):
             order_by_time=True
         )
 
-    def allactphotos(self):
+    @paged_db_read
+    def allactphotos(self, pager=None):
         from oclubs.objs import Upload
 
-        tempdata = database.fetch_onecol(
+        pager_fetch, pager_return = pager
+        tempdata = pager_fetch(
+            database.fetch_onecol,
             'act_pic',
             'actpic_upload',
             {
@@ -118,7 +121,7 @@ class Club(BaseObject):
             }
         )
 
-        return [Upload(item) for item in tempdata]
+        return pager_return([Upload(item) for item in tempdata])
 
     def add_member(self, user):
         database.insert_row('club_member',

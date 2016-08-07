@@ -172,3 +172,7 @@ def render_email_template(name, parameters):
         data = textfile.read()
 
     return pystache.render(data, parameters)
+
+
+def partition(l, p):
+    return reduce(lambda x, y: x[not p(y)].append(y) or x, l, ([], []))
