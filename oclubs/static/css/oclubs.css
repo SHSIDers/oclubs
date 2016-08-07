@@ -707,6 +707,7 @@ thead.darklist {
 .teacher_club h1 {
 	font-size: 300%;
 	margin-bottom: 2%;
+	margin-top:0;
 }
 
 .teacher_club h2 {
@@ -725,8 +726,8 @@ thead.darklist {
 }
 
 .teacher_club .btn {
-	width: 90%;
-	padding: 10%;
+	width: 100%;
+	padding: 10px;
 	font-size: 125%;
 }
 
@@ -1198,6 +1199,9 @@ thead.darklist {
 	.logo {
 		width: 16%;
 	}
+	.teacher_club h1 {
+		font-size: 250%;
+	}
 }
 @media screen and (max-width:768px){
 	.homepage_block > .col-xs-9 {
@@ -1251,11 +1255,11 @@ thead.darklist {
 	.downloadbtn {
 		font-size:150%
 	}
-	.teacher_club h1 {
-		font-size: 250%;
-	}
 	.teacher_club h2 {
 		font-size: 175%;
+	}
+	.teacher_club p {
+		font-size: 135%;
 	}
 	#hpexlist h3 {
 		margin: 0px;
@@ -1400,6 +1404,9 @@ thead.darklist {
 	.function_block > div {
 		margin: 1px;
 	}
+	.teacher_club h1 {
+		font-size: 200%;
+	}
 }
 @media screen and (max-width: 550px){
 	.checkbox_block > label {
@@ -1475,11 +1482,11 @@ thead.darklist {
 	#hminfoinput {
 		width: 90%;
 	}
-	.teacher_club h1 {
-		font-size: 200%;
-	}
 	.teacher_club h2 {
 		font-size: 150%;
+	}
+	.teacher_club p {
+		font-size: 120%;
 	}
 	#profilepic {
 		padding: 0;
@@ -1544,6 +1551,15 @@ thead.darklist {
 	}
 	.function_block > div {
 		height: auto;
+	}
+	.teacher_club h1 {
+		font-size: 150%;
+	}
+	.teacher_club h2 {
+		font-size: 125%;
+	}
+	.teacher_club p {
+		font-size: 100%;
 	}
 }
 @media screen and (max-width: 425px){
@@ -1613,7 +1629,16 @@ thead.darklist {
 	}
 	.slidecont {
 	padding: 0 15px;
-}
+	}
+	.teacher_club h2 {
+		font-size: 100%;
+	}
+	.teacher_club p {
+		font-size: 85%;
+	}
+	.teacher_club h1 {
+		font-size: 130%;
+	}
 }
 @media screen and (max-width: 350px){
 	.homepage_function {
