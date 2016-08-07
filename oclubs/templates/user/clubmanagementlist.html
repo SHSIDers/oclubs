@@ -2,7 +2,7 @@
 {% block content %}
 
 <!-- Below Navbar -->
-<div class="large_container">
+<div class="container">
 	<h1 class="title">Club Management List</h1>
 	<table class="table table-hover table-bordered" style="font-size:150%">
 		<thead class="list">
@@ -15,7 +15,7 @@
 		</thead>
 		<tbody>
 			{% for club in clubs %}
-			<tr class="clickable act" data-href="{{ url_for('clubblueprint.club', club=club.callsign) }}">
+			<tr class="clickable act" data-href="{{ url_for('clubblueprint.club', club=club.callsign) }}" style="height:4em">
 				<td>
 					<img src="{{ club.picture.location_external }}" class="img-responsive img-thumbnail" alt="{{ club.name }}" style="width:3em">
 				</td>

@@ -308,9 +308,11 @@ def newclub():
 
 
 @userblueprint.route('/new_club/submit', methods=['POST'])
-@special_access_required
+@login_required
 def newclub_submit():
     '''Upload excel file to create new clubs'''
+    if current_user.type == UserType.STUDENT:
+        abort(403)
     clubname = request.form['clubname']
     studentid = request.form['studentid']
     passportname = request.form['passportname']
@@ -333,6 +335,7 @@ def newclub_submit():
         c.type = ClubType(clubtype)
         c.joinmode = ClubJoinMode.FREE_JOIN
         c.create()
+        c.add_member(leader)
         flash(c.name + ' has been successfully created.', 'newclub')
     return redirect(url_for('.newclub'))
 
