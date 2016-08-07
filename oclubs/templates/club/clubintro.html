@@ -28,6 +28,11 @@
 		<div class="jumbotron" style="background-color:#3366ff;color:#e6e6e6;border-radius:5px;padding-left:30px; padding-right:30px; ">
 			<h1 class="title">{{ g.club.name }}</h1>
 			<p>{{ g.club.intro }}</p>
+			{% if g.club.is_active %}
+			<p>Active</p>
+			{% else %}
+			<p>Inactive</p>
+			{% endif %}
 		</div>
 		<p class="text-right" style="color:#f2f2f2">Written by: {{ g.club.leader.nickname }}</p>
 		<center><img src="{{ g.club.picture.location_external }}" class="img-thumbnail" alt="Club Picture"></center>
@@ -53,7 +58,7 @@
 				</a></center>
 			</div>
 			<div class="col-sm-4" style="margin-bottom:10px">
-				{% if not current_user in g.club.members %}
+				{% if not current_user in g.club.members and free_join %}
 				<center><a href="{{ url_for('clubblueprint.clubintro_submit', club=g.club.callsign) }}" style="text-decoration:none">
 					<button class="btn btn-info btn-lg" style="width:80%">Join</button>
 				</a></center>

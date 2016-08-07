@@ -12,7 +12,7 @@ from flask import (
 from flask_login import current_user, login_required
 
 from oclubs.objs import User, Club, Upload, FormattedText
-from oclubs.enums import UserType, ClubType, ActivityTime
+from oclubs.enums import UserType, ClubType, ActivityTime, ClubJoinMode
 from oclubs.shared import (
     download_xlsx, get_callsign, special_access_required, render_email_template
 )
@@ -55,8 +55,10 @@ def club(club):
 @get_callsign(Club, 'club')
 def clubintro(club):
     '''Club Intro'''
+    free_join = club.joinmode == ClubJoinMode.FREE_JOIN
     return render_template('club/clubintro.html',
-                           title='Club Intro')
+                           title='Club Intro',
+                           free_join=free_join)
 
 
 @clubblueprint.route('/<club>/introduction/submit')
