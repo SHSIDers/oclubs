@@ -814,7 +814,8 @@ thead.darklist {
 	color: #f2f2f2;
 	border-style: solid;
 	border-color: #337ab7;
-	width: 35%;
+	width: 37.5%;
+	font-size:110%;
 }
 
 .login_block a,
@@ -872,7 +873,7 @@ thead.darklist {
 }
 
 .search_bar input[type="text"] {
-	width: 85%;;
+	width: 80%;
 	background-color: transparent;
 	border: none;
 	padding: 0px;
@@ -1022,7 +1023,7 @@ thead.darklist {
 
 .slidecont {
 	transition: 0.5s;
-	width: 60%;
+	padding:0 40px;
 }
 
 
@@ -1117,8 +1118,8 @@ thead.darklist {
 		padding-top: 90px;
 	}
 	.large_container select {
-		visibility: visible !important;
-		height: auto !important;
+		visibility: visible;
+		height: auto;
 	}
 	.large_container .list-group{
 		visibility: hidden;
@@ -1203,6 +1204,7 @@ thead.darklist {
 
 	.login_block {
 		width: 80%;
+		font-size: 100%;
 	}
 	.blockpic, .blockpic .mask {
 		height: 200px;
@@ -1303,10 +1305,6 @@ thead.darklist {
 	.header > .container {
 		padding: 0 0 0.5em 0;
 	}
-	.slidecont {
-		width: 70%;
-
-	}
 	.carousel-caption {
 		padding-bottom: 15px;
 	}
@@ -1320,8 +1318,7 @@ thead.darklist {
 		padding-right:2px;
 	}
 	.creators .panel-heading {
-		font-size: 125% !important;
-		height: 65px;
+		font-size: 125%;
 	}
 	.panel-heading {
 		padding: 9px;
@@ -1374,9 +1371,6 @@ thead.darklist {
 
 @media screen and (max-width: 525px){
 
-	.slidecont {
-		width: 80%;
-	}
 	.carousel-caption {
 		padding-bottom: 10px;
 	}
@@ -1508,9 +1502,6 @@ thead.darklist {
 }
 
 @media screen and (max-width: 400px){
-	.slidecont {
-		width: 90%;
-	}
 	.carousel-caption {
 		padding-bottom: 5px;
 	}
@@ -1526,8 +1517,7 @@ thead.darklist {
 		padding-top: 25px;
 	}
 	.creators .panel-heading {
-		font-size: 80% !important;
-		height: 65px;
+		font-size: 80%;
 	}
 	.panel-heading {
 		padding: 5px;
@@ -1568,6 +1558,9 @@ thead.darklist {
 	.homepage_function{
 		font-size: 75%;
 	}
+	.slidecont {
+	padding:0 15px;
+}
 }
 @media screen and (max-width: 350px){
 	.homepage_function{
