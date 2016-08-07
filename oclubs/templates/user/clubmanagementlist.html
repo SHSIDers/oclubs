@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{% from 'macros.html' import render_pagination %}
 {% block title %}Club Management List{% endblock %}
 {% block content %}
 
@@ -27,6 +27,7 @@
 			{% endfor %}
 		</tbody>
 	</table>
+	<center>{{ render_pagination(pagination) }}</center>
 </div>
 
 {% endblock %}

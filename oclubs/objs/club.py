@@ -8,7 +8,7 @@ import random
 
 from oclubs.access import database, redis
 from oclubs.enums import ClubType, UserType, ClubJoinMode
-from oclubs.objs.base import BaseObject, Property, ListProperty
+from oclubs.objs.base import BaseObject, Property, ListProperty, paged_db_read
 
 
 class Club(BaseObject):
@@ -73,21 +73,26 @@ class Club(BaseObject):
         return [cls(item) for item in tempdata]
 
     @classmethod
-    def allclubs(cls, types=None, active_only=True):
+    @paged_db_read
+    def allclubs(cls, types=None, active_only=True, pager=None):
         where = []
         if types:
             types = [_type.value for _type in types]
             where.append(('in', 'club_type', types))
         if active_only:
             where.append(('=', 'club_inactive', False))
-        tempdata = database.fetch_onecol(
+
+        pager_fetch, pager_return = pager
+
+        tempdata = pager_fetch(
+            database.fetch_onecol,
             cls.table,
             cls.identifier,
             {
                 'where': where,
             }
         )
-        return [cls(item) for item in tempdata]
+        return pager_return([cls(item) for item in tempdata])
 
     def activities(self, types, dates=(True, True)):
         from oclubs.objs import Activity

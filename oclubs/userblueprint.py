@@ -12,7 +12,7 @@ from flask_login import current_user, login_required, fresh_login_required
 
 from oclubs.objs import User, Club, Activity, Upload, FormattedText
 from oclubs.enums import UserType, ClubType, ActivityTime, ClubJoinMode
-from oclubs.shared import get_callsign, special_access_required, download_xlsx, read_xlsx, render_email_template
+from oclubs.shared import get_callsign, special_access_required, download_xlsx, read_xlsx, render_email_template, Pagination
 from oclubs.exceptions import AlreadyExists
 
 userblueprint = Blueprint('userblueprint', __name__)
@@ -356,12 +356,16 @@ def newclub_submit():
 
 
 @userblueprint.route('/club_management_list')
+@userblueprint.route('/club_management_list/<int:page>')
 @special_access_required
-def clubmanagementlist():
+def clubmanagementlist(page=1):
     '''Allow admin to access club management list'''
-    clubs = Club.allclubs()
+    num = 20
+    count, clubs = Club.allclubs(limit=((page-1)*num, num))
+    pagination = Pagination(page, num, count)
     return render_template('user/clubmanagementlist.html',
-                           clubs=clubs)
+                           clubs=clubs,
+                           pagination=pagination)
 
 
 @userblueprint.route('/adjust_clubs')
