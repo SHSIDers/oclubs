@@ -58,7 +58,7 @@
 				</a></center>
 			</div>
 			<div class="col-sm-4" style="margin-bottom:10px">
-				{% if not current_user in g.club.members and free_join %}
+				{% if free_join %}
 				<center><a href="{{ url_for('clubblueprint.clubintro_submit', club=g.club.callsign) }}" style="text-decoration:none">
 					<button class="btn btn-info btn-lg" style="width:80%">Join</button>
 				</a></center>

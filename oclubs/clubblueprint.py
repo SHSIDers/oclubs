@@ -54,7 +54,12 @@ def club(club):
 @get_callsign(Club, 'club')
 def clubintro(club):
     '''Club Intro'''
-    free_join = club.joinmode == ClubJoinMode.FREE_JOIN
+    if current_user.is_active:
+        free_join = (club.joinmode == ClubJoinMode.FREE_JOIN) and \
+                    (current_user.type == UserType.STUDENT) and \
+                    (current_user not in club.members)
+    else:
+        free_join = False
     return render_template('club/clubintro.html',
                            title='Club Intro',
                            free_join=free_join)
