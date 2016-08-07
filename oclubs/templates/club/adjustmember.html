@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% block title %}Adjust Members{% endblock %}
 {% block content %}
-{% with messages = get_flashed_messages(category_filter=["expelled"]) %}
+{% with expel_messages = get_flashed_messages(category_filter=["expelled"]) %}
+{% with invite_messages = get_flashed_messages(category_filter=["invite_member"]) %}
 
 <!-- Below Navbar -->
 <div class="container">
@@ -45,7 +46,35 @@
 			{% endfor %}
 		</tbody>
 	</table>
+	{% if invite_member %}
+	<center><button class="btn btn-success btn-lg" data-toggle="modal" data-target="#invite_member" id="updatecheck" style="margin-top:20px">Invite New Member</button></center>
+	{% endif %}
 </div>
 
+<div id="invite_member" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Invite Member</h4>
+			</div>
+			<div class="modal-body">
+				<form action="{{ url_for('.invitemember', club=g.club.callsign) }}" method="post" id="invite_form">
+					<label for="studentid">Student ID:</label>
+					<input class="form-control" id="studentid" type="text" name="studentid">
+					<br>
+					<label for="passportname">Passport Name:</label>
+					<input class="form-control" id="passportname" type="text" name="passportname">
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<input type="submit" class="btn btn-primary" form="invite_form" value="Invite">
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endwith %}
 {% endwith %}
 {% endblock %}
