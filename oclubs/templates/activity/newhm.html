@@ -3,39 +3,43 @@
 
 <!-- Below Navbar -->
 <div class="container">
-    <h1 class="title">Input HongMei Schedule</h1>
-    <h2 class="title_next">{{ g.club.name }}</h2>
-    <br>
+	<h1 class="title">Input HongMei Schedule</h1>
+	<h2 class="title_next">{{ g.club.name }}</h2>
+	<br>
 
-    <h2 style="color:#f2f2f2">Schedule</h2>
-    <table class="table table-bordered" id="schedule">
-        <thead class="list">
-            <tr style="background-color:#bfbfbf">
-                <th>Date</th>
-                <th>Contents</th>
-                <th>Delete the row</th>
-            </tr>
-        </thead>
-        <tbody class="act">
+	<h2 style="color:#f2f2f2">Schedule</h2>
+	<table class="table table-bordered" id="schedule">
+		<thead class="list">
+			<tr style="background-color:#bfbfbf">
+				<th>Date</th>
+				<th>Contents</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for act in acts %}
+			<tr class="act">
+				<td>{{ act.date.strftime('%m/%d/%y') }}</td>
+				<td>{{ act.name }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 
-        </tbody>
-    </table>
-
-    <div class="container" id="hminfoinput">
-        <form class="form-group" action="{{ url_for('.newhm_submit', club=g.club.callsign) }}" method="post" id="newhm" style="color:#f2f2f2; background-color:#66a3ff; padding:5%; border-style:solid; border-color:#b3cce6">
-            <h1>Input Information</h1>
-            <label for="date">Date:</label>
-            <input type="datetime-local" class="form-control" name="date" id="date">
-            <br>
-            <label for="contents">Contents:</label>
-            <input type="text" class="form-control" name="contents" id="contents">
-            <br>
-            <center><input class="btn btn-primary updatehm" value="Append" type="submit" style="font-size:125%; padding:3%"></center>
-        </form>
-    </div>
-    <center><a href="{{ url_for('clubblueprint.club', club=g.club.callsign) }}" style="text-decoration:none">
-        <button class="btn btn-success" style="padding: 3%; font-size:175%; max-width:100%; white-space: normal">Submit the Schedule</button>
-    </a></center>
+	<div class="container" id="hminfoinput">
+		<form class="form-group" action="{{ url_for('.newhm_submit', club=g.club.callsign) }}" method="post" id="newhm" style="color:#f2f2f2; background-color:#66a3ff; padding:5%; border-style:solid; border-color:#b3cce6">
+			<h1>Input Information</h1>
+			<label for="date">Date:</label>
+			<input type="date" class="form-control" name="date" id="date">
+			<br>
+			<label for="contents">Contents:</label>
+			<input type="text" class="form-control" name="contents" id="contents">
+			<br>
+			<center><input class="btn btn-primary updatehm" value="Append" type="submit" style="font-size:125%; padding:3%"></center>
+		</form>
+	</div>
+	<center><a href="{{ url_for('clubblueprint.club', club=g.club.callsign) }}" style="text-decoration:none">
+		<button class="btn btn-success" style="padding: 3%; font-size:175%; max-width:100%; white-space: normal">Submit the Schedule</button>
+	</a></center>
 </div>
 
 {% endblock %}

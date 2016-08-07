@@ -254,8 +254,10 @@ def hongmei_status_download(club):
 @special_access_required
 def newhm(club):
     '''Input HongMei Plan'''
+    acts = club.activities([ActivityTime.HONGMEI], (False, True))
     return render_template('activity/newhm.html',
-                           title='HongMei Schedule')
+                           title='HongMei Schedule',
+                           acts=acts)
 
 
 @actblueprint.route('/<club>/new_hongmei_schedule/submit', methods=['POST'])
@@ -268,13 +270,14 @@ def newhm_submit(club):
     a = Activity.new()
     a.name = contents
     a.club = club
-    a.description = None
-    a.post = None
-    a.date = date_hm
+    a.description = FormattedText.emptytext()
+    a.date = datetime.strptime(date_hm, '%Y-%m-%d')
     a.time = ActivityTime.HONGMEI
     a.location = 'HongMei Elementary School'
     a.cas = 1
-    return a.create()
+    a.post = FormattedText.emptytext()
+    a.create()
+    return redirect(url_for('.newhm', club=club.callsign))
 
 
 @actblueprint.route('/<activity>/actstatus')

@@ -44,14 +44,7 @@
 						.val();
 					if ( date !== '' && contents !== '' ) {
 						$( '#schedule tbody' )
-							.append( '<tr><td>' + date + '</td><td>' + contents + '</td><td><button class="btn btn-primary" id="' + contents + '">Delete</button></td></tr>' );
-						$( '#' + contents )
-							.click( function() {
-								$( this )
-									.parents( 'tr' )
-									.eq( 0 )
-									.remove();
-							} );
+							.append( '<tr class="act"><td>' + date + '</td><td>' + contents + '</td></tr>' );
 					}
 				} );
 
