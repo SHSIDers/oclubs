@@ -58,8 +58,8 @@ class Activity(BaseObject):
 
         ret = database.fetch_multirow(
             'signup',
-            {'signup_act': self.id},
-            {'signup_user': 'user', 'signup_consentform': 'consentform'}
+            {'signup_user': 'user', 'signup_consentform': 'consentform'},
+            {'signup_act': self.id}
         )
         for item in ret:
             item['user'] = User(item['user'])
