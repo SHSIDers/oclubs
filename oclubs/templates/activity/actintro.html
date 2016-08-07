@@ -28,12 +28,10 @@
 			</div>
 			<div style="font-size:150%;color:#f2f2f2">
 				<p>Time: {{ g.activity.date }}</p>
+				{% if g.activity.description.raw %}
 				<br>
 				<p>Description:</p>
-				{% if g.activity.description.raw %}
 				{{ g.activity.description.formatted }}
-				{% else %}
-				<p>None</p>
 				{% endif %}
 				<br>
 			</div>

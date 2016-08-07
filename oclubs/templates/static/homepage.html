@@ -29,6 +29,7 @@
 							<img src="{{ club.picture.location_external }}" class="img-responsive img-thumbnail" alt="Excellent Club" style="float:left; margin-right:2%" width="35%" height="35%">
 							<h3>{{ club.name }}</h3>
 							<p>{{ club.intro }}</p>
+							<div class="clearfix"></div>
 						</a>
 						{% endfor %}
 						<a href="{{ url_for('clubblueprint.clublist', club_type='excellent') }}" class="list-group-item">

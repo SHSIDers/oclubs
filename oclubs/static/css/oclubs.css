@@ -254,10 +254,8 @@ body {
 .blockpic img {
 	display: block;
 	position: relative;
-	width: auto;
-	height: auto;
-	max-width: 100%;
-	max-height: 100%
+	min-width: 100%;
+	min-height: 100%
 }
 .blockpic h2 {
 	text-transform: uppercase;
@@ -987,33 +985,33 @@ thead.darklist {
 
 #floatmenu{
 	float: right;
-	 position: fixed;
-	 top: 65%;
-	 right: 0;
-	 z-index: 100;
-	 border: 2px solid #a1a1a1;
-	 padding: 10px;
-	 background: #ffffff;
+	position: fixed;
+	top: 65%;
+	right: 0;
+	z-index: 100;
+	border: 2px solid #a1a1a1;
+	padding: 10px;
+	background: #ffffff;
 	border-radius: 25px;
-	visibility: hidden;
+	display: none;
 	font-size: 110%;
 }
 
 #main {
-	 transition: margin-left .5s;
-	 padding: 20px;
-	 position: fixed
+	transition: margin-left .5s;
+	padding: 20px;
+	position: fixed
 }
 
 #emptyclose {
 	height: 100%;
-	 width: 0;
-	 position: fixed;
-	 z-index: 200;
-	 top: 0;
-	 left: 0;
-	 background-color: transparent;
-	 overflow-x: hidden;
+	width: 0;
+	position: fixed;
+	z-index: 200;
+	top: 0;
+	left: 0;
+	background-color: transparent;
+	overflow-x: hidden;
 }
 
 .search > form > span {
@@ -1041,7 +1039,7 @@ thead.darklist {
 	border-radius: 5px;
 	width: 49%;
 	border-width: 3px;
-	visibility: hidden;
+	display: none;
 	height: 0px;
 }
 
@@ -1118,11 +1116,11 @@ thead.darklist {
 		padding-top: 90px;
 	}
 	.large_container select {
-		visibility: visible;
+		display: inline-block;
 		height: auto;
 	}
 	.large_container .list-group{
-		visibility: hidden;
+		display: none;
 		height: 0px;
 		width: 0px;
 	}
@@ -1284,7 +1282,7 @@ thead.darklist {
 
 @media screen and (max-width: 600px){
 	.top-nav {
-		visibility: hidden !important;
+		display: none;
 		height: 0px;
 		transition: 0.8s;
 	}
@@ -1292,7 +1290,7 @@ thead.darklist {
 		width: 0%;
 	}
 	#floatmenu {
-		visibility: visible;
+		display: block;
 	}
 	.search {
 		width: 40% !important;

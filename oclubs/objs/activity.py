@@ -94,9 +94,10 @@ class Activity(BaseObject):
 
     @classmethod
     @paged_db_read
-    def get_activities_conditions(cls, pager, times=(), additional_conds=None,
+    def get_activities_conditions(cls, times=(), additional_conds=None,
                                   dates=(True, True), club_types=(),
-                                  require_photos=False, order_by_time=True):
+                                  require_photos=False, order_by_time=True,
+                                  pager=None):
         conds = {}
         if additional_conds:
             conds.update(additional_conds)
