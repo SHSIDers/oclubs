@@ -42,20 +42,18 @@
 			<h2>Members: {{ club.members_num }}<span style="float:right">Mode: {{ club.joinmode.format_name }}</span></h2>
 			<p>Intro: {{ club.intro }}</p>
 			<div class="clearfix"></div>
-			<div class="col-md-3">
+			<div class="col-sm-6">
 				<a href="{{ url_for('actblueprint.clubactivities', club=club.callsign, page=1) }}"><button class="btn btn-primary">Activities Status</button></a>
 			</div>
-			<div class="col-md-3">
+			<div class="col-sm-6">
 				<a href="{{ url_for('actblueprint.hongmei_status', club=club.callsign) }}"><button class="btn btn-primary">HongMei Status</button></a>
 			</div>
-			<div class="col-md-3">
+			<div class="col-sm-6">
 				<a href="{{ url_for('clubblueprint.club', club=club.callsign) }}"><button class="btn btn-primary">Club Management</button></a>
 			</div>
 			<div class="col-md-3">
-				<form action="{{ url_for('.switchmode', club=club.callsign) }}" method="post">
-					<input type="hidden" class="club_callsign" value="{{ club.callsign }}">
-					<input type="submit" class="btn btn-primary" value="Change Join Mode">
-				</form>
+				<input type="hidden" class="club_callsign" value="{{ club.callsign }}">
+				<a url="{{ url_for('.switchmode', club=club.callsign) }}" class="switchmode"><button class="btn btn-primary">Change Join Mode</button></a>
 			</div>
 		</div>
 	</div>

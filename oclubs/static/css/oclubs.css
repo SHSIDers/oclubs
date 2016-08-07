@@ -1569,6 +1569,9 @@ thead.darklist {
 	.checkbox_block input[type=checkbox] {
 		transform: scale(0.8);
 	}
+	.teacher_club h2 {
+		font-size: 100%;
+	}
 }
 @media screen and (max-width: 400px){
 	.carousel-caption {
@@ -1629,9 +1632,6 @@ thead.darklist {
 	}
 	.slidecont {
 	padding: 0 15px;
-	}
-	.teacher_club h2 {
-		font-size: 100%;
 	}
 	.teacher_club p {
 		font-size: 85%;
