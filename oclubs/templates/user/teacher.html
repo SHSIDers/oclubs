@@ -1,28 +1,45 @@
 {% extends "user/personal.html" %}
 {% block personal %}
-{% with messages = get_flashed_messages(category_filter=["joinmode"]) %}
+{% with joinmode_messages = get_flashed_messages(category_filter=["joinmode"]) %}
+{% with active_messages = get_flashed_messages(category_filter=["is_active"]) %}
 
 <h2 style="color:#f2f2f2">Guiding Clubs</h2>
 <br>
-{% if messages %}
+{% if joinmode_messages %}
 <br>
 <ul class="list-group">
-	{% for message in messages %}
+	{% for message in joinmode_messages %}
 	<li class="list-group-item">{{ message }}</li>
 	{% endfor %}
 </ul>
-{% else %}
-<br><br>
+{% endif %}
+{% if active_messages %}
+<br>
+<ul class="list-group">
+	{% for message in active_messages %}
+	<li class="list-group-item">{{ message }}</li>
+	{% endfor %}
+</ul>
 {% endif %}
 <div class="teacher_club">
 	{% for club in myclubs %}
 	<div>
 		<div class="col-xs-3">
 			<img src="{{ club.picture.location_external }}" class="img-responsive" alt="">
+			{% if club.is_active %}
+			<p class="text-center">Active</p>
+			{% else %}
+			<div class="col-xs-6">
+				<p class="text-center">Inactive</p>
+			</div>
+			<div class="col-xs-6">
+				<a action="{{ url_for('.switchmode', club=club.callsign) }}" method="post"><input type="submit" class="btn btn-primary" value="Changetytu&#13;&#10;Join Mode"></a>
+			</div>
+			{% endif %}
 		</div>
 		<div class="col-sm-9">
 			<h1>{{ club.name }}</h1>
-			<h2>Members: {{ club.members_num }}<span style="float:right">{{ club.joinmode.format_name }}</span></h2>
+			<h2>Members: {{ club.members_num }}<span style="float:right">Mode: {{ club.joinmode.format_name }}</span></h2>
 			<p>Intro: {{ club.intro }}</p>
 			<div class="clearfix"></div>
 			<div class="col-xs-3">
@@ -35,7 +52,8 @@
 				<a href="{{ url_for('clubblueprint.club', club=club.callsign) }}"><button class="btn btn-primary">Club<br>Management</button></a>
 			</div>
 			<div class="col-xs-3">
-				<a href="{{ url_for('.switchmode', club=club.callsign) }}"><button class="btn btn-primary">Change<br>Join Mode</button></a>
+				<input type="hidden" class="club_callsign" value="{{ club.callsign }}">
+				<a url="{{ url_for('.switchmode', club=club.callsign) }}" class="switchmode"><button class="btn btn-primary">Change<br>Join Mode</button></a>
 			</div>
 		</div>
 	</div>
@@ -51,5 +69,6 @@
 
 <div class="clearfix"></div>
 
+{% endwith %}
 {% endwith %}
 {% endblock %}

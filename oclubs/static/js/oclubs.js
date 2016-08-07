@@ -148,5 +148,16 @@
 						.css( 'width', '0' );
 					$( '#floatmenu' ).fadeIn();
 				} );
+
+			$( '.teacher_club .switchmode')
+				.click( function() {
+					$.post( '/user/switch_mode/submit', {
+						club: $( this )
+								.parents( 'div' )
+								.eq( 0 )
+								.find( '.club_callsign' )
+								.val()
+					} );
+				} );
 		} );
 } )( jQuery );
