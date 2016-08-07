@@ -10,8 +10,8 @@ from flask import (
 )
 from flask_login import current_user, login_required, fresh_login_required
 
-from oclubs.objs import User, Club, Activity, Upload
-from oclubs.enums import UserType, ClubType, ActivityTime
+from oclubs.objs import User, Club, Activity, Upload, FormattedText
+from oclubs.enums import UserType, ClubType, ActivityTime, ClubJoinMode
 from oclubs.shared import get_callsign, special_access_required, download_xlsx, read_xlsx, render_email_template
 from oclubs.exceptions import AlreadyExists
 
@@ -138,7 +138,9 @@ def personalsubmitpassword():
     '''Change user's password in database'''
     user_login = User.attempt_login(current_user.studentid, request.form['old'])
     if user_login is not None:
-        if request.form['new'] == request.form['again']:
+        if request.form['new'] == '':
+            flash('Please enter new password.', 'status_pw')
+        elif request.form['new'] == request.form['again']:
             current_user.password = request.form['new']
             flash('Your information has been successfully changed.', 'status_pw')
         else:
@@ -301,14 +303,38 @@ def newclub():
     if current_user.type == UserType.STUDENT:
         abort(403)
     return render_template('user/newclub.html',
-                           title='New Club')
+                           title='New Club',
+                           clubtype=ClubType)
 
 
 @userblueprint.route('/new_club/submit', methods=['POST'])
 @special_access_required
 def newclub_submit():
     '''Upload excel file to create new clubs'''
-    pass
+    clubname = request.form['clubname']
+    studentid = request.form['studentid']
+    passportname = request.form['passportname']
+    clubtype = int(request.form['clubtype'])
+    leader = User.find_user(studentid, passportname)
+    if leader is None:
+        flash('Please input correct student info.', 'newclub')
+    elif clubname == '':
+        flash('Please input club name.', 'newclub')
+    else:
+        c = Club.new()
+        c.name = clubname
+        c.teacher = current_user
+        c.leader = leader
+        c.description = FormattedText.emptytext()
+        c.location = ''
+        c.is_active = True
+        c.intro = ''
+        c.picture = Upload(-101)
+        c.type = ClubType(clubtype)
+        c.joinmode = ClubJoinMode.FREE_JOIN
+        c.create()
+        flash(c.name + ' has been successfully created.', 'newclub')
+    return redirect(url_for('.newclub'))
 
 
 @userblueprint.route('/club_management_list')

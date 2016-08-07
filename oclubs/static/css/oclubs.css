@@ -1077,11 +1077,14 @@ thead.darklist {
 .smallBlock > a{
 	max-width: 100%;
 }
-.intro_function > .col-sm-6 > a > button {
+.intro_function > .col-sm-6 .btn {
 	width:80%;
 }
 .intro_function > .col-sm-6 {
 	padding-bottom: 0.75em;
+}
+.intro_function > .col-sm-6 > input {
+	width:80%;
 }
 #stuclubmeeting {
 	border-right-style:solid;

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-{% with messages = get_flashed_messages(category_filter=["success"]) %}
+{% with messages = get_flashed_messages(category_filter=["newclub"]) %}
 
 <!-- Below Navbar -->
 <div class="container">
@@ -24,6 +24,14 @@
 		<br>
 		<p>Passport Name:</p>
 		<input type="text" class="form-control" name="passportname" id="passportname">
+		<br>
+		<label for="clubtype" style="font-size:200%">Club Type:</label>
+		<br>
+		<select class="form-control" name="clubtype" id="clubtype">
+			{% for type in clubtype %}
+			<option value="{{ type.value }}">{{ type.format_name }}</option>
+			{% endfor %}
+		</select>
 		<br>
 		<input type="submit" class="btn btn-primary btn-lg" value="Create Club">
 	</form>
