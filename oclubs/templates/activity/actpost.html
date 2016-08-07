@@ -4,59 +4,61 @@
 
 <!-- Below Navbar -->
 <div class="large_container">
-    <!-- Side Menu -->
-    <div class="col-md-2">
-        <div class="list-group" style="margin-top:50px">
-            <li class="list-group-item active">Club Types</li>
-            <a href="{{ url_for('.allactivities', club_type='all', page='1') }}" class="list-group-item {% if club_type=='all' %}selected{% endif %}">All</a>
-            <a href="{{ url_for('.allactivities', club_type='academics', page='1') }}" class="list-group-item {% if club_type=='academics' %}selected{% endif %}">Academics</a>
-            <a href="{{ url_for('.allactivities', club_type='sports', page='1') }}" class="list-group-item {% if club_type=='sports' %}selected{% endif %}">Sports</a>
-            <a href="{{ url_for('.allactivities', club_type='arts', page='1') }}" class="list-group-item {% if club_type=='arts' %}selected{% endif %}">The Arts</a>
-            <a href="{{ url_for('.allactivities', club_type='services', page='1') }}" class="list-group-item {% if club_type=='services' %}selected{% endif %}">Services</a>
-            <a href="{{ url_for('.allactivities', club_type='entertainment', page='1') }}" class="list-group-item {% if club_type=='entertainment' %}selected{% endif %}">Entertainment</a>
-            <a href="{{ url_for('.allactivities', club_type='others', page='1') }}" class="list-group-item {% if club_type=='others' %}selected{% endif %}">Others</a>
-            <a href="{{ url_for('.allactivities', club_type='school_teams', page='1') }}" class="list-group-item {% if club_type=='school_teams' %}selected{% endif %}">School Teams</a>
-        </div>
-    </div>
+	<!-- Side Menu -->
+	<div class="col-md-2">
+		<div class="list-group" style="margin-top:50px">
+			<li class="list-group-item active">Club Types</li>
+			<a href="{{ url_for('.allactivities', club_type='all', page='1') }}" class="list-group-item {% if club_type=='all' %}selected{% endif %}">All</a>
+			<a href="{{ url_for('.allactivities', club_type='academics', page='1') }}" class="list-group-item {% if club_type=='academics' %}selected{% endif %}">Academics</a>
+			<a href="{{ url_for('.allactivities', club_type='sports', page='1') }}" class="list-group-item {% if club_type=='sports' %}selected{% endif %}">Sports</a>
+			<a href="{{ url_for('.allactivities', club_type='arts', page='1') }}" class="list-group-item {% if club_type=='arts' %}selected{% endif %}">The Arts</a>
+			<a href="{{ url_for('.allactivities', club_type='services', page='1') }}" class="list-group-item {% if club_type=='services' %}selected{% endif %}">Services</a>
+			<a href="{{ url_for('.allactivities', club_type='entertainment', page='1') }}" class="list-group-item {% if club_type=='entertainment' %}selected{% endif %}">Entertainment</a>
+			<a href="{{ url_for('.allactivities', club_type='others', page='1') }}" class="list-group-item {% if club_type=='others' %}selected{% endif %}">Others</a>
+			<a href="{{ url_for('.allactivities', club_type='school_teams', page='1') }}" class="list-group-item {% if club_type=='school_teams' %}selected{% endif %}">School Teams</a>
+		</div>
+	</div>
 
-    <!-- Main Content -->
-    <div class="col-md-10" style="padding-right:50px">
-        <div class="container">
-            <div class="jumbotron" style="background-color:#3366ff;color:#e6e6e6">
-                <h1 class="title">Post for {{ g.activity.name }}</h1>
-                <p>{{ g.activity.club.name }}</p>
-            </div>
-            <div style="font-size:150%;color:#f2f2f2">
-                <p>Time: {{ g.activity.date }}</p>
-                <br>
-                {% for pic in g.activity.pictures %}
-                <center><img src="{{ pic.location_external }}" class="img-thumbnail" alt="{{ g.activity.name }}"></center>
-                <br>
-                {% endfor %}
-                <p>Post:</p>
-                {% if g.activity.post.raw %}
-                {{ g.activity.post.formatted }}
-                {% else %}
-                <p>None</p>
-                {% endif %}
-                <br>
-            </div>
-        </div>
-        <div class="container">
-            <div class="intro_function">
-                <div class="col-sm-6">
-                    <a href="{{ url_for('clubblueprint.clubintro', club=g.activity.club.callsign) }}">
-                        <button class="btn btn-info btn-lg" style="width:80%">Club Introduction</button>
-                    </a>
-                </div>
-                <div class="col-sm-6">
-                    <a href="{{ url_for('.activity', activity=g.activity.callsign) }}">
-                        <button class="btn btn-info btn-lg" style="width:80%">Activity Introduction</button>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+	<!-- Main Content -->
+	<div class="col-md-10" style="padding-right:50px">
+		<div class="container">
+			<div class="jumbotron" style="background-color:#3366ff;color:#e6e6e6">
+				<h1 class="title">Post for {{ g.activity.name }}</h1>
+				<p>{{ g.activity.club.name }}</p>
+			</div>
+			<div style="font-size:150%;color:#f2f2f2">
+				<p>Time: {{ g.activity.date }}</p>
+				<br>
+				{% for pic in g.activity.pictures %}
+				<div class="col-sm-3">
+					<img src="{{ pic.location_external }}" class="img-thumbnail" alt="{{ g.activity.name }}" style="margin-bottom:15px">
+				</div>
+				{% endfor %}
+				<div class="clearfix"></div>
+				<p>Post:</p>
+				{% if g.activity.post.raw %}
+				{{ g.activity.post.formatted }}
+				{% else %}
+				<p>None</p>
+				{% endif %}
+				<br>
+			</div>
+		</div>
+		<div class="container">
+			<div class="intro_function">
+				<div class="col-sm-6">
+					<a href="{{ url_for('clubblueprint.clubintro', club=g.activity.club.callsign) }}">
+						<button class="btn btn-info btn-lg" style="width:80%">Club Introduction</button>
+					</a>
+				</div>
+				<div class="col-sm-6">
+					<a href="{{ url_for('.activity', activity=g.activity.callsign) }}">
+						<button class="btn btn-info btn-lg" style="width:80%">Activity Introduction</button>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <div class="clearfix"></div>
