@@ -129,7 +129,7 @@ class Activity(BaseObject):
 
         pager_fetch, pager_return = pager
 
-        ret = pager_fetch(database.fetch_onecol, 'activity', 'act_id', conds)
+        ret = pager_fetch(database.fetch_onecol, 'activity', 'act_id', conds, distinct=True)
         ret = [cls(item) for item in ret]
 
         return pager_return(ret)

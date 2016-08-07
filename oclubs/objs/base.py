@@ -332,7 +332,7 @@ def paged_db_read(func):
     def get_pager(limit):
         tempstorage = type(b'tempstorage', (object,), {})
 
-        def pager_fetch(*args):
+        def pager_fetch(*args, **kwargs):
             f, table, cols, conds = args
             conds = database.expand_cond(conds)
             if limit:
@@ -341,7 +341,7 @@ def paged_db_read(func):
             tempstorage.count = database.fetch_oneentry(
                 table, database.RawSQL('COUNT(*)'), conds)
 
-            return f(table, cols, conds)
+            return f(table, cols, conds, **kwargs)
 
         def pager_return(data):
             if limit:
