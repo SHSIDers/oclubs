@@ -98,7 +98,10 @@ class User(BaseObject, UserMixin):
                 'notification_isread': 'isread',
                 'notification_date': 'date'
             },
-            {'notification_user': self.id}
+            {
+                'where': [('=', 'notification_user', self.id)],
+                'order': [('notification_date', False)]
+            }
         )
         for item in ret:
             item['date'] = int_date(item['date'])

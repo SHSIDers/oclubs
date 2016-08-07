@@ -120,7 +120,7 @@ CREATE TABLE IF NOT EXISTS notification (
 	notification_date int NOT NULL
 );
 
-CREATE INDEX IF NOT EXISTS notification_club ON notification (notification_club);
+CREATE INDEX IF NOT EXISTS notification_user ON notification (notification_user);
 
 
 CREATE TABLE IF NOT EXISTS signup (
