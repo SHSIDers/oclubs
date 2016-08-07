@@ -26,6 +26,7 @@
 	<!-- Main Content -->
 	<div class="col-md-10">
 		<h1 class="title" style="clear:right">Clubs - {{ club_type.replace('_', ' ').title() }}		<button class="btn btn-info refresh" style="font-family:'Georgia'; font-weight:bold; color:#f2f2f2; font-size: 50%; "><span class="glyphicon glyphicon-refresh"></span>&nbsp;Refresh</button></h1>
+		<p style="color:#f2f2f2; font-size:150%">For fairness, we randomly choose 18 clubs each time you click refresh button.</p>
 
 		<select onchange="window.location=this.value;">
 			<option value="{{ url_for('.clublist', club_type='all', page='1') }}" {% if club_type=='all' %}selected="selected"{% endif %}>All</option>
