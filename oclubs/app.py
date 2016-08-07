@@ -249,8 +249,7 @@ def homepage():
         pic['size'] = size
 
     ex_clubs = Club.excellentclubs(3)
-    pic_acts = Activity.get_activities_conditions(require_photos=True,
-                                                  limit=(0, 3))
+    pic_acts = top_pic[0:3]
     return render_template('static/homepage.html',
                            title='Here you come',
                            is_home=True,
