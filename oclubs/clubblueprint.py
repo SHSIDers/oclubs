@@ -35,7 +35,6 @@ def clublist(club_type):
         except KeyError:
             abort(404)
     return render_template('club/clublist.html',
-                           title='Club List',
                            is_list=True,
                            clubs=clubs,
                            club_type=club_type)
@@ -46,8 +45,7 @@ def clublist(club_type):
 @special_access_required
 def club(club):
     '''Club Management Page'''
-    return render_template('club/clubmanage.html',
-                           title=club.name)
+    return render_template('club/clubmanage.html')
 
 
 @clubblueprint.route('/<club>/introduction')
@@ -61,7 +59,6 @@ def clubintro(club):
     else:
         free_join = False
     return render_template('club/clubintro.html',
-                           title='Club Intro',
                            free_join=free_join)
 
 
@@ -84,8 +81,7 @@ def clubintro_submit(club):
 @special_access_required
 def newleader(club):
     '''Selecting New Club Leader'''
-    return render_template('club/newleader.html',
-                           title='New Leader')
+    return render_template('club/newleader.html')
 
 
 @clubblueprint.route('/<club>/new_leader/submit', methods=['POST'])
@@ -105,8 +101,7 @@ def newleader_submit(club):
         parameters = {'user': member, 'club': club, 'leader_old': leader_old}
         contents = render_email_template('newleader', parameters)
         # member.email_user('New Leader - ' + club.name, contents)
-    return render_template('club/success.html',
-                           title='Success')
+    return render_template('club/success.html')
 
 
 @clubblueprint.route('/<club>/member_info')
@@ -117,7 +112,6 @@ def memberinfo(club):
                   current_user.id == club.teacher.id or
                   current_user.type == UserType.ADMIN)
     return render_template('club/memberinfo.html',
-                           title='Member Info',
                            has_access=has_access)
 
 
@@ -144,8 +138,7 @@ def memberinfo_download(club):
 @special_access_required
 def changeclubinfo(club):
     '''Change Club's Info'''
-    return render_template('club/changeclubinfo.html',
-                           title='Change Club Info')
+    return render_template('club/changeclubinfo.html')
 
 
 @clubblueprint.route('/<club>/change_club_info/submit', methods=['POST'])
@@ -172,8 +165,7 @@ def changeclubinfo_submit(club):
 @special_access_required
 def adjustmember(club):
     '''Adjust Club Members'''
-    return render_template('club/adjustmember.html',
-                           title='Adjust Members')
+    return render_template('club/adjustmember.html')
 
 
 @clubblueprint.route('/<club>/adjust_member/submit', methods=['POST'])

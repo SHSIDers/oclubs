@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% block title %}{{ current_user.nickname }}{% endblock %}
 {% block content %}
 {% with status_info = get_flashed_messages(category_filter=["status_info"]) %}
 {% with status_pw = get_flashed_messages(category_filter=["status_pw"]) %}

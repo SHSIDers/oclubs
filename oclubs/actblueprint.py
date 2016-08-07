@@ -39,7 +39,6 @@ def allactivities(club_type, page):
             abort(404)
     pagination = Pagination(page, act_num, count)
     return render_template('activity/allact.html',
-                           title='All Activities',
                            is_allact=True,
                            acts=acts,
                            club_type=club_type,
@@ -67,7 +66,6 @@ def clubactivities(club, page):
         for miss in range(3 - len(club_pic)):
             club_pic.append(Upload(-101))
     return render_template('activity/clubact.html',
-                           title=club.name,
                            club_pic=club_pic,
                            acts=acts,
                            pagination=pagination)
@@ -86,7 +84,6 @@ def allphotos(page):
             act_recent = ''
     pagination = Pagination(page, pic_num, acts_obj[0])
     return render_template('activity/photos.html',
-                           title='All Photos',
                            is_photos=True,
                            act_recent=act_recent,
                            acts=acts,
@@ -102,7 +99,6 @@ def clubphoto(club, page):
     pagination = Pagination(page, pic_num, len(uploads))
     uploads = uploads[(page-1)*pic_num-pic_num: page*pic_num]
     return render_template('activity/clubphoto.html',
-                           title=club.name,
                            uploads=uploads,
                            pagination=pagination)
 
@@ -112,8 +108,7 @@ def clubphoto(club, page):
 @special_access_required
 def newact(club):
     '''Hosting New Activity'''
-    return render_template('activity/newact.html',
-                           title='New Activity')
+    return render_template('activity/newact.html')
 
 
 @actblueprint.route('/<club>/newact/submit', methods=['POST'])
@@ -163,7 +158,6 @@ def activity(activity):
     is_other_act = (activity.time == ActivityTime.UNKNOWN or
                     activity.time == ActivityTime.OTHERS)
     return render_template('activity/actintro.html',
-                           title=activity.name,
                            is_other_act=is_other_act,
                            is_past=date.today() >= activity.date,
                            has_access=has_access)
@@ -183,8 +177,7 @@ def activity_submit(activity):
 @get_callsign(Activity, 'activity')
 def actpost(activity):
     '''Activity Post Page'''
-    return render_template('activity/actpost.html',
-                           title='Activity Post')
+    return render_template('activity/actpost.html')
 
 
 @actblueprint.route('/<activity>/change_activity_post')
@@ -192,8 +185,7 @@ def actpost(activity):
 @special_access_required
 def changeactpost(activity):
     '''Page for club leader to change activity post'''
-    return render_template('activity/changeactpost.html',
-                           title='Change Activity Post')
+    return render_template('activity/changeactpost.html')
 
 
 @actblueprint.route('/<activity>/change_activity_post/submit', methods=['POST'])
@@ -219,7 +211,6 @@ def hongmei_status(club):
     '''Check HongMei Status'''
     acts = club.activities([ActivityTime.HONGMEI], (False, True))
     return render_template('activity/hmstatus.html',
-                           title='HongMei Status',
                            acts=acts)
 
 
@@ -256,7 +247,6 @@ def newhm(club):
     '''Input HongMei Plan'''
     acts = club.activities([ActivityTime.HONGMEI], (False, True))
     return render_template('activity/newhm.html',
-                           title='HongMei Schedule',
                            acts=acts)
 
 
@@ -289,7 +279,6 @@ def actstatus(activity):
     for member in activity.signup_list():
         members_num += 1
     return render_template('activity/actstatus.html',
-                           title=activity.name,
                            members_num=members_num)
 
 
@@ -298,9 +287,7 @@ def actstatus(activity):
 @special_access_required
 def inputatten(activity):
     '''Input Attendance'''
-    return render_template('activity/inputatten.html',
-                           title='Input Attendance',
-                           activity=activity)
+    return render_template('activity/inputatten.html')
 
 
 @actblueprint.route('/<activity>/input_attendance/submit', methods=['POST'])
@@ -329,7 +316,6 @@ def checkatten(activity):
         else:
             absent.append(member['user'])
     return render_template('/activity/checkatten.html',
-                           title='Check Attendance',
                            attend=attend,
                            absent=absent)
 

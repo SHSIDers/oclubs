@@ -15,7 +15,7 @@
 <script src="{{ url_for('static', filename='js/jquery-2.2.2.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/jquery-ui.js') }}"></script>
 
-<title>{{ title }} - oClubs!</title>
+<title>{% block title %}{% endblock %} - oClubs!</title>
 </head>
 
 <body>

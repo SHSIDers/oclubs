@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% block title %}{{ g.activity.name }}{% endblock %}
 {% block content %}
 {% with messages_signup = get_flashed_messages(category_filter=["signup"]) %}
 

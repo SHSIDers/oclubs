@@ -72,8 +72,7 @@ def access_teardown(exception):
 def page_not_found(e=None):
     '''Wrong url'''
     return render_template('static/error.html',
-                           title='404 Page Not Found',
-                           is_page_not_found=True
+                           error_type=404
                            ), 404
 
 
@@ -82,8 +81,7 @@ def page_not_found(e=None):
 def forbidden(e=None):
     '''No access'''
     return render_template('static/error.html',
-                           title='403 Forbidden',
-                           is_forbidden=True
+                           error_type=403
                            ), 403
 
 
@@ -92,8 +90,7 @@ def forbidden(e=None):
 def unauthorized(e=None):
     '''Not logged in'''
     return render_template('static/error.html',
-                           title='401 Unauthorized',
-                           is_unauthorized=True
+                           error_type=401
                            ), 401
 
 
@@ -103,8 +100,7 @@ def internal_server_error(e=None):
     '''Internal server error'''
     flash(encrypt(traceback.format_exc()), '500')
     return render_template('static/error.html',
-                           title='500 Internal Server Error',
-                           is_internal_server_error=True
+                           error_type=500
                            ), 500
 
 
@@ -121,8 +117,7 @@ def load_user(user_id):
 @app.route('/login')
 def login():
     '''Login page'''
-    return render_template('user/login.html',
-                           title='Login')
+    return render_template('user/login.html')
 
 
 @app.route('/login/submit', methods=['POST'])
@@ -188,7 +183,6 @@ def search():
     pagination = Pagination(page, 10, search_result['count'])
 
     return render_template('static/search.html',
-                           title='Search',
                            search_result=search_result,
                            results=results,
                            keywords=keywords,
@@ -251,7 +245,6 @@ def homepage():
     ex_clubs = Club.excellentclubs(3)
     pic_acts = top_pic[0:3]
     return render_template('static/homepage.html',
-                           title='Here you come',
                            is_home=True,
                            top_pic=top_pic,
                            ex_clubs=ex_clubs,
@@ -262,15 +255,13 @@ def homepage():
 def about():
     '''About This Website'''
     return render_template('static/about.html',
-                           title='About',
                            is_about=True)
 
 
 @app.route('/advice')
 def advice():
     '''Advice Page'''
-    return render_template('static/advice.html',
-                           title='Advice')
+    return render_template('static/advice.html')
 
 
 @app.route('/advice/submit', methods=['POST'])
@@ -287,16 +278,14 @@ def advice_submit():
 @app.route('/creators')
 def creators():
     '''Introduction Page about Us'''
-    return render_template('static/creators.html',
-                           title='Creators')
+    return render_template('static/creators.html')
 
 
 @app.route('/complaints')
 @login_required
 def complaints():
     '''Complaints Page'''
-    return render_template('static/complaints.html',
-                           title='Complaints')
+    return render_template('static/complaints.html')
 
 
 @app.route('/complaints/submit')

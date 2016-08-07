@@ -30,7 +30,6 @@ def quitclub():
         club['name'] = club_obj.name
         clubs.append(club)
     return render_template('user/quitclub.html',
-                           title='Quit Club',
                            clubs=clubs)
 
 
@@ -96,7 +95,6 @@ def personal():
             if current_user == club_obj.leader:
                 leader_club.append(club_obj)
         return render_template('user/student.html',
-                               title=current_user.nickname,
                                pictures=pictures,
                                clubs=clubs,
                                castotal=castotal,
@@ -106,13 +104,11 @@ def personal():
     elif current_user.type == UserType.TEACHER:
         myclubs = Club.get_clubs_special_access(current_user)
         return render_template('user/teacher.html',
-                               title=current_user.nickname,
                                pictures=pictures,
                                myclubs=myclubs,
                                UserType=UserType)
     else:
         return render_template('user/admin.html',
-                               title=current_user.nickname,
                                pictures=pictures)
 
 
@@ -236,8 +232,7 @@ def allusersinfo():
 @special_access_required
 def newteachers():
     '''Allow admin to create new user or clubs'''
-    return render_template('user/newteachers.html',
-                           title='New teachers')
+    return render_template('user/newteachers.html')
 
 
 @userblueprint.route('/new_teachers/submit', methods=['POST'])
@@ -304,7 +299,6 @@ def disableaccounts():
     '''Allow admin to disable any account'''
     users = User.allusers()
     return render_template('user/disableaccounts.html',
-                           title='Disable Accounts',
                            users=users)
 
 
@@ -325,7 +319,6 @@ def newclub():
     if current_user.type == UserType.STUDENT:
         abort(403)
     return render_template('user/newclub.html',
-                           title='New Club',
                            clubtype=ClubType)
 
 
@@ -368,7 +361,6 @@ def clubmanagementlist():
     '''Allow admin to access club management list'''
     clubs = Club.allclubs()
     return render_template('user/clubmanagementlist.html',
-                           title='Club Management List',
                            clubs=clubs)
 
 
@@ -378,7 +370,6 @@ def adjustclubs():
     '''Allow admin to change clubs' status'''
     clubs = Club.allclubs()
     return render_template('user/adjustclubs.html',
-                           title='Adjust Clubs',
                            clubs=clubs)
 
 
@@ -404,7 +395,6 @@ def changepassword():
     '''Allow admin to change users' password'''
     users = User.allusers()
     return render_template('user/changepassword.html',
-                           title='Change Password',
                            users=users)
 
 
@@ -425,8 +415,7 @@ def changepassword_submit():
 @userblueprint.route('/forgot_password')
 def forgotpw():
     '''Page for retrieving password'''
-    return render_template('user/forgotpassword.html',
-                           title='Forgot Password')
+    return render_template('user/forgotpassword.html')
 
 
 @userblueprint.route('/change_user_info')
@@ -435,7 +424,6 @@ def changeuserinfo():
     '''Allow admin to change users' information'''
     users = User.allusers()
     return render_template('user/changeuserinfo.html',
-                           title='Change Users\' Info',
                            users=users)
 
 
@@ -471,7 +459,6 @@ def registerhm(club):
     '''Register Page for HongMei Activites'''
     acts = club.activities([ActivityTime.HONGMEI], (False, True))
     return render_template('user/registerhm.html',
-                           title='Register for HongMei',
                            club=club.name,
                            acts=acts)
 

@@ -1,9 +1,23 @@
 {% extends "base.html" %}
+{% block title %}
+{% if error_type is equalto 500 %}
+500 Internal Server Error
+{% endif %}
+{% if error_type is equalto 404 %}
+404 Page Not Found
+{% endif %}
+{% if error_type is equalto 403 %}
+403 Forbidden
+{% endif %}
+{% if error_type is equalto 401 %}
+401 Unauthorized
+{% endif %}
+{% endblock %}
 {% block content %}
 
 <!-- Below Navbar -->
 <div class="container error">
-{% if is_internal_server_error %}
+{% if error_type is equalto 500 %}
 	{% with errors = get_flashed_messages(category_filter=["500"]) %}
 	<h1 class="title text-center">500 Internal Server Error</h1>
 	<center><img src="{{ getpicture('smiley_face', 'png') }}" class="img-responsive" alt="Sad face" width="40%"></center>
@@ -18,19 +32,19 @@
 	{% endif %}
 	{% endwith %}
 {% endif %}
-{% if is_page_not_found %}
+{% if error_type is equalto 404 %}
 	<h1 class="title text-center">404 Page Not Found</h1>
 	<center><img src="{{ getpicture('norecord') }}" class="img-responsive img-thumbnail" alt="No Record" width="40%"></center>
 	<br><br>
 	<center><p>We are sorry to tell you. We do not have record for the address you entered. Please recheck if you entered correctly. Thank you for your cooperation.</p></center>
 {% endif %}
-{% if is_forbidden %}
+{% if error_type is equalto 403 %}
 	<h1 class="title text-center">403 Forbidden</h1>
 	<center><img src="{{ getpicture('noaccess') }}" class="img-responsive img-thumbnail" alt="No Access" width="40%"></center>
 	<br><br>
 	<center><p>We are sorry to tell you. You have no access to the url you entered. Please login to check if you really have the access. If you are already logged in, then it is certain that you have no access.</p></center>
 {% endif %}
-{% if is_unauthorized %}
+{% if error_type is equalto 401 %}
 	<h1 class="title text-center">401 Unauthorized</h1>
 	<center><img src="{{ getpicture('notloggedin', 'png') }}" class="img-responsive" alt="Not Logged In" width="40%"></center>
 	<br><br>
