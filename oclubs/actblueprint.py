@@ -27,14 +27,10 @@ def allactivities(club_type, page):
     '''All Activities'''
     act_num = 20
     if club_type == 'all':
-        acts_obj = Activity.get_activities_conditions(limit=((page-1)*act_num, act_num))
-        count = acts_obj[0]
-        acts = acts_obj[1]
+        count, acts = Activity.get_activities_conditions(limit=((page-1)*act_num, act_num))
     else:
         try:
-            acts_obj = Activity.get_activities_conditions(club_types=[ClubType[club_type.upper()]], limit=((page-1)*act_num, act_num))
-            count = acts_obj[0]
-            acts = acts_obj[1]
+            count, acts = Activity.get_activities_conditions(club_types=[ClubType[club_type.upper()]], limit=((page-1)*act_num, act_num))
         except KeyError:
             abort(404)
     pagination = Pagination(page, act_num, count)
@@ -74,15 +70,14 @@ def clubactivities(club, page):
 @actblueprint.route('/photos/<int:page>')
 def allphotos(page):
     pic_num = 20
-    acts_obj = Activity.get_activities_conditions(require_photos=True,
+    count, acts = Activity.get_activities_conditions(require_photos=True,
                                                   limit=((page-1)*pic_num, pic_num))
-    acts = acts_obj[1]
     if page == 1:
         try:
             act_recent = acts[0]
         except IndexError:
             act_recent = ''
-    pagination = Pagination(page, pic_num, acts_obj[0])
+    pagination = Pagination(page, pic_num, count)
     return render_template('activity/photos.html',
                            is_photos=True,
                            act_recent=act_recent,
