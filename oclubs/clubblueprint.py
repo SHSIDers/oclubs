@@ -47,8 +47,7 @@ def clublist(club_type):
 def club(club):
     '''Club Management Page'''
     return render_template('club/clubmanage.html',
-                           title=club.name,
-                           club=club.name)
+                           title=club.name)
 
 
 @clubblueprint.route('/<club>/introduction')
@@ -114,7 +113,6 @@ def memberinfo(club):
                   current_user.type == UserType.ADMIN)
     return render_template('club/memberinfo.html',
                            title='Member Info',
-                           club=club,
                            has_access=has_access)
 
 

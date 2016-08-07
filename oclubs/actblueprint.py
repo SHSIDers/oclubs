@@ -68,7 +68,6 @@ def clubactivities(club, page):
             club_pic.append(Upload(-101))
     return render_template('activity/clubact.html',
                            title=club.name,
-                           club=club,
                            club_pic=club_pic,
                            acts=acts,
                            pagination=pagination)
@@ -194,8 +193,7 @@ def actpost(activity):
 def changeactpost(activity):
     '''Page for club leader to change activity post'''
     return render_template('activity/changeactpost.html',
-                           title='Change Activity Post',
-                           act=activity)
+                           title='Change Activity Post')
 
 
 @actblueprint.route('/<activity>/change_activity_post/submit', methods=['POST'])
@@ -257,8 +255,7 @@ def hongmei_status_download(club):
 def newhm(club):
     '''Input HongMei Plan'''
     return render_template('activity/newhm.html',
-                           title='HongMei Schedule',
-                           club=club.name)
+                           title='HongMei Schedule')
 
 
 @actblueprint.route('/<club>/new_hongmei_schedule/submit', methods=['POST'])
@@ -290,7 +287,6 @@ def actstatus(activity):
         members_num += 1
     return render_template('activity/actstatus.html',
                            title=activity.name,
-                           activity=activity,
                            members_num=members_num)
 
 
@@ -331,7 +327,6 @@ def checkatten(activity):
             absent.append(member['user'])
     return render_template('/activity/checkatten.html',
                            title='Check Attendance',
-                           activity=activity,
                            attend=attend,
                            absent=absent)
 

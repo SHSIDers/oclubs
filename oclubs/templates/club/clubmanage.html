@@ -3,7 +3,7 @@
 
 <!-- Below Navbar -->
 <div class="container">
-	<h1 class="title">{{ club }}</h1>
+	<h1 class="title">{{ g.club.name }}</h1>
 	<div class="col-xs-3 function_block clickable" data-href="{{ url_for('clubblueprint.memberinfo', club=g.club.callsign) }}" style="cursor:pointer">
 		<img src="{{ url_for('static', filename='images/club1.jpg') }}" class="img-responsive img-thumbnail" alt="Club1">
 		<div style="background-color:rgba(77, 77, 77, 0.5)">
