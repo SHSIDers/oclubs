@@ -165,7 +165,9 @@ def changeclubinfo_submit(club):
 @special_access_required
 def adjustmember(club):
     '''Adjust Club Members'''
-    return render_template('club/adjustmember.html')
+    invite_member = (club.joinmode == ClubJoinMode.BY_INVITATION)
+    return render_template('club/adjustmember.html',
+                           invite_member=invite_member)
 
 
 @clubblueprint.route('/<club>/adjust_member/submit', methods=['POST'])
@@ -179,4 +181,23 @@ def adjustmember_submit(club):
     contents = render_email_template('adjustmember', parameters)
     # member.email_user('Member Adjustment - ' + club.name, contents)
     flash(member.nickname + ' has been expelled.', 'expelled')
+    return redirect(url_for('.adjustmember', club=club.callsign))
+
+
+@clubblueprint.route('/<club>/invite_member/submit', methods=['POST'])
+@get_callsign(Club, 'club')
+@special_access_required
+def invitemember(club):
+    '''Allow club leader to invite member'''
+    new_member = User.find_user(request.form['studentid'],
+                                request.form['passportname'])
+    if new_member is None:
+        flash('Please input correct user info to invite.', 'invite_member')
+    else:
+        club.add_member(current_user)
+        parameters = {'club': club, 'current_user': new_member}
+        contents = render_email_template('joinclubs', parameters)
+        # club.leader.email_user('New Club Member - ' + club.name, contents)
+        flash(new_member.nickname + ' have been invited to ' + club.name + '.',
+              'invite_member')
     return redirect(url_for('.adjustmember', club=club.callsign))

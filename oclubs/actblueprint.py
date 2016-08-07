@@ -152,10 +152,14 @@ def activity(activity):
         has_access = False
     is_other_act = (activity.time == ActivityTime.UNKNOWN or
                     activity.time == ActivityTime.OTHERS)
+    can_join = (current_user not in
+                [act['user'] for act in activity.signup_list()] and
+                current_user.type == UserType.STUDENT)
     return render_template('activity/actintro.html',
                            is_other_act=is_other_act,
                            is_past=date.today() >= activity.date,
-                           has_access=has_access)
+                           has_access=has_access,
+                           can_join=can_join)
 
 
 @actblueprint.route('/<activity>/introduction/submit', methods=['POST'])
