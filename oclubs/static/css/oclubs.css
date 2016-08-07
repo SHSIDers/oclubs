@@ -255,7 +255,10 @@ body {
 	display: block;
 	position: relative;
 	min-width: 100%;
-	min-height: 100%
+	min-height: 100%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 .blockpic h2 {
 	text-transform: uppercase;
