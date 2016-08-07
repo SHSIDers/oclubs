@@ -114,10 +114,10 @@ CREATE INDEX IF NOT EXISTS upload_user ON upload (upload_user);
 
 CREATE TABLE IF NOT EXISTS notification (
 	notification_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	notification_club int NOT NULL, # Foreign key to club.club_id
 	notification_user int NOT NULL, # Foreign key to user.user_id
-	notification_text int NOT NULL, # Foreign key to text.text_id
-	notification_type varchar(255) NOT NULL
+	notification_text varchar(255) NOT NULL,
+	notification_isread boolean NOT NULL,
+	notification_date int NOT NULL
 );
 
 CREATE INDEX IF NOT EXISTS notification_club ON notification (notification_club);

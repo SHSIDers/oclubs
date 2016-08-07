@@ -141,7 +141,6 @@ class Activity(BaseObject):
         else:
             return ret
 
-
     @classmethod
     def all_activities(cls):
         return cls.get_activities_conditions()

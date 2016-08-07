@@ -4,6 +4,7 @@
 
 from __future__ import absolute_import, unicode_literals
 
+from datetime import date
 from flask_login import UserMixin
 from passlib.context import CryptContext
 from xkcdpass import xkcd_password as xp
@@ -71,6 +72,51 @@ class User(BaseObject, UserMixin):
     def email_user(self, title, contents):
         address = self.email or 'root@localhost'
         email.send((address, self.passportname), title, contents)
+
+    def notify_user(self, contents):
+        from oclubs.objs.activity import date_int
+        database.insert_row(
+            'notification',
+            {
+                'notification_user': self.id,
+                'notification_text': contents,
+                'notification_isread': False,
+                'notification_date': date_int(date.today())
+            }
+        )
+
+    def get_notifications(self):
+        from oclubs.objs.activity import int_date
+        ret = database.fetch_multirow(
+            'notification',
+            {
+                'notification_text': 'text',
+                'notification_isread': 'isread',
+                'notification_date': 'date'
+            },
+            {'notification_user': self.id}
+        )
+        for item in ret:
+            item['date'] = int_date(item['date'])
+
+        return ret
+
+    def set_notifications_readall(self):
+        try:
+            database.update_row(
+                'notification',
+                {'notification_isread': True},
+                {'notification_user': self.id}
+            )
+        except NoRow:
+            pass
+
+    def get_unread_notifications_num(self):
+        return database.fetch_oneentry(
+            'notification',
+            database.RawSQL('COUNT(*)'),
+            {'notification_user': self.id, 'notification_isread': False}
+        )
 
     @staticmethod
     def attempt_login(studentid, password):
