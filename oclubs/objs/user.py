@@ -12,7 +12,7 @@ from xkcdpass import xkcd_password as xp
 from oclubs.access import database, email
 from oclubs.enums import UserType
 from oclubs.exceptions import NoRow
-from oclubs.objs.base import BaseObject, Property, ListProperty
+from oclubs.objs.base import BaseObject, Property, ListProperty, paged_db_read
 
 _crypt = CryptContext(schemes=['bcrypt'])  # , 'sha512_crypt', 'pbkdf2_sha512'
 _words = xp.generate_wordlist(wordfile=xp.locate_wordfile())
@@ -85,9 +85,13 @@ class User(BaseObject, UserMixin):
             }
         )
 
-    def get_notifications(self):
+    @paged_db_read
+    def get_notifications(self, pager):
         from oclubs.objs.activity import int_date
-        ret = database.fetch_multirow(
+
+        pager_fetch, pager_return = pager
+        ret = pager_fetch(
+            database.fetch_multirow,
             'notification',
             {
                 'notification_text': 'text',
@@ -99,7 +103,7 @@ class User(BaseObject, UserMixin):
         for item in ret:
             item['date'] = int_date(item['date'])
 
-        return ret
+        return pager_return(ret)
 
     def set_notifications_readall(self):
         try:

@@ -7,6 +7,7 @@
 
 from __future__ import absolute_import, unicode_literals
 
+from functools import wraps
 import types
 from enum import Enum
 
@@ -325,3 +326,34 @@ def __get_search(search, ie):
         return search
 
     return None
+
+
+def paged_db_read(func):
+    def get_pager(limit):
+        tempstorage = type(b'tempstorage', (object,), {})
+
+        def pager_fetch(*args):
+            f, table, cols, conds = args
+            conds = database.expand_cond(conds)
+            if limit:
+                conds['limit'] = limit
+
+            tempstorage.count = database.fetch_oneentry(
+                table, database.RawSQL('COUNT(*)'), conds)
+
+            return f(table, cols, conds)
+
+        def pager_return(data):
+            if limit:
+                return tempstorage.count, data
+
+            return data
+
+        return pager_fetch, pager_return
+
+    @wraps(func)
+    def decorated_function(*args, **kwargs):
+        return func(pager=get_pager(kwargs.pop('limit', None)),
+                    *args, **kwargs)
+
+    return decorated_function

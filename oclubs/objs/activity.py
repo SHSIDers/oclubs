@@ -8,7 +8,7 @@ from datetime import datetime, date
 
 from oclubs.access import database
 from oclubs.enums import ActivityTime
-from oclubs.objs.base import BaseObject, Property, ListProperty
+from oclubs.objs.base import BaseObject, Property, ListProperty, paged_db_read
 
 
 def int_date(dateint):
@@ -93,10 +93,10 @@ class Activity(BaseObject):
         del self.pictures
 
     @classmethod
-    def get_activities_conditions(cls, times=(), additional_conds=None,
+    @paged_db_read
+    def get_activities_conditions(cls, pager, times=(), additional_conds=None,
                                   dates=(True, True), club_types=(),
-                                  require_photos=False, order_by_time=True,
-                                  limit=None):
+                                  require_photos=False, order_by_time=True):
         conds = {}
         if additional_conds:
             conds.update(additional_conds)
@@ -126,20 +126,12 @@ class Activity(BaseObject):
             conds['order'] = conds.get('order', [])
             conds['order'].append(('act_date', False))
 
-        if limit:
-            conds['limit'] = limit
+        pager_fetch, pager_return = pager
 
-        ret = database.fetch_onecol('activity', 'act_id', conds)
+        ret = pager_fetch(database.fetch_onecol, 'activity', 'act_id', conds)
         ret = [cls(item) for item in ret]
 
-        if limit:
-            return database.fetch_oneentry(
-                'activity',
-                database.RawSQL('COUNT(`act_id`)'),
-                conds
-            ), ret
-        else:
-            return ret
+        return pager_return(ret)
 
     @classmethod
     def all_activities(cls):

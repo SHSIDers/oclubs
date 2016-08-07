@@ -50,7 +50,7 @@ def ___parse_cond(cond):
         return '%s IN (%s)' % (_encode_name(var), const)
 
 
-def _parse_comp_cond(cond, forcelimit=None):
+def expand_cond(cond):
     conddict = {
         'join': [],  # list of tuple (type, table, [(var1, var2), ...])
         'where': [],  # list of tuple (type, var, const)
@@ -66,6 +66,12 @@ def _parse_comp_cond(cond, forcelimit=None):
         conddict.update(cond)
     else:
         conddict['where'] = [('=', key, value) for key, value in cond.items()]
+
+    return conddict
+
+
+def _parse_comp_cond(cond, forcelimit=None):
+    conddict = expand_cond(cond)
 
     if forcelimit:
         conddict['limit'] = forcelimit
