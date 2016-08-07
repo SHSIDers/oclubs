@@ -21,13 +21,13 @@
 				{{ act.description.formatted }}
 			</div>
 			<div class="col-sm-2">
-				<input type="checkbox" name="register" value="{{ act.id }}"" id="{{ act.id }}">
+				<input type="checkbox" name="register" value="{{ act.id }}"" id="{{ act.id }}" form="registerhm">
 			</div>
 		</label>
 		{% endfor %}
 	</div>
 	<br>
-	<center><form action="{{ url_for('.registerhm_submit', club=g.club.callsign) }}"><input class="btn btn-info" type="submit" style="width:20%;padding: 3% 0 3% 0; font-size:200%" value="Submit"></form></button>
+	<center><form action="{{ url_for('.registerhm_submit', club=g.club.callsign) }}" method="post" id="registerhm"><input class="btn btn-info" type="submit" style="width:20%;padding: 3% 0 3% 0; font-size:200%" value="Submit"></form></button>
 </div>
 
 {% endwith %}
