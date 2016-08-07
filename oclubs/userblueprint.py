@@ -435,8 +435,16 @@ def changeuserinfo():
 def changeuserinfo_submit():
     '''Input change of info into database'''
     property_type = request.form['type']
-    content = request.form['content']
+    content = request.form['content'].strip()
     userid = request.form['userid']
+    if content == '-':
+        content = None
+    else:
+        try:
+            content = int(content)
+        except ValueError:
+            pass
+
     try:
         setattr(User(userid), property_type, content)
     except Exception as e:

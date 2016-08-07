@@ -34,13 +34,9 @@
 					<span class="userid" style="visibility:hidden; font-size:0.01em">{{ user.id }}</span>
 					<img src="{{ user.picture.location_external }}" class="img-responsive img-thumbnail" alt="{{ user.nickname }}" style="width:3em">
 				</td>
-				<td class="admin_user_info" property-type="studentid">{{ user.studentid }}</td>
-				<td class="admin_user_info" property-type="nickname">{{ user.nickname }}</td>
-				<td class="admin_user_info" property-type="passportname">{{ user.passportname }}</td>
-				<td class="admin_user_info" property-type="email">{{ user.email }}</td>
-				<td class="admin_user_info" property-type="phone">{{ user.phone }}</td>
-				<td class="admin_user_info" property-type="grade">{{ user.grade }}</td>
-				<td class="admin_user_info" property-type="currentclass">{{ user.currentclass }}</td>
+				{% for variable in ['studentid', 'nickname', 'passportname', 'email', 'phone', 'grade', 'currentclass']%}
+				<td class="admin_user_info" property-type="{{ variable }}">{% if user[variable] is none %}-{% else %}{{ user[variable] }}{% endif %}</td>
+				{% endfor %}
 			</tr>
 			{% endfor %}
 		</tbody>
