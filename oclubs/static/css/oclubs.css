@@ -227,7 +227,7 @@ body {
 	background-color:inherit;
 }
 
-.blockpic{
+.blockpic {
 	float: left;
 	padding: 0;
 	border: 1px solid #fff;
@@ -325,7 +325,7 @@ body {
 	-ms-animation: bounceY 0.9s linear;
 	animation: bounceY 0.9s linear;
 }
-.blockpic:hover h2,  .blockpic:hover p{
+.blockpic:hover h2,  .blockpic:hover p {
 	-webkit-transform: translateY(0px);
 	-moz-transform: translateY(0px);
 	-o-transform: translateY(0px);
@@ -416,7 +416,7 @@ body {
 	color: #a6a6a6;
 	text-decoration:none;
 }
-.footer p a:hover{
+.footer p a:hover {
 	color: #8c8c8c;
 }
 /*till here is footer*/
@@ -610,7 +610,7 @@ thead.darklist {
 .homepage_function h2 {
 	font-size: 2.14em;
 }
-.homepage_function h4{
+.homepage_function h4 {
 	font-size: 1.29em;
 }
 
@@ -972,7 +972,7 @@ thead.darklist {
 	color: #f1f1f1;
 }
 
-#sidenav a:hover, .offcanvas a:focus{
+#sidenav a:hover, .offcanvas a:focus {
 	color: #f1f1f1;
 }
 
@@ -984,7 +984,7 @@ thead.darklist {
 	margin-left: 50px;
 }
 
-#floatmenu{
+#floatmenu {
 	float: right;
 	position: fixed;
 	top: 65%;
@@ -1055,7 +1055,7 @@ thead.darklist {
 	width: 50%;
 	padding:0;
 }
-#memberinfotable{
+#memberinfotable {
 	font-size:150%;
 }
 .downloadbtn {
@@ -1075,7 +1075,7 @@ thead.darklist {
 	width: 32%;
 	min-width: 240px;
 }
-.smallBlock > a{
+.smallBlock > a {
 	max-width: 100%;
 }
 .intro_function > .col-sm-6 .btn {
@@ -1099,7 +1099,7 @@ thead.darklist {
 }
 
 @media screen and (max-width: 1200px){
-	.homepage_function{
+	.homepage_function {
 		font-size: 80%;
 	}
 }
@@ -1107,7 +1107,7 @@ thead.darklist {
 	.header {
 		font-size:90%;
 	}
-	.homepage_function{
+	.homepage_function {
 		font-size: 70%;
 	}
 	.search {
@@ -1123,7 +1123,7 @@ thead.darklist {
 		display: inline-block;
 		height: auto;
 	}
-	.large_container .list-group{
+	.large_container .list-group {
 		display: none;
 		height: 0px;
 		width: 0px;
@@ -1167,10 +1167,10 @@ thead.darklist {
 	#hminfoinput {
 		width: 65%;
 	}
-	#memberinfotable{
+	#memberinfotable {
 		font-size:125%;
 	}
-	#actinfotable{
+	#actinfotable {
 		font-size:90%;
 	}
 	.logo {
@@ -1194,7 +1194,7 @@ thead.darklist {
 	.homepage_function .col-xs-3 {
 		width:45%;
 	}
-	.homepage_function{
+	.homepage_function {
 		font-size: 100%;
 	}
 	.search_block .col-xs-2 {
@@ -1255,22 +1255,22 @@ thead.darklist {
 	.header {
 		font-size:77.5%;
 	}
-	.footer{
+	.footer {
 		font-size: 100%;
 	}
 	.smallBlock > div {
 		padding: 1em;
 	}
-	.smallBlock > div > .clubname{
+	.smallBlock > div > .clubname {
 		font-size:125% !important;
 	}
 	#hminfoinput {
 		width: 80%;
 	}
-	#memberinfotable{
+	#memberinfotable {
 		font-size:100%;
 	}
-	#actinfotable{
+	#actinfotable {
 		font-size:80%;
 	}
 	.logo {
@@ -1357,10 +1357,10 @@ thead.darklist {
 		width: 90%;
 		font-size: 100%;
 	}
-	.smallBlock > a{
+	.smallBlock > a {
 		padding: 1em;
 	}
-	.smallBlock > a > img{
+	.smallBlock > a > img {
 		margin-right: 0.7em;
 	}
 	.creators .bg {
@@ -1415,7 +1415,7 @@ thead.darklist {
 		width: 2.5em;
 		height: 2.5em;
 	}
-	.homepage_function{
+	.homepage_function {
 		font-size: 85%;
 	}
 	.homepage_block h3 {
@@ -1445,7 +1445,7 @@ thead.darklist {
 	.teacher_club h2 {
 		font-size: 150%;
 	}
-	#profilepic{
+	#profilepic {
 		padding: 0;
 	}
 	.smallBlock > div {
@@ -1456,10 +1456,10 @@ thead.darklist {
 	.function_block p {
 		font-size:80%;
 	}
-	#memberinfotable{
+	#memberinfotable {
 		font-size:85%;
 	}
-	#actinfotable{
+	#actinfotable {
 		font-size:75%;
 	}
 	.photo {
@@ -1527,7 +1527,7 @@ thead.darklist {
 		#memberinfotable {
 		font-size: 75%;
 	}
-	#actinfotable{
+	#actinfotable {
 		font-size:70%;
 	}
 	.title {
@@ -1545,7 +1545,7 @@ thead.darklist {
 	.table > tbody > tr > td, .table > thead > tr > th {
 		padding:4px !important;
 	}
-	.large_container > .col-md-10{
+	.large_container > .col-md-10 {
 		padding-right: 0;
 		padding-left: 0;
 	}
@@ -1557,7 +1557,7 @@ thead.darklist {
 		font-size:100%;
 		white-space: normal;
 	}
-	.homepage_function{
+	.homepage_function {
 		font-size: 75%;
 	}
 	.slidecont {
@@ -1565,7 +1565,7 @@ thead.darklist {
 }
 }
 @media screen and (max-width: 350px){
-	.homepage_function{
+	.homepage_function {
 		font-size: 60%;
 	}
 }
