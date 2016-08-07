@@ -280,6 +280,32 @@ def actstatus(activity):
                            members_num=members_num)
 
 
+@actblueprint.route('/<activity>/actstatus/submit', methods=['POST'])
+@get_callsign(Activity, 'activity')
+@special_access_required
+def actstatus_submit(activity):
+    '''Change consent form status'''
+    member = User(request.form['studentid'])
+    activity.signup(member, consentform=True)
+    flash(member.nickname + ' has handed in the consent form.', 'consent_form')
+    return redirect(url_for('.actstatus', activity=activity.callsign))
+
+
+@actblueprint.route('/<activity>/actstatus/download')
+@get_callsign(Activity, 'activity')
+@special_access_required
+def actstatus_download(activity):
+    '''Download activity status'''
+    info = []
+    info.append(['Nick Name', 'Email', 'Phone', 'Consent Form'])
+    info.extend([(member['user'].nickname,
+                  member['user'].email,
+                  str(member['user'].phone),
+                  'Handed in' if member['consentform'] == 1 else 'Not handed in')
+                for member in activity.signup_list()])
+    return download_xlsx('Activity Status - ' + activity.name + '.xlsx', info)
+
+
 @actblueprint.route('/<activity>/input_attendance')
 @get_callsign(Activity, 'activity')
 @special_access_required

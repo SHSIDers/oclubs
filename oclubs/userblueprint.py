@@ -168,6 +168,7 @@ def toactive(club):
     flash(club.name + ' is active now.', 'is_active')
     return redirect(url_for('.personal'))
 
+
 @userblueprint.route('/all_clubs_info')
 @special_access_required
 def allclubsinfo():

@@ -39,12 +39,12 @@ class Activity(BaseObject):
     def ongoing_or_future(self):
         return self.datetime >= date.today()
 
-    def signup(self, user, concentform=False):
+    def signup(self, user, consentform=False):
         database.insert_or_update_row(
             'signup',
             {'signup_act': self.id, 'signup_user': user.id,
-                'signup_consentform': concentform},
-            {'signup_consentform': concentform}
+                'signup_consentform': consentform},
+            {'signup_consentform': consentform}
         )
 
     def signup_undo(self, user):
