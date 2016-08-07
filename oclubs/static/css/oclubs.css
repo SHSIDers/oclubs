@@ -258,6 +258,7 @@ body {
 	min-height: 100%;
 	top: 50%;
 	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
 }
 .blockpic h2 {
@@ -990,7 +991,7 @@ thead.darklist {
 	float: right;
 	position: fixed;
 	top: 65%;
-	right: 0;
+	left: 0;
 	z-index: 100;
 	border: 2px solid #a1a1a1;
 	padding: 10px;
