@@ -1,8 +1,19 @@
 {% extends "user/personal.html" %}
 {% block personal %}
+{% with messages = get_flashed_messages(category_filter=["joinmode"]) %}
 
 <h2 style="color:#f2f2f2">Guiding Clubs</h2>
 <br>
+{% if messages %}
+<br>
+<ul class="list-group">
+	{% for message in messages %}
+	<li class="list-group-item">{{ message }}</li>
+	{% endfor %}
+</ul>
+{% else %}
+<br><br>
+{% endif %}
 <div class="teacher_club">
 	{% for club in myclubs %}
 	<div>
@@ -11,17 +22,20 @@
 		</div>
 		<div class="col-sm-9">
 			<h1>{{ club.name }}</h1>
-			<h2>Members: {{ club.members_num }}</h2>
+			<h2>Members: {{ club.members_num }}<span style="float:right">{{ club.joinmode.format_name }}</span></h2>
 			<p>Intro: {{ club.intro }}</p>
 			<div class="clearfix"></div>
-			<div class="col-xs-4">
+			<div class="col-xs-3">
 				<a href="{{ url_for('actblueprint.clubactivities', club=club.callsign, page=1) }}"><button class="btn btn-primary">Activities<br>Status</button></a>
 			</div>
-			<div class="col-xs-4">
+			<div class="col-xs-3">
 				<a href="{{ url_for('actblueprint.hongmei_status', club=club.callsign) }}"><button class="btn btn-primary">HongMei<br>Status</button></a>
 			</div>
-			<div class="col-xs-4">
+			<div class="col-xs-3">
 				<a href="{{ url_for('clubblueprint.club', club=club.callsign) }}"><button class="btn btn-primary">Club<br>Management</button></a>
+			</div>
+			<div class="col-xs-3">
+				<a href="{{ url_for('.switchmode', club=club.callsign) }}"><button class="btn btn-primary">Change<br>Join Mode</button></a>
 			</div>
 		</div>
 	</div>
@@ -37,4 +51,5 @@
 
 <div class="clearfix"></div>
 
+{% endwith %}
 {% endblock %}
