@@ -72,6 +72,7 @@ body {
 .top-nav {
 	float: left;
 	width: 45%;
+	margin-right: 1em;
 }
 .top-nav ul {
 	padding:0;
@@ -198,8 +199,7 @@ body {
 	border: 1px solid #a6a6a6;
 	padding: 0.25em 0;
 	float: left;
-	margin-top: 2em;
-	margin-left: calc(21.5% - 135px - 1em)
+	margin-top: 2.4em;
 	background-color: #222;
 }
 .search input[type="text"] {
@@ -872,7 +872,7 @@ thead.darklist {
 }
 
 .search_bar input[type="text"] {
-	width: calc(100% - 1.65em);;
+	width: 85%;;
 	background-color: transparent;
 	border: none;
 	padding: 0px;
@@ -1243,7 +1243,7 @@ thead.darklist {
 
 }
 
-}
+
 @media screen and (max-width: 650px) {
 	.sweep {
 		font-size:0.8em;
@@ -1349,7 +1349,7 @@ thead.darklist {
 		padding-right:0;
 	}
 	.search {
-		margin: 2em 0 0 0.5em;
+		margin: 2em 0 0 1em;
 	}
 		#currentleader {
 		margin: 0 10%;
@@ -1415,11 +1415,10 @@ thead.darklist {
 	.homepage_function span {
 	font-size: 2.5em;
 	}
-
-.homepage_function img {
-	width: 2.5em;
-	height: 2.5em;
-}
+	.homepage_function img {
+		width: 2.5em;
+		height: 2.5em;
+	}
 	.homepage_function{
 		font-size: 85%;
 	}
@@ -1519,7 +1518,6 @@ thead.darklist {
 		width:7px !important;
 		height:7px !important;
 	}
-
 	.blockpic, .blockpic .mask {
 		height: 100px;
 		font-size: 70%;
