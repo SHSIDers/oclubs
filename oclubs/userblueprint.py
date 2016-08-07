@@ -150,18 +150,27 @@ def personalsubmitpassword():
     return redirect(url_for('.personal'))
 
 
-@userblueprint.route('/<club>/switch_mode/submit', method=['POST'])
+@userblueprint.route('/<club>/switch_mode/submit', methods=['POST'])
 @get_callsign(Club, 'club')
 @special_access_required
 def switchmode(club):
     '''Allow club teacher to switch club's mode'''
     if club.joinmode == ClubJoinMode.FREE_JOIN:
-        club.joinmode = ClubJoinMode.BY_INVATATION
-    elif club.joinmode == ClubJoinMode.BY_INVATATION:
+        club.joinmode = ClubJoinMode.BY_INVITATION
+    elif club.joinmode == ClubJoinMode.BY_INVITATION:
         club.joinmode = ClubJoinMode.FREE_JOIN
     flash(club.name + '\'s mode has been successfully changed.', 'joinmode')
     return redirect(url_for('.personal'))
 
+
+@userblueprint.route('/<club>/to_active/submit', methods=['POST'])
+@get_callsign(Club, 'club')
+@special_access_required
+def toactive(club):
+    '''Allow club teacher to change club to active'''
+    club.is_active = True
+    flash(club.name + ' is active now.', 'is_active')
+    return redirect(url_for('.personal'))
 
 @userblueprint.route('/all_clubs_info')
 @special_access_required
