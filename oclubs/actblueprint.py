@@ -193,10 +193,9 @@ def changeactpost(activity):
 @special_access_required
 def changeactpost_submit(activity):
     '''Input info into database'''
-    if request.files['picture'].filename != '':
-        # for pic in request.files['picture']:
-        print request.files['picture']
-        activity.add_picture(Upload.handle(current_user, activity.club, request.files['picture']))
+    for pic in request.files.getlist('picture'):
+        if pic.filename != '':
+            activity.add_picture(Upload.handle(current_user, activity.club, pic))
     if request.form['post'] != '':
         print request.form['post']
         activity.post = FormattedText.handle(current_user, activity.club, request.form['post'])
