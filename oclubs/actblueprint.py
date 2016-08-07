@@ -146,7 +146,7 @@ def newact_submit(club):
     else:
         for member in club.members:
             parameters = {'member': member, 'club': club, 'act': activity}
-            contents = render_email_template('registerhm', parameters)
+            contents = render_email_template('newact', parameters)
             # member.email_user('HongMei Plan - ' + club.name, contents)
     return redirect(url_for('.newact', club=club.callsign))
 
@@ -239,8 +239,13 @@ def hongmei_status_download(club):
         members = each.signup_list()
         members_result = ''
         for member in members:
-            members_result += member.user.nickname + ' (Consent From Handed? '\
-                              + member.consentform + ')\n'
+            if member['consentform'] == 0:
+                consentform = 'No'
+            else:
+                consentform = 'Yes'
+            members_result += member['user'].nickname + ': ' \
+                + str(member['user'].phone) + ' (Consent From Handed? ' \
+                + consentform + ')\n'
         result_each.append(members_result)
         result.append(result_each)
     return download_xlsx('HongMei Status - ' + club.name + '.xlsx', result)

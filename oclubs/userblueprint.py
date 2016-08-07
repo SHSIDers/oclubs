@@ -451,8 +451,9 @@ def registerhm(club):
 @login_required
 def registerhm_submit(club):
     '''Submit HongMei signup info to database'''
-    register = request.form['register']
+    register = request.form.getlist('register')
     plan = ''
+    print register
     for reg in register:
         act = Activity(reg)
         act.signup(current_user)

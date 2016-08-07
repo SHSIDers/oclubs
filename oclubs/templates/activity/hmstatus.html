@@ -18,7 +18,7 @@
 				<td>{{ act.date }}</td>
 				<td>
 					{% for member in act.signup_list() %}
-					{{ member.user.nickname }}: {{ member.user.phone }} (Consent Form Handed? {{ member.consentform }})<br>
+					{{ member.user.nickname }}: {{ member.user.phone }} (Consent Form Handed? {% if member.consentform == 1 %}Yes{% else %}No{% endif %})<br>
 					{% endfor %}
 				</td>
 			</tr>
