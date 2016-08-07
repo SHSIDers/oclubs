@@ -242,7 +242,6 @@ body {
 	-moz-box-shadow: 1px 1px 2px #e6e6e6;
 	box-shadow: 1px 1px 2px #e6e6e6;
 	cursor: default;
-	display: flex;
 }
 .blockpic .mask {
 	width: 100%;
@@ -254,9 +253,12 @@ body {
 }
 .blockpic img {
 	display: block;
+	position: relative;
 	min-width: 100%;
 	min-height: 100%;
-	object-fit: cover;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 .blockpic h2 {
 	text-transform: uppercase;
