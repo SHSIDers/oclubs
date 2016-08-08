@@ -11,11 +11,17 @@ from xkcdpass import xkcd_password as xp
 
 from oclubs.access import database, email
 from oclubs.enums import UserType
-from oclubs.exceptions import NoRow
+from oclubs.exceptions import NoRow, PasswordTooShort
 from oclubs.objs.base import BaseObject, Property, ListProperty, paged_db_read
 
 _crypt = CryptContext(schemes=['bcrypt'])  # , 'sha512_crypt', 'pbkdf2_sha512'
 _words = xp.generate_wordlist(wordfile=xp.locate_wordfile())
+
+
+def _encrypt(passwd):
+    if len(passwd) < 6:
+        raise PasswordTooShort
+    return _crypt.encrypt(passwd)
 
 
 class User(BaseObject, UserMixin):
@@ -23,7 +29,7 @@ class User(BaseObject, UserMixin):
     identifier = 'user_id'
     studentid = Property('user_login_name')
     passportname = Property('user_passport_name')
-    password = Property('user_password', (NotImplemented, _crypt.encrypt))
+    password = Property('user_password', (NotImplemented, _encrypt))
     nickname = Property('user_nick_name', rediscached=True)
     email = Property('user_email')
     phone = Property('user_phone')

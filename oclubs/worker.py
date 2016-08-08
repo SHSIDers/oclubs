@@ -74,7 +74,7 @@ def refresh_user():
             'user_id': 'uid',
         },
         [
-            ('!=', 'user_password', ''),
+            ('!=', 'user_password', None),
             ('=', 'user_type', UserType.STUDENT.value)
         ]
     )

@@ -18,3 +18,8 @@ class AlreadyExists(Exception):
 class UploadNotSupported(Exception):
     """Exception occuring when an uploaded file is not supported."""
     pass
+
+
+class PasswordTooShort(Exception):
+    """Exception occuring someone sets a password that's too short."""
+    pass
