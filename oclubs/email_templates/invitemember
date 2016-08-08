@@ -1,0 +1,22 @@
+Hi {{ member.nickname }},
+
+You have been invited to {{ club.name }}.
+
+
+Below is the club's information:
+
+Club Name: {{ club.name }}
+
+Club Leader: {{ club.leader.nickname }}
+
+Club Teacher: {{ club.teacher.nickname }}
+
+Club Intro: {{ club.intro }}
+
+
+Thank you for using oClubs.
+
+
+Sincerely,
+
+oClubs Production Team

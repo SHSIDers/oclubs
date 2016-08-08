@@ -36,6 +36,7 @@ def quitclub_submit():
     parameters = {'user': current_user, 'club': club, 'reason': reason}
     contents = render_email_template('quitclub', parameters)
     # club.leader.email_user('Quit Club - ' + current_user.nickname, contents)
+    club.leader.notify_user(current_user.nickname + ' has quit ' + club.name + '.')
     flash('You have successfully quitted ' + club.name + '.', 'quit')
     return redirect(url_for('.quitclub'))
 
@@ -224,6 +225,7 @@ def newteachers_submit():
             parameters = {'user': t, 'password': password}
             contents = render_email_template('newuser', parameters)
             # t.email_user('Welcome to oClubs', contents)
+            t.notify_user('Welcome to oClubs!')
         except AlreadyExists:
             continue
     flash('New teacher accounts have been successfully created. Their passwords have been sent to their accounts.', 'newteachers')
