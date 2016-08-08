@@ -8,9 +8,16 @@
 <div class="container">
 	<h1 class="title">Adjust Members</h1>
 	<h2 class="title_next">{{ g.club.name }}</h2>
-	{% if messages %}
+	{% if expel_messages %}
 	<ul class="list-group">
-		{% for message in messages %}
+		{% for message in expel_messages %}
+		<li class="list-group-item">{{ message }}</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+	{% if invite_messages %}
+	<ul class="list-group">
+		{% for message in invite_messages %}
 		<li class="list-group-item">{{ message }}</li>
 		{% endfor %}
 	</ul>
@@ -47,7 +54,7 @@
 		</tbody>
 	</table>
 	{% if invite_member %}
-	<center><button class="btn btn-success btn-lg" data-toggle="modal" data-target="#invite_member" id="updatecheck" style="margin-top:20px">Invite New Member</button></center>
+	<center><button class="btn btn-success btn-lg" data-toggle="modal" data-target="#invite_member" style="margin-top:20px">Invite New Member</button></center>
 	{% endif %}
 </div>
 

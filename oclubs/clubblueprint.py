@@ -191,7 +191,7 @@ def invitemember(club):
     if new_member is None:
         flash('Please input correct user info to invite.', 'invite_member')
     else:
-        club.add_member(current_user)
+        club.add_member(new_member)
         parameters = {'club': club, 'member': new_member}
         contents = render_email_template('invitemember', parameters)
         # member.email_user('Invitation - ' + club.name, contents)
