@@ -681,9 +681,12 @@ thead.darklist {
 	color: #f2f2f2;
 }
 
-.personal_info button {
+.personal_info a {
 	padding: 2%;
 	font-size: 125%;
+	width: 32%;
+	min-width: 240px;
+	margin: 0.5%;
 }
 
 .clearfix-bordered {
@@ -1074,10 +1077,6 @@ thead.darklist {
 }
 #hpexlist h3 {
 	margin-top: 10px;
-}
-.personal_info button {
-	width: 32%;
-	min-width: 240px;
 }
 .smallBlock > a {
 	max-width: 100%;
