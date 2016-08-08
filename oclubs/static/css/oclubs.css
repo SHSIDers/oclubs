@@ -918,7 +918,6 @@ thead.darklist {
 	color: #f2f2f2;
 	border-bottom-style: solid;
 	border-color: #f2f2f2;
-
 }
 
 .search_block:hover {
@@ -1101,6 +1100,27 @@ thead.darklist {
 #newhm {
 	margin-top: 20px;
 	margin-bottom: 30px;
+}
+
+.notification {
+	padding: 2%;
+	margin-bottom: 15px;
+	border-radius: 10px;
+	color: #f2f2f2;
+	border-style: solid;
+	border-color: #337ab7;
+}
+
+.notification-read:hover {
+	background-color: #003380;
+}
+
+.notification-unread {
+	background-color: #5882FA;
+}
+
+.notification-unread:hover {
+	background-color: #0174DF;
 }
 
 @media screen and (max-width: 1500px) {

@@ -37,12 +37,13 @@
 		<div class="clearfix"></div>
 	</div>
 	<div class="col-sm-9 personal_info">
-		<a href="#changeInfo" data-toggle="modal" data-target="#changeInfo">
-			<button class="btn btn-info" style="margin-right:10px">Edit your basic information</button>
-		</a>
-		<a href="#changePass" data-toggle="modal" data-target="#changePass">
-			<button class="btn btn-info"  style="margin:10px 0">Change your password</button>
-		</a>
+		<a class="btn btn-info col-sm-4" style="margin:10px 0" href="#changeInfo" data-toggle="modal" data-target="#changeInfo">Edit your basic information</a>
+		<a class="btn btn-info col-sm-4" style="margin:10px 0" href="#changePass" data-toggle="modal" data-target="#changePass">Change your password</a>
+		{% if current_user.get_unread_notifications_num() == 0 %}
+		<a class="btn btn-info col-sm-4" style="margin:10px 0" href="{{ url_for('.notifications', page=1) }}">Check Notification</a>
+		{% else %}
+		<a class="btn btn-primary col-sm-4" style="margin:10px 0" href="{{ url_for('.notifications', page=1) }}">{{ current_user.get_unread_notifications_num() }} New Notification</a>
+		{% endif %}
 	</div>
 	<div class="clearfix clearfix-bordered"></div>
 

@@ -442,3 +442,19 @@ def registerhm_submit(club):
     # current_user.email_user('HongMei Plan - ' + club.name, contents)
     flash('Your application has been successfully submitted.', 'reghm')
     return redirect(url_for('.registerhm', club=club.callsign))
+
+
+@userblueprint.route('/notifications')
+@userblueprint.route('/notifications/<int:page>')
+@login_required
+def notifications(page=1):
+    '''Allow users to check their notifications'''
+    note_num = 20
+    notes_all = current_user.get_notifications(
+        limit=((page-1)*note_num, note_num)
+    )
+    current_user.set_notifications_readall()
+    return render_template('user/notifications.html',
+                           notifications=notes_all[1],
+                           number=current_user.get_unread_notifications_num(),
+                           pagination=Pagination(page, note_num, notes_all[0]))
