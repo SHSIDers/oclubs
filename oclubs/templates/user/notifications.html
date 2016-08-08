@@ -1,0 +1,25 @@
+{% extends "base.html" %}{% from 'macros.html' import render_pagination %}
+{% block title %}Notifications{% endblock %}
+{% block content %}
+
+<!-- Below Navbar -->
+<div class="container">
+	<h1 class="title text-center">Notifications</h1>
+	<center><p class="search_result">You have {{ number }} new notifications.</p></center>
+	<br>
+	{% for note in notifications %}
+	<div class="notification {% if note.isread == True %}notification-read{% else %}notification-unread{% endif %}">
+		<div class="col-sm-9">
+			<h1>{{ note.text }}</h1>
+		</div>
+		<div class="col-sm-3">
+			<h2>{{ note.date.strftime('%b-%d-%y') }}</h2>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	<div class="clearfix"></div>
+	{% endfor %}
+	<center>{{ render_pagination(pagination) }}</center>
+</div>
+
+{% endblock %}
