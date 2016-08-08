@@ -1111,6 +1111,11 @@ thead.darklist {
 	border-color: #337ab7;
 }
 
+.notification p {
+	font-size: 200%;
+	margin: 0;
+}
+
 .notification-read:hover {
 	background-color: #003380;
 }

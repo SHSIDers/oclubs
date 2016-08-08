@@ -10,10 +10,10 @@
 	{% for note in notifications %}
 	<div class="notification {% if note.isread == True %}notification-read{% else %}notification-unread{% endif %}">
 		<div class="col-sm-9">
-			<h1>{{ note.text }}</h1>
+			<p>{{ note.text }}</p>
 		</div>
 		<div class="col-sm-3">
-			<h2>{{ note.date.strftime('%b-%d-%y') }}</h2>
+			<p>{{ note.date.strftime('%b-%d-%y') }}</p>
 		</div>
 		<div class="clearfix"></div>
 	</div>
