@@ -209,6 +209,34 @@ def hongmei_status(club):
                            acts=acts)
 
 
+@actblueprint.route('/<activity>/invite_hongmei')
+@get_callsign(Activity, 'activity')
+@special_access_required
+def hongmei_invite(activity):
+    '''Allow club leader to invite members to hongmei activy'''
+    return render_template('activity/invitehm.html')
+
+
+@actblueprint.route('/<activity>/invite_hongmei/submit', methods=['POST'])
+@get_callsign(Activity, 'activity')
+@special_access_required
+def hongmei_invite_submit(activity):
+    '''Input invitation result into database'''
+    invite = request.form.getlist('invite')
+    plan = ''
+    for each in invite:
+        member = User(each)
+        activity.signup(member)
+        parameters = {'member': member, 'activity': activity, 'plan': plan}
+        contents = render_email_template('invitehm', parameters)
+        # member.email_user('HongMei Invitation - ' + club.name, contents)
+        member.notify_user('You have been invited to HongMei activity - ' +
+                           activity.name + ' on ' +
+                           activity.date.strftime('%b-%d-%y') + '.')
+    flash('These members have been successfully invited.', 'invite_hm')
+    return redirect(url_for('.hongmei_invite', activity=activity.callsign))
+
+
 @actblueprint.route('/<club>/hongmei_status/download')
 @get_callsign(Club, 'club')
 @special_access_required

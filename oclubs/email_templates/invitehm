@@ -1,0 +1,20 @@
+Hi {{ member.nickname }},
+
+You have been invited to {{ activity.name }}.
+
+
+Below is the activity's information:
+
+Activity Name: {{ activity.name }}
+
+Club Name: {{ activity.club.name }}
+
+Activity Date: {{ activity.date.strftime('%b-%d-%y') }}
+
+
+Thank you for using oClubs.
+
+
+Sincerely,
+
+oClubs Production Team

@@ -422,7 +422,6 @@ def registerhm(club):
     '''Register Page for HongMei Activites'''
     acts = club.activities([ActivityTime.HONGMEI], (False, True))
     return render_template('user/registerhm.html',
-                           club=club.name,
                            acts=acts)
 
 
@@ -433,7 +432,6 @@ def registerhm_submit(club):
     '''Submit HongMei signup info to database'''
     register = request.form.getlist('register')
     plan = ''
-    print register
     for reg in register:
         act = Activity(reg)
         act.signup(current_user)
