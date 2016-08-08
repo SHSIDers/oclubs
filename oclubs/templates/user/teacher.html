@@ -51,7 +51,7 @@
 			<div class="col-sm-6">
 				<a href="{{ url_for('clubblueprint.club', club=club.callsign) }}"><button class="btn btn-primary">Club Management</button></a>
 			</div>
-			<div class="col-md-3">
+			<div class="col-sm-6">
 				<input type="hidden" class="club_callsign" value="{{ club.callsign }}">
 				<a url="{{ url_for('.switchmode', club=club.callsign) }}" class="switchmode"><button class="btn btn-primary">Change Join Mode</button></a>
 			</div>
