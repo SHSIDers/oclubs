@@ -125,7 +125,7 @@ def personalsubmitpassword():
                 current_user.password = request.form['new']
                 flash('Your information has been successfully changed.', 'status_pw')
             except PasswordTooShort:
-                flash('Please use a more secure password.', 'status_pw')
+                flash('Password must be at least six digits.', 'status_pw')
         else:
             flash('You have entered two different passwords. Please enter again.', 'status_pw')
     else:
