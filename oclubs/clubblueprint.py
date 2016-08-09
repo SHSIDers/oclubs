@@ -17,6 +17,7 @@ from oclubs.shared import (
     download_xlsx, get_callsign, special_access_required, render_email_template
 )
 from oclubs.access import email
+from oclubs.exceptions import UploadNotSupported
 
 clubblueprint = Blueprint('clubblueprint', __name__)
 
@@ -146,13 +147,17 @@ def changeclubinfo_submit(club):
     if request.form['description'] != '':
         club.description = FormattedText.handle(current_user, club, request.form['description'])
     if request.files['picture'].filename != '':
-        club.picture = Upload.handle(current_user, club, request.files['picture'])
+        try:
+            club.picture = Upload.handle(current_user, club, request.files['picture'])
+        except UploadNotSupported:
+            flash('Please upload the correct file type.', 'clubinfo')
+            return redirect(url_for('.changeclubinfo', club=club.callsign))
     for member in club.members:
         parameters = {'user': member, 'club': club}
         contents = render_email_template('changeclubinfo', parameters)
         # member.email_user('Change Club Info - ' + club.name, contents)
         member.notify_user(club.name + '\'s information has been changed.')
-    flash('The information about club has been successfully submitted.', 'success')
+    flash('The information about club has been successfully submitted.', 'clubinfo')
     return redirect(url_for('.changeclubinfo', club=club.callsign))
 
 

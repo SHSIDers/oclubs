@@ -13,7 +13,7 @@ from flask_login import current_user, login_required, fresh_login_required
 from oclubs.objs import User, Club, Activity, Upload, FormattedText
 from oclubs.enums import UserType, ClubType, ActivityTime, ClubJoinMode
 from oclubs.shared import get_callsign, special_access_required, download_xlsx, read_xlsx, render_email_template, Pagination
-from oclubs.exceptions import AlreadyExists, PasswordTooShort
+from oclubs.exceptions import AlreadyExists, PasswordTooShort, UploadNotSupported
 
 userblueprint = Blueprint('userblueprint', __name__)
 
@@ -210,6 +210,9 @@ def newteachers_submit():
     except ValueError:
         flash('Please input in the correct order.', 'newteachers')
         return redirect(url_for('.newteachers'))
+    # except BadZipfile:
+    #     flash('Please upload an excel file.', 'newteachers')
+    #     return redirect(url_for('.newteachers'))
     for each in contents:
         try:
             t = User.new()

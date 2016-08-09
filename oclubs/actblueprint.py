@@ -18,6 +18,7 @@ import traceback
 from oclubs.enums import UserType, ClubType, ActivityTime
 from oclubs.shared import get_callsign, special_access_required, Pagination, download_xlsx, render_email_template, partition
 from oclubs.objs import User, Club, Activity, Upload, FormattedText
+from oclubs.exceptions import UploadNotSupported
 
 actblueprint = Blueprint('actblueprint', __name__)
 
@@ -196,7 +197,11 @@ def changeactpost_submit(activity):
     '''Input info into database'''
     for pic in request.files.getlist('picture'):
         if pic.filename != '':
-            activity.add_picture(Upload.handle(current_user, activity.club, pic))
+            try:
+                activity.add_picture(Upload.handle(current_user, activity.club, pic))
+            except UploadNotSupported:
+                flash('Please upload a correct file type.', 'actpost')
+                return redirect(url_for('.changeactpost', activity=activity.callsign))
     if request.form['post'] != '':
         print request.form['post']
         activity.post = FormattedText.handle(current_user, activity.club, request.form['post'])
