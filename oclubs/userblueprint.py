@@ -13,7 +13,7 @@ from flask_login import current_user, login_required, fresh_login_required
 from oclubs.objs import User, Club, Activity, Upload, FormattedText
 from oclubs.enums import UserType, ClubType, ActivityTime, ClubJoinMode
 from oclubs.shared import get_callsign, special_access_required, download_xlsx, read_xlsx, render_email_template, Pagination
-from oclubs.exceptions import AlreadyExists
+from oclubs.exceptions import AlreadyExists, PasswordTooShort
 
 userblueprint = Blueprint('userblueprint', __name__)
 
@@ -121,8 +121,11 @@ def personalsubmitpassword():
         if request.form['new'] == '':
             flash('Please enter new password.', 'status_pw')
         elif request.form['new'] == request.form['again']:
-            current_user.password = request.form['new']
-            flash('Your information has been successfully changed.', 'status_pw')
+            try:
+                current_user.password = request.form['new']
+                flash('Your information has been successfully changed.', 'status_pw')
+            except PasswordTooShort:
+                flash('Please use a more secure password.', 'status_pw')
         else:
             flash('You have entered two different passwords. Please enter again.', 'status_pw')
     else:

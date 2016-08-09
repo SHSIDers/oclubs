@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}HongMei Schedule{% endblock %}
 {% block content %}
+{% with messages = get_flashed_messages(category_filter=["newhm"]) %}
 
 <!-- Below Navbar -->
 <div class="container">
@@ -26,21 +27,52 @@
 		</tbody>
 	</table>
 
+	{% if messages %}
+	<br>
+	<ul class="list-group">
+		{% for message in messages %}
+		<li class="list-group-item">{{ message }}</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+
 	<div class="container" id="hminfoinput">
 		<form class="form-group" action="{{ url_for('.newhm_submit', club=g.club.callsign) }}" method="post" id="newhm" style="color:#f2f2f2; background-color:#66a3ff; padding:5%; border-style:solid; border-color:#b3cce6">
 			<h1>Input Information</h1>
 			<label for="date">Date:</label>
-			<input type="date" class="form-control" name="date" id="date">
+			<div class="clearfix"></div>
+			<div class="col-sm-4">
+				<select name="year" class="form-control">
+					{% for year in years %}
+					<option value="{{ year }}">{{ year }}</option>
+					{% endfor %}
+				</select>
+			</div>
+			<div class="col-sm-4">
+				<select name="month" class="form-control">
+					{% for month in range(1,13) %}
+					<option value="{{ month }}">{{ month }}</option>
+					{% endfor %}
+				</select>
+			</div>
+			<div class="col-sm-4">
+				<select name="day" class="form-control">
+					{% for day in range(1,32) %}
+					<option value="{{ day }}">{{ day }}</option>
+					{% endfor %}
+				</select>
+			</div>
 			<br>
 			<label for="contents">Contents:</label>
 			<input type="text" class="form-control" name="contents" id="contents">
 			<br>
-			<center><input class="btn btn-primary updatehm" value="Append" type="submit" style="font-size:125%; padding:3%"></center>
+			<center><input class="btn btn-primary" value="Submit" type="submit" style="font-size:125%; padding:3%"></center>
 		</form>
 	</div>
 	<center><a href="{{ url_for('clubblueprint.club', club=g.club.callsign) }}" style="text-decoration:none">
-		<button class="btn btn-success" style="padding: 3%; font-size:175%; max-width:100%; white-space: normal">Submit the Schedule</button>
+		<button class="btn btn-success" style="padding: 3%; font-size:175%; max-width:100%; white-space: normal">Return to Club Management Page</button>
 	</a></center>
 </div>
 
+{% endwith %}
 {% endblock %}

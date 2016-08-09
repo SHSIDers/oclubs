@@ -12,7 +12,7 @@ from flask_login import current_user, login_required
 import re
 import math
 from copy import deepcopy
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 import traceback
 
 from oclubs.enums import UserType, ClubType, ActivityTime
@@ -99,7 +99,9 @@ def clubphoto(club, page):
 @special_access_required
 def newact(club):
     '''Hosting New Activity'''
-    return render_template('activity/newact.html')
+    years = [(date.today() + timedelta(days=365*diff)).year for diff in range(2)]
+    return render_template('activity/newact.html',
+                           years=years)
 
 
 @actblueprint.route('/<club>/newact/submit', methods=['POST'])
@@ -116,7 +118,9 @@ def newact_submit(club):
         else:
             a.description = FormattedText(0)
         a.post = FormattedText(0)
-        a.date = datetime.strptime(request.form['date'], '%Y-%m-%d')
+        a.date = datetime.strptime(request.form['year'] +
+                                   request.form['month'] +
+                                   request.form['day'], '%Y%m%d')
         a.time = ActivityTime[request.form['act_type'].upper()]
         a.location = request.form['location']
         time_type = request.form['time_type']
@@ -270,8 +274,10 @@ def hongmei_status_download(club):
 def newhm(club):
     '''Input HongMei Plan'''
     acts = club.activities([ActivityTime.HONGMEI], (False, True))
+    years = [(date.today() + timedelta(days=365*diff)).year for diff in range(2)]
     return render_template('activity/newhm.html',
-                           acts=acts)
+                           acts=acts,
+                           years=years)
 
 
 @actblueprint.route('/<club>/new_hongmei_schedule/submit', methods=['POST'])
@@ -279,13 +285,18 @@ def newhm(club):
 @special_access_required
 def newhm_submit(club):
     '''Input HongMei plan into databse'''
-    date_hm = request.form['date']
     contents = request.form['contents']
+    date = datetime.strptime(request.form['year'] +
+                             request.form['month'] +
+                             request.form['day'], '%Y%m%d')
+    if contents == '' or date < date.today():
+        flash('Please input contents or correct date to submit.', 'newhm')
+        return redirect(url_for('.newhm', club=club.callsign))
     a = Activity.new()
     a.name = contents
     a.club = club
     a.description = FormattedText.emptytext()
-    a.date = datetime.strptime(date_hm, '%Y-%m-%d')
+    a.date = date
     a.time = ActivityTime.HONGMEI
     a.location = 'HongMei Elementary School'
     a.cas = 1

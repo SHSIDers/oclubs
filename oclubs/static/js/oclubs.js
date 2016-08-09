@@ -36,18 +36,6 @@
 					}
 				} );
 
-			$( '.updatehm' )
-				.click( function() {
-					var date = $( '#date' )
-						.val();
-					var contents = $( '#contents' )
-						.val();
-					if ( date !== '' && contents !== '' ) {
-						$( '#schedule tbody' )
-							.append( '<tr class="act"><td>' + date + '</td><td>' + contents + '</td></tr>' );
-					}
-				} );
-
 			$( '.refresh' )
 				.click( function() {
 					location.reload();
