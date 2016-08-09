@@ -127,9 +127,12 @@ class Activity(BaseObject):
             conds['order'] = conds.get('order', [])
             conds['order'].append(('act_date', False))
 
+        conds['group'] = conds.get('group', [])
+        conds['group'].append('act_id')
+
         pager_fetch, pager_return = pager
 
-        ret = pager_fetch(database.fetch_onecol, 'activity', 'act_id', conds, distinct=True)
+        ret = pager_fetch(database.fetch_onecol, 'activity', 'act_id', conds)
         ret = [cls(item) for item in ret]
 
         return pager_return(ret)

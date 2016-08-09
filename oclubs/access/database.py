@@ -222,12 +222,11 @@ def fetch_oneentry(table, col, conds):
     return rows[0][0]
 
 
-def fetch_onecol(table, col, conds, distinct=False):
+def fetch_onecol(table, col, conds):
     conds = _parse_comp_cond(conds)
 
-    rows = _execute("SELECT %s%s FROM %s %s;"
-                    % ('DISTINCT' if distinct else '',
-                       _encode_name(col), _encode_name(table), conds))
+    rows = _execute("SELECT %s FROM %s %s;"
+                    % (_encode_name(col), _encode_name(table), conds))
 
     return [val for val, in rows]
 
