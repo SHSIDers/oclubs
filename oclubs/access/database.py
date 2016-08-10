@@ -136,6 +136,16 @@ def _encode_name(identifier):
     return '`%s`' % MySQLdb.escape_string(_strify(identifier))
 
 
+def _parse_extras(kwargs):
+    extradict = {
+        'distinct': 'DISTINCT',
+        '_calc_found': 'SQL_CALC_FOUND_ROWS'
+    }
+
+    return ' '.join([val for key, val in extradict.items()
+                     if key in kwargs and kwargs[key]])
+
+
 def _mk_multi_return(row, cols, coldict):
     ret = {}
     i = 0
@@ -198,46 +208,52 @@ def done(commit=True):
             g.dbtransaction = False
 
 
-def fetch_onerow(table, coldict, conds):
+def fetch_info(info):
+    return _execute("SELECT %s;" % _encode_name(info))[0][0]
+
+
+def fetch_onerow(table, coldict, conds, **kwargs):
     cols = coldict.keys()
     st = _encode_name(cols)
     conds = _parse_comp_cond(conds, forcelimit=1)
 
-    rows = _execute("SELECT %s FROM %s %s;"
-                    % (st, _encode_name(table), conds))
+    rows = _execute("SELECT %s %s FROM %s %s;"
+                    % (_parse_extras(kwargs), st, _encode_name(table), conds))
     if not rows:
         raise NoRow
 
     return _mk_multi_return(rows[0], cols, coldict)
 
 
-def fetch_oneentry(table, col, conds):
+def fetch_oneentry(table, col, conds, **kwargs):
     conds = _parse_comp_cond(conds, forcelimit=1)
 
-    rows = _execute("SELECT %s FROM %s %s;"
-                    % (_encode_name(col), _encode_name(table), conds))
+    rows = _execute("SELECT %s %s FROM %s %s;"
+                    % (_parse_extras(kwargs), _encode_name(col),
+                       _encode_name(table), conds))
     if not rows:
         raise NoRow
 
     return rows[0][0]
 
 
-def fetch_onecol(table, col, conds, distinct=False):
+def fetch_onecol(table, col, conds, **kwargs):
     conds = _parse_comp_cond(conds)
 
-    rows = _execute("SELECT %s%s FROM %s %s;"
-                    % ('DISTINCT' if distinct else '',
-                       _encode_name(col), _encode_name(table), conds))
+    rows = _execute("SELECT %s %s FROM %s %s;"
+                    % (_parse_extras(kwargs), _encode_name(col),
+                       _encode_name(table), conds))
 
     return [val for val, in rows]
 
 
-def fetch_multirow(table, coldict, conds):
+def fetch_multirow(table, coldict, conds, **kwargs):
     cols = coldict.keys()
     st = _encode_name(cols)
     conds = _parse_comp_cond(conds)
 
-    rows = _execute("SELECT %s FROM %s %s;" % (st, _encode_name(table), conds))
+    rows = _execute("SELECT %s %s FROM %s %s;"
+                    % (_parse_extras(kwargs), st, _encode_name(table), conds))
 
     return [_mk_multi_return(row, cols, coldict) for row in rows]
 
