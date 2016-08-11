@@ -423,3 +423,20 @@ service { 'postfix':
     ensure => running,
     enable => true,
 }
+
+
+file { '/home/vagrant/.my.cnf':
+    ensure => file,
+    mode   => '0600',
+    owner  => 'vagrant',
+    group  => 'vagrant',
+    source => '/vagrant/provision/my.cnf',
+}
+
+file { '/usr/local/bin/pyshell':
+    ensure => file,
+    mode   => '0755',
+    owner  => 'root',
+    group  => 'root',
+    source => '/vagrant/provision/pyshell.sh',
+}
