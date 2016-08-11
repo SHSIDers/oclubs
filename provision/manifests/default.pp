@@ -229,11 +229,16 @@ exec { 'pip-install-requirements':
     ],
 }
 
+group { 'pythond':
+    ensure  => present,
+}
+
 user { 'uwsgi':
     ensure  => present,
     comment => 'uWSGI service user',
     home    => '/srv/oclubs',
     shell   => '/sbin/nologin',
+    groups  => 'pythond',
     require => Exec['pip-install-requirements'],
 }
 
@@ -309,9 +314,9 @@ file { '/srv/oclubs/images':
 file { '/srv/oclubs/secrets.ini':
     ensure  => file,
     replace => 'no',
-    mode    => '0644',
+    mode    => '0640',
     owner   => 'root',
-    group   => 'root',
+    group   => 'pythond',
     source  => '/vagrant/provision/secrets.ini'
 }
 
@@ -335,6 +340,7 @@ user { 'celery':
     comment => 'Celery service user',
     home    => '/srv/oclubs',
     shell   => '/bin/bash',
+    groups  => 'pythond',
     require => Exec['pip-install-requirements'],
     before  => Service['celeryd'],
 }
