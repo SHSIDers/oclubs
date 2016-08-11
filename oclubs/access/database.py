@@ -122,6 +122,23 @@ def _encode(obj):
     elif isinstance(obj, (bool, int, long, float)):
         return str(obj)
     elif isinstance(obj, basestring):
+        # SECURITY NOTE: PAY SPECIAL CARE THIS WHEN CONNECTION IS NOT utf-8
+        # CHECK THE SAFETY OF THE ENCODING:
+        #
+        # encoding = 'utf-8'
+        # p = ['\\', '"', "'"]
+        # for i in range(0x110000):
+        #     c = unichr(i)
+        #     try:
+        #         e = c.encode(encoding)
+        #     except UnicodeEncodeError:
+        #         pass
+        #     else:
+        #         if any(map(lambda q: q in e, p)) and c not in p:
+        #             print i, c
+        #
+        # DO NOT USE THIS IF ANYTHING IS IN THE OUTPUT
+
         return "'%s'" % MySQLdb.escape_string(_strify(obj))
     else:
         import json
