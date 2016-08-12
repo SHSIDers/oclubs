@@ -49,34 +49,15 @@ def personal():
     if current_user.type == UserType.STUDENT:
         clubs = current_user.clubs
         castotal = sum(current_user.cas_in_club(club) for club in current_user.clubs)
-        meetings_obj = current_user.activities_reminder([ActivityTime.NOON, ActivityTime.AFTERSCHOOL])
+        meetings_obj = current_user.activities_reminder([ActivityTime.NOON,
+                                                         ActivityTime.AFTERSCHOOL])
         meetings = []
-        for meeting_obj in meetings_obj:
-            meeting = {}
-            meeting['act'] = meeting_obj
-            time_int = meeting_obj.time
-            if time_int == ActivityTime.NOON:
-                time = "Noon"
-            else:
-                time = "Afternoon"
-            meeting['time'] = meeting_obj.date.strftime('%Y-%m-%d') + ": " + time
-            meetings.append(meeting)
-        activities_obj = current_user.activities_reminder([ActivityTime.UNKNOWN,
-                                                           ActivityTime.HONGMEI,
-                                                           ActivityTime.OTHERS])
+        meetings.extend([meeting for meeting in meetings_obj])
+        acts_obj = current_user.activities_reminder([ActivityTime.UNKNOWN,
+                                                     ActivityTime.HONGMEI,
+                                                     ActivityTime.OTHERS])
         activities = []
-        for act_obj in activities_obj:
-            act = {}
-            act['act'] = act_obj
-            time_int = act_obj.time
-            if time_int == ActivityTime.UNKNOWN:
-                time = "Unknown time"
-            elif time_int == ActivityTime.HONGMEI:
-                time = "HongMei activity"
-            else:
-                time = "Individual club activity"
-            act['time'] = str(act_obj.date) + ": " + time
-            activities.append(act)
+        activities.extend([act for act in acts_obj])
         leader_club = filter(lambda club_obj: current_user == club_obj.leader, clubs)
         return render_template('user/student.html',
                                pictures=pictures,
