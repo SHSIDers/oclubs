@@ -29,7 +29,12 @@
 		{% endfor %}
 	</div>
 	<br>
-	<center><form action="{{ url_for('.registerhm_submit', club=g.club.callsign) }}" method="post" id="registerhm"><input class="btn btn-info" type="submit" style="width:20%;padding: 3% 0 3% 0; font-size:200%;min-width:120px" value="Submit"></form></button>
+	<center>
+	<form action="{{ url_for('.registerhm_submit', club=g.club.callsign) }}" method="post" id="registerhm">
+		<input class="btn btn-info" type="submit" style="width:20%;padding: 3% 0 3% 0; font-size:200%;min-width:120px" value="Submit">
+		<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+	</form>
+	</center>
 	{% else %}
 	<p class="text-center" style="font-size:150%; color:#f2f2f2">{{ g.club.name }} does not have any future HongMei activities yet.</p>
 	{% endif %}

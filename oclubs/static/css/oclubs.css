@@ -685,8 +685,8 @@ thead.darklist {
 .personal_info a {
 	padding: 2%;
 	font-size: 125%;
-	width: 32%;
-	min-width: 240px;
+	width: 30%;
+	min-width: 200px;
 	margin: 0.5%;
 }
 
@@ -1514,7 +1514,7 @@ thead.darklist {
 		font-size: 120%;
 	}
 	#profilepic {
-		padding: 0;
+		padding: 0 5px 0 0;
 	}
 	.smallBlock > div {
 		padding: 0.5em;

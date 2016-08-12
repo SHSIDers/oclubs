@@ -25,6 +25,8 @@ from oclubs.exceptions import NoRow
 from oclubs.redissession import RedisSessionInterface
 from oclubs.shared import encrypt, Pagination
 
+from uuid import uuid4
+
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = get_secret('flask_key')
@@ -51,6 +53,28 @@ def url_for_other_page(page):
     args['page'] = page
     return url_for(request.endpoint, **args)
 app.jinja_env.globals['url_for_other_page'] = url_for_other_page
+
+
+@app.before_request
+def csrf_protect():
+    if request.method == "POST":
+        sessiontokens = session.get('_csrf_token', None)
+        requesttoken = request.form.get('_csrf_token')
+        if not sessiontokens or requesttoken not in sessiontokens:
+            abort(403)
+        else:
+            session['_csrf_token'].remove(requesttoken)
+
+
+def generate_csrf_token():
+    newtoken = str(uuid4())
+    if '_csrf_token' not in session:
+        session['_csrf_token'] = [newtoken]
+    else:
+        session['_csrf_token'].append(newtoken)
+    return newtoken
+
+app.jinja_env.globals['csrf_token'] = generate_csrf_token
 
 
 @app.after_request

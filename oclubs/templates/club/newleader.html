@@ -17,6 +17,7 @@
 
 <div class="container">
 	<form id="leader_radio" action="{{ url_for('.newleader_submit', club=g.club.callsign)}}" method="post">
+		<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 		{% for member in g.club.members %}
 		{% if member != g.club.leader %}
 		<label class="radio_block" for="{{ member.id }}">

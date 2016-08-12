@@ -6,6 +6,7 @@
 <!-- Below Navbar -->
 <div class="container">
 	<form class="form-group" style="color:#f2f2f2" action="{{ url_for('complaints_submit') }}" method="post">
+		<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 		<h1>Complaints</h1>
 		<p>Your account's information will be recorded. Please be aware of this when you submit your complaints.</p>
 		{% if messages %}

@@ -38,6 +38,7 @@
                 <td>{{ club.is_excellent }}</td>
                 <td>
                     <form action="{{ url_for('.adjustclubs_submit') }}" method="post">
+                        <input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
                         <input type="hidden" name="clubid" value="{{ club.id }}">
                         <input type="submit" class="btn btn-warning" value="Adjust Excellence" style="font-size:110%">
                     </form>

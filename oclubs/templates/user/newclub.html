@@ -6,6 +6,7 @@
 <!-- Below Navbar -->
 <div class="container">
 	<form class="form-group" action="{{ url_for('.newclub_submit') }}" method="post" enctype="multipart/form-data" style="color:#f2f2f2">
+		<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 		<h1 class="title">Add New Club</h1>
 		<h2 class="title_next">Club Teacher: {{ current_user.nickname }}</h2>
 		{% if messages %}

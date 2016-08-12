@@ -30,20 +30,20 @@
 		<img src="{{ current_user.picture.location_external }}" class="img-responsive img-thumbnail" alt="Profile Picture">
 		<br><br>
 	</div>
-	<div class="col-xs-9 personal_info">
+	<div class="col-md-9 personal_info">
 		<h2 style="margin-top:0px">Nick Name: {{ current_user.nickname }}</h2>
 		<h2>Email Address: {{ current_user.email }}</h2>
-		<h2>Phone Number: {{ current_user.phone }}</h2>
+		<h2 style="margin-bottom:20px">Phone Number: {{ current_user.phone }}</h2>
 		<div class="clearfix"></div>
-	</div>
-	<div class="col-sm-9 personal_info">
-		<a class="btn btn-info col-sm-4" href="#changeInfo" data-toggle="modal" data-target="#changeInfo">Edit your basic information</a>
-		<a class="btn btn-info col-sm-4" href="#changePass" data-toggle="modal" data-target="#changePass">Change your password</a>
+		<center>
+		<a class="btn btn-info col-md-4" href="#changeInfo" data-toggle="modal" data-target="#changeInfo">Edit Basic Information</a>
+		<a class="btn btn-info col-md-4" href="#changePass" data-toggle="modal" data-target="#changePass">Change Password</a>
 		{% if current_user.get_unread_notifications_num() == 0 %}
-		<a class="btn btn-info col-sm-4" href="{{ url_for('.notifications', page=1) }}">Check Notification</a>
+		<a class="btn btn-info col-md-4" href="{{ url_for('.notifications', page=1) }}">Check Notification</a>
 		{% else %}
 		<a class="btn btn-primary col-sm-4" href="{{ url_for('.notifications', page=1) }}">{{ current_user.get_unread_notifications_num() }} New Notification</a>
 		{% endif %}
+		</center>
 	</div>
 	<div class="clearfix clearfix-bordered"></div>
 
@@ -59,6 +59,7 @@
 			</div>
 			<div class="modal-body">
 				<form class="form-group" id="info_form" action="{{ url_for('.personalsubmitinfo') }}" method="post">
+					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 					<label for="name">Nick Name:</label>
 					<input class="form-control" id="name" type="text" name="name" placeholder="{{ current_user.nickname }}">
 					<br>
@@ -96,6 +97,7 @@
 			</div>
 			<div class="modal-body">
 				<form class="form-group" id="pass_form" action="{{ url_for('userblueprint.personalsubmitpassword') }}" method="post">
+					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 					<label for="old">Old Password:</label>
 					<input class="form-control" id="old" name="old" type="password">
 					<br>

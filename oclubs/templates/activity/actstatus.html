@@ -28,6 +28,7 @@
 				<td>
 					{% if member.consentform == 0 %}
 					<form action="{{ url_for('.actstatus_submit', activity=g.activity.callsign) }}" method="post">
+						<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 						<input type="hidden" name="studentid" value="{{ member.user.id }}">
 						<input type="submit" class="btn btn-primary" value="Hand In" style="font-size:110%">
 					</form>

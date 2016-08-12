@@ -16,6 +16,7 @@
 		<br>
 		{% endif %}
 		<form action="{{ url_for('.newteachers_submit') }}" method="post" enctype="multipart/form-data">
+			<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 			<p>Please upload a xlsx file with a sheet named "Teachers".</p>
 			<p>Required information in xlsx(in exact order): ID (login name), Official Name, Email Address</p>
 			<p>The submitted data will replace the existing email address and official name in the database when they have the same ID.</p>

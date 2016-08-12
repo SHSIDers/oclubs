@@ -17,6 +17,7 @@
 		{% endif %}
 		<div class="form-horizontal" role="form" style="color:#f2f2f2; font-size:125%">
 			<form class="form-group" id="newact" action="{{ url_for('.newact_submit', club=g.club.callsign) }}" method="post">
+				<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 				<label class="col-sm-2" for="name">Name:</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" id="name" name="name">

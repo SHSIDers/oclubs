@@ -38,6 +38,7 @@
 
 	<div class="container" id="hminfoinput">
 		<form class="form-group" action="{{ url_for('.newhm_submit', club=g.club.callsign) }}" method="post" id="newhm" style="color:#f2f2f2; background-color:#66a3ff; padding:5%; border-style:solid; border-color:#b3cce6">
+			<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 			<h1>Input Information</h1>
 			<label for="date">Date:</label>
 			<div class="clearfix"></div>

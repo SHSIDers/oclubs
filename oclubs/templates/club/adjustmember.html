@@ -44,6 +44,7 @@
 				<td>{{ member.studentid }}</td>
 				<td>
 					<form action="{{ url_for('.adjustmember_submit', club=g.club.callsign) }}" method="post">
+						<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 						<input type="hidden" name="studentid" value="{{ member.id }}">
 						<input type="submit" class="btn btn-danger" name="expel" value="Expel" style="font-size:110%">
 					</form>
@@ -67,6 +68,7 @@
 			</div>
 			<div class="modal-body">
 				<form action="{{ url_for('.invitemember', club=g.club.callsign) }}" method="post" id="invite_form">
+					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 					<label for="studentid">Student ID:</label>
 					<input class="form-control" id="studentid" type="text" name="studentid">
 					<br>
