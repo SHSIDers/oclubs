@@ -22,8 +22,12 @@ userblueprint = Blueprint('userblueprint', __name__)
 @login_required
 def quitclub():
     '''Quit Club Page'''
+    quitting_clubs = []
+    for club in current_user.clubs:
+        if club not in Club.get_clubs_special_access(current_user):
+            quitting_clubs.append(club)
     return render_template('user/quitclub.html',
-                           clubs=current_user.clubs)
+                           quitting_clubs=quitting_clubs)
 
 
 @userblueprint.route('/quit_club/submit', methods=['POST'])

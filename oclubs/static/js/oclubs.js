@@ -11,14 +11,14 @@
 				.click( function() {
 					var checked = $( '#leader_radio input[type=radio]:checked' );
 					if ( checked.size() > 0 ) {
-						$( '.modal .modal-body' )
-							.html( '<p>Your choice is ' + checked.val() + '.</p>' );
+						$( '.modal .modal-body p' )
+							.text( 'Your choice is ' + checked.val() + '.' );
 						$( '.modal .modal-footer' )
 							.html( '<button type="button" class="btn btn-default" data-dismiss="modal">Reselect</button>' +
 								'<input type="submit" class="btn btn-primary" form="leader_radio" name="change_leader" value="Confirm">' );
 					} else {
-						$( '.modal .modal-body' )
-							.html( '<p>Please select one memeber as next club leader!</p>' );
+						$( '.modal .modal-body p' )
+							.text( 'Please select one memeber as next club leader!' );
 						$( '.modal .modal-footer' )
 							.html( '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>' );
 					}
@@ -27,13 +27,8 @@
 			$( '#updatequit' )
 				.click( function() {
 					var selected = $( '.form-group select option:selected' );
-					if ( selected.size() > 0 ) {
-						$( '.modal .modal-body' )
-							.html( '<p>Your choice is ' + selected.text() + '.</p>' );
-					} else {
-						$( '.modal .modal-body' )
-							.html( '<p>Please choose the club you want to quit.</p>' );
-					}
+					$( '.modal .modal-body p' )
+						.text( 'Your choice is ' + selected.text() + '.' );
 				} );
 
 			$( '.refresh' )
