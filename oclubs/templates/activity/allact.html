@@ -35,7 +35,8 @@
 				<tr style="background-color:#bfbfbf">
 					<th>Contents</th>
 					<th>Club</th>
-					<th>Time</th>
+					<th>Date</th>
+					<th>Type</th>
 					<th>Location</th>
 				</tr>
 			</thead>
@@ -45,6 +46,7 @@
 					<td>{{ act.name }}</td>
 					<td>{{ act.club.name }}</td>
 					<td>{{ act.date }}</td>
+					<td>{{ act.time.format_name }}</td>
 					<td>{{ act.location }}</td>
 				</tr>
 				{% endfor %}
