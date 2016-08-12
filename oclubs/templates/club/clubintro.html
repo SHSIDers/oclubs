@@ -58,29 +58,25 @@
 					<button class="btn btn-info btn-lg" style="width:80%">Photos</button>
 				</a></center>
 			</div>
+			{% if free_join %}
 			<div class="col-sm-4" style="margin-bottom:10px">
-				{% if free_join %}
 				<center><a href="{{ url_for('clubblueprint.clubintro_submit', club=g.club.callsign) }}" style="text-decoration:none">
 					<button class="btn btn-info btn-lg" style="width:80%">Join</button>
 				</a></center>
-				{% endif %}
 			</div>
-			<div class="clearfix"></div>
-
+			{% endif %}
+			{% if current_user in g.club.members %}
 			<div class="col-sm-4" style="margin-bottom:10px">
-				{% if current_user in g.club.members %}
 				<center><a href="{{ url_for('clubblueprint.memberinfo', club=g.club.callsign) }}">
 					<button class="btn btn-info btn-lg" style="width:80%">Member List</button>
 				</a></center>
-				{% endif %}
 			</div>
-			<div class="col-sm-4" style="margin-bottom:10px">
-				{% if current_user in g.club.members %}
+			<div class="col-sm-4" style="margin-bottom:10px; white-space: normal; padding-left: 0; padding-right: 0">
 				<center><a href="{{ url_for('userblueprint.registerhm', club=g.club.callsign) }}">
 					<button class="btn btn-info btn-lg" style="width:80%">Register HongMei Activities</button>
 				</a></center>
-				{% endif %}
 			</div>
+			{% endif %}
 		</div>
 	</div>
 </div>

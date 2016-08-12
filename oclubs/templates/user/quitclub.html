@@ -21,7 +21,7 @@
         {% endif %}
         {% if quitting_clubs %}
     	<form class="form-group" id="quit_club" action="{{ url_for('userblueprint.quitclub_submit') }}" method="post" style="margin-left:auto; margin-right:auto; color:#f2f2f2">
-            <p style="font-style:italic; font-size:150%">If you really want to quit a club, then please select the club and state your reason. You request for quitting will be emailed to the club leader.</p>
+            <p style="font-style:italic; font-size:150%">If you really want to quit a club, then please select the club and state your reason. Your quitting request will be emailed to the club leader.</p>
             <br>
     		<label for="clubs">The club:</label>
         	<select class="form-control" id="clubs" name="clubs" type="dropdown" style="color:black">
