@@ -42,7 +42,7 @@
 		{% if current_user.get_unread_notifications_num() == 0 %}
 		<a class="btn btn-info col-sm-4" href="{{ url_for('.notifications', page=1) }}">Check Notification</a>
 		{% else %}
-		<a class="btn btn-primary col-sm-4" style="margin:10px 0" href="{{ url_for('.notifications', page=1) }}">{{ current_user.get_unread_notifications_num() }} New Notification</a>
+		<a class="btn btn-primary col-sm-4" href="{{ url_for('.notifications', page=1) }}">{{ current_user.get_unread_notifications_num() }} New Notification</a>
 		{% endif %}
 	</div>
 	<div class="clearfix clearfix-bordered"></div>
