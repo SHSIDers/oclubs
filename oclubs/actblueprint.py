@@ -119,9 +119,12 @@ def newact_submit(club):
         else:
             a.description = FormattedText(0)
         a.post = FormattedText(0)
-        a.date = datetime.strptime(request.form['year'] +
-                                   request.form['month'] +
-                                   request.form['day'], '%Y%m%d')
+        date = datetime.strptime(request.form['year'] +
+                                 request.form['month'] +
+                                 request.form['day'], '%Y%m%d')
+        if date < date.today():
+            raise IndexError
+        a.date = date
         a.time = ActivityTime[request.form['act_type'].upper()]
         a.location = request.form['location']
         time_type = request.form['time_type']
@@ -133,6 +136,8 @@ def newact_submit(club):
         flash(a.name + ' has been successfully created.', 'newact')
     except ValueError:
         flash('Please input all information to create a new activity.', 'newact')
+    except IndexError:
+        flash('Please choose the correct date.', 'newact')
     else:
         for member in club.members:
             parameters = {'member': member, 'club': club, 'act': activity}
