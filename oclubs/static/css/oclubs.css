@@ -653,6 +653,7 @@ thead.darklist {
 }
 .checkbox_block p {
 	 font-size:150%
+	 white-space: nowrap;
 }
 
 .checkbox_block input[type=checkbox] {

@@ -18,7 +18,7 @@ import traceback
 from oclubs.enums import UserType, ClubType, ActivityTime
 from oclubs.shared import get_callsign, special_access_required, Pagination, download_xlsx, render_email_template, partition
 from oclubs.objs import User, Club, Activity, Upload, FormattedText
-from oclubs.exceptions import UploadNotSupported
+from oclubs.exceptions import UploadNotSupported, AlreadyExists
 
 actblueprint = Blueprint('actblueprint', __name__)
 
@@ -366,10 +366,16 @@ def inputatten(activity):
 @special_access_required
 def inputatten_submit(activity):
     '''Change attendance in database'''
-    attendances = request.form['attendance']
-    for atten in attendances:
-        activity.attend(User(atten))
-    flash('The attendance has been successfully submitted.', 'atten')
+    attendances = request.form.getlist('attendance')
+    if attendances == []:
+        flash('Please select the people who attended the activity.', 'atten')
+    else:
+        for atten in attendances:
+            try:
+                activity.attend(User(atten))
+            except AlreadyExists:
+                pass
+        flash('The attendance has been successfully submitted.', 'atten')
     return redirect(url_for('.inputatten', activity=activity.callsign))
 
 

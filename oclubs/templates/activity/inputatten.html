@@ -15,19 +15,19 @@
 		{% endfor %}
 	</ul>
 	{% endif %}
-	<p style="color:#f2f2f2; font-size:125%">Please select those who attended the meeting</p>
+	<p style="color:#f2f2f2; font-size:125%">Please select those who attended the meeting/activity.</p>
 	<div class="checkbox_block">
-		{% for member in g.activity.signup_list() %}
-		<label for="{{ member.user.id }}">
+		{% for member in g.activity.club.members %}
+		<label for="{{ member.id }}">
 			<div class="col-sm-3" style="padding:0 5px 0 5px">
-				<img src="{{ member.user.picture.location_external }}" class="img-responsive" alt="{{ member.user.nickname }}">
+				<img src="{{ member.picture.location_external }}" class="img-responsive" alt="{{ member.nickname }}">
 			</div>
 			<div class="col-sm-7">
-				<p style="font-size:150%">{{ member.user.nickname }}</p>
-				<p>{{ member.user.passportname }}</p>
+				<p>{{ member.nickname }}</p>
+				<p>{{ member.passportname }}</p>
 			</div>
 			<div class="col-sm-2">
-				<input type="checkbox" name="attendance" form="atten_form" value="{{ member.user.id }}"" id="{{ member.user.passportname }}">
+				<input type="checkbox" name="attendance" form="atten_form" value="{{ member.id }}"" id="{{ member.id }}">
 			</div>
 		</label>
 		{% endfor %}
