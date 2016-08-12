@@ -8,6 +8,7 @@ from __future__ import absolute_import, unicode_literals, division
 import traceback
 import os
 import math
+from uuid import uuid4
 
 from flask import (
     Flask, redirect, request, render_template, url_for, session, jsonify, g, abort, flash, Markup
@@ -21,11 +22,9 @@ from oclubs.clubblueprint import clubblueprint
 from oclubs.actblueprint import actblueprint
 from oclubs.enums import UserType, ClubType, ActivityTime
 from oclubs.exceptions import NoRow
-
 from oclubs.redissession import RedisSessionInterface
 from oclubs.shared import encrypt, Pagination
 
-from uuid import uuid4
 
 app = Flask(__name__)
 
@@ -59,11 +58,8 @@ app.jinja_env.globals['url_for_other_page'] = url_for_other_page
 def csrf_protect():
     if request.method == "POST":
         sessiontokens = session.get('_csrf_token', None)
-        requesttoken = request.form.get('_csrf_token')
-        if not sessiontokens or requesttoken not in sessiontokens:
+        if not sessiontokens or request.form.get('_csrf_token') not in sessiontokens:
             abort(403)
-        else:
-            session['_csrf_token'].remove(requesttoken)
 
 
 def generate_csrf_token():
