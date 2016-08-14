@@ -198,27 +198,11 @@ def newteachers_submit():
     # except BadZipfile:
     #     flash('Please upload an excel file.', 'newteachers')
     #     return redirect(url_for('.newteachers'))
+
+    from oclubs.worker import handle_teacher_xlsx
     for each in contents:
-        try:
-            t = User.new()
-            t.studentid = each[0]
-            t.passportname = each[1]
-            password = User.generate_password()
-            t.password = password
-            t.nickname = each[1]
-            t.email = each[2]
-            t.phone = None
-            t.picture = Upload(-1)
-            t.type = UserType.TEACHER
-            t.grade = None
-            t.currentclass = None
-            t.create()
-            parameters = {'user': t, 'password': password}
-            contents = render_email_template('newuser', parameters)
-            # t.email_user('Welcome to oClubs', contents)
-            t.notify_user('Welcome to oClubs!')
-        except AlreadyExists:
-            continue
+        handle_teacher_xlsx.delay(*each)
+
     flash('New teacher accounts have been successfully created. Their passwords have been sent to their accounts.', 'newteachers')
     return redirect(url_for('.newteachers'))
 

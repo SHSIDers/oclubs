@@ -85,19 +85,35 @@ def refresh_user():
     for sid in union:
         if sid in authority:
             if sid in ours:
-                _refresh_user_update_account.delay(ours[sid], authority[sid])
+                _update_account.delay(ours[sid], authority[sid])
             else:
-                _refresh_user_create_account.delay(authority[sid])
+                _create_account.delay(authority[sid])
         else:
             if sid in ours:
-                _refresh_user_disable_account.delay(ours[sid])
+                _disable_account.delay(ours[sid])
             else:
                 assert False  # This is an impossibility
 
 
 @app.task()
 @handle_app_context
-def _refresh_user_disable_account(uid):
+def handle_teacher_xlsx(tid, offname, emailadd):
+    authority = {
+        'UNIONID': tid,
+        'NAMEEN': offname,
+        'EMAILADDRESS': emailadd
+    }
+
+    u = User.find_user(tid, offname)
+    if u:
+        _update_account.delay(u.id, authority)
+    else:
+        _create_account.delay(authority, _type='TEACHER')
+
+
+@app.task()
+@handle_app_context
+def _disable_account(uid):
     u = User(uid)
     u.password = None
     u.grade = None
@@ -105,39 +121,48 @@ def _refresh_user_disable_account(uid):
     print 'DISABLED USER ID %d' % u.id
 
 
-def _refresh_user__refresh(u, authority):
+def _user_refresh(u, authority):
     u.studentid = authority['UNIONID']
     u.passportname = authority['NAMEEN']
-    u.grade = int(authority['GRADENAME'])
-    u.currentclass = int(authority['STUCLASSNAME'])
+    if 'GRADENAME' in authority:
+        u.grade = int(authority['GRADENAME'])
+    if 'STUCLASSNAME' in authority:
+        u.currentclass = int(authority['STUCLASSNAME'])
+    if 'EMAILADDRESS' in authority:
+        u.email = authority['EMAILADDRESS']
 
 
 @app.task()
 @handle_app_context
-def _refresh_user_create_account(authority):
+def _create_account(authority, _type='STUDENT'):
     u = User.new()
-    _refresh_user__refresh(u, authority)
+    u.studentid = ''
+    u.passportname = ''
     u.email = ''
+    u.phone = None
+    u.grade = None
+    u.currentclass = None
+    _user_refresh(u, authority)
     password = User.generate_password()
     u.password = password
     u.nickname = u.passportname
-    u.phone = None
     u.picture = Upload(-1)
-    u.type = UserType.STUDENT
+    u.type = UserType[_type]
     u.create(True)
 
     # FIXME
     # parameters = {'user': u}
     # contents = render_email_template('newuser', parameters)
-    # u.email_user('Your Account', contents)
+    # u.email_user('Welcome to oClubs', contents)
+    # u.notify_user('Welcome to oClubs!')
     print 'CREATED USER ID %d WITH PASSWORD %s' % (u.id, password)
 
 
 @app.task()
 @handle_app_context
-def _refresh_user_update_account(uid, authority):
+def _update_account(uid, authority):
     u = User(uid)
-    _refresh_user__refresh(u, authority)
+    _user_refresh(u, authority)
     print 'UPDATED USER ID %d' % u.id
 
 
