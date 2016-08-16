@@ -82,21 +82,21 @@ app.jinja_env.globals['csrf_token'] = generate_csrf_token
 
 
 @app.after_request
-def access_done(response):
-    if response.status_code < 400:
-        db_done(True)
-    else:
-        db_done(False)
-    return response
-
-
-@app.after_request
 def response_minify(response):
     if response.content_type.startswith('text/html'):
         response.set_data(
             html_minify(response.get_data(as_text=True))
         )
 
+    return response
+
+
+@app.after_request
+def access_done(response):
+    if response.status_code < 400:
+        db_done(True)
+    else:
+        db_done(False)
     return response
 
 
