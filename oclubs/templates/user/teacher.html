@@ -26,16 +26,7 @@
 	<div>
 		<div class="col-xs-3">
 			<img src="{{ club.picture.location_external }}" class="img-responsive" alt="">
-			{% if club.is_active %}
-			<p class="text-center">Active</p>
-			{% else %}
-			<div class="col-xs-6">
-				<p class="text-center">Inactive</p>
-			</div>
-			<div class="col-xs-6">
-				<a action="{{ url_for('.switchmode', club=club.callsign) }}" method="post"><input type="submit" class="btn btn-primary" value="Changetytu&#13;&#10;Join Mode"><input name="_csrf_token" type="hidden" value="{{ csrf_token() }}"></a>
-			</div>
-			{% endif %}
+			<p class="text-center">{% if club.is_active %}Active{% else %}Inactive{% endif %}</p>
 		</div>
 		<div class="col-sm-9">
 			<h1>{{ club.name }}</h1>
