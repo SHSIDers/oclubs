@@ -1000,7 +1000,6 @@ thead.darklist {
 	padding: 10px;
 	background: #ffffff;
 	border-radius: 25px;
-	display: none;
 	font-size: 110%;
 }
 
@@ -1334,6 +1333,13 @@ thead.darklist {
 	}
 	.checkbox_block input[type=checkbox] {
 	transform: scale(1);
+	}
+}
+
+/* REVERSE */
+@media screen and (min-width: 600px){
+	#floatmenu {
+		display: none !important;
 	}
 }
 
