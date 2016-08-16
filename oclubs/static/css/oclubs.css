@@ -43,6 +43,7 @@ body {
   margin-bottom: 3%;
   font-weight: bold;
   display: inline-block;
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
 }
@@ -110,6 +111,8 @@ body {
   -moz-transform: translateZ(0);
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
+  -moz-box-shadow: 0 0 1px transparent;
+  -webkit-box-shadow: 0 0 1px transparent;
   box-shadow: 0 0 1px transparent;
   -moz-backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
@@ -405,14 +408,6 @@ body {
   }
 }
 /*till here is picture part*/
-.footer h3 {
-  color: #e4e6e7;
-  font-size: 1.7em;
-  margin: 0 0 0.5em;
-  font-weight: 600;
-  font-family: 'MV Boli';
-}
-
 .footer {
   padding: 4em 0;
   background-color: #333333;
@@ -420,42 +415,23 @@ body {
   position: relative;
   font-size: 125%;
 }
-
-.soci ul {
-  padding: 0;
+.footer h3 {
+  color: #e4e6e7;
+  font-size: 1.7em;
+  margin: 0 0 0.5em;
+  font-weight: 600;
+  font-family: 'MV Boli';
 }
-
-.soci li {
-  display: inline-block;
-  margin: 0 0.5em;
-}
-
-.footer form input[type="text"] {
-  width: 100%;
-  color: #898888;
-  outline: none;
-  font-size: 1em;
-  padding: .5em;
-  border: 1px solid #eee;
-  -webkit-appearance: none;
-}
-
 .footer p {
   font-size: 0.9em;
   color: #a6a6a6;
   line-height: 1.9em;
   margin: 1em 0;
 }
-
-.foot-bottom {
-  text-align: center;
-}
-
 .footer p a {
   color: #a6a6a6;
   text-decoration: none;
 }
-
 .footer p a:hover {
   color: #8c8c8c;
 }
@@ -464,7 +440,6 @@ body {
 thead.list {
   background-color: #f2f2f2;
 }
-
 thead.darklist {
   background-color: #595959;
   color: white;
@@ -486,26 +461,22 @@ thead.darklist {
   border-radius: 4px;
   margin: 1vw;
   text-align: center;
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
 }
-
-.bright {
+.photo.bright {
   background-color: #f2f2f2;
 }
-
-.bright:hover {
+.photo.bright:hover {
   background-color: #cccccc;
 }
-
-.dark {
+.photo.dark {
   background-color: #bfbfbf;
 }
-
-.dark:hover {
+.photo.dark:hover {
   background-color: #999999;
 }
-
 .photo img {
   padding-top: 10px;
   width: 150px;
