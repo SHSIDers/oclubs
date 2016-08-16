@@ -1,4 +1,3 @@
-/* line 3, ../sass/oclubs.scss */
 body {
   background: #01273a;
   background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuMCIgeTE9IjAuNSIgeDI9IjEuMCIgeTI9IjAuNSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzAxMjczYSIvPjxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjMDI2NzlhIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMDEyNzNhIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmFkKSIgLz48L3N2Zz4g');
@@ -8,7 +7,6 @@ body {
   background: linear-gradient(to right, #01273a 0%, #02679a 50%, #01273a 100%);
 }
 
-/* line 8, ../sass/oclubs.scss */
 .title {
   margin-bottom: 2%;
   font-family: 'Georgia';
@@ -17,7 +15,6 @@ body {
   color: #f2f2f2;
 }
 
-/* line 16, ../sass/oclubs.scss */
 .title_next {
   margin-bottom: 2%;
   font-family: 'Georgia';
@@ -25,17 +22,14 @@ body {
   color: #f2f2f2;
 }
 
-/* line 23, ../sass/oclubs.scss */
 .list-group .list-group-item.selected {
   font-weight: bold;
   background-color: #eee;
 }
 
-/* line 29, ../sass/oclubs.scss */
 .smallBlock p {
   margin-bottom: 0.05vw;
 }
-/* line 33, ../sass/oclubs.scss */
 .smallBlock > div,
 .smallBlock > a {
   width: 24em;
@@ -52,16 +46,13 @@ body {
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
 }
-/* line 51, ../sass/oclubs.scss */
 .smallBlock > a:hover {
   background-color: #cccccc;
   text-decoration: none;
 }
-/* line 55, ../sass/oclubs.scss */
 .smallBlock > a > p {
   line-height: 1em;
 }
-/* line 60, ../sass/oclubs.scss */
 .smallBlock img {
   max-width: 9em;
   max-height: 6.5em;
@@ -70,40 +61,33 @@ body {
   float: left;
 }
 
-/* line 69, ../sass/oclubs.scss */
 .logo {
   float: left;
   margin: 1.5em 0.5em 0 0.5em;
   width: 12%;
 }
 
-/* line 75, ../sass/oclubs.scss */
 .top-nav {
   float: left;
   width: 45%;
   margin-right: 1em;
 }
-/* line 80, ../sass/oclubs.scss */
 .top-nav ul {
   padding: 0;
   margin: 0;
 }
-/* line 84, ../sass/oclubs.scss */
 .top-nav ul li {
   display: inline-block;
   width: 20%;
   float: left;
   padding: 3em 0.2em 1.5em 0.2em;
 }
-/* line 90, ../sass/oclubs.scss */
 .top-nav ul li.active {
   background: #66a3ff;
 }
-/* line 93, ../sass/oclubs.scss */
 .top-nav ul li.active a {
   color: #fff;
 }
-/* line 98, ../sass/oclubs.scss */
 .top-nav ul li a {
   color: #999;
   font-size: 1em;
@@ -115,44 +99,34 @@ body {
   font-weight: bold;
   white-space: nowrap;
 }
-/* line 109, ../sass/oclubs.scss */
 .top-nav ul li a:hover {
   text-decoration: none;
   color: #fff;
 }
 
-/* line 118, ../sass/oclubs.scss */
 .sweep {
   display: inline-block;
   vertical-align: middle;
-  -webkit-transform: translateZ(0);
-  -o-transform: translateZ(0);
   -moz-transform: translateZ(0);
-  -ms-transform: translateZ(0);
+  -webkit-transform: translateZ(0);
   transform: translateZ(0);
   box-shadow: 0 0 1px transparent;
-  -webkit-backface-visibility: hidden;
-  -o-backface-visibility: hidden;
   -moz-backface-visibility: hidden;
-  -ms-backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   -moz-osx-font-smoothing: grayscale;
   -ms-osx-font-smoothing: grayscale;
   -o-osx-font-smoothing: grayscale;
   position: relative;
-  -webkit-transition-property: color;
-  -o-transition-property: color;
   -moz-transition-property: color;
-  -ms-transition-property: color;
+  -o-transition-property: color;
+  -webkit-transition-property: color;
   transition-property: color;
-  -webkit-transition-duration: 0.3s;
-  -o-transition-duration: 0.3s;
   -moz-transition-duration: 0.3s;
-  -ms-transition-duration: 0.3s;
+  -o-transition-duration: 0.3s;
+  -webkit-transition-duration: 0.3s;
   transition-duration: 0.3s;
 }
-
-/* line 147, ../sass/oclubs.scss */
 .sweep:before {
   content: "";
   position: absolute;
@@ -162,40 +136,34 @@ body {
   right: 0;
   bottom: 0;
   background: #66a3ff;
-  -webkit-transform: scaleY(0);
-  -o-transform: scaleY(0);
   -moz-transform: scaleY(0);
   -ms-transform: scaleY(0);
+  -webkit-transform: scaleY(0);
   transform: scaleY(0);
-  -webkit-transform-origin: 50% 0;
-  -o-transform-origin: 50% 0;
   -moz-transform-origin: 50% 0;
   -ms-transform-origin: 50% 0;
+  -webkit-transform-origin: 50% 0;
   transform-origin: 50% 0;
-  -webkit-transition-property: transform;
-  -o-transition-property: transform;
-  -moz-transition-property: transform;
-  -ms-transition-property: transform;
+  -moz-transition-property: -moz-transform;
+  -o-transition-property: -o-transform;
+  -webkit-transition-property: -webkit-transform;
   transition-property: transform;
-  -webkit-transition-duration: 0.3s;
-  -o-transition-duration: 0.3s;
   -moz-transition-duration: 0.3s;
-  -ms-transition-duration: 0.3s;
+  -o-transition-duration: 0.3s;
+  -webkit-transition-duration: 0.3s;
   transition-duration: 0.3s;
-  -webkit-transition-timing-function: ease-out;
-  -o-transition-timing-function: ease-out;
   -moz-transition-timing-function: ease-out;
-  -ms-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  -webkit-transition-timing-function: ease-out;
   transition-timing-function: ease-out;
 }
-
-/* line 183, ../sass/oclubs.scss */
 .sweep:hover:before, .sweep:focus:before, .sweep:active:before {
+  -moz-transform: scaleY(1);
+  -ms-transform: scaleY(1);
   -webkit-transform: scaleY(1);
   transform: scaleY(1);
 }
 
-/* line 188, ../sass/oclubs.scss */
 .login {
   float: right;
   background: #0000b3;
@@ -205,19 +173,10 @@ body {
   font-family: "MV Boli";
   padding: 0 0.5em 0.5em;
 }
-
-/* line 198, ../sass/oclubs.scss */
-#loginanimation {
-  float: right;
-  display: block;
-}
-
-/* line 203, ../sass/oclubs.scss */
 .login a {
   color: #999;
 }
 
-/* line 207, ../sass/oclubs.scss */
 .search {
   position: relative;
   border: 1px solid #a6a6a6;
@@ -226,8 +185,6 @@ body {
   margin-top: 2.4em;
   background-color: #222;
 }
-
-/* line 215, ../sass/oclubs.scss */
 .search input[type="text"] {
   width: 88%;
   outline: none;
@@ -238,8 +195,6 @@ body {
   border: none;
   background-color: #222;
 }
-
-/* line 225, ../sass/oclubs.scss */
 .search input[type="submit"] {
   border: none;
   height: 26px;
@@ -253,7 +208,6 @@ body {
   background-color: inherit;
 }
 
-/* line 238, ../sass/oclubs.scss */
 .blockpic {
   float: left;
   padding: 0;
@@ -265,13 +219,11 @@ body {
   overflow: hidden;
   position: relative;
   text-align: center;
-  -webkit-box-shadow: 1px 1px 2px #e6e6e6;
   -moz-box-shadow: 1px 1px 2px #e6e6e6;
+  -webkit-box-shadow: 1px 1px 2px #e6e6e6;
   box-shadow: 1px 1px 2px #e6e6e6;
   cursor: default;
 }
-
-/* line 254, ../sass/oclubs.scss */
 .blockpic .mask {
   width: 100%;
   height: 100%;
@@ -279,9 +231,16 @@ body {
   overflow: hidden;
   left: 0;
   padding-top: 115px;
+  background-color: rgba(25, 140, 204, 0.55);
+  top: -66.66%;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
+  -moz-transition: all 0.3s ease-out 0.5s;
+  -o-transition: all 0.3s ease-out 0.5s;
+  -webkit-transition: all 0.3s ease-out;
+  -webkit-transition-delay: 0.5s;
+  transition: all 0.3s ease-out 0.5s;
 }
-
-/* line 262, ../sass/oclubs.scss */
 .blockpic .img {
   display: block;
   position: relative;
@@ -290,8 +249,6 @@ body {
   background-position: center;
   background-size: cover;
 }
-
-/* line 270, ../sass/oclubs.scss */
 .blockpic h2 {
   text-transform: uppercase;
   color: #fff;
@@ -300,9 +257,12 @@ body {
   font-size: 1.21em;
   padding: 0 0 10px 0;
   margin: 0;
+  -moz-transition: all 0.2s ease-in-out 0.1s;
+  -o-transition: all 0.2s ease-in-out 0.1s;
+  -webkit-transition: all 0.2s ease-in-out;
+  -webkit-transition-delay: 0.1s;
+  transition: all 0.2s ease-in-out 0.1s;
 }
-
-/* line 279, ../sass/oclubs.scss */
 .blockpic p {
   font-family: Georgia, serif;
   font-style: italic;
@@ -311,155 +271,140 @@ body {
   color: #fff;
   padding: 0;
   text-align: center;
-}
-
-/* line 289, ../sass/oclubs.scss */
-.blockpic .mask {
-  background-color: rgba(25, 140, 204, 0.55);
-  top: -66.66%;
-  -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=0)";
-  filter: alpha(opacity=0);
-  opacity: 0;
-  -webkit-transition: all 0.3s ease-out 0.5s;
-  -moz-transition: all 0.3s ease-out 0.5s;
-  -o-transition: all 0.3s ease-out 0.5s;
-  -ms-transition: all 0.3s ease-out 0.5s;
-  transition: all 0.3s ease-out 0.5s;
-}
-
-/* line 301, ../sass/oclubs.scss */
-.blockpic h2, .blockpic p {
-  -webkit-transform: translateY(-66.6%);
-  -moz-transform: translateY(-66.6%);
-  -o-transform: translateY(-66.6%);
-  -ms-transform: translateY(-66.6%);
-  transform: translateY(-66.6%);
-}
-
-/* line 308, ../sass/oclubs.scss */
-.blockpic h2 {
-  -webkit-transition: all 0.2s ease-in-out 0.1s;
-  -moz-transition: all 0.2s ease-in-out 0.1s;
-  -o-transition: all 0.2s ease-in-out 0.1s;
-  -ms-transition: all 0.2s ease-in-out 0.1s;
-  transition: all 0.2s ease-in-out 0.1s;
-}
-
-/* line 315, ../sass/oclubs.scss */
-.blockpic p {
-  -webkit-transition: all 0.2s ease-in-out 0.2s;
   -moz-transition: all 0.2s ease-in-out 0.2s;
   -o-transition: all 0.2s ease-in-out 0.2s;
-  -ms-transition: all 0.2s ease-in-out 0.2s;
+  -webkit-transition: all 0.2s ease-in-out;
+  -webkit-transition-delay: 0.2s;
   transition: all 0.2s ease-in-out 0.2s;
 }
-
-/* line 322, ../sass/oclubs.scss */
+.blockpic h2, .blockpic p {
+  -moz-transform: translateY(-66.6%);
+  -ms-transform: translateY(-66.6%);
+  -webkit-transform: translateY(-66.6%);
+  transform: translateY(-66.6%);
+}
 .blockpic:hover .mask {
-  -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=100)";
-  filter: alpha(opacity=100);
+  filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
   opacity: 1;
   top: 0px;
-  -webkit-transition-delay: 0s;
   -moz-transition-delay: 0s;
   -o-transition-delay: 0s;
-  -ms-transition-delay: 0s;
+  -webkit-transition-delay: 0s;
   transition-delay: 0s;
-  -webkit-animation: bounceY 0.9s linear;
   -moz-animation: bounceY 0.9s linear;
-  -ms-animation: bounceY 0.9s linear;
+  -webkit-animation: bounceY 0.9s linear;
   animation: bounceY 0.9s linear;
 }
-
-/* line 337, ../sass/oclubs.scss */
 .blockpic:hover h2, .blockpic:hover p {
-  -webkit-transform: translateY(0px);
   -moz-transform: translateY(0px);
-  -o-transform: translateY(0px);
   -ms-transform: translateY(0px);
+  -webkit-transform: translateY(0px);
   transform: translateY(0px);
 }
-
-/* line 344, ../sass/oclubs.scss */
 .blockpic:hover h2 {
-  -webkit-transition-delay: 0.4s;
   -moz-transition-delay: 0.4s;
   -o-transition-delay: 0.4s;
-  -ms-transition-delay: 0.4s;
+  -webkit-transition-delay: 0.4s;
   transition-delay: 0.4s;
 }
-
-/* line 351, ../sass/oclubs.scss */
 .blockpic:hover p {
-  -webkit-transition-delay: 0.2s;
   -moz-transition-delay: 0.2s;
   -o-transition-delay: 0.2s;
-  -ms-transition-delay: 0.2s;
+  -webkit-transition-delay: 0.2s;
   transition-delay: 0.2s;
 }
 
-@keyframes bounceY {
-  0% {
-    transform: translateY(-68.3%);
-  }
-  40% {
-    transform: translateY(-33.3%);
-  }
-  65% {
-    transform: translateY(-17.3%);
-  }
-  82% {
-    transform: translateY(-8.33%);
-  }
-  92% {
-    transform: translateY(-4%);
-  }
-  55%, 75%, 87%, 97%, 100% {
-    transform: translateY(0px);
-  }
-}
 @-moz-keyframes bounceY {
   0% {
     -moz-transform: translateY(-68.3%);
+    transform: translateY(-68.3%);
   }
   40% {
     -moz-transform: translateY(-33.3%);
+    transform: translateY(-33.3%);
   }
   65% {
     -moz-transform: translateY(-17.3%);
+    transform: translateY(-17.3%);
   }
   82% {
     -moz-transform: translateY(-8.33%);
+    transform: translateY(-8.33%);
   }
   92% {
     -moz-transform: translateY(-4%);
+    transform: translateY(-4%);
   }
   55%, 75%, 87%, 97%, 100% {
     -moz-transform: translateY(0px);
+    transform: translateY(0px);
   }
 }
 @-webkit-keyframes bounceY {
   0% {
     -webkit-transform: translateY(-68.3%);
+    transform: translateY(-68.3%);
   }
   40% {
     -webkit-transform: translateY(-33.3%);
+    transform: translateY(-33.3%);
   }
   65% {
     -webkit-transform: translateY(-17.3%);
+    transform: translateY(-17.3%);
   }
   82% {
     -webkit-transform: translateY(-8.33%);
+    transform: translateY(-8.33%);
   }
   92% {
     -webkit-transform: translateY(-4%);
+    transform: translateY(-4%);
   }
   55%, 75%, 87%, 97%, 100% {
     -webkit-transform: translateY(0px);
+    transform: translateY(0px);
+  }
+}
+@keyframes bounceY {
+  0% {
+    -moz-transform: translateY(-68.3%);
+    -ms-transform: translateY(-68.3%);
+    -webkit-transform: translateY(-68.3%);
+    transform: translateY(-68.3%);
+  }
+  40% {
+    -moz-transform: translateY(-33.3%);
+    -ms-transform: translateY(-33.3%);
+    -webkit-transform: translateY(-33.3%);
+    transform: translateY(-33.3%);
+  }
+  65% {
+    -moz-transform: translateY(-17.3%);
+    -ms-transform: translateY(-17.3%);
+    -webkit-transform: translateY(-17.3%);
+    transform: translateY(-17.3%);
+  }
+  82% {
+    -moz-transform: translateY(-8.33%);
+    -ms-transform: translateY(-8.33%);
+    -webkit-transform: translateY(-8.33%);
+    transform: translateY(-8.33%);
+  }
+  92% {
+    -moz-transform: translateY(-4%);
+    -ms-transform: translateY(-4%);
+    -webkit-transform: translateY(-4%);
+    transform: translateY(-4%);
+  }
+  55%, 75%, 87%, 97%, 100% {
+    -moz-transform: translateY(0px);
+    -ms-transform: translateY(0px);
+    -webkit-transform: translateY(0px);
+    transform: translateY(0px);
   }
 }
 /*till here is picture part*/
-/* line 384, ../sass/oclubs.scss */
 .footer h3 {
   color: #e4e6e7;
   font-size: 1.7em;
@@ -468,7 +413,6 @@ body {
   font-family: 'MV Boli';
 }
 
-/* line 391, ../sass/oclubs.scss */
 .footer {
   padding: 4em 0;
   background-color: #333333;
@@ -477,18 +421,15 @@ body {
   font-size: 125%;
 }
 
-/* line 398, ../sass/oclubs.scss */
 .soci ul {
   padding: 0;
 }
 
-/* line 401, ../sass/oclubs.scss */
 .soci li {
   display: inline-block;
   margin: 0 0.5em;
 }
 
-/* line 406, ../sass/oclubs.scss */
 .footer form input[type="text"] {
   width: 100%;
   color: #898888;
@@ -499,7 +440,6 @@ body {
   -webkit-appearance: none;
 }
 
-/* line 415, ../sass/oclubs.scss */
 .footer p {
   font-size: 0.9em;
   color: #a6a6a6;
@@ -507,35 +447,29 @@ body {
   margin: 1em 0;
 }
 
-/* line 421, ../sass/oclubs.scss */
 .foot-bottom {
   text-align: center;
 }
 
-/* line 424, ../sass/oclubs.scss */
 .footer p a {
   color: #a6a6a6;
   text-decoration: none;
 }
 
-/* line 428, ../sass/oclubs.scss */
 .footer p a:hover {
   color: #8c8c8c;
 }
 
 /*till here is footer*/
-/* line 432, ../sass/oclubs.scss */
 thead.list {
   background-color: #f2f2f2;
 }
 
-/* line 436, ../sass/oclubs.scss */
 thead.darklist {
   background-color: #595959;
   color: white;
 }
 
-/* line 441, ../sass/oclubs.scss */
 .large_container {
   padding-right: 15px;
   padding-left: 15px;
@@ -544,7 +478,6 @@ thead.darklist {
   width: 90%;
 }
 
-/* line 449, ../sass/oclubs.scss */
 .photo {
   float: left;
   width: 17.25%;
@@ -557,27 +490,22 @@ thead.darklist {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 
-/* line 463, ../sass/oclubs.scss */
 .bright {
   background-color: #f2f2f2;
 }
 
-/* line 467, ../sass/oclubs.scss */
 .bright:hover {
   background-color: #cccccc;
 }
 
-/* line 471, ../sass/oclubs.scss */
 .dark {
   background-color: #bfbfbf;
 }
 
-/* line 475, ../sass/oclubs.scss */
 .dark:hover {
   background-color: #999999;
 }
 
-/* line 479, ../sass/oclubs.scss */
 .photo img {
   padding-top: 10px;
   width: 150px;
@@ -587,20 +515,17 @@ thead.darklist {
   margin-right: auto;
 }
 
-/* line 488, ../sass/oclubs.scss */
 .header {
   background-color: #222;
   border-color: #080808;
   color: #9d9d9d;
 }
 
-/* line 493, ../sass/oclubs.scss */
 .header > .container {
   padding-right: 0;
   padding-left: 0;
 }
 
-/* line 498, ../sass/oclubs.scss */
 .huge_block {
   background-color: #000080;
   padding-top: 2%;
@@ -613,14 +538,12 @@ thead.darklist {
   border-width: 20px;
 }
 
-/* line 510, ../sass/oclubs.scss */
 .huge_block img {
   margin-left: auto;
   margin-right: auto;
   width: 20%;
 }
 
-/* line 516, ../sass/oclubs.scss */
 .huge_block {
   text-align: center;
   color: #e6e6e6;
@@ -628,7 +551,6 @@ thead.darklist {
   margin-bottom: 3%;
 }
 
-/* line 523, ../sass/oclubs.scss */
 .radio_block {
   display: block;
   padding-bottom: 1%;
@@ -642,23 +564,19 @@ thead.darklist {
   float: left;
 }
 
-/* line 536, ../sass/oclubs.scss */
 .radio_block:hover {
   background-color: #cccccc;
 }
 
-/* line 540, ../sass/oclubs.scss */
 .radio_block img {
   border-radius: 10%;
   padding: 5%;
 }
 
-/* line 545, ../sass/oclubs.scss */
 .radio_block p {
   text-align: center;
 }
 
-/* line 549, ../sass/oclubs.scss */
 .function_block {
   display: block;
   width: 25%;
@@ -667,12 +585,10 @@ thead.darklist {
   margin: 2%;
 }
 
-/* line 557, ../sass/oclubs.scss */
 .function_block:hover {
   opacity: 0.8;
 }
 
-/* line 561, ../sass/oclubs.scss */
 .function_block > div {
   width: 96%;
   height: 30%;
@@ -683,21 +599,18 @@ thead.darklist {
   background-color: #b3b3cc;
 }
 
-/* line 571, ../sass/oclubs.scss */
 .function_block p {
   font-size: 150%;
   font-weight: bold;
   color: white;
 }
 
-/* line 577, ../sass/oclubs.scss */
 .function_block img {
   position: relative;
   width: 100%;
   z-index: -1;
 }
 
-/* line 583, ../sass/oclubs.scss */
 .homepage_block {
   display: block;
   background-color: #66a3ff;
@@ -705,33 +618,27 @@ thead.darklist {
   padding: 0.05% 2% 2% 2%;
 }
 
-/* line 589, ../sass/oclubs.scss */
 .homepage_block > div > img {
   margin-top: 15%;
   margin-bottom: 15%;
 }
 
-/* line 594, ../sass/oclubs.scss */
 .homepage_block > div > a > img {
   height: 10vw;
 }
 
-/* line 598, ../sass/oclubs.scss */
 .homepage_block > div > a > img:hover {
   opacity: 0.6;
 }
 
-/* line 602, ../sass/oclubs.scss */
 .homepage_block > div > div > a {
   color: #f2f2f2;
 }
 
-/* line 606, ../sass/oclubs.scss */
 .homepage_block > div > div > a:hover {
   color: #d9d9d9;
 }
 
-/* line 610, ../sass/oclubs.scss */
 .homepage_function {
   border-top-style: dotted;
   border-color: #e4e6e7;
@@ -739,22 +646,18 @@ thead.darklist {
   white-space: nowrap;
 }
 
-/* line 616, ../sass/oclubs.scss */
 .homepage_function > .col-xs-3 {
   padding: 0;
 }
 
-/* line 619, ../sass/oclubs.scss */
 .homepage_function h2 {
   font-size: 2.14em;
 }
 
-/* line 622, ../sass/oclubs.scss */
 .homepage_function h4 {
   font-size: 1.29em;
 }
 
-/* line 626, ../sass/oclubs.scss */
 .homepage_function div {
   width: 20%;
   height: 20%;
@@ -763,28 +666,23 @@ thead.darklist {
   color: #f2f2f2;
 }
 
-/* line 634, ../sass/oclubs.scss */
 .homepage_function span {
   font-size: 3em;
 }
 
-/* line 638, ../sass/oclubs.scss */
 .homepage_function img {
   width: 3em;
   height: 3em;
 }
 
-/* line 643, ../sass/oclubs.scss */
 .homepage_function > a > div:hover {
   background-color: #3385ff;
 }
 
-/* line 647, ../sass/oclubs.scss */
 .intro_function {
   text-align: center;
 }
 
-/* line 651, ../sass/oclubs.scss */
 .checkbox_block > label {
   width: 24%;
   padding: 2%;
@@ -797,45 +695,37 @@ thead.darklist {
   cursor: pointer;
 }
 
-/* line 662, ../sass/oclubs.scss */
 .checkbox_block p {
   font-size: 150%;
   white-space: nowrap;
 }
 
-/* line 667, ../sass/oclubs.scss */
 .checkbox_block input[type=checkbox] {
   transform: scale(1.5);
   padding: 10%;
 }
 
-/* line 672, ../sass/oclubs.scss */
 .checkbox_block label:hover {
   background-color: #cccccc;
   text-decoration: none;
 }
 
-/* line 677, ../sass/oclubs.scss */
 .clickable {
   cursor: pointer;
 }
 
-/* line 681, ../sass/oclubs.scss */
 .act {
   background-color: white;
 }
 
-/* line 685, ../sass/oclubs.scss */
 .act:hover {
   background-color: #f5f5f5;
 }
 
-/* line 689, ../sass/oclubs.scss */
 .personal_info h2 {
   color: #f2f2f2;
 }
 
-/* line 693, ../sass/oclubs.scss */
 .personal_info a {
   padding: 2%;
   font-size: 125%;
@@ -844,13 +734,11 @@ thead.darklist {
   margin: 0.5%;
 }
 
-/* line 701, ../sass/oclubs.scss */
 .clearfix-bordered {
   border-bottom-style: solid;
   border-color: #f2f2f2;
 }
 
-/* line 706, ../sass/oclubs.scss */
 .teacher_club > div {
   width: 100%;
   padding: 4%;
@@ -864,79 +752,66 @@ thead.darklist {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 
-/* line 719, ../sass/oclubs.scss */
 .teacher_club h1 {
   font-size: 300%;
   margin-bottom: 2%;
   margin-top: 0;
 }
 
-/* line 725, ../sass/oclubs.scss */
 .teacher_club h2 {
   font-size: 200%;
   margin-bottom: 1%;
 }
 
-/* line 730, ../sass/oclubs.scss */
 .teacher_club p {
   font-size: 150%;
 }
 
-/* line 734, ../sass/oclubs.scss */
 .teacher_club img {
   vertical-align: middle;
   margin-right: 10%;
   float: left;
 }
 
-/* line 740, ../sass/oclubs.scss */
 .teacher_club .btn {
   width: 100%;
   padding: 10px;
   font-size: 125%;
 }
 
-/* line 746, ../sass/oclubs.scss */
 .large_list p {
   font-size: 1.4em;
   margin: 0;
 }
 
-/* line 751, ../sass/oclubs.scss */
 .large_button {
   padding: 3%;
   font-size: 125%;
 }
 
-/* line 756, ../sass/oclubs.scss */
 .error {
   min-height: 95%;
   height: auto;
 }
 
-/* line 761, ../sass/oclubs.scss */
 .error p {
   font-size: 125%;
   color: #f2f2f2;
 }
 
-/* line 766, ../sass/oclubs.scss */
 .creators p {
   font-size: 150%;
 }
 
-/* line 770, ../sass/oclubs.scss */
 .creators .panel {
   border-style: solid;
   border-color: #337ab7;
 }
 
-/* line 775, ../sass/oclubs.scss */
 .creators .bg {
   background-color: transparent;
 }
 
-/* line 779, ../sass/oclubs.scss */
 .creators .blue {
   color: #f2f2f2;
   background-color: #009999;
@@ -946,7 +821,6 @@ thead.darklist {
   font-family: "Georgia";
 }
 
-/* line 788, ../sass/oclubs.scss */
 .creators .green {
   color: #f2f2f2;
   background-color: #33cc33;
@@ -956,7 +830,6 @@ thead.darklist {
   font-family: "Georgia";
 }
 
-/* line 797, ../sass/oclubs.scss */
 .creators .red {
   color: #f2f2f2;
   background-color: #990000;
@@ -966,7 +839,6 @@ thead.darklist {
   font-family: "Georgia";
 }
 
-/* line 806, ../sass/oclubs.scss */
 .upload_button {
   color: #f2f2f2;
   background-color: #66a3ff;
@@ -976,12 +848,10 @@ thead.darklist {
   float: left;
 }
 
-/* line 815, ../sass/oclubs.scss */
 .upload_button:hover {
   background-color: #0099cc;
 }
 
-/* line 819, ../sass/oclubs.scss */
 .upload_content {
   color: #f2f2f2;
   font-size: 150%;
@@ -989,7 +859,6 @@ thead.darklist {
   margin: 0.3em 0 0 9em;
 }
 
-/* line 826, ../sass/oclubs.scss */
 .login_block {
   padding: 2%;
   margin: 4% auto;
@@ -1001,7 +870,6 @@ thead.darklist {
   font-size: 110%;
 }
 
-/* line 837, ../sass/oclubs.scss */
 .login_block a,
 .login_block .remember {
   margin-top: 5px;
@@ -1009,12 +877,10 @@ thead.darklist {
   font-weight: normal;
 }
 
-/* line 844, ../sass/oclubs.scss */
 .login_block a {
   float: right;
 }
 
-/* line 848, ../sass/oclubs.scss */
 .login_block input[type="submit"] {
   width: 100%;
   padding: 2.5%;
@@ -1027,13 +893,11 @@ thead.darklist {
   border-radius: 7px;
 }
 
-/* line 860, ../sass/oclubs.scss */
 .login_block input[type="submit"]:hover {
   background-color: #275d8b;
   border-color: #275d8b;
 }
 
-/* line 865, ../sass/oclubs.scss */
 .search_bar select,
 .search_bar form {
   padding: 0.5em;
@@ -1045,25 +909,21 @@ thead.darklist {
   border-radius: 5px;
 }
 
-/* line 876, ../sass/oclubs.scss */
 .search_bar select {
   width: 20%;
   border-width: 3px;
   margin-right: 12%;
 }
 
-/* line 882, ../sass/oclubs.scss */
 .search_bar form {
   width: 50%;
   margin-left: 12%;
 }
 
-/* line 887, ../sass/oclubs.scss */
 .search_bar option {
   color: black;
 }
 
-/* line 891, ../sass/oclubs.scss */
 .search_bar input[type="text"] {
   width: 80%;
   background-color: transparent;
@@ -1071,7 +931,6 @@ thead.darklist {
   padding: 0px;
 }
 
-/* line 898, ../sass/oclubs.scss */
 .search_bar input[type="submit"] {
   width: 1em;
   height: 1em;
@@ -1082,20 +941,17 @@ thead.darklist {
   left: 1px;
 }
 
-/* line 908, ../sass/oclubs.scss */
 .search_bar .glyphicon {
   padding: 0.2em;
   float: right;
 }
 
-/* line 913, ../sass/oclubs.scss */
 .search_result {
   color: #f2f2f2;
   font-size: 110%;
   font-weight: bold;
 }
 
-/* line 919, ../sass/oclubs.scss */
 .search_block {
   padding: 0 2% 2% 2%;
   margin-bottom: 15px;
@@ -1105,7 +961,6 @@ thead.darklist {
   border-color: #337ab7;
 }
 
-/* line 928, ../sass/oclubs.scss */
 .search_block h1 {
   font-size: 150%;
   color: #f2f2f2;
@@ -1113,12 +968,10 @@ thead.darklist {
   border-color: #f2f2f2;
 }
 
-/* line 935, ../sass/oclubs.scss */
 .search_block:hover {
   background-color: #003380;
 }
 
-/* line 939, ../sass/oclubs.scss */
 .admin_function {
   padding: 0 2% 2% 2%;
   margin: 0 3% 0 3%;
@@ -1128,25 +981,21 @@ thead.darklist {
   border-width: 5px;
 }
 
-/* line 948, ../sass/oclubs.scss */
 .admin_function p {
   color: #f2f2f2;
   font-family: 'Georgia';
 }
 
-/* line 954, ../sass/oclubs.scss */
 .admin_button {
   margin: 1em;
   float: left;
 }
 
-/* line 959, ../sass/oclubs.scss */
 .admin_button button {
   padding: 0.75em;
   font-size: 200%;
 }
 
-/* line 964, ../sass/oclubs.scss */
 #sidenav {
   height: 100%;
   width: 0;
@@ -1161,7 +1010,6 @@ thead.darklist {
   white-space: nowrap;
 }
 
-/* line 978, ../sass/oclubs.scss */
 #sidenav a {
   padding: 8px 8px 8px 32px;
   text-decoration: none;
@@ -1171,17 +1019,14 @@ thead.darklist {
   transition: 0.3s;
 }
 
-/* line 987, ../sass/oclubs.scss */
 #sidenav .active {
   color: #f1f1f1;
 }
 
-/* line 991, ../sass/oclubs.scss */
 #sidenav a:hover, .offcanvas a:focus {
   color: #f1f1f1;
 }
 
-/* line 995, ../sass/oclubs.scss */
 #closebtn {
   position: absolute;
   top: 0;
@@ -1190,7 +1035,6 @@ thead.darklist {
   margin-left: 50px;
 }
 
-/* line 1003, ../sass/oclubs.scss */
 #floatmenu {
   float: right;
   position: fixed;
@@ -1204,14 +1048,12 @@ thead.darklist {
   font-size: 110%;
 }
 
-/* line 1016, ../sass/oclubs.scss */
 #main {
   transition: margin-left .5s;
   padding: 20px;
   position: fixed;
 }
 
-/* line 1022, ../sass/oclubs.scss */
 #emptyclose {
   height: 100%;
   width: 0;
@@ -1223,24 +1065,20 @@ thead.darklist {
   overflow-x: hidden;
 }
 
-/* line 1033, ../sass/oclubs.scss */
 .slidecont {
   transition: 0.5s;
   width: 45%;
   max-width: 1170px;
 }
 
-/* line 1039, ../sass/oclubs.scss */
 .carousel-indicators {
   bottom: 0;
 }
 
-/* line 1042, ../sass/oclubs.scss */
 .carousel-caption h3 {
   font-size: 175%;
 }
 
-/* line 1045, ../sass/oclubs.scss */
 .large_container select.mobileselect {
   padding: 0.5em;
   font-size: 120%;
@@ -1253,85 +1091,69 @@ thead.darklist {
   height: 0px;
 }
 
-/* line 1058, ../sass/oclubs.scss */
 .large_container .list-group {
   margin-top: 50px;
 }
 
-/* line 1061, ../sass/oclubs.scss */
 #clubmanage {
   margin: 0 12.5% 0 12.5%;
 }
 
-/* line 1064, ../sass/oclubs.scss */
 #hminfoinput {
   width: 50%;
   padding: 0;
 }
 
-/* line 1068, ../sass/oclubs.scss */
 #memberinfotable {
   font-size: 150%;
 }
 
-/* line 1071, ../sass/oclubs.scss */
 .downloadbtn {
   padding: 3%;
   font-size: 200%;
 }
 
-/* line 1075, ../sass/oclubs.scss */
 .teacher_club .col-xs-4 {
   padding: 0;
 }
 
-/* line 1078, ../sass/oclubs.scss */
 .large_container > .col-sm-2 > img {
   width: 250px;
 }
 
-/* line 1081, ../sass/oclubs.scss */
 #hpexlist h3 {
   margin-top: 10px;
 }
 
-/* line 1084, ../sass/oclubs.scss */
 .smallBlock > a {
   max-width: 100%;
 }
 
-/* line 1087, ../sass/oclubs.scss */
 .intro_function > .col-sm-6 .btn {
   width: 80%;
 }
 
-/* line 1090, ../sass/oclubs.scss */
 .intro_function > .col-sm-6 {
   padding-bottom: 0.75em;
 }
 
-/* line 1093, ../sass/oclubs.scss */
 .intro_function > .col-sm-6 > input {
   width: 80%;
 }
 
-/* line 1096, ../sass/oclubs.scss */
 #stuclubmeeting {
   border-right-style: solid;
 }
 
-/* line 1099, ../sass/oclubs.scss */
 .function_block > div > p {
   margin: 0;
 }
 
-/* line 1102, ../sass/oclubs.scss */
 #newhm {
   margin-top: 20px;
   margin-bottom: 30px;
 }
 
-/* line 1107, ../sass/oclubs.scss */
 .notification {
   padding: 2%;
   margin-bottom: 15px;
@@ -1341,875 +1163,710 @@ thead.darklist {
   border-color: #337ab7;
 }
 
-/* line 1116, ../sass/oclubs.scss */
 .notification p {
   font-size: 200%;
   margin: 0;
 }
 
-/* line 1121, ../sass/oclubs.scss */
 .notification-read:hover {
   background-color: #003380;
 }
 
-/* line 1125, ../sass/oclubs.scss */
 .notification-unread {
   background-color: #5882FA;
 }
 
-/* line 1129, ../sass/oclubs.scss */
 .notification-unread:hover {
   background-color: #0174DF;
 }
 
 @media screen and (max-width: 1500px) {
-  /* line 1134, ../sass/oclubs.scss */
   .slidecont {
     width: 55%;
   }
 }
 @media screen and (max-width: 1200px) {
-  /* line 1140, ../sass/oclubs.scss */
   .homepage_function {
     font-size: 80%;
   }
 
-  /* line 1143, ../sass/oclubs.scss */
   .slidecont {
     width: 65%;
   }
 }
 @media screen and (max-width: 992px) {
-  /* line 1148, ../sass/oclubs.scss */
   .header {
     font-size: 90%;
   }
 
-  /* line 1151, ../sass/oclubs.scss */
   .homepage_function {
     font-size: 70%;
   }
 
-  /* line 1154, ../sass/oclubs.scss */
   .search {
     width: 18%;
   }
 
-  /* line 1157, ../sass/oclubs.scss */
   .blockpic, .blockpic .mask {
     height: 250px;
   }
 
-  /* line 1160, ../sass/oclubs.scss */
   .blockpic .mask {
     padding-top: 90px;
   }
 
-  /* line 1163, ../sass/oclubs.scss */
   .large_container select.mobileselect {
     display: inline-block;
     height: auto;
   }
 
-  /* line 1167, ../sass/oclubs.scss */
   .large_container .list-group {
     display: none;
     height: 0px;
     width: 0px;
   }
 
-  /* line 1172, ../sass/oclubs.scss */
   .login_block {
     width: 50%;
   }
 
-  /* line 1175, ../sass/oclubs.scss */
   .function_block p {
     font-size: 120%;
   }
 
-  /* line 1178, ../sass/oclubs.scss */
   .function_block {
     margin: 1%;
   }
 
-  /* line 1181, ../sass/oclubs.scss */
   .search_block > h1 {
     margin-top: 10px;
   }
 
-  /* line 1184, ../sass/oclubs.scss */
   .large_container .list-group {
     margin: 0px;
   }
 
-  /* line 1187, ../sass/oclubs.scss */
   .large_container > .col-md-10 > .title {
     margin-top: 0;
   }
 
-  /* line 1190, ../sass/oclubs.scss */
   .col-md-10 > center > img {
     max-width: 60%;
   }
 
-  /* line 1193, ../sass/oclubs.scss */
   .slidecont {
     width: 75%;
   }
 
-  /* line 1196, ../sass/oclubs.scss */
   .checkbox_block p {
     font-size: 125%;
   }
 
-  /* line 1199, ../sass/oclubs.scss */
   .checkbox_block input[type=checkbox] {
     transform: scale(1.25);
   }
 }
 @media screen and (max-width: 800px) {
-  /* line 1204, ../sass/oclubs.scss */
   .title {
     font-size: 400%;
   }
 
-  /* line 1207, ../sass/oclubs.scss */
   .title_next {
     font-size: 250%;
   }
 
-  /* line 1210, ../sass/oclubs.scss */
   #clubmanage {
     margin: 0;
     padding: 0;
   }
 
-  /* line 1214, ../sass/oclubs.scss */
   .function_block {
     width: 31%;
   }
 
-  /* line 1217, ../sass/oclubs.scss */
   #hminfoinput {
     width: 65%;
   }
 
-  /* line 1220, ../sass/oclubs.scss */
   #memberinfotable {
     font-size: 125%;
   }
 
-  /* line 1223, ../sass/oclubs.scss */
   #actinfotable {
     font-size: 90%;
   }
 
-  /* line 1226, ../sass/oclubs.scss */
   .logo {
     width: 16%;
   }
 
-  /* line 1229, ../sass/oclubs.scss */
   .teacher_club h1 {
     font-size: 250%;
   }
 }
 @media screen and (max-width: 768px) {
-  /* line 1234, ../sass/oclubs.scss */
   .homepage_block > .col-xs-9 {
     padding-left: 0;
   }
 
-  /* line 1237, ../sass/oclubs.scss */
   #stuclubmeeting {
     border-right-style: none;
     border-bottom-style: solid;
   }
 
-  /* line 1241, ../sass/oclubs.scss */
   .large_container > .col-sm-2 > img {
     width: 30%;
   }
 
-  /* line 1244, ../sass/oclubs.scss */
   .slidecont {
     width: 85%;
   }
 }
 @media screen and (max-width: 720px) {
-  /* line 1250, ../sass/oclubs.scss */
   .homepage_function .col-xs-3 {
     width: 45%;
   }
 
-  /* line 1253, ../sass/oclubs.scss */
   .homepage_function {
     font-size: 100%;
   }
 
-  /* line 1256, ../sass/oclubs.scss */
   .search_block .col-xs-2 {
     width: 40%;
   }
 
-  /* line 1259, ../sass/oclubs.scss */
   .search_block .col-xs-10 {
     width: 60%;
   }
 
-  /* line 1263, ../sass/oclubs.scss */
   .login_block {
     width: 80%;
     font-size: 100%;
   }
 
-  /* line 1267, ../sass/oclubs.scss */
   .blockpic, .blockpic .mask {
     height: 200px;
   }
 
-  /* line 1270, ../sass/oclubs.scss */
   .blockpic .mask {
     padding-top: 65px;
   }
 
-  /* line 1273, ../sass/oclubs.scss */
   .personal_info > h2 {
     font-size: 24px;
   }
 
-  /* line 1276, ../sass/oclubs.scss */
   #profilepic {
     max-height: 122px;
   }
 
-  /* line 1279, ../sass/oclubs.scss */
   .function_block p {
     font-size: 90%;
   }
 
-  /* line 1282, ../sass/oclubs.scss */
   .downloadbtn {
     font-size: 150%;
   }
 
-  /* line 1285, ../sass/oclubs.scss */
   .teacher_club h2 {
     font-size: 175%;
   }
 
-  /* line 1288, ../sass/oclubs.scss */
   .teacher_club p {
     font-size: 135%;
   }
 
-  /* line 1291, ../sass/oclubs.scss */
   #hpexlist h3 {
     margin: 0px;
   }
 
-  /* line 1294, ../sass/oclubs.scss */
   #hpexlist {
     margin-bottom: 0;
   }
 
-  /* line 1297, ../sass/oclubs.scss */
   .panel-heading > h2 {
     margin-top: 10px;
   }
 
-  /* line 1300, ../sass/oclubs.scss */
   .photo {
     width: 33%;
   }
 }
 @media screen and (max-width: 650px) {
-  /* line 1308, ../sass/oclubs.scss */
   .sweep {
     font-size: 0.8em;
   }
 
-  /* line 1311, ../sass/oclubs.scss */
   .header {
     font-size: 77.5%;
   }
 
-  /* line 1314, ../sass/oclubs.scss */
   .footer {
     font-size: 100%;
   }
 
-  /* line 1317, ../sass/oclubs.scss */
   .smallBlock > div {
     padding: 1em;
   }
 
-  /* line 1320, ../sass/oclubs.scss */
   .smallBlock > div > .clubname {
     font-size: 125% !important;
   }
 
-  /* line 1323, ../sass/oclubs.scss */
   #hminfoinput {
     width: 80%;
   }
 
-  /* line 1326, ../sass/oclubs.scss */
   #memberinfotable {
     font-size: 100%;
   }
 
-  /* line 1329, ../sass/oclubs.scss */
   #actinfotable {
     font-size: 80%;
   }
 
-  /* line 1332, ../sass/oclubs.scss */
   .logo {
     width: 20%;
   }
 
-  /* line 1335, ../sass/oclubs.scss */
   .title {
     font-size: 300%;
   }
 
-  /* line 1338, ../sass/oclubs.scss */
   .title_next {
     font-size: 200%;
   }
 
-  /* line 1341, ../sass/oclubs.scss */
   .checkbox_block p {
     font-size: 100%;
   }
 
-  /* line 1344, ../sass/oclubs.scss */
   .checkbox_block input[type=checkbox] {
     transform: scale(1);
   }
 }
 /* REVERSE */
 @media screen and (min-width: 600px) {
-  /* line 1351, ../sass/oclubs.scss */
   #floatmenu {
     display: none !important;
   }
 }
 @media screen and (max-width: 600px) {
-  /* line 1357, ../sass/oclubs.scss */
   .top-nav {
     display: none;
     height: 0px;
     transition: 0.8s;
   }
 
-  /* line 1362, ../sass/oclubs.scss */
   .top-nav li {
     width: 0%;
   }
 
-  /* line 1365, ../sass/oclubs.scss */
   #floatmenu {
     display: block;
   }
 
-  /* line 1368, ../sass/oclubs.scss */
   .search {
     width: 40% !important;
     margin-top: 1.5em;
     margin-left: calc(20% - 1em - 50px);
   }
 
-  /* line 1373, ../sass/oclubs.scss */
   .login {
     margin-top: 1.5em;
   }
 
-  /* line 1376, ../sass/oclubs.scss */
   .header > .container {
     padding: 0 0 0.5em 0;
   }
 
-  /* line 1379, ../sass/oclubs.scss */
   .carousel-caption {
     padding-bottom: 15px;
   }
 
-  /* line 1382, ../sass/oclubs.scss */
   .carousel-indicators li {
     width: 9px !important;
     height: 9px !important;
   }
 
-  /* line 1387, ../sass/oclubs.scss */
   .creators .col-xs-4 {
     padding-left: 2px;
     padding-right: 2px;
   }
 
-  /* line 1391, ../sass/oclubs.scss */
   .creators .panel-heading {
     font-size: 125%;
   }
 
-  /* line 1394, ../sass/oclubs.scss */
   .panel-heading {
     padding: 9px;
   }
 
-  /* line 1397, ../sass/oclubs.scss */
   .blockpic, .blockpic .mask {
     height: 160px;
     font-size: 90%;
   }
 
-  /* line 1401, ../sass/oclubs.scss */
   .blockpic .mask {
     padding-top: 48.5px;
   }
 
-  /* line 1404, ../sass/oclubs.scss */
   .creators .col-xs-4 {
     padding-left: 2px;
     padding-right: 2px;
   }
 
-  /* line 1408, ../sass/oclubs.scss */
   .creators p {
     font-size: 110%;
   }
 
-  /* line 1412, ../sass/oclubs.scss */
   .img-thumbnail {
     padding: 0;
   }
 
-  /* line 1415, ../sass/oclubs.scss */
   .large_container, .large_container > .col-sm-10 {
     padding-left: 0;
     padding-right: 0;
   }
 
-  /* line 1419, ../sass/oclubs.scss */
   .search {
     margin: 2em 0 0 1em;
   }
 
-  /* line 1422, ../sass/oclubs.scss */
   #currentleader {
     margin: 0 10%;
   }
 
-  /* line 1425, ../sass/oclubs.scss */
   .teacher_club .col-xs-4 button {
     width: 90%;
     font-size: 100%;
   }
 
-  /* line 1429, ../sass/oclubs.scss */
   .smallBlock > a {
     padding: 1em;
   }
 
-  /* line 1432, ../sass/oclubs.scss */
   .smallBlock > a > img {
     margin-right: 0.7em;
   }
 
-  /* line 1435, ../sass/oclubs.scss */
   .creators .bg {
     padding: 10px;
   }
 
-  /* line 1438, ../sass/oclubs.scss */
   .function_block > div {
     margin: 1px;
   }
 
-  /* line 1441, ../sass/oclubs.scss */
   .teacher_club h1 {
     font-size: 200%;
   }
 }
 @media screen and (max-width: 550px) {
-  /* line 1446, ../sass/oclubs.scss */
   .checkbox_block > label {
     width: 31%;
   }
 }
 @media screen and (max-width: 525px) {
-  /* line 1453, ../sass/oclubs.scss */
   .carousel-caption {
     padding-bottom: 10px;
   }
 
-  /* line 1456, ../sass/oclubs.scss */
   .carousel-indicators li, .carousel-indicators .active {
     width: 8px !important;
     height: 8px !important;
   }
 
-  /* line 1460, ../sass/oclubs.scss */
   .large_list p {
     font-size: 1em;
   }
 
-  /* line 1463, ../sass/oclubs.scss */
   .search_bar select {
     width: 30%;
     border-width: 3px;
     margin-right: 0%;
   }
 
-  /* line 1468, ../sass/oclubs.scss */
   .search_bar form {
     width: 65%;
     margin-left: 0%;
   }
 
-  /* line 1472, ../sass/oclubs.scss */
   .footer {
     padding: 2.5em 0;
   }
 
-  /* line 1475, ../sass/oclubs.scss */
   .blockpic, .blockpic .mask {
     height: 130px;
     font-size: 80%;
   }
 
-  /* line 1479, ../sass/oclubs.scss */
   .blockpic .mask {
     padding-top: 37px;
   }
 
-  /* line 1482, ../sass/oclubs.scss */
   .homepage_block > .col-xs-3 {
     padding: 0 5px;
   }
 
-  /* line 1485, ../sass/oclubs.scss */
   .homepage_block .col-xs-2 {
     padding: 0;
   }
 
-  /* line 1488, ../sass/oclubs.scss */
   .homepage_function span {
     font-size: 2.5em;
   }
 
-  /* line 1491, ../sass/oclubs.scss */
   .homepage_function img {
     width: 2.5em;
     height: 2.5em;
   }
 
-  /* line 1495, ../sass/oclubs.scss */
   .homepage_function {
     font-size: 85%;
   }
 
-  /* line 1498, ../sass/oclubs.scss */
   .homepage_block h3 {
     font-size: 150%;
   }
 
-  /* line 1501, ../sass/oclubs.scss */
   .homepage_block h1 {
     font-size: 200%;
   }
 
-  /* line 1504, ../sass/oclubs.scss */
   .search_block .col-xs-10 {
     padding: 0;
   }
 
-  /* line 1507, ../sass/oclubs.scss */
   .homepage_block .col-xs-10 {
     padding-left: 0;
   }
 
-  /* line 1510, ../sass/oclubs.scss */
   .personal_info > h2 {
     font-size: 20px;
   }
 
-  /* line 1513, ../sass/oclubs.scss */
   #profilepic {
     max-height: 110px;
   }
 
-  /* line 1516, ../sass/oclubs.scss */
   #hminfoinput {
     width: 90%;
   }
 
-  /* line 1519, ../sass/oclubs.scss */
   .teacher_club h2 {
     font-size: 150%;
   }
 
-  /* line 1522, ../sass/oclubs.scss */
   .teacher_club p {
     font-size: 120%;
   }
 
-  /* line 1525, ../sass/oclubs.scss */
   #profilepic {
     padding: 0 5px 0 0;
   }
 
-  /* line 1528, ../sass/oclubs.scss */
   .smallBlock > div {
     padding: 0.5em;
   }
 
-  /* line 1531, ../sass/oclubs.scss */
   .title {
     font-size: 250%;
   }
 
-  /* line 1534, ../sass/oclubs.scss */
   .title_next {
     font-size: 175%;
   }
 }
 @media screen and (max-width: 500px) {
-  /* line 1539, ../sass/oclubs.scss */
   .function_block p {
     font-size: 80%;
   }
 
-  /* line 1542, ../sass/oclubs.scss */
   #memberinfotable {
     font-size: 85%;
   }
 
-  /* line 1545, ../sass/oclubs.scss */
   #actinfotable {
     font-size: 75%;
   }
 
-  /* line 1548, ../sass/oclubs.scss */
   .photo {
     width: 50%;
   }
 
-  /* line 1551, ../sass/oclubs.scss */
   .admin_button button {
     font-size: 150%;
     white-space: normal;
   }
 
-  /* line 1555, ../sass/oclubs.scss */
   .slidecont {
     width: 95%;
   }
 }
 @media screen and (max-height: 450px) {
-  /* line 1561, ../sass/oclubs.scss */
   #sidenav {
     padding-top: 15px;
   }
 
-  /* line 1562, ../sass/oclubs.scss */
   #sidenav a {
     font-size: 18px;
   }
 
-  /* line 1563, ../sass/oclubs.scss */
   .function_block p {
     font-size: 75%;
   }
 
-  /* line 1566, ../sass/oclubs.scss */
   .intro_function > .col-sm-6 > a > button {
     width: 100%;
     font-size: 15px;
   }
 
-  /* line 1570, ../sass/oclubs.scss */
   .intro_function > .col-sm-6 {
     padding-left: 0;
     padding-right: 0;
   }
 
-  /* line 1574, ../sass/oclubs.scss */
   .personal_info > h2 {
     font-size: 16px;
   }
 
-  /* line 1577, ../sass/oclubs.scss */
   #profilepic {
     max-height: 98px;
   }
 
-  /* line 1580, ../sass/oclubs.scss */
   #onecas {
     width: 47% !important;
   }
 
-  /* line 1583, ../sass/oclubs.scss */
   .creators .bg {
     padding: 5px;
   }
 
-  /* line 1586, ../sass/oclubs.scss */
   .function_block > div {
     height: auto;
   }
 
-  /* line 1589, ../sass/oclubs.scss */
   .teacher_club h1 {
     font-size: 150%;
   }
 
-  /* line 1592, ../sass/oclubs.scss */
   .teacher_club h2 {
     font-size: 125%;
   }
 
-  /* line 1595, ../sass/oclubs.scss */
   .teacher_club p {
     font-size: 100%;
   }
 }
 @media screen and (max-width: 425px) {
-  /* line 1600, ../sass/oclubs.scss */
   .checkbox_block p {
     font-size: 80%;
   }
 
-  /* line 1603, ../sass/oclubs.scss */
   .checkbox_block input[type=checkbox] {
     transform: scale(0.8);
   }
 
-  /* line 1606, ../sass/oclubs.scss */
   .teacher_club h2 {
     font-size: 100%;
   }
 }
 @media screen and (max-width: 400px) {
-  /* line 1611, ../sass/oclubs.scss */
   .carousel-caption {
     padding-bottom: 5px;
   }
 
-  /* line 1614, ../sass/oclubs.scss */
   .carousel-indicators li {
     width: 7px !important;
     height: 7px !important;
   }
 
-  /* line 1618, ../sass/oclubs.scss */
   .blockpic, .blockpic .mask {
     height: 100px;
     font-size: 70%;
   }
 
-  /* line 1622, ../sass/oclubs.scss */
   .blockpic .mask {
     padding-top: 25px;
   }
 
-  /* line 1625, ../sass/oclubs.scss */
   .creators .panel-heading {
     font-size: 80%;
   }
 
-  /* line 1628, ../sass/oclubs.scss */
   .panel-heading {
     padding: 5px;
   }
 
-  /* line 1631, ../sass/oclubs.scss */
   #memberinfotable {
     font-size: 75%;
   }
 
-  /* line 1634, ../sass/oclubs.scss */
   #actinfotable {
     font-size: 70%;
   }
 
-  /* line 1637, ../sass/oclubs.scss */
   .title {
     font-size: 200%;
   }
 
-  /* line 1640, ../sass/oclubs.scss */
   .title_next {
     font-size: 150%;
   }
 
-  /* line 1643, ../sass/oclubs.scss */
   .smallBlock > div {
     padding: 1px;
   }
 
-  /* line 1646, ../sass/oclubs.scss */
   #newhm > h1 {
     font-size: 1.75em;
   }
 
-  /* line 1649, ../sass/oclubs.scss */
   .table > tbody > tr > td, .table > thead > tr > th {
     padding: 4px !important;
   }
 
-  /* line 1652, ../sass/oclubs.scss */
   .large_container > .col-md-10 {
     padding-right: 0;
     padding-left: 0;
   }
 
-  /* line 1656, ../sass/oclubs.scss */
   #stuclubmeeting {
     padding-right: 0;
     padding-left: 0;
   }
 
-  /* line 1660, ../sass/oclubs.scss */
   .admin_button button {
     font-size: 100%;
     white-space: normal;
   }
 
-  /* line 1664, ../sass/oclubs.scss */
   .homepage_function {
     font-size: 75%;
   }
 
-  /* line 1667, ../sass/oclubs.scss */
   .slidecont {
     padding: 0 15px;
   }
 
-  /* line 1670, ../sass/oclubs.scss */
   .teacher_club p {
     font-size: 85%;
   }
 
-  /* line 1673, ../sass/oclubs.scss */
   .teacher_club h1 {
     font-size: 130%;
   }
 }
 @media screen and (max-width: 350px) {
-  /* line 1678, ../sass/oclubs.scss */
   .homepage_function {
     font-size: 60%;
   }
 
-  /* line 1681, ../sass/oclubs.scss */
   .title {
     font-size: 175%;
   }
 
-  /* line 1684, ../sass/oclubs.scss */
   .title_next {
     font-size: 125%;
   }
