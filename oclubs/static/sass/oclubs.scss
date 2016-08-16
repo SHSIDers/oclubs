@@ -2,7 +2,7 @@
 
 body {
 	background: rgb(1,39,58);
-	@include background(linear-gradient(to right,	rgba(1,39,58,1) 0%,rgba(2,103,154,1) 50%,rgba(1,39,58,1) 100%));
+	@include background(linear-gradient(to right, rgba(1,39,58,1) 0%, rgba(2,103,154,1) 50%, rgba(1,39,58,1) 100%));
 }
 
 .title {
@@ -43,7 +43,7 @@ body {
 		margin-bottom: 3%;
 		font-weight: bold;
 		display: inline-block;
-		@include box-shadow(inset 0 1px 1px rgba(0, 0, 0, .05));
+		@include single-box-shadow(0, 1px, 1px, rgba(0, 0, 0, .05), inset);
 	}
 
 	> a {
@@ -118,7 +118,7 @@ body {
 	display: inline-block;
 	vertical-align: middle;
 	@include translateZ(0);
-	@include box-shadow(0 0 1px rgba(0, 0, 0, 0));
+	@include single-box-shadow(0, 0, 1px, rgba(0, 0, 0, 0));
 	@include backface-visibility(hidden);
 	-moz-osx-font-smoothing: grayscale;
 	-ms-osx-font-smoothing: grayscale;
@@ -210,7 +210,7 @@ body {
 	overflow: hidden;
 	position: relative;
 	text-align: center;
-	@include box-shadow(1px 1px 2px #e6e6e6);
+	@include single-box-shadow(1px, 1px, 2px, #e6e6e6);
 	cursor: default;
 
 	.mask {
@@ -356,7 +356,7 @@ thead {
 	border-radius: 4px;
 	margin: 1vw;
 	text-align: center;
-	@include box-shadow(inset 0 1px 1px rgba(0, 0, 0, .05));
+	@include single-box-shadow(0, 1px, 1px, rgba(0, 0, 0, .05), inset);
 
 	&.bright {
 		background-color: #f2f2f2;
