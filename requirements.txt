@@ -6,12 +6,15 @@
 #
 amqp==1.4.9               # via kombu
 anyjson==0.3.3            # via kombu
+argparse==1.4.0           # via django-htmlmin
 bcrypt==3.1.0
+beautifulsoup4==4.5.1     # via django-htmlmin
 billiard==3.3.0.23        # via celery
 bleach==1.4.3
 celery[redis]==3.1.23
 cffi==1.7.0               # via bcrypt
 click==6.6                # via flask, pip-tools
+django-htmlmin==0.9.1
 elasticsearch==2.3.0
 enum34==1.1.6
 envelopes==0.4
@@ -19,7 +22,7 @@ et-xmlfile==1.0.1         # via openpyxl
 first==2.0.1              # via pip-tools
 flask-login==0.3.2
 flask==0.11.1
-html5lib==0.9999999       # via bleach
+html5lib==0.9999999       # via bleach, django-htmlmin
 ibm-db==2.0.7
 itsdangerous==0.24        # via flask
 jdcal==1.2                # via openpyxl

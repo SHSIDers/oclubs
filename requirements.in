@@ -21,3 +21,4 @@ pystache
 python-magic
 pip-tools
 ibm_db
+django-htmlmin

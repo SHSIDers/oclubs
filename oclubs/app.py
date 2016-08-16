@@ -14,6 +14,7 @@ from flask import (
     Flask, redirect, request, render_template, url_for, session, jsonify, g, abort, flash, Markup
 )
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
+from htmlmin.minify import html_minify
 
 from oclubs.objs import User, Club, Activity, Upload
 from oclubs.access import done as db_done, get_secret
@@ -86,6 +87,16 @@ def access_done(response):
         db_done(True)
     else:
         db_done(False)
+    return response
+
+
+@app.after_request
+def response_minify(response):
+    if response.content_type.startswith('text/html'):
+        response.set_data(
+            html_minify(response.get_data(as_text=True))
+        )
+
     return response
 
 
