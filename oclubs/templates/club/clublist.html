@@ -38,8 +38,6 @@
 			<option value="{{ url_for('.clublist', club_type='entertainment', page='1') }}" {% if club_type=='entertainment' %}selected="selected"{% endif %}>Entertainment</option>
 			<option value="{{ url_for('.clublist', club_type='others', page='1') }}" {% if club_type=='others' %}selected="selected"{% endif %}>Others</option>
 			<option value="{{ url_for('.clublist', club_type='school_teams', page='1') }}" {% if club_type=='school_teams' %}selected="selected"{% endif %}>School Team</option>
-		</select>
-		<select onchange="window.location=this.value;">
 			<option value="{{ url_for('.clublist', club_type='all') }}" {% if club_type=='all' %}selected="selected"{% endif %}>All Clubs</option>
 			<option value="{{ url_for('.clublist', club_type='excellent') }}"{% if club_type=='excellent' %}selected="selected"{% endif %}>Excellent Clubs</option>
 		</select>
