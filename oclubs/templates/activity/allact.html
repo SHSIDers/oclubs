@@ -20,7 +20,7 @@
 
 	<div class="col-md-10">
 		<h1 class="title" style="clear:right">Activites - {{ club_type.replace('_', ' ').title() }}</h1>
-		<select onchange="window.location=this.value;">
+		<select class="mobile-select">
 			<option value="{{ url_for('.allactivities', club_type='all', page='1') }}" {% if club_type=='all' %}selected="selected"{% endif %}>All</option>
 			<option value="{{ url_for('.allactivities', club_type='academics', page='1') }}"{% if club_type=='academics' %}selected="selected"{% endif %}>Academics</option>
 			<option value="{{ url_for('.allactivities', club_type='sports', page='1') }}"{% if club_type=='sports' %}selected="selected"{% endif %}>Sports</option>

@@ -1040,7 +1040,7 @@ thead.darklist {
 .carousel-caption h3 {
 	font-size: 175%;
 }
-.large_container select {
+.large_container select.mobileselect {
 	padding: 0.5em;
 	font-size: 120%;
 	border-style: solid;
@@ -1158,7 +1158,7 @@ thead.darklist {
 	.blockpic .mask {
 		padding-top: 90px;
 	}
-	.large_container select {
+	.large_container select.mobileselect {
 		display: inline-block;
 		height: auto;
 	}

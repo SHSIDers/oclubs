@@ -124,5 +124,10 @@
 						.css( 'width', '0' );
 					$( '#floatmenu' ).fadeIn();
 				} );
+
+			$( '.large_container select.mobileselect' )
+				.change( function() {
+					window.document.location = this.value;
+				} );
 		} );
 } )( jQuery );
