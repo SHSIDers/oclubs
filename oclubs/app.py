@@ -20,7 +20,7 @@ from oclubs.access import done as db_done, get_secret
 from oclubs.userblueprint import userblueprint
 from oclubs.clubblueprint import clubblueprint
 from oclubs.actblueprint import actblueprint
-from oclubs.enums import UserType, ClubType, ActivityTime
+from oclubs.enums import UserType, ClubType, ActivityTime, ClubJoinMode
 from oclubs.exceptions import NoRow
 from oclubs.redissession import RedisSessionInterface
 from oclubs.shared import encrypt, Pagination
@@ -35,6 +35,13 @@ app.register_blueprint(clubblueprint, url_prefix='/club')
 app.register_blueprint(actblueprint, url_prefix='/act')
 
 app.session_interface = RedisSessionInterface()
+
+app.jinja_env.globals['list'] = list  # HACK
+app.jinja_env.globals['UserType'] = UserType
+app.jinja_env.globals['ClubType'] = ClubType
+app.jinja_env.globals['ActivityTime'] = ActivityTime
+app.jinja_env.globals['ClubJoinMode'] = ClubJoinMode
+
 
 login_manager = LoginManager()
 login_manager.init_app(app)

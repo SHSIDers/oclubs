@@ -32,9 +32,11 @@ def clublist(club_type):
         clubs = Club.excellentclubs()
     else:
         try:
-            clubs = Club.randomclubs(num, [ClubType[club_type.upper()]])
+            typ = ClubType[club_type.upper()]
         except KeyError:
             abort(404)
+        else:
+            clubs = Club.randomclubs(num, [typ])
     return render_template('club/clublist.html',
                            is_list=True,
                            clubs=clubs,

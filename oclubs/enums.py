@@ -5,6 +5,12 @@
 from enum import Enum
 
 
+class GetitemMixin(Enum):
+    """Mixin used where Enums are extended by tuples."""
+    def __getitem__(self, key):
+        return (self.name, self.format_name)[key]
+
+
 class UserType(Enum):
     STUDENT = 1
     TEACHER = 2
@@ -15,7 +21,7 @@ class UserType(Enum):
         return ['', 'Student', 'Teacher', 'Admin'][self.value]
 
 
-class ClubType(Enum):
+class ClubType(GetitemMixin, Enum):
     ACADEMICS = 1
     SPORTS = 2
     ARTS = 3
