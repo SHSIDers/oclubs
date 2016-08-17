@@ -43,7 +43,7 @@ gulp.task('styles', function () {
 		.src('./oclubs/static-dev/sass/*.scss')
 		.pipe(plumber(plumberErrorHandler))
 		.pipe(compass(compassOptions))
-		.pipe(autoprefixer(autoprefixerOptionsZZ))
+		.pipe(autoprefixer(autoprefixerOptions))
 		.pipe(gulp.dest('./oclubs/static-dev/css'))
 		.pipe(rename({ suffix: '.min' }))
 		.pipe(cleanCSS())
@@ -61,7 +61,7 @@ gulp.task('scripts', function() {
 
 gulp.task('images', function() {
 	return gulp
-		.src('./oclubs/static-dev/images/*')
+		.src('./oclubs/static-dev/images/**')
 		.pipe(plumber(plumberErrorHandler))
 		.pipe(imagemin())
 		.pipe(gulp.dest('./oclubs/static/images'));
@@ -75,7 +75,7 @@ gulp.task('watch', function() {
 		.on('change', changeevent);
 	gulp.watch('./oclubs/static-dev/js/*.js', ['scripts'])
 		.on('change', changeevent);
-	gulp.watch('./oclubs/static-dev/images/*', ['images'])
+	gulp.watch('./oclubs/static-dev/images/**', ['images'])
 		.on('change', changeevent);
 });
 
