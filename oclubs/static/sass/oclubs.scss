@@ -1,5 +1,9 @@
 @import "compass/css3";
 
+a, a:hover {
+	text-decoration: none;
+}
+
 body {
 	@include background-with-css2-fallback(linear-gradient(to right, rgba(1,39,58,1) 0%, rgba(2,103,154,1) 50%, rgba(1,39,58,1) 100%), rgb(1,39,58));
 }
@@ -144,6 +148,7 @@ body {
 }
 
 .header {
+	margin-bottom:20px;
 	background-color: #222;
 	border-color: #080808;
 	color: #9d9d9d;
@@ -499,6 +504,10 @@ body {
 }
 /*till here is picture part*/
 
+#content {
+	min-height: calc(100vh - 400px);
+}
+
 .footer {
 	padding: 4em 0;
 	background-color: #333333;
@@ -522,7 +531,7 @@ body {
 
 		a {
 			color: #a6a6a6;
-			text-decoration: none;
+			text-decoration: underline;
 
 			&:hover {
 				color: #8c8c8c;
@@ -1199,7 +1208,7 @@ tr.act {
 	}
 }
 
-.upload_content {
+#upload_content {
 	color: #f2f2f2;
 	font-size: 150%;
 	font-weight: bold;

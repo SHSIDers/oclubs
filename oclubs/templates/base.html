@@ -25,9 +25,7 @@
 <div id="emptyclose"></div>
 <span class="glyphicon glyphicon-list" id="floatmenu"></span>
 
-<div class="header" style="margin-bottom:20px">
-
-
+<div class="header">
 	<div class="container">
 		<div class="logo">
 			<a href="/"><img src="{{ url_for('static', filename='images/logo.png') }}" class="img-responsive" alt=""></a>
@@ -52,18 +50,14 @@
 
 		<div class="login">
 			{% if current_user.is_authenticated %}
-			<span style="display: block;">
-				<a href="{{ url_for('userblueprint.personal') }}" style="text-decoration:none"><span class="glyphicon glyphicon-user"></span>&nbsp;{{ current_user.nickname }}</a>
-			</span>
+			<a href="{{ url_for('userblueprint.personal') }}"><span class="glyphicon glyphicon-user"></span>&nbsp;{{ current_user.nickname }}</a>
 			{% else %}
-			<span>
-				<a href="{{ url_for('login') }}" style="text-decoration:none"><span class="glyphicon glyphicon-log-in"></span>&nbsp;Login</a>
-			</span>
+			<a href="{{ url_for('login') }}"><span class="glyphicon glyphicon-log-in"></span>&nbsp;Login</a>
 			{% endif %}
 		</div>
 	</div>
 </div>
-<div style="min-height:calc(100vh - 400px)">
+<div id="content">
 {% block content %}{% endblock %}
 </div>
 <div class="clearfix"></div>
@@ -72,10 +66,10 @@
 	<div class="container text-center">
 		<div class="col-md-4 soci">
 			<h3>Join Clubs</h3>
-			<p style="text-decoration:underline"><a href="{{ url_for('clubblueprint.clublist', club_type='all') }}">Click Here</a></p>
+			<p><a href="{{ url_for('clubblueprint.clublist', club_type='all') }}">Click Here</a></p>
 			<div class="clearfix"></div>
 			<h3>Contact Creators</h3>
-			<p style="text-decoration:underline"><a href="{{ url_for('advice') }}">Click Here</a></p>
+			<p><a href="{{ url_for('advice') }}">Click Here</a></p>
 		</div>
 		<div class="col-md-4 footer-left">
 			<h3>Notes</h3>
@@ -83,10 +77,10 @@
 		</div>
 		<div class="col-md-4 footer-left">
 			<h3>Check Creators' Info</h3>
-			<p style="text-decoration:underline"><a href="{{ url_for('creators') }}">Click Here</a></p>
+			<p><a href="{{ url_for('creators') }}">Click Here</a></p>
 			<div class="clearfix"> </div>
 			<h3>Contact Administrator</h3>
-			<p style="text-decoration:underline"><a href="{{ url_for('complaints') }}">Click Here</a></p>
+			<p><a href="{{ url_for('complaints') }}">Click Here</a></p>
 		</div>
 	</div>
 </div>

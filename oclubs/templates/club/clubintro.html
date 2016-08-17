@@ -44,18 +44,18 @@
 			</ul>
 			{% endif %}
 			<div class="col-sm-4" style="margin-bottom:10px">
-				<center><a href="{{ url_for('actblueprint.clubactivities', club=g.club.callsign, page='1') }}" style="text-decoration:none">
+				<center><a href="{{ url_for('actblueprint.clubactivities', club=g.club.callsign, page='1') }}">
 					<button class="btn btn-info btn-lg" style="width:80%">Activities</button>
 				</a></center>
 			</div>
 			<div class="col-sm-4" style="margin-bottom:10px">
-				<center><a href="{{ url_for('actblueprint.clubphoto', club=g.club.callsign, page='1') }}" style="text-decoration:none">
+				<center><a href="{{ url_for('actblueprint.clubphoto', club=g.club.callsign, page='1') }}">
 					<button class="btn btn-info btn-lg" style="width:80%">Photos</button>
 				</a></center>
 			</div>
 			{% if free_join %}
 			<div class="col-sm-4" style="margin-bottom:10px">
-				<center><a href="{{ url_for('clubblueprint.clubintro_submit', club=g.club.callsign) }}" style="text-decoration:none">
+				<center><a href="{{ url_for('clubblueprint.clubintro_submit', club=g.club.callsign) }}">
 					<button class="btn btn-info btn-lg" style="width:80%">Join</button>
 				</a></center>
 			</div>
