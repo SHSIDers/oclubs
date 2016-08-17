@@ -15,7 +15,7 @@
 		{% endfor %}
 	</ul>
 	{% endif %}
-	<p style="color:#f2f2f2; font-size:125%">Please select those who attended the meeting/activity.</p>
+	<p class="color-lightgrey" style="font-size:125%">Please select those who attended the meeting/activity.</p>
 	<div class="checkbox_block">
 		{% for member in g.activity.club.members %}
 		<label for="{{ member.id }}">

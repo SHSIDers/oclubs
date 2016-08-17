@@ -12,7 +12,7 @@
 	</div>
 	{% endfor %}
 	{% else %}
-	<p class="text-center" style="font-size:125%; color:#f2f2f2">{{ g.club.name }} does not have any activity with photos yet.</p>
+	<p class="text-center color-lightgrey" style="font-size:125%">{{ g.club.name }} does not have any activity with photos yet.</p>
 	{% endif %}
 	<br>
 	<center>{{ render_pagination(pagination) }}</center>

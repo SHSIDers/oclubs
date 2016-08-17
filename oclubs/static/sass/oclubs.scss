@@ -932,7 +932,7 @@ tr.act {
 	}
 }
 
-.personal_info{
+.personal_info {
 	h2 {
 		@extends .color-lightgrey;
 
@@ -1374,6 +1374,10 @@ tr.act {
 
 		font-family: 'Georgia';
 	}
+
+	h2 {
+		@extends .color-lightgrey;
+	}
 }
 
 .admin_button {
@@ -1554,9 +1558,19 @@ tr.act {
 	margin-left: auto;
 	width: 90%;
 
-	#act-club-list .title {
-		margin-top: 0;
-		clear: right;
+	#act-club-list {
+		.title {
+			margin-top: 0;
+			clear: right;
+		}
+
+		.btn.refresh {
+			@extends .color-lightgrey;
+
+			font-family: 'Georgia';
+			font-weight: bold;
+			font-size: 50%;
+		}
 	}
 
 	#intropage {
@@ -1726,6 +1740,7 @@ tr.act {
 }
 
 #stuclubmeeting {
+	border-color: $lightgrey;
 	border-right-style: solid;
 
 	@media screen and (max-width: 768px) {
@@ -1810,6 +1825,18 @@ tr.act {
 
 	@media screen and (max-width: 450px) {
 		width: 47%;
+	}
+}
+
+#logoutlink {
+	@extends color-lightgrey;
+
+	float: right;
+	font-size: 50%;
+	margin-right: 4%;
+
+	&:hover {
+		color: #cccccc;
 	}
 }
 
