@@ -4,9 +4,11 @@
 {% with messages = get_flashed_messages(category_filter=["advice"]) %}
 
 <!-- Below Navbar -->
-<div class="container">
+<div class="container" style="font-size:125%">
 	<div class="col-sm-4">
-		<img src="static/images/advice.jpg" class="img-responsive img-thumbnail" alt="Advice">
+		<center>
+			<img src="static/images/advice.jpg" class="img-responsive img-thumbnail" alt="Advice">
+		</center>
 	</div>
 	<div class="col-sm-8">
 		<form class="form-group color-lightgrey" action="{{ url_for('advice_submit') }}" method="post">
