@@ -3,3 +3,5 @@
 *.rpm
 /oclubs/images
 /oclubs/secrets.ini
+/.sass-cache/
+/node_modules/
