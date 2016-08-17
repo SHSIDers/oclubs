@@ -16,7 +16,7 @@ body {
 }
 
 .title {
-	@extends .color-lightgrey;
+	@extend .color-lightgrey;
 
 	margin-bottom: 2%;
 	font-family: 'Georgia';
@@ -45,7 +45,7 @@ body {
 }
 
 .title_next {
-	@extends .color-lightgrey;
+	@extend .color-lightgrey;
 
 	margin-bottom: 2%;
 	font-family: 'Georgia';
@@ -738,7 +738,7 @@ thead {
 }
 
 .homepage_block {
-	@extends .color-lightgrey;
+	@extend .color-lightgrey;
 
 	display: block;
 	background-color: #66a3ff;
@@ -758,7 +758,7 @@ thead {
 	}
 
 	#homepage_allclubphotos {
-		@extends .color-lightgrey;
+		@extend .color-lightgrey;
 
 		&:hover {
 			color: #d9d9d9;
@@ -797,7 +797,7 @@ thead {
 	white-space: nowrap;
 
 	.homepage_function {
-		@extends .color-lightgrey;
+		@extend .color-lightgrey;
 
 		padding: 0;
 		width: 20%;
@@ -934,7 +934,7 @@ tr.act {
 
 .personal_info {
 	h2 {
-		@extends .color-lightgrey;
+		@extend .color-lightgrey;
 
 		@media screen and (max-width: 720px) {
 			font-size: 24px;
@@ -1098,7 +1098,7 @@ tr.act {
 }
 
 .error p {
-	@extends .color-lightgrey;
+	@extend .color-lightgrey;
 
 	font-size: 125%;
 }
@@ -1118,7 +1118,7 @@ tr.act {
 	}
 
 	.blue {
-		@extends .color-lightgrey;
+		@extend .color-lightgrey;
 
 		background-color: #009999;
 		border-style: solid;
@@ -1128,7 +1128,7 @@ tr.act {
 	}
 
 	.green {
-		@extends .color-lightgrey;
+		@extend .color-lightgrey;
 
 		background-color: #33cc33;
 		border-style: solid;
@@ -1138,7 +1138,7 @@ tr.act {
 	}
 
 	.red {
-		@extends .color-lightgrey;
+		@extend .color-lightgrey;
 
 		background-color: #990000;
 		border-style: solid;
@@ -1181,7 +1181,7 @@ tr.act {
 }
 
 .upload_button {
-	@extends .color-lightgrey;
+	@extend .color-lightgrey;
 
 	background-color: #66a3ff;
 	padding: 10px;
@@ -1195,7 +1195,7 @@ tr.act {
 }
 
 #upload_content {
-	@extends .color-lightgrey;
+	@extend .color-lightgrey;
 
 	font-size: 150%;
 	font-weight: bold;
@@ -1203,7 +1203,7 @@ tr.act {
 }
 
 .login_block {
-	@extends .color-lightgrey;
+	@extend .color-lightgrey;
 
 	padding: 2%;
 	margin: 4% auto;
@@ -1214,14 +1214,14 @@ tr.act {
 	font-size: 110%;
 
 	#forgotpw, #remember {
-		@extends .color-lightgrey;
+		@extend .color-lightgrey;
 
 		margin-top: 5px;
 		font-weight: normal;
 	}
 
 	input[type="submit"] {
-		@extends .color-lightgrey;
+		@extend .color-lightgrey;
 
 		width: 100%;
 		padding: 2.5%;
@@ -1250,7 +1250,7 @@ tr.act {
 
 .search_bar {
 	select, form {
-		@extends .color-lightgrey;
+		@extend .color-lightgrey;
 
 		padding: 0.5em;
 		font-size: 120%;
@@ -1311,14 +1311,14 @@ tr.act {
 }
 
 .search_result {
-	@extends .color-lightgrey;
+	@extend .color-lightgrey;
 
 	font-size: 110%;
 	font-weight: bold;
 }
 
 .search_block {
-	@extends .color-lightgrey;
+	@extend .color-lightgrey;
 
 	padding: 0 2% 2% 2%;
 	margin-bottom: 15px;
@@ -1327,7 +1327,7 @@ tr.act {
 	border-color: #337ab7;
 
 	h1 {
-		@extends .color-lightgrey;
+		@extend .color-lightgrey;
 
 		font-size: 150%;
 		border-bottom-style: solid;
@@ -1370,13 +1370,13 @@ tr.act {
 	border-width: 5px;
 
 	p {
-		@extends .color-lightgrey;
+		@extend .color-lightgrey;
 
 		font-family: 'Georgia';
 	}
 
 	h2 {
-		@extends .color-lightgrey;
+		@extend .color-lightgrey;
 	}
 }
 
@@ -1565,7 +1565,7 @@ tr.act {
 		}
 
 		.btn.refresh {
-			@extends .color-lightgrey;
+			@extend .color-lightgrey;
 
 			font-family: 'Georgia';
 			font-weight: bold;
@@ -1583,7 +1583,7 @@ tr.act {
 		}
 
 		.longdesc {
-			@extends .color-lightgrey;
+			@extend .color-lightgrey;
 
 			font-size:150%;
 			margin: 1.25em 0;
@@ -1766,7 +1766,7 @@ tr.act {
 }
 
 .notification {
-	@extends .color-lightgrey;
+	@extend .color-lightgrey;
 
 	padding: 2%;
 	margin-bottom: 15px;
@@ -1829,7 +1829,7 @@ tr.act {
 }
 
 #logoutlink {
-	@extends color-lightgrey;
+	@extend .color-lightgrey;
 
 	float: right;
 	font-size: 50%;
