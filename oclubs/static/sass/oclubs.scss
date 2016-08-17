@@ -85,7 +85,6 @@ body {
 	> div,
 	> a {
 		width: 24em;
-		height: 10em;
 		padding: 1.5em;
 		float: left;
 		background-color: #f5f5f5;
@@ -1837,6 +1836,29 @@ tr.act {
 
 	&:hover {
 		color: #cccccc;
+	}
+}
+
+#shorttext {
+	font-size:150%;
+	@media screen and (max-width: 800px) {
+		font-size: 130%;
+	}
+
+	@media screen and (max-width: 650px) {
+		font-size: 110%;
+	}
+
+	@media screen and (max-width: 525px) {
+		font-size: 100%;
+	}
+
+	@media screen and (max-width: 400px) {
+		font-size: 90%;
+	}
+
+	@media screen and (max-width: 350px) {
+		font-size: 80%;
 	}
 }
 
