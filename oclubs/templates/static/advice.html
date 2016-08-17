@@ -9,7 +9,7 @@
 		<img src="static/images/advice.jpg" class="img-responsive img-thumbnail" alt="Advice">
 	</div>
 	<div class="col-sm-8">
-		<form class="form-group" style="color:#f2f2f2" action="{{ url_for('advice_submit') }}" method="post">
+		<form class="form-group color-lightgrey" action="{{ url_for('advice_submit') }}" method="post">
 			<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 			<h1>Contact us</h1>
 			{% if messages %}

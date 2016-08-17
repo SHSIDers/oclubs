@@ -7,7 +7,7 @@
 <div class="large_container">
 	<!-- Side Menu -->
 	<div id="sidebar" class="col-md-2">
-		<div class="list-group" style="margin-top:50px">
+		<div class="list-group">
 			<li class="list-group-item active">Club Types</li>
 			{% for typ in [('all', 'All')] + list(ClubType) %}
 			<a href="{{ url_for('.allactivities', club_type=typ[0].lower(), page='1') }}" class="list-group-item {% if g.activity.club.type.name==typ[0] %}selected{% endif %}">{{ typ[1] }}</a>
@@ -16,42 +16,38 @@
 	</div>
 
 	<!-- Main Content -->
-	<div class="col-md-10" style="padding-right:50px">
-		<div class="container" style="max-width: 100%">
-			<div class="jumbotron" style="background-color:#3366ff;color:#e6e6e6">
-				<h1 class="title">Post for {{ g.activity.name }}</h1>
-				<p>{{ g.activity.club.name }}</p>
-			</div>
-			<div style="font-size:150%;color:#f2f2f2">
-				<p>Time: {{ g.activity.date }}</p>
-				<br>
-				{% for pic in g.activity.pictures %}
-				<div class="col-sm-3">
-					<img src="{{ pic.location_external }}" class="img-thumbnail" alt="{{ g.activity.name }}" style="margin-bottom:15px">
-				</div>
-				{% endfor %}
-				<div class="clearfix"></div>
-				<p>Post:</p>
-				{% if g.activity.post.raw %}
-				{{ g.activity.post.formatted }}
-				{% else %}
-				<p>None</p>
-				{% endif %}
-				<br>
-			</div>
+	<div class="col-md-10" id="intropage">
+		<div class="jumbotron">
+			<h1 class="title">Post for {{ g.activity.name }}</h1>
+			<p>{{ g.activity.club.name }}</p>
 		</div>
-		<div class="container">
-			<div class="intro_function">
-				<div class="col-sm-6">
-					<a href="{{ url_for('clubblueprint.clubintro', club=g.activity.club.callsign) }}">
-						<button class="btn btn-info btn-lg" style="width:80%">Club Introduction</button>
-					</a>
-				</div>
-				<div class="col-sm-6">
-					<a href="{{ url_for('.activity', activity=g.activity.callsign) }}">
-						<button class="btn btn-info btn-lg" style="width:80%">Activity Introduction</button>
-					</a>
-				</div>
+		<div class="longdesc">
+			<p>Time: {{ g.activity.date }}</p>
+			<br>
+			{% for pic in g.activity.pictures %}
+			<div class="col-sm-3">
+				<img src="{{ pic.location_external }}" class="img-thumbnail" alt="{{ g.activity.name }}" style="margin-bottom:15px">
+			</div>
+			{% endfor %}
+			<div class="clearfix"></div>
+			<p>Post:</p>
+			{% if g.activity.post.raw %}
+			{{ g.activity.post.formatted }}
+			{% else %}
+			<p>None</p>
+			{% endif %}
+			<br>
+		</div>
+		<div class="intro_function">
+			<div class="col-sm-6">
+				<a href="{{ url_for('clubblueprint.clubintro', club=g.activity.club.callsign) }}">
+					<button class="btn btn-info btn-lg">Club Introduction</button>
+				</a>
+			</div>
+			<div class="col-sm-6">
+				<a href="{{ url_for('.activity', activity=g.activity.callsign) }}">
+					<button class="btn btn-info btn-lg">Activity Introduction</button>
+				</a>
 			</div>
 		</div>
 	</div>

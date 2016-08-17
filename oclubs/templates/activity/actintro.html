@@ -7,7 +7,7 @@
 <div class="large_container">
 	<!-- Side Menu -->
 	<div id="sidebar" class="col-md-2">
-		<div class="list-group" style="margin-top:50px">
+		<div class="list-group">
 			<li class="list-group-item active">Club Types</li>
 			{% for typ in [('all', 'All')] + list(ClubType) %}
 			<a href="{{ url_for('.allactivities', club_type=typ[0].lower(), page='1') }}" class="list-group-item {% if g.activity.club.type.name==typ[0] %}selected{% endif %}">{{ typ[1] }}</a>
@@ -16,83 +16,79 @@
 	</div>
 
 	<!-- Main Content -->
-	<div class="col-md-10" style="padding-right:3em">
-		<div class="container" style="max-width: 100%">
-			<div class="jumbotron" style="background-color:#3366ff;color:#e6e6e6">
-				<h1 class="title">{{ g.activity.name }}</h1>
-				<p>{{ g.activity.club.name }}</p>
-			</div>
-			<div style="font-size:150%;color:#f2f2f2">
-				<p>Time: {{ g.activity.date }}</p>
-				{% if g.activity.description.raw %}
-				<br>
-				<p>Description:</p>
-				{{ g.activity.description.formatted }}
-				{% endif %}
-				<br>
-			</div>
+	<div class="col-md-10" id="intropage">
+		<div class="jumbotron">
+			<h1 class="title">{{ g.activity.name }}</h1>
+			<p>{{ g.activity.club.name }}</p>
 		</div>
-		<div class="container" style="max-width: 100%">
-			{% if messages_signup %}
-			<ul class="list-group" style="margin-top:0">
-				{% for message in messages_signup %}
-				<li class="list-group-item">{{ message }}</li>
-				{% endfor %}
-			</ul>
+		<div class="longdesc">
+			<p>Time: {{ g.activity.date }}</p>
+			{% if g.activity.description.raw %}
+			<br>
+			<p>Description:</p>
+			{{ g.activity.description.formatted }}
 			{% endif %}
-			<center>
-			<div class="intro_function">
-				<div class="col-sm-6">
-					<a href="{{ url_for('clubblueprint.clubintro', club=g.activity.club.callsign) }}">
-						<button class="btn btn-info btn-lg">Club Introduction</button>
-					</a>
-				</div>
-
-				{% if is_other_act and not is_past and can_join %}
-				<div class="col-sm-6">
-					<form action="{{ url_for('.activity_submit', activity=g.activity.callsign) }}" method="post">
-						<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-						<input class="btn btn-info btn-lg" type="submit" value="Join">
-					</form>
-				</div>
-				{% elif is_past %}
-				<div class="col-sm-6">
-					<a href="{{ url_for('.actpost', activity=g.activity.callsign) }}">
-						<button class="btn btn-info btn-lg">Activity Post</button>
-					</a>
-				</div>
-				{% endif %}
-
-				{% if has_access and not is_past %}
-				<div class="col-sm-6">
-					<a href="{{ url_for('.actstatus', activity=g.activity.callsign) }}">
-						<button class="btn btn-info btn-lg">Signup Status</button>
-					</a>
-				</div>
-				{% endif %}
-
-				{% if has_access and is_past %}
-				<div class="col-sm-6">
-					<a href="{{ url_for('.inputatten', activity=g.activity.callsign) }}">
-						<button class="btn btn-info btn-lg">Input Attendance</button>
-					</a>
-				</div>
-				<div class="col-sm-6">
-					<a href="{{ url_for('.checkatten', activity=g.activity.callsign) }}">
-						<button class="btn btn-info btn-lg">Check Attendance</button>
-					</a>
-				</div>
-
-
-				<div class="col-sm-6">
-					<a href="{{ url_for('.changeactpost', activity=g.activity.callsign) }}">
-						<button class="btn btn-info btn-lg">Change Activity Post</button>
-					</a>
-				</div>
-				{% endif %}
-			</div>
-			</center>
+			<br>
 		</div>
+		{% if messages_signup %}
+		<ul class="list-group" style="margin-top:0">
+			{% for message in messages_signup %}
+			<li class="list-group-item">{{ message }}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+		<center>
+		<div class="intro_function">
+			<div class="col-sm-6">
+				<a href="{{ url_for('clubblueprint.clubintro', club=g.activity.club.callsign) }}">
+					<button class="btn btn-info btn-lg">Club Introduction</button>
+				</a>
+			</div>
+
+			{% if is_other_act and not is_past and can_join %}
+			<div class="col-sm-6">
+				<form action="{{ url_for('.activity_submit', activity=g.activity.callsign) }}" method="post">
+					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+					<input class="btn btn-info btn-lg" type="submit" value="Join">
+				</form>
+			</div>
+			{% elif is_past %}
+			<div class="col-sm-6">
+				<a href="{{ url_for('.actpost', activity=g.activity.callsign) }}">
+					<button class="btn btn-info btn-lg">Activity Post</button>
+				</a>
+			</div>
+			{% endif %}
+
+			{% if has_access and not is_past %}
+			<div class="col-sm-6">
+				<a href="{{ url_for('.actstatus', activity=g.activity.callsign) }}">
+					<button class="btn btn-info btn-lg">Signup Status</button>
+				</a>
+			</div>
+			{% endif %}
+
+			{% if has_access and is_past %}
+			<div class="col-sm-6">
+				<a href="{{ url_for('.inputatten', activity=g.activity.callsign) }}">
+					<button class="btn btn-info btn-lg">Input Attendance</button>
+				</a>
+			</div>
+			<div class="col-sm-6">
+				<a href="{{ url_for('.checkatten', activity=g.activity.callsign) }}">
+					<button class="btn btn-info btn-lg">Check Attendance</button>
+				</a>
+			</div>
+
+
+			<div class="col-sm-6">
+				<a href="{{ url_for('.changeactpost', activity=g.activity.callsign) }}">
+					<button class="btn btn-info btn-lg">Change Activity Post</button>
+				</a>
+			</div>
+			{% endif %}
+		</div>
+		</center>
 	</div>
 </div>
 

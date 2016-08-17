@@ -4,16 +4,24 @@ a, a:hover {
 	text-decoration: none;
 }
 
+$lightgrey: #f2f2f2;
+
+.color-lightgrey {
+	color: $lightgrey;
+}
+
+
 body {
 	@include background-with-css2-fallback(linear-gradient(to right, rgba(1,39,58,1) 0%, rgba(2,103,154,1) 50%, rgba(1,39,58,1) 100%), rgb(1,39,58));
 }
 
 .title {
+	@extends .color-lightgrey;
+
 	margin-bottom: 2%;
 	font-family: 'Georgia';
 	font-weight: bold;
 	font-size: 500%;
-	color: #f2f2f2;
 
 	@media screen and (max-width: 800px) {
 		font-size: 400%;
@@ -37,10 +45,11 @@ body {
 }
 
 .title_next {
+	@extends .color-lightgrey;
+
 	margin-bottom: 2%;
 	font-family: 'Georgia';
 	font-size: 300%;
-	color: #f2f2f2;
 
 	@media screen and (max-width: 800px) {
 		font-size: 250%;
@@ -551,21 +560,13 @@ body {
 
 thead {
 	&.list {
-		background-color: #f2f2f2;
+		background-color: $lightgrey;
 	}
 
 	&.darklist {
 		background-color: #595959;
 		color: white;
 	}
-}
-
-.large_container {
-	padding-right: 15px;
-	padding-left: 15px;
-	margin-right: auto;
-	margin-left: auto;
-	width: 90%;
 }
 
 .photo {
@@ -579,7 +580,7 @@ thead {
 	@include single-box-shadow(0, 1px, 1px, rgba(0, 0, 0, .05), inset);
 
 	&.bright {
-		background-color: #f2f2f2;
+		background-color: $lightgrey;
 
 		&:hover {
 			background-color: #cccccc;
@@ -725,7 +726,7 @@ thead {
 		}
 	}
 
-	@media screen and (max-height: 450px) {
+	@media screen and (max-width: 450px) {
 		p {
 			font-size: 75%;
 		}
@@ -737,9 +738,10 @@ thead {
 }
 
 .homepage_block {
+	@extends .color-lightgrey;
+
 	display: block;
 	background-color: #66a3ff;
-	color: #f2f2f2;
 	padding: 0.05% 2% 2% 2%;
 
 	#shsidtimes {
@@ -756,7 +758,7 @@ thead {
 	}
 
 	#homepage_allclubphotos {
-		color: #f2f2f2;
+		@extends .color-lightgrey;
 
 		&:hover {
 			color: #d9d9d9;
@@ -795,12 +797,13 @@ thead {
 	white-space: nowrap;
 
 	.homepage_function {
+		@extends .color-lightgrey;
+
 		padding: 0;
 		width: 20%;
 		height: 20%;
 		margin: 2%;
 		background-color: #66a3ff;
-		color: #f2f2f2;
 
 		h2 {
 			font-size: 2.14em;
@@ -855,28 +858,6 @@ thead {
 
 		@media screen and (max-width: 350px) {
 			font-size: 60%;
-		}
-	}
-}
-
-.intro_function {
-	text-align: center;
-
-	> .col-sm-6 {
-		padding-bottom: 0.75em;
-
-		.btn {
-			width: 80%;
-		}
-
-		@media screen and (max-height: 450px) {
-			padding-left: 0;
-			padding-right: 0;
-
-			.btn {
-				width: 100%;
-				font-size: 15px;
-			}
 		}
 	}
 }
@@ -953,7 +934,7 @@ tr.act {
 
 .personal_info{
 	h2 {
-		color: #f2f2f2;
+		@extends .color-lightgrey;
 
 		@media screen and (max-width: 720px) {
 			font-size: 24px;
@@ -963,7 +944,7 @@ tr.act {
 			font-size: 20px;
 		}
 
-		@media screen and (max-height: 450px) {
+		@media screen and (max-width: 450px) {
 			font-size: 16px;
 		}
 	}
@@ -987,14 +968,14 @@ tr.act {
 		padding: 0 5px 0 0;
 	}
 
-	@media screen and (max-height: 450px) {
+	@media screen and (max-width: 450px) {
 		max-height: 98px;
 	}
 }
 
 .clearfix-bordered {
 	border-bottom-style: solid;
-	border-color: #f2f2f2;
+	border-color: $lightgrey;
 }
 
 #teacher_clubs div.teacher_club {
@@ -1069,7 +1050,7 @@ tr.act {
 		}
 	}
 
-	@media screen and (max-height: 450px) {
+	@media screen and (max-width: 450px) {
 		h1 {
 			font-size: 150%;
 		}
@@ -1117,8 +1098,9 @@ tr.act {
 }
 
 .error p {
+	@extends .color-lightgrey;
+
 	font-size: 125%;
-	color: #f2f2f2;
 }
 
 .creators {
@@ -1136,7 +1118,8 @@ tr.act {
 	}
 
 	.blue {
-		color: #f2f2f2;
+		@extends .color-lightgrey;
+
 		background-color: #009999;
 		border-style: solid;
 		border-color: #009999;
@@ -1145,7 +1128,8 @@ tr.act {
 	}
 
 	.green {
-		color: #f2f2f2;
+		@extends .color-lightgrey;
+
 		background-color: #33cc33;
 		border-style: solid;
 		border-color: #33cc33;
@@ -1154,7 +1138,8 @@ tr.act {
 	}
 
 	.red {
-		color: #f2f2f2;
+		@extends .color-lightgrey;
+
 		background-color: #990000;
 		border-style: solid;
 		border-color: #990000;
@@ -1182,7 +1167,7 @@ tr.act {
 		}
 	}
 
-	@media screen and (max-height: 450px) {
+	@media screen and (max-width: 450px) {
 		.bg {
 			padding: 5px;
 		}
@@ -1196,7 +1181,8 @@ tr.act {
 }
 
 .upload_button {
-	color: #f2f2f2;
+	@extends .color-lightgrey;
+
 	background-color: #66a3ff;
 	padding: 10px;
 	border-radius: 5px;
@@ -1209,34 +1195,38 @@ tr.act {
 }
 
 #upload_content {
-	color: #f2f2f2;
+	@extends .color-lightgrey;
+
 	font-size: 150%;
 	font-weight: bold;
 	margin: 0.3em 0 0 9em;
 }
 
 .login_block {
+	@extends .color-lightgrey;
+
 	padding: 2%;
 	margin: 4% auto;
 	border-radius: 10px;
-	color: #f2f2f2;
 	border-style: solid;
 	border-color: #337ab7;
 	width: 37.5%;
 	font-size: 110%;
 
 	#forgotpw, #remember {
+		@extends .color-lightgrey;
+
 		margin-top: 5px;
-		color: #f2f2f2;
 		font-weight: normal;
 	}
 
 	input[type="submit"] {
+		@extends .color-lightgrey;
+
 		width: 100%;
 		padding: 2.5%;
 		margin-top: 10px;
 		background-color: #337ab7;
-		color: #f2f2f2;
 		font-size: 125%;
 		border-style: solid;
 		border-color: #337ab7;
@@ -1260,10 +1250,11 @@ tr.act {
 
 .search_bar {
 	select, form {
+		@extends .color-lightgrey;
+
 		padding: 0.5em;
 		font-size: 120%;
 		background-color: transparent;
-		color: #f2f2f2;
 		border-style: solid;
 		border-color: #337ab7;
 		border-radius: 5px;
@@ -1320,24 +1311,27 @@ tr.act {
 }
 
 .search_result {
-	color: #f2f2f2;
+	@extends .color-lightgrey;
+
 	font-size: 110%;
 	font-weight: bold;
 }
 
 .search_block {
+	@extends .color-lightgrey;
+
 	padding: 0 2% 2% 2%;
 	margin-bottom: 15px;
 	border-radius: 10px;
-	color: #f2f2f2;
 	border-style: solid;
 	border-color: #337ab7;
 
 	h1 {
+		@extends .color-lightgrey;
+
 		font-size: 150%;
-		color: #f2f2f2;
 		border-bottom-style: solid;
-		border-color: #f2f2f2;
+		border-color: $lightgrey;
 	}
 
 	&:hover {
@@ -1371,12 +1365,13 @@ tr.act {
 	padding: 0 2% 2% 2%;
 	margin: 0 3% 0 3%;
 	border-style: solid;
-	border-color: #f2f2f2;
+	border-color: $lightgrey;
 	border-radius: 5px;
 	border-width: 5px;
 
 	p {
-		color: #f2f2f2;
+		@extends .color-lightgrey;
+
 		font-family: 'Georgia';
 	}
 }
@@ -1431,7 +1426,7 @@ tr.act {
 		color: #f1f1f1;
 	}
 
-	@media screen and (max-height: 450px) {
+	@media screen and (max-width: 450px) {
 		padding-top: 15px;
 
 		a {
@@ -1551,39 +1546,94 @@ tr.act {
 	}
 }
 
-.large_container select.mobileselect {
-	padding: 0.5em;
-	font-size: 120%;
-	border-style: solid;
-	border-color: #337ab7;
-	border-radius: 5px;
-	width: 49%;
-	border-width: 3px;
-	display: none;
-	height: 0px;
 
-	@media screen and (max-width: 992px) {
-		display: inline-block;
-		height: auto;
+.large_container {
+	padding-right: 15px;
+	padding-left: 15px;
+	margin-right: auto;
+	margin-left: auto;
+	width: 90%;
+
+	#act-club-list .title {
+		margin-top: 0;
+		clear: right;
 	}
-}
 
-.large_container #sidebar {
-	.list-group {
-		margin-top: 50px;
+	#intropage {
+		.jumbotron {
+			background-color: #3366ff;
+			color: #e6e6e6;
+			border-radius: 5px;
+			padding-left: 30px;
+			padding-right: 30px;
+		}
 
-		@media screen and (max-width: 992px) {
-			display: none;
+		.longdesc {
+			@extends .color-lightgrey;
+
+			font-size:150%;
+			margin: 1.25em 0;
+			line-height:1.2
+		}
+
+		.intro_function {
+			text-align: center;
+
+			.col-sm-4, .col-sm-6 {
+				padding-bottom: 0.75em;
+
+				.btn {
+					width: 80%;
+					white-space: normal;
+				}
+
+				@media screen and (max-width: 450px) {
+					padding-left: 0;
+					padding-right: 0;
+
+					.btn {
+						width: 100%;
+						font-size: 15px;
+					}
+				}
+			}
 		}
 	}
 
-	img {
-		width: 250px;
+	select.mobileselect {
+		padding: 0.5em;
+		font-size: 120%;
+		border-style: solid;
+		border-color: #337ab7;
+		border-radius: 5px;
+		width: 49%;
+		border-width: 3px;
+		display: none;
+		height: 0px;
+
+		@media screen and (max-width: 992px) {
+			display: inline-block;
+			height: auto;
+		}
 	}
 
-	@media screen and (max-width: 768px) {
+	#sidebar {
+		.list-group {
+			margin-top: 50px;
+
+			@media screen and (max-width: 992px) {
+				display: none;
+			}
+		}
+
 		img {
-			width: 30%;
+			width: 250px;
+		}
+
+		@media screen and (max-width: 768px) {
+			img {
+				width: 30%;
+			}
 		}
 	}
 }
@@ -1701,10 +1751,11 @@ tr.act {
 }
 
 .notification {
+	@extends .color-lightgrey;
+
 	padding: 2%;
 	margin-bottom: 15px;
 	border-radius: 10px;
-	color: #f2f2f2;
 	border-style: solid;
 	border-color: #337ab7;
 
@@ -1757,17 +1808,12 @@ tr.act {
 #onecas {
 	width: 30%;
 
-	@media screen and (max-height: 450px) {
+	@media screen and (max-width: 450px) {
 		width: 47%;
 	}
 }
 
 @media screen and (max-width: 992px) {
-	// FIXME: what is this?
-	.large_container > .col-md-10 > .title {
-		margin-top: 0;
-	}
-
 	// FIXME: what is this?
 	.col-md-10 > center > img {
 		max-width: 60%;

@@ -5,7 +5,7 @@
 <!-- Below Navbar -->
 <div class="large_container">
 	<!-- Side Menu -->
-	<div id="sidebar" class="col-md-2" style="padding-left:30px">
+	<div id="sidebar" class="col-md-2">
 		<div class="list-group">
 			<li class="list-group-item active">Achievement</li>
 			{% for typ in [('all', 'All Clubs'), ('excellent', 'Excellent Clubs')] %}
@@ -21,8 +21,8 @@
 	</div>
 
 	<!-- Main Content -->
-	<div class="col-md-10">
-		<h1 class="title" style="clear:right">Clubs - {{ club_type.replace('_', ' ').title() }}		<button class="btn btn-info refresh" style="font-family:'Georgia'; font-weight:bold; color:#f2f2f2; font-size: 50%; "><span class="glyphicon glyphicon-refresh"></span>&nbsp;Refresh</button></h1>
+	<div class="col-md-10" id="act-club-list">
+		<h1 class="title">Clubs - {{ club_type.replace('_', ' ').title() }}		<button class="btn btn-info refresh" style="font-family:'Georgia'; font-weight:bold; color:#f2f2f2; font-size: 50%; "><span class="glyphicon glyphicon-refresh"></span>&nbsp;Refresh</button></h1>
 		<p style="color:#f2f2f2; font-size:150%">For fairness, we randomly choose 18 clubs each time you click refresh button.</p>
 
 		<select class="mobileselect">
