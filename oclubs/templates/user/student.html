@@ -6,7 +6,7 @@
 <div class="smallBlock">
 	{% for club in clubs %}
 	<a href="{{ url_for('clubblueprint.clubintro', club=club.callsign) }}"><img src="{{ club.picture.location_external }}" class="img-responsive" alt="">
-		<p style="font-size:150%">{{ club.name }}</p>
+		<p class="clubname">{{ club.name }}</p>
 	</a>
 	{% endfor %}
 </div>
@@ -30,7 +30,7 @@
 <div class="smallBlock">
 	{% for club in clubs %}
 	<div id="onecas" style="width:30%">
-		<p style="font-size:150%" class="clubname">{{ club.name }}</p>
+		<p class="clubname">{{ club.name }}</p>
 		<p>CAS Hours: {{ current_user.cas_in_club(club) }}</p>
 	</div>
 	{% endfor %}

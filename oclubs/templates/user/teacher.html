@@ -21,9 +21,9 @@
 	{% endfor %}
 </ul>
 {% endif %}
-<div class="teacher_club">
+<div id="teacher_clubs">
 	{% for club in myclubs %}
-	<div>
+	<div class="teacher_club">
 		<div class="col-xs-3">
 			<img src="{{ club.picture.location_external }}" class="img-responsive" alt="">
 			<p class="text-center">{% if club.is_active %}Active{% else %}Inactive{% endif %}</p>

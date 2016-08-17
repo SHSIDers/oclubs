@@ -43,7 +43,7 @@
 		<div class="col-sm-8">
 			<div class="homepage_block">
 				<div class="col-xs-3">
-					<img src="static/images/cover.jpg" style="margin-top:15px" class="img-responsive img-thumbnail" alt="SHSID|Times Cover">
+					<img id='shsidtimes' src="static/images/cover.jpg" class="img-responsive img-thumbnail" alt="SHSID|Times Cover">
 				</div>
 				<div class="col-xs-9">
 					<div class="col-xs-10" style="padding-left:0">
@@ -67,12 +67,12 @@
 				<h1 class="text-center title_next">Club Photos</h1>
 				{% for pic in pic_acts %}
 				<div class="col-xs-4">
-					<a href="{{ pic.link }}"><img src="{{ pic.picture.location_external }}" class="img-responsive img-thumbnail" alt="{{ pic.actname }}"></a>
+					<a href="{{ pic.link }}"><img src="{{ pic.picture.location_external }}" class="img-responsive img-thumbnail homepage_clubphotos" alt="{{ pic.actname }}"></a>
 				</div>
 				{% endfor %}
 				<div class="clearfix"></div>
 				<br>
-				<a href="{{ url_for('actblueprint.allphotos', page='1') }}"><button class="btn btn-block btn-primary">All Club Photos</button></a>
+				<a id="homepage_allclubphotos" class="btn btn-block btn-primary" href="{{ url_for('actblueprint.allphotos', page='1') }}">All Club Photos</a>
 			</div>
 		</div>
 		<br>
@@ -80,30 +80,28 @@
 	<div class="clearfix"></div>
 	<br>
 
-	<div class="homepage_function">
+	<div id="homepage_functions">
 		<br>
-		<div class="col-xs-3">
+		<div class="col-xs-3 homepage_function">
 			<h1><span class="glyphicon glyphicon-cd"></span></h1>
 			<h2>Club Members</h2>
 			<h4>Online application</h4>
 		</div>
-		<div class="col-xs-3">
+		<div class="col-xs-3 homepage_function">
 			<h1><span class="glyphicon glyphicon-apple"></span></h1>
 			<h2>Club Leaders</h2>
 			<h4>Online management</h4>
 		</div>
-		<div class="col-xs-3">
+		<div class="col-xs-3 homepage_function">
 			<h1><span class="glyphicon glyphicon-globe"></span></h1>
 			<h2>Club Teachers</h2>
 			<h4>Online operation</h4>
 		</div>
-		<a href="{{ url_for('about') }}">
-			<div class="col-xs-3 clickable">
-				<h1><center><img src="static/images/more.jpg" class="img-responsive img-circle" alt="More"></center></h1>
-				<h2 style="margin-top:22px">Learn More</h2>
-				<h4>oClubs's functions</h4>
-			</div>
-		</a>
+		<div class="col-xs-3 homepage_function clickable" data-href="{{ url_for('about') }}">
+			<h1><center><img src="static/images/more.jpg" class="img-responsive img-circle" alt="More"></center></h1>
+			<h2 style="margin-top:22px">Learn More</h2>
+			<h4>oClubs's functions</h4>
+		</div>
 		<br>
 	</div>
 </div>

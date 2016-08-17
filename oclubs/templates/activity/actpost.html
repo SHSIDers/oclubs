@@ -6,7 +6,7 @@
 <!-- Below Navbar -->
 <div class="large_container">
 	<!-- Side Menu -->
-	<div class="col-md-2">
+	<div id="sidebar" class="col-md-2">
 		<div class="list-group" style="margin-top:50px">
 			<li class="list-group-item active">Club Types</li>
 			{% for typ in [('all', 'All')] + list(ClubType) %}
@@ -17,7 +17,7 @@
 
 	<!-- Main Content -->
 	<div class="col-md-10" style="padding-right:50px">
-		<div class="container">
+		<div class="container" style="max-width: 100%">
 			<div class="jumbotron" style="background-color:#3366ff;color:#e6e6e6">
 				<h1 class="title">Post for {{ g.activity.name }}</h1>
 				<p>{{ g.activity.club.name }}</p>
