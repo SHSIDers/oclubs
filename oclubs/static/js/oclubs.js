@@ -36,17 +36,12 @@
 					location.reload();
 				} );
 
-			$( 'form #picture' )
+			$( 'form #picture, form #excel' )
 				.change( function() {
-					$( 'form #upload_content' )
-						.text( $( 'form #picture' )
-							.val() );
-				} );
-
-			$( 'form #excel' )
-				.change( function() {
-					$( 'form #upload_content' )
-						.text( $( 'form #excel' )
+					$( this )
+						.closest( 'form' )
+						.find( '#upload_content' )
+						.text( $( this )
 							.val() );
 				} );
 
@@ -80,8 +75,7 @@
 								.val();
 							$.post( '/user/change_user_info/submit', {
 									userid: $( item )
-										.parents( 'tr' )
-										.eq( 0 )
+										.closest( 'tr' )
 										.find( '.userid' )
 										.text(),
 									type: item.attr( 'property-type' ),
@@ -115,14 +109,16 @@
 						.css( 'width', halfscr );
 					$( '#emptyclose' )
 						.css( 'left', halfscr );
-					$( '#floatmenu' ).fadeOut();
+					$( '#floatmenu' )
+						.fadeOut();
 				} );
 
 			$( '#emptyclose, #closebtn' )
 				.click( function() {
 					$( '#sidenav, #emptyclose' )
 						.css( 'width', '0' );
-					$( '#floatmenu' ).fadeIn();
+					$( '#floatmenu' )
+						.fadeIn();
 				} );
 
 			$( '.large_container select.mobileselect' )
