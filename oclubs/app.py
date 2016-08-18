@@ -65,18 +65,15 @@ app.jinja_env.globals['url_for_other_page'] = url_for_other_page
 @app.before_request
 def csrf_protect():
     if request.method == "POST":
-        sessiontokens = session.get('_csrf_token', None)
-        if not sessiontokens or request.form.get('_csrf_token') not in sessiontokens:
+        sessiontoken = session.get('_csrf_token', None)
+        if not sessiontoken or request.form.get('_csrf_token') != sessiontoken:
             abort(403)
 
 
 def generate_csrf_token():
-    newtoken = str(uuid4())
     if '_csrf_token' not in session:
-        session['_csrf_token'] = [newtoken]
-    else:
-        session['_csrf_token'].append(newtoken)
-    return newtoken
+        session['_csrf_token'] = str(uuid4())
+    return session['_csrf_token']
 
 app.jinja_env.globals['csrf_token'] = generate_csrf_token
 

@@ -79,7 +79,10 @@
 										.find( '.userid' )
 										.text(),
 									type: item.attr( 'property-type' ),
-									content: new_content
+									content: new_content,
+									_csrf_token: $( item )
+										.closest( 'table' )
+										.data( 'csrf' )
 								} )
 								.done( function( data ) {
 									if ( data.result == 'success' ) {
