@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var compass = require('gulp-compass');
 var autoprefixer = require('gulp-autoprefixer');
 var cleanCSS = require('gulp-clean-css');
+var cssnano = require('gulp-cssnano');
 var uglify = require('gulp-uglify');
 var imagemin = require('gulp-imagemin');
 var rename = require('gulp-rename');
@@ -47,6 +48,7 @@ gulp.task('styles', function () {
 		.pipe(gulp.dest('./oclubs/static-dev/css'))
 		.pipe(rename({ suffix: '.min' }))
 		.pipe(cleanCSS())
+		.pipe(cssnano())
 		.pipe(gulp.dest('./oclubs/static/css'));
 });
 
