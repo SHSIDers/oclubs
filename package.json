@@ -19,7 +19,7 @@
     "oldie": "^1.3.0",
     "postcss-cssnext": "^2.7.0",
     "postcss-sorting": "^1.6.1",
-    "stylelint": "^7.1.0"
+    "stylefmt": "^4.2.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

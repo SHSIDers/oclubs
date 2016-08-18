@@ -4,7 +4,8 @@ var cssnano = require('cssnano');
 var oldie = require('oldie');
 var cssnext = require('postcss-cssnext');
 var sorting = require('postcss-sorting');
-var stylelint = require('stylelint');
+var rmcomments = require('postcss-discard-comments');
+var stylefmt = require('stylefmt');
 var colorguard = require('colorguard');
 var jshint = require('gulp-jshint');
 var uglify = require('gulp-uglify');
@@ -23,6 +24,8 @@ gulp.task('styles', function () {
 	var build_tasks = [
 		cssnext(),
 		sorting(),
+		rmcomments(),
+		stylefmt(),
 	];
 	var lint_tasks = [
 		// stylelint(),
