@@ -1,18 +1,16 @@
 var gulp = require('gulp');
-var compass = require('gulp-compass');
-var autoprefixer = require('gulp-autoprefixer');
-var cleanCSS = require('gulp-clean-css');
-var cssnano = require('gulp-cssnano');
+var postcss = require('gulp-postcss');
+var cssnano = require('cssnano');
+var oldie = require('oldie');
+var cssnext = require('postcss-cssnext');
+var sorting = require('postcss-sorting');
+var stylelint = require('stylelint');
+var colorguard = require('colorguard');
+var jshint = require('gulp-jshint');
 var uglify = require('gulp-uglify');
 var imagemin = require('gulp-imagemin');
 var rename = require('gulp-rename');
 var plumber = require('gulp-plumber');
-
-var compassOptions = {
-	sass: './oclubs/static-dev/sass',
-	css: './oclubs/static-dev/css',
-	images: './oclubs/static/images',
-};
 
 var plumberErrorHandler = {
 	errorHandler: function (error) {
@@ -22,15 +20,32 @@ var plumberErrorHandler = {
 };
 
 gulp.task('styles', function () {
+	var build_tasks = [
+		cssnext(),
+		sorting(),
+	];
+	var lint_tasks = [
+		// stylelint(),
+		colorguard(),
+	];
+	var minify_tasks = [
+		cssnano(),
+	];
+	var ie_tasks = [
+		oldie(),
+	];
 	return gulp
-		.src('./oclubs/static-dev/sass/*.scss')
+		.src('./oclubs/static-dev/css/*.css')
 		.pipe(plumber(plumberErrorHandler))
-		.pipe(compass(compassOptions))
-		.pipe(autoprefixer())
-		.pipe(gulp.dest('./oclubs/static-dev/css'))
+		.pipe(postcss(build_tasks))
+		.pipe(gulp.dest('./oclubs/static-dev/css-build'))
+		.pipe(postcss(lint_tasks))
 		.pipe(rename({ suffix: '.min' }))
-		.pipe(cleanCSS())
-		.pipe(cssnano())
+		// .pipe(cleanCSS())
+		.pipe(postcss(minify_tasks))
+		.pipe(gulp.dest('./oclubs/static/css'))
+		.pipe(rename({ suffix: '.ie' }))
+		.pipe(postcss(ie_tasks))
 		.pipe(gulp.dest('./oclubs/static/css'));
 });
 
@@ -38,6 +53,7 @@ gulp.task('scripts', function() {
 	return gulp
 		.src('./oclubs/static-dev/js/*.js')
 		.pipe(plumber(plumberErrorHandler))
+		.pipe(jshint())
 		.pipe(rename({ suffix: '.min' }))
 		.pipe(uglify())
 		.pipe(gulp.dest('./oclubs/static/js'));
@@ -55,7 +71,7 @@ gulp.task('watch', function() {
 	var changeevent = function(event) {
 		console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
 	};
-	gulp.watch('./oclubs/static-dev/sass/*.scss', ['styles'])
+	gulp.watch('./oclubs/static-dev/css/*.css', ['styles'])
 		.on('change', changeevent);
 	gulp.watch('./oclubs/static-dev/js/*.js', ['scripts'])
 		.on('change', changeevent);
