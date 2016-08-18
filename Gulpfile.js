@@ -14,24 +14,6 @@ var compassOptions = {
 	images: './oclubs/static/images',
 };
 
-var autoprefixerOptions = {
-	browsers: [
-		'last 2 versions',
-		'> 5%',
-		'Firefox ESR',
-
-		// https://github.com/twbs/bootstrap-sass#sass-autoprefixer
-		'Android 2.3',
-		'Android >= 4',
-		'Chrome >= 20',
-		'Firefox >= 24',
-		'Explorer >= 8',
-		'iOS >= 6',
-		'Opera >= 12',
-		'Safari >= 6'
-	]
-};
-
 var plumberErrorHandler = {
 	errorHandler: function (error) {
         console.log(error.message);
@@ -44,7 +26,7 @@ gulp.task('styles', function () {
 		.src('./oclubs/static-dev/sass/*.scss')
 		.pipe(plumber(plumberErrorHandler))
 		.pipe(compass(compassOptions))
-		.pipe(autoprefixer(autoprefixerOptions))
+		.pipe(autoprefixer())
 		.pipe(gulp.dest('./oclubs/static-dev/css'))
 		.pipe(rename({ suffix: '.min' }))
 		.pipe(cleanCSS())
