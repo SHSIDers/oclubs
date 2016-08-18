@@ -614,7 +614,7 @@ body {
   }
 }
 
-@-webkit-keyframes (bounceY) {
+@-webkit-keyframes bounceY {
   0% {
     -webkit-transform: translateY(-68.3%);
     transform: translateY(-68.3%);
@@ -650,7 +650,7 @@ body {
   }
 }
 
-@-o-keyframes (bounceY) {
+@-o-keyframes bounceY {
   0% {
     -o-transform: translateY(-68.3%);
     transform: translateY(-68.3%);
@@ -686,7 +686,7 @@ body {
   }
 }
 
-@keyframes (bounceY) {
+@keyframes bounceY {
   0% {
     -webkit-transform: translateY(-68.3%);
     -o-transform: translateY(-68.3%);

@@ -495,7 +495,7 @@ body {
 	}
 }
 
-@keyframes(bounceY) {
+@keyframes bounceY {
 	0% { transform: translateY(-68.3%);}
 	40% { transform: translateY(-33.3%);}
 	65% { transform: translateY(-17.3%);}

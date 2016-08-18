@@ -1,7 +1,6 @@
 var gulp = require('gulp');
 var postcss = require('gulp-postcss');
 var cssnano = require('cssnano');
-var oldie = require('oldie');
 var cssnext = require('postcss-cssnext');
 var sorting = require('postcss-sorting');
 var rmcomments = require('postcss-discard-comments');
@@ -34,9 +33,6 @@ gulp.task('styles', function () {
 	var minify_tasks = [
 		cssnano(),
 	];
-	var ie_tasks = [
-		oldie(),
-	];
 	return gulp
 		.src('./oclubs/static-dev/css/*.css')
 		.pipe(plumber(plumberErrorHandler))
@@ -46,9 +42,6 @@ gulp.task('styles', function () {
 		.pipe(rename({ suffix: '.min' }))
 		// .pipe(cleanCSS())
 		.pipe(postcss(minify_tasks))
-		.pipe(gulp.dest('./oclubs/static/css'))
-		.pipe(rename({ suffix: '.ie' }))
-		.pipe(postcss(ie_tasks))
 		.pipe(gulp.dest('./oclubs/static/css'));
 });
 
