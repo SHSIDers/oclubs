@@ -1611,6 +1611,22 @@ tr.act {
 		}
 	}
 
+	&#allphotospage .jumbotron {
+		& img {
+			float: left;
+			width: 90%;
+			border-radius: 5px;
+			margin-left: 5%;
+			margin-right: 5%;
+			margin-bottom: 5%;
+		}
+
+		& #photodesc {
+			margin-left:2em;
+			margin-right:2em;
+		}
+	}
+
 	& select.mobileselect {
 		padding: 0.5em;
 		font-size: 120%;

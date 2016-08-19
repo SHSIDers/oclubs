@@ -298,9 +298,6 @@ body {
   -webkit-box-shadow: 0, 0, 1px, transparent;
   box-shadow: 0, 0, 1px, transparent;
   vertical-align: middle;
-  -webkit-transition-duration: .3s;
-  -o-transition-duration: .3s;
-  transition-duration: .3s;
   -webkit-transition-property: color;
   -o-transition-property: color;
   transition-property: color;
@@ -308,6 +305,13 @@ body {
   transform: translateZ(0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+}
+
+.sweep,
+.sweep:before {
+  -webkit-transition-duration: .3s;
+  -o-transition-duration: .3s;
+  transition-duration: .3s;
 }
 
 .sweep:before {
@@ -322,9 +326,6 @@ body {
   -webkit-transition-timing-function: ease-out;
   -o-transition-timing-function: ease-out;
   transition-timing-function: ease-out;
-  -webkit-transition-duration: .3s;
-  -o-transition-duration: .3s;
-  transition-duration: .3s;
   -webkit-transition-property: -webkit-transform;
   transition-property: -webkit-transform;
   -o-transition-property: -o-transform;
@@ -481,7 +482,6 @@ body {
   text-align: center;
   font-style: italic;
   font-size: .86em;
-  font-family: Georgia,serif;
   -webkit-transition: all .2s ease-in-out .2s;
   -o-transition: all .2s ease-in-out .2s;
   transition: all .2s ease-in-out .2s;
@@ -716,7 +716,6 @@ body {
   color: #e4e6e7;
   font-weight: 600;
   font-size: 1.7em;
-  font-family: Kalam;
 }
 
 .footer p {
@@ -1366,7 +1365,6 @@ tr.act:hover {
   border-style: solid;
   color: #f2f2f2;
   font-size: 150%;
-  font-family: Kalam;
 }
 
 .creators .green {
@@ -1380,7 +1378,6 @@ tr.act:hover {
   background-color: #900;
   color: #f2f2f2;
   font-size: 150%;
-  font-family: Kalam;
 }
 
 @media screen and (max-width: 600px) {
@@ -1600,12 +1597,8 @@ tr.act:hover {
   border-radius: 5px;
 }
 
+.admin_function h2,
 .admin_function p {
-  color: #f2f2f2;
-  font-family: Kalam;
-}
-
-.admin_function h2 {
   color: #f2f2f2;
 }
 
@@ -1822,7 +1815,6 @@ tr.act:hover {
   color: #f2f2f2;
   font-weight: 700;
   font-size: 50%;
-  font-family: Kalam;
 }
 
 .large_container #intropage .jumbotron {
@@ -1867,6 +1859,20 @@ tr.act:hover {
     width: 100%;
     font-size: 15px;
   }
+}
+
+.large_container#allphotospage .jumbotron img {
+  float: left;
+  margin-right: 5%;
+  margin-bottom: 5%;
+  margin-left: 5%;
+  width: 90%;
+  border-radius: 5px;
+}
+
+.large_container#allphotospage .jumbotron #photodesc {
+  margin-right: 2em;
+  margin-left: 2em;
 }
 
 .large_container select.mobileselect {

@@ -31,8 +31,8 @@ gulp.task('styles', function () {
 		cssnext(),
 		fonts(),
 		urlrewrite(urlrewriteConfig),
-		sorting(),
 		cssnano(),
+		sorting(),
 		cssnano(),
 		stylefmt(),
 	];
