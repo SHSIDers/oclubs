@@ -17,7 +17,9 @@
     "gulp-uglify": "^2.0.0",
     "jshint": "^2.9.2",
     "postcss-cssnext": "^2.7.0",
+    "postcss-font-magician": "^1.4.0",
     "postcss-sorting": "^1.6.1",
+    "postcss-urlrewrite": "^0.2.0",
     "stylefmt": "^4.2.3"
   },
   "scripts": {

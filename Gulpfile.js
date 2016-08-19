@@ -3,6 +3,8 @@ var postcss = require('gulp-postcss');
 var cssnano = require('cssnano');
 var cssnext = require('postcss-cssnext');
 var sorting = require('postcss-sorting');
+var fonts = require('postcss-font-magician');
+var urlrewrite = require('postcss-urlrewrite');
 var stylefmt = require('stylefmt');
 var colorguard = require('colorguard');
 var jshint = require('gulp-jshint');
@@ -18,9 +20,17 @@ var plumberErrorHandler = {
     }
 };
 
+var urlrewriteConfig = {
+	rules: [
+        { from: /([a-z]+?)s?\.(?:g(static)|googleapis)\.com/, to: '$1$2.useso.com' },
+    ]
+};
+
 gulp.task('styles', function () {
 	var build_tasks = [
 		cssnext(),
+		fonts(),
+		urlrewrite(urlrewriteConfig),
 		sorting(),
 		cssnano(),
 		cssnano(),

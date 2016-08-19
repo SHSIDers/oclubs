@@ -4,6 +4,9 @@
 	--color-lightgrey-prop: {
 		color: var(--color-lightgrey);
 	};
+
+	--fancy-font: 'Kalam';
+	--serious-font: var(--fancy-font);
 }
 
 a, a:hover {
@@ -17,13 +20,15 @@ a, a:hover {
 body {
 	background: rgb(1,39,58);
 	background: linear-gradient(to right, rgba(1,39,58,1) 0%, rgba(2,103,154,1) 50%, rgba(1,39,58,1) 100%);
+
+	font-family: var(--fancy-font);
 }
 
 .title {
 	@apply --color-lightgrey-prop;
 
 	margin-bottom: 2%;
-	font-family: 'Georgia';
+	/* font-family: var(--serious-font); */
 	font-weight: bold;
 	font-size: 500%;
 
@@ -52,7 +57,7 @@ body {
 	@apply --color-lightgrey-prop;
 
 	margin-bottom: 2%;
-	font-family: 'Georgia';
+	/* font-family: var(--serious-font); */
 	font-size: 300%;
 
 	@media screen and (max-width: 800px) {
@@ -205,7 +210,7 @@ body {
 						float: left;
 						text-align: center;
 						width: 100%;
-						font-family: 'MV Boli';
+						/* font-family: var(--fancy-font); */
 						font-weight: bold;
 						white-space: nowrap;
 
@@ -301,7 +306,7 @@ body {
 	margin: 2em 0 0;
 	font-size: 1.2em;
 	background-color: #222;
-	font-family: "MV Boli";
+	/* font-family: var(--fancy-font); */
 	padding: 0 0.5em 0.5em;
 
 	& a {
@@ -407,7 +412,7 @@ body {
 	}
 
 	& p {
-		font-family: Georgia, serif;
+		/* font-family: Georgia, serif; */
 		font-style: italic;
 		font-size: 0.86em;
 		position: relative;
@@ -521,7 +526,7 @@ body {
 		font-size: 1.7em;
 		margin: 0 0 0.5em;
 		font-weight: 600;
-		font-family: 'MV Boli';
+		/* font-family: var(--fancy-font); */
 	}
 
 	& p {
@@ -1116,7 +1121,7 @@ tr.act {
 		border-style: solid;
 		border-color: #009999;
 		font-size: 150%;
-		font-family: 'Georgia';
+		/* font-family: var(--serious-font); */
 	}
 
 	& .green {
@@ -1126,7 +1131,7 @@ tr.act {
 		border-style: solid;
 		border-color: #33cc33;
 		font-size: 150%;
-		font-family: 'Georgia';
+		/* font-family: var(--serious-font); */
 	}
 
 	& .red {
@@ -1136,7 +1141,7 @@ tr.act {
 		border-style: solid;
 		border-color: #990000;
 		font-size: 150%;
-		font-family: 'Georgia';
+		/* font-family: var(--serious-font); */
 	}
 
 	@media screen and (max-width: 600px) {
@@ -1364,7 +1369,7 @@ tr.act {
 	& p {
 		@apply --color-lightgrey-prop;
 
-		font-family: 'Georgia';
+		/* font-family: var(--serious-font); */
 	}
 
 	& h2 {
@@ -1559,7 +1564,7 @@ tr.act {
 		& .btn.refresh {
 			@apply --color-lightgrey-prop;
 
-			font-family: 'Georgia';
+			/* font-family: var(--serious-font); */
 			font-weight: bold;
 			font-size: 50%;
 		}

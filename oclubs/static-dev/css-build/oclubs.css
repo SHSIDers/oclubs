@@ -1,3 +1,24 @@
+@font-face {
+  font-weight: 300;
+  font-style: normal;
+  font-family: Kalam;
+  src: local("Kalam Light"), local(Kalam-Light), url(//fontstatic.useso.com/s/kalam/v6/wUg7Jkkt8VKT-zE4fSonbvesZW2xOQ-xsNqO47m55DA.eot) format("eot"), url(//fontstatic.useso.com/s/kalam/v6/hTIz1EhZk15xkDsCgpOJLvesZW2xOQ-xsNqO47m55DA.woff2) format("woff2"), url(//fontstatic.useso.com/s/kalam/v6/QylgPSjDydA7-sWvyWlYKfesZW2xOQ-xsNqO47m55DA.woff) format("woff");
+}
+
+@font-face {
+  font-weight: 400;
+  font-style: normal;
+  font-family: Kalam;
+  src: local(Kalam), local(Kalam-Regular), url(//fontstatic.useso.com/s/kalam/v6/FJCCBIzAwkYx_x_MyRlfMw.eot) format("eot"), url(//fontstatic.useso.com/s/kalam/v6/IOem-i1iklYvPM2B8plGmg.woff2) format("woff2"), url(//fontstatic.useso.com/s/kalam/v6/90dVhmNmR8HPTvtUmM5aQg.woff) format("woff");
+}
+
+@font-face {
+  font-weight: 700;
+  font-style: normal;
+  font-family: Kalam;
+  src: local("Kalam Bold"), local(Kalam-Bold), url(//fontstatic.useso.com/s/kalam/v6/6Zs-IslOKyjsbXpNUgUOr_esZW2xOQ-xsNqO47m55DA.eot) format("eot"), url(//fontstatic.useso.com/s/kalam/v6/V6yS6HmuVV3o39pJxMtJC_esZW2xOQ-xsNqO47m55DA.woff2) format("woff2"), url(//fontstatic.useso.com/s/kalam/v6/Qn-5-6XRdB09P8vdnMkOE_esZW2xOQ-xsNqO47m55DA.woff) format("woff");
+}
+
 a,
 a:hover {
   text-decoration: none;
@@ -13,6 +34,7 @@ body {
   background: -webkit-linear-gradient(left, #01273a, #02679a 50%, #01273a);
   background: -o-linear-gradient(left, #01273a 0, #02679a 50%, #01273a 100%);
   background: linear-gradient(90deg, #01273a 0, #02679a 50%, #01273a);
+  font-family: Kalam;
 }
 
 .title {
@@ -20,7 +42,6 @@ body {
   color: #f2f2f2;
   font-weight: 700;
   font-size: 500%;
-  font-family: Georgia;
 }
 
 @media screen and (max-width: 800px) {
@@ -57,7 +78,6 @@ body {
   margin-bottom: 2%;
   color: #f2f2f2;
   font-size: 300%;
-  font-family: Georgia;
 }
 
 @media screen and (max-width: 800px) {
@@ -225,7 +245,6 @@ body {
   white-space: nowrap;
   font-weight: 700;
   font-size: 1em;
-  font-family: MV Boli;
 }
 
 .header .container .top-nav ul li a:hover {
@@ -343,7 +362,6 @@ body {
   background: #0000b3;
   background-color: #222;
   font-size: 1.2em;
-  font-family: MV Boli;
 }
 
 .login a {
@@ -698,7 +716,7 @@ body {
   color: #e4e6e7;
   font-weight: 600;
   font-size: 1.7em;
-  font-family: MV Boli;
+  font-family: Kalam;
 }
 
 .footer p {
@@ -1348,7 +1366,7 @@ tr.act:hover {
   border-style: solid;
   color: #f2f2f2;
   font-size: 150%;
-  font-family: Georgia;
+  font-family: Kalam;
 }
 
 .creators .green {
@@ -1362,7 +1380,7 @@ tr.act:hover {
   background-color: #900;
   color: #f2f2f2;
   font-size: 150%;
-  font-family: Georgia;
+  font-family: Kalam;
 }
 
 @media screen and (max-width: 600px) {
@@ -1584,7 +1602,7 @@ tr.act:hover {
 
 .admin_function p {
   color: #f2f2f2;
-  font-family: Georgia;
+  font-family: Kalam;
 }
 
 .admin_function h2 {
@@ -1804,7 +1822,7 @@ tr.act:hover {
   color: #f2f2f2;
   font-weight: 700;
   font-size: 50%;
-  font-family: Georgia;
+  font-family: Kalam;
 }
 
 .large_container #intropage .jumbotron {
