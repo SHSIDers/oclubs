@@ -1781,10 +1781,7 @@ tr.act:hover {
   transition: 0.3s;
 }
 
-#sidenav a:hover {
-  color: #f1f1f1;
-}
-
+#sidenav a:hover,
 #sidenav .active {
   color: #f1f1f1;
 }
