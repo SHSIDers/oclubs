@@ -343,7 +343,7 @@ body {
 			cursor: pointer;
 			top: -5px;
 			right: -4px;
-			background-color: inherit;
+			background-color: transparent;
 		}
 	}
 

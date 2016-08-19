@@ -3,8 +3,6 @@ var postcss = require('gulp-postcss');
 var cssnano = require('cssnano');
 var cssnext = require('postcss-cssnext');
 var sorting = require('postcss-sorting');
-var rmcomments = require('postcss-discard-comments');
-var mergerules =  require('postcss-merge-rules');
 var stylefmt = require('stylefmt');
 var colorguard = require('colorguard');
 var jshint = require('gulp-jshint');
@@ -23,9 +21,9 @@ var plumberErrorHandler = {
 gulp.task('styles', function () {
 	var build_tasks = [
 		cssnext(),
-		rmcomments(),
-		mergerules(),
 		sorting(),
+		cssnano(),
+		cssnano(),
 		stylefmt(),
 	];
 	var lint_tasks = [
