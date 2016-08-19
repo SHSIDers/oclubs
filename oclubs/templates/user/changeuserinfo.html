@@ -36,7 +36,7 @@
 					<img src="{{ user.picture.location_external }}" class="img-responsive img-thumbnail" alt="{{ user.nickname }}" style="width:3em">
 				</td>
 				{% for variable in ['studentid', 'nickname', 'passportname', 'email', 'phone', 'grade', 'currentclass']%}
-				<td class="admin_user_info" property-type="{{ variable }}">{% if user[variable] is none %}-{% else %}{{ user[variable] }}{% endif %}</td>
+				<td class="admin_user_info" data-property-type="{{ variable }}">{% if user[variable] is none %}-{% else %}{{ user[variable] }}{% endif %}</td>
 				{% endfor %}
 			</tr>
 			{% endfor %}

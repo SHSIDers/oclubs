@@ -78,7 +78,7 @@
 										.closest( 'tr' )
 										.find( '.userid' )
 										.text(),
-									type: item.attr( 'property-type' ),
+									type: item.data( 'property-type' ),
 									content: new_content,
 									_csrf_token: $( item )
 										.closest( 'table' )
