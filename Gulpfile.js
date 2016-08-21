@@ -44,8 +44,9 @@ gulp.task('styles', function () {
 		cssnano(),
 	];
 	return gulp
-		.src('./oclubs/static-dev/css/*.css')
+		.src('./oclubs/static-dev/css/*.pcss')
 		.pipe(plumber(plumberErrorHandler))
+		.pipe(rename({ extname: '.css' }))
 		.pipe(postcss(build_tasks))
 		.pipe(gulp.dest('./oclubs/static-dev/css-build'))
 		.pipe(postcss(lint_tasks))
@@ -77,7 +78,7 @@ gulp.task('watch', function() {
 	var changeevent = function(event) {
 		console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
 	};
-	gulp.watch('./oclubs/static-dev/css/*.css', ['styles'])
+	gulp.watch('./oclubs/static-dev/css/*.pcss', ['styles'])
 		.on('change', changeevent);
 	gulp.watch('./oclubs/static-dev/js/*.js', ['scripts'])
 		.on('change', changeevent);
