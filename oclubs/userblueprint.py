@@ -413,7 +413,7 @@ def registerhm_submit(club):
         plan += 'Date: ' + act.date.strftime('%b-%d-%y') + '\n\n' + \
             'Content: ' + act.name + '\n\n'
     parameters = {'user': current_user, 'club': club, 'plan': plan}
-    contents = render_email_template('registerhm', parameters)
+    # contents = render_email_template('registerhm', parameters)
     # current_user.email_user('HongMei Plan - ' + club.name, contents)
     flash('Your application has been successfully submitted.', 'reghm')
     return redirect(url_for('.registerhm', club=club.callsign))
@@ -433,3 +433,35 @@ def notifications(page=1):
                            notifications=notes_all[1],
                            number=current_user.get_unread_notifications_num(),
                            pagination=Pagination(page, note_num, notes_all[0]))
+
+
+@userblueprint.route('/notifications/submit', methods=['POST'])
+@login_required
+def invite_reply():
+    from oclubs.exceptions import NoRow
+    from oclubs.access import database
+
+    note_id = request.form['id']
+    try:
+        data = database.fetch_onerow(
+            'notification',
+            {'notification_invitestatus': 'invitestatus', 'notification_user': 'user', 'notification_inviteclub': 'inviteclub'},
+            {'notification_id': note_id}
+        )
+    except NoRow:
+        abort(404)
+    if data['invitestatus'] != 1:  # not an invitation or cannot be replied
+        abort(404)
+    if data['user'] != current_user.id:
+        abort(403)
+    reply = request.form['reply']
+    newstatus = {'accept': 2, 'decline': 3}.get(reply, None)
+    if newstatus:
+        database.update_row(
+            'notification',
+            {'notification_invitestatus': newstatus},
+            {'notification_id': note_id}
+        )
+    if newstatus == 2:
+        Club(data['inviteclub']).add_member(User(data['user']))
+    return redirect(url_for('.notifications'))

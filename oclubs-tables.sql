@@ -117,7 +117,9 @@ CREATE TABLE IF NOT EXISTS notification (
 	notification_user int NOT NULL, # Foreign key to user.user_id
 	notification_text varchar(255) NOT NULL,
 	notification_isread boolean NOT NULL,
-	notification_date int NOT NULL
+	notification_date int NOT NULL,
+	notification_invitestatus tinyint NOT NULL, # 0 = not an invite, 1 = neither accepted or declined, 2 = accepted, 3 = declined
+	notification_inviteclub int # Foreign key to club.club_id
 );
 
 CREATE INDEX IF NOT EXISTS notification_user ON notification (notification_user);

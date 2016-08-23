@@ -72,7 +72,7 @@ def clubintro_submit(club):
     '''Add new member'''
     club.add_member(current_user)
     parameters = {'club': club, 'current_user': current_user}
-    contents = render_email_template('joinclubs', parameters)
+    # contents = render_email_template('joinclubs', parameters)
     # club.leader.email_user('New Club Member - ' + club.name, contents)
     club.leader.notify_user(current_user.nickname + ' has joined ' + club.name + '.')
     flash('You have successfully joined ' + club.name + '.', 'join')
@@ -103,7 +103,7 @@ def newleader_submit(club):
             break
     for member in club.members:
         parameters = {'user': member, 'club': club, 'leader_old': leader_old}
-        contents = render_email_template('newleader', parameters)
+        # contents = render_email_template('newleader', parameters)
         # member.email_user('New Leader - ' + club.name, contents)
         member.notify_user(club.leader.nickname + ' becomes the new leader of ' + club.name + '.')
     return render_template('club/success.html')
@@ -156,7 +156,7 @@ def changeclubinfo_submit(club):
             return redirect(url_for('.changeclubinfo', club=club.callsign))
     for member in club.members:
         parameters = {'user': member, 'club': club}
-        contents = render_email_template('changeclubinfo', parameters)
+        # contents = render_email_template('changeclubinfo', parameters)
         # member.email_user('Change Club Info - ' + club.name, contents)
         member.notify_user(club.name + '\'s information has been changed.')
     flash('The information about club has been successfully submitted.', 'clubinfo')
@@ -181,7 +181,7 @@ def adjustmember_submit(club):
     member = User(request.form['studentid'])
     club.remove_member(member)
     parameters = {'member': member, 'club': club}
-    contents = render_email_template('adjustmember', parameters)
+    # contents = render_email_template('adjustmember', parameters)
     # member.email_user('Member Adjustment - ' + club.name, contents)
     member.notify_user('You have been moved out of ' + club.name + '.')
     flash(member.nickname + ' has been expelled.', 'expelled')
@@ -198,11 +198,10 @@ def invitemember(club):
     if new_member is None:
         flash('Please input correct user info to invite.', 'invite_member')
     else:
-        club.add_member(new_member)
         parameters = {'club': club, 'member': new_member}
-        contents = render_email_template('invitemember', parameters)
+        # contents = render_email_template('invitemember', parameters)
         # member.email_user('Invitation - ' + club.name, contents)
-        new_member.notify_user('You have been invited to ' + club.name + '.')
-        flash(new_member.nickname + ' have been invited to ' + club.name + '.',
+        new_member.notify_user('You have been invited to %s.' % (club.name), 1, club.id)
+        flash('The invitation has been sent to %s.' % new_member.nickname,
               'invite_member')
     return redirect(url_for('.adjustmember', club=club.callsign))
