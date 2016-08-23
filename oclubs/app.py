@@ -67,7 +67,7 @@ def csrf_protect():
     if request.method == "POST":
         sessiontoken = session.get('_csrf_token', None)
         if not sessiontoken or request.form.get('_csrf_token') != sessiontoken:
-            abort(403)
+            abort(418)
 
 
 def generate_csrf_token():
@@ -138,6 +138,14 @@ def internal_server_error(e=None):
                            error_type=500
                            ), 500
 
+
+@app.errorhandler(418)
+@app.route('/418')
+def i_am_a_teapot(e=None):
+    '''csrf violation'''
+    return render_template('static/error.html',
+                           error_type=418
+                           ), 418
 
 @login_manager.user_loader
 def load_user(user_id):

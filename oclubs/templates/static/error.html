@@ -12,6 +12,9 @@
 {% if error_type is equalto 401 %}
 401 Unauthorized
 {% endif %}
+{% if error_type is equalto 418 %}
+418 I'm a teapot
+{% endif %}
 {% endblock %}
 {% block content %}
 
@@ -49,6 +52,12 @@
 	<center><img src="{{ getpicture('notloggedin', 'png') }}" class="img-responsive" alt="Not Logged In" width="40%"></center>
 	<br><br>
 	<center><p>We are sorry to tell you. You are not logged in. Please login to check if you have the access to the url you entered.</p></center>
+{% endif %}
+{% if error_type is equalto 418 %}
+	<h1 class="title text-center">418 I'm a teapot</h1>
+	<center><img src="{{ getpicture('teapot', 'jpeg') }}" class="img-responsive" alt="I'm a teapot" width="40%"></center>
+	<br><br>
+	<center><p>oClubs server is a little teapot; the resulting entity body is short and stout.</p></center>
 {% endif %}
 </div>
 
