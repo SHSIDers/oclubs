@@ -11,21 +11,6 @@
 	<div class="notification {% if note.isread == True %}notification-read{% else %}notification-unread{% endif %}">
 		<div class="col-sm-9">
 			<p>{{ note.text }}</p>
-			{% if note.invitestatus %}
-			<form action="{{ url_for('.invite_reply')}}" method="post">
-				<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-				<input name="id" type="hidden" value="{{ note.id }}">
-				{% if note.invitestatus == 1 %}
-				<p>Do you wish to accept this invitation?</p>
-				<button class="btn btn-success" id="acceptinvite" name="reply" value="accept"><span class="glyphicon glyphicon-ok"></span></button>
-				<button class="btn btn-danger" id="declineinvite" name="reply" value="decline"><span class="glyphicon glyphicon-remove"></span></button>
-				{% elif note.invitestatus == 2 %}
-				<p>Accepted</p>
-				{% elif note.invitestatus == 3 %}
-				<p>Declined</p>
-				{% endif %}
-			</form>
-			{% endif %}
 		</div>
 		<div class="col-sm-3">
 			<p>{{ note.date.strftime('%b-%d-%y') }}</p>

@@ -79,7 +79,7 @@ class User(BaseObject, UserMixin):
         address = self.email or 'root@localhost'
         email.send((address, self.passportname), title, contents)
 
-    def notify_user(self, contents, invite=0, club=None):
+    def notify_user(self, contents):
         from oclubs.objs.activity import date_int
         database.insert_row(
             'notification',
@@ -87,9 +87,7 @@ class User(BaseObject, UserMixin):
                 'notification_user': self.id,
                 'notification_text': contents,
                 'notification_isread': False,
-                'notification_date': date_int(date.today()),
-                'notification_invitestatus': invite,
-                'notification_inviteclub': club
+                'notification_date': date_int(date.today())
             }
         )
 
@@ -102,12 +100,9 @@ class User(BaseObject, UserMixin):
             database.fetch_multirow,
             'notification',
             {
-                'notification_id': 'id',
                 'notification_text': 'text',
                 'notification_isread': 'isread',
-                'notification_date': 'date',
-                'notification_invitestatus': 'invitestatus',
-                'notification_inviteclub': 'inviteclub'
+                'notification_date': 'date'
             },
             {
                 'where': [('=', 'notification_user', self.id)],
