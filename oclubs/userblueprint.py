@@ -429,7 +429,31 @@ def notifications(page=1):
         limit=((page-1)*note_num, note_num)
     )
     current_user.set_notifications_readall()
+    invitations_all = current_user.get_invitation()
     return render_template('user/notifications.html',
                            notifications=notes_all[1],
                            number=current_user.get_unread_notifications_num(),
-                           pagination=Pagination(page, note_num, notes_all[0]))
+                           pagination=Pagination(page, note_num, notes_all[0]),
+                           invitations=invitations_all)
+
+
+@userblueprint.route('/notifications/submit', methods=['POST'])
+@login_required
+def invitation_reply():
+    reply = request.form['reply']
+    club = Club(request.form['club'])
+    invitations = current_user.get_invitation()
+    isinvited = False
+    for invitation in invitations:
+        if invitation['club'] == club:
+            isinvited = True
+            break
+    if not isinvited:
+        abort(403)
+    if reply == "accept":
+        club.add_member(current_user)
+        flash('You have successfully joined %s.' % club.name, 'reply')
+    elif reply == "decline":
+        flash('You have declined the invitation of %s.' % club.name, 'reply')
+    current_user.delete_invitation(club)
+    return redirect(url_for('.notifications'))

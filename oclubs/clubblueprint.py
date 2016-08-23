@@ -198,11 +198,10 @@ def invitemember(club):
     if new_member is None:
         flash('Please input correct user info to invite.', 'invite_member')
     else:
-        club.add_member(new_member)
         parameters = {'club': club, 'member': new_member}
         contents = render_email_template('invitemember', parameters)
         # member.email_user('Invitation - ' + club.name, contents)
-        new_member.notify_user('You have been invited to ' + club.name + '.')
-        flash(new_member.nickname + ' have been invited to ' + club.name + '.',
+        club.send_invitation(new_member)
+        flash('The invitation has been sent to %s.' % new_member.nickname,
               'invite_member')
     return redirect(url_for('.adjustmember', club=club.callsign))

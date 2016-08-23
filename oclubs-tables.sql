@@ -132,3 +132,13 @@ CREATE TABLE IF NOT EXISTS signup (
 
 CREATE INDEX IF NOT EXISTS signup_act ON signup (signup_act);
 CREATE INDEX IF NOT EXISTS signup_user ON signup (signup_user);
+
+
+CREATE TABLE IF NOT EXISTS invitation (
+	invitation_club int NOT NULL, # Foreign key to club.club_id
+	invitation_user int NOT NULL, # Foreign key to user.user_id
+	invitation_date int NOT NULL,
+	PRIMARY KEY(invitation_club, invitation_user)
+);
+
+CREATE INDEX IF NOT EXISTS invitation_user ON invitation (invitation_user);

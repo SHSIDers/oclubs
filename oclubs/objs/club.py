@@ -4,6 +4,7 @@
 
 from __future__ import absolute_import, unicode_literals
 
+from datetime import date
 import random
 
 from oclubs.access import database, redis
@@ -132,6 +133,20 @@ class Club(BaseObject):
         database.delete_rows('club_member',
                              {'cm_club': self.id, 'cm_user': user.id})
         del self.members
+
+    def send_invitation(self, user):
+        from oclubs.objs.activity import date_int
+        from oclubs.exceptions import AlreadyExists
+
+        try:
+            database.insert_row(
+                'invitation',
+                {'invitation_club': self.id,
+                 'invitation_user': user.id,
+                 'invitation_date': date_int(date.today())}
+            )
+        except AlreadyExists:
+            pass
 
     @classmethod
     def get_clubs_special_access(cls, user):

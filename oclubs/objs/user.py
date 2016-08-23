@@ -12,7 +12,9 @@ from xkcdpass import xkcd_password as xp
 from oclubs.access import database, email
 from oclubs.enums import UserType
 from oclubs.exceptions import NoRow, PasswordTooShort
+from oclubs.objs.activity import int_date
 from oclubs.objs.base import BaseObject, Property, ListProperty, paged_db_read
+
 
 _crypt = CryptContext(schemes=['bcrypt'])  # , 'sha512_crypt', 'pbkdf2_sha512'
 _words = xp.generate_wordlist(wordfile=xp.locate_wordfile())
@@ -93,8 +95,6 @@ class User(BaseObject, UserMixin):
 
     @paged_db_read
     def get_notifications(self, pager):
-        from oclubs.objs.activity import int_date
-
         pager_fetch, pager_return = pager
         ret = pager_fetch(
             database.fetch_multirow,
@@ -130,6 +130,38 @@ class User(BaseObject, UserMixin):
             database.RawSQL('COUNT(*)'),
             {'notification_user': self.id, 'notification_isread': False}
         )
+
+    def get_invitation(self):
+        from oclubs.objs import Club
+
+        ret = database.fetch_multirow(
+                'invitation',
+                {'invitation_club': 'club', 'invitation_date': 'date'},
+                {'invitation_user': self.id}
+            )
+        for item in ret:
+            item['date'] = int_date(item['date'])
+            item['club'] = Club(item['club'])
+        return ret
+
+    def get_invited_clubs(self):
+        try:
+            return database.fetch_onecol(
+                'invitation',
+                'invitation_club',
+                {'invitation_user': self.id}
+            )
+        except NoRow:
+            return ()
+
+    def delete_invitation(self, club):
+        try:
+            database.delete_rows(
+                'invitation',
+                {'invitation_club': club.id, 'invitation_user': self.id}
+            )
+        except NoRow:
+            pass
 
     @staticmethod
     def attempt_login(studentid, password):
