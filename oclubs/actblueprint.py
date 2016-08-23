@@ -163,11 +163,13 @@ def activity(activity):
         has_access = False
     is_other_act = (activity.time == ActivityTime.UNKNOWN or
                     activity.time == ActivityTime.OTHERS)
+    has_selection = True  # TODO: correct this
     return render_template('activity/actintro.html',
                            is_other_act=is_other_act,
                            is_past=date.today() >= activity.date,
                            has_access=has_access,
-                           can_join=can_join)
+                           can_join=can_join,
+                           has_selection=has_selection)
 
 
 @actblueprint.route('/<activity>/introduction/submit', methods=['POST'])

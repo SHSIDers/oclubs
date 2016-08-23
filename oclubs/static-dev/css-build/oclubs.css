@@ -1832,6 +1832,14 @@ tr.act:hover {
   line-height: 1.2;
 }
 
+.large_container #intropage .selection_bar {
+  margin-bottom: 2%;
+  width: 40%;
+  border: 3px solid #337ab7;
+  background-color: transparent;
+  font-size: 120%;
+}
+
 .large_container #intropage .intro_function {
   text-align: center;
 }

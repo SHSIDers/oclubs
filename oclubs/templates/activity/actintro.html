@@ -28,7 +28,6 @@
 			<p>Description:</p>
 			{{ g.activity.description.formatted }}
 			{% endif %}
-			<br>
 		</div>
 		{% if messages_signup %}
 		<ul class="list-group" style="margin-top:0">
@@ -37,6 +36,16 @@
 			{% endfor %}
 		</ul>
 		{% endif %}
+		<p style="font-size: 150%;color: #f2f2f2">Selection:</p>
+
+		{% if has_selection %}
+		<select name="selection" form="join_form" class="selection_bar">
+			{% for choice in choices %}
+			<option value="{{ choice }}">{{ choice }}</option>
+			{% endfor %}
+		</select>
+		{% endif %}
+
 		<center>
 		<div class="intro_function">
 			<div class="col-sm-6">
@@ -47,7 +56,7 @@
 
 			{% if is_other_act and not is_past and can_join %}
 			<div class="col-sm-6">
-				<form action="{{ url_for('.activity_submit', activity=g.activity.callsign) }}" method="post">
+				<form action="{{ url_for('.activity_submit', activity=g.activity.callsign) }}" method="post" id="join_form">
 					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 					<input class="btn btn-info btn-lg" type="submit" value="Join">
 				</form>
