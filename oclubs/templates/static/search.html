@@ -24,7 +24,7 @@
 	</center>
 	<br>
 	{% for result in results %}
-	<a href="{% if search_type == 'club' %}{{ url_for('clubblueprint.clubintro', club=result.obj.callsign) }}{% else %}{{ url_for('actblueprint.activity', activity=result.obj.callsign) }}{% endif %}">
+	<a href="{% if search_type == 'club' %}{{ url_for('clubblueprint.clubintro', club=result.obj.callsign) }}{% else %}{{ url_for('actblueprint.actintro', activity=result.obj.callsign) }}{% endif %}">
 	<div class="search_block clickable">
 		<h1>{{ result.name }}{% if result.date %} - <span style="font-size:80%">{{ result.date }}</span>{% endif %}</h1>
 		{% if result.pic %}

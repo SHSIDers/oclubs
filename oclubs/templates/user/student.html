@@ -56,7 +56,7 @@
 		</thead>
 		<tbody>
 			<!--{% for meeting in meetings %}
-			<tr class="clickable act" data-href="{{ url_for('actblueprint.activity', activity=meeting.callsign) }}">
+			<tr class="clickable act" data-href="{{ url_for('actblueprint.actintro', activity=meeting.callsign) }}">
 				<td>{{ meeting.name }}</td>
 				<td>{{ meeting.club.name }}</td>
 				<td>{{ meeting.date }}</td>
@@ -85,7 +85,7 @@
 		</thead>
 		<tbody>
 			{% for act in activities %}
-			<tr class="clickable act" data-href="{{ url_for('actblueprint.activity', activity=act.callsign) }}">
+			<tr class="clickable act" data-href="{{ url_for('actblueprint.actintro', activity=act.callsign) }}">
 				<td>{{ act.name }}</td>
 				<td>{{ act.club.name }}</td>
 				<td>{{ act.date }}</td>

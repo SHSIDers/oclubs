@@ -149,7 +149,7 @@ def newact_submit(club):
 
 @actblueprint.route('/<activity>/introduction')
 @get_callsign(Activity, 'activity')
-def activity(activity):
+def actintro(activity):
     '''Club Activity Page'''
     if current_user.is_authenticated:
         has_access = (current_user == activity.club.leader or
@@ -179,7 +179,7 @@ def activity_submit(activity):
     '''Signup for activity'''
     activity.signup(current_user)
     flash('You have successfully signed up for ' + activity.name + '.', 'signup')
-    return redirect(url_for('.activity', activity=activity.callsign))
+    return redirect(url_for('.actintro', activity=activity.callsign))
 
 
 @actblueprint.route('/<activity>/post')

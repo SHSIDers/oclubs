@@ -32,7 +32,7 @@
 			</thead>
 			<tbody>
 				{% for act in acts %}
-				<tr class="clickable act" data-href="{{ url_for('.activity', activity=act.callsign) }}">
+				<tr class="clickable act" data-href="{{ url_for('.actintro', activity=act.callsign) }}">
 					<td>{{ act.name }}</td>
 					<td>{{ act.club.name }}</td>
 					<td>{{ act.date }}</td>

@@ -264,7 +264,7 @@ def homepage():
         'picture': act.pictures[0],
         'actname': act.name,
         'content': act.description.formatted,
-        'link': url_for('actblueprint.activity', activity=act.callsign)
+        'link': url_for('actblueprint.actintro', activity=act.callsign)
     } for act in acts])
 
     top_pic.extend([{
