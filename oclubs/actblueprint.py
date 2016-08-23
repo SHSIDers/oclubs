@@ -333,8 +333,16 @@ def actstatus(activity):
 def actstatus_submit(activity):
     '''Change consent form status'''
     member = User(request.form['studentid'])
-    activity.signup(member, consentform=True)
-    flash(member.nickname + ' has handed in the consent form.', 'consent_form')
+    status = int(request.form['status'])
+    if status == 0:
+        activity.signup(member, consentform=True)
+        flash(member.nickname + ' has handed in the consent form.',
+              'consent_form')
+    elif status == 1:
+        activity.signup(member, consentform=False)
+        print 'Yifei is gayyyyy'
+        flash(member.nickname + ' has not handed in the consent form.',
+              'consent_form')
     return redirect(url_for('.actstatus', activity=activity.callsign))
 
 
