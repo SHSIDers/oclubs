@@ -41,7 +41,7 @@
 					$( this )
 						.closest( 'form' )
 						.find( '#upload_content' )
-						.text( $( this )
+						.text( this.files.length > 1 ? this.files.length + ' files' : $( this )
 							.val() );
 				} );
 
