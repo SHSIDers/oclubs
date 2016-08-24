@@ -95,7 +95,7 @@ class Club(BaseObject):
         )
         return pager_return([cls(item) for item in tempdata])
 
-    def activities(self, types, dates=(True, True)):
+    def activities(self, types=(), dates=(True, True)):
         from oclubs.objs import Activity
 
         return Activity.get_activities_conditions(
