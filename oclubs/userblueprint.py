@@ -414,11 +414,14 @@ def checkhongmeischedule_download():
                     times=(ActivityTime.HONGMEI,),
                     dates=date
                 ):
-        members = []
-        members.extend(member.user.nickname + ': ' +
-                       str(member.user.phone) + '(Consent From Handed? ' +
-                       'Yes' if member.consentform == 1 else 'No' + '\n'
-                       for member in act.signup_list())
+        members = ''
+
+        members = '\n'.join((member['user'].nickname + ': ' +
+                             str(member['user'].phone) +
+                             '(Consent From Handed? ' +
+                             ('Yes' if member['consentform'] == 1 else 'No') +
+                             ')')
+                            for member in act.signup_list())
         info.append((act.club.name, members))
     print info
     return download_xlsx('HongMei\'s Schedule on' +
