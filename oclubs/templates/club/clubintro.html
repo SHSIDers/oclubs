@@ -55,7 +55,7 @@
 			</div>
 			{% if free_join %}
 			<div class="col-sm-4">
-				<center><a href="{{ url_for('clubblueprint.clubintro_submit', club=g.club.callsign) }}">
+				<center><a href="#joinClub" data-toggle="modal" data-target="joinClub">
 					<button class="btn btn-info btn-lg">Join</button>
 				</a></center>
 			</div>
@@ -77,6 +77,26 @@
 </div>
 
 <div class="clearfix"></div>
+
+<div class="modal fade" id="joinClub">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Join {{ g.club.name }}</h4>
+			</div>
+			<div class="modal-body">
+				<p>Due to SHSID's rule, please do not join more than two afternoon clubs.</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				<form action="{{ url_for('clubblueprint.clubintro_submit', club=g.club.callsign) }}" method="post">
+					<input type="submit" class="btn btn-primary" value="Join">
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
 
 {% endwith %}
 {% endblock %}

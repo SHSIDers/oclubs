@@ -345,7 +345,11 @@ def changepassword_submit():
         flash('Please input valid password.', 'password')
         return redirect(url_for('.changepassword'))
     user = User(request.form['id'])
-    user.password = password
+    try:
+        user.password = password
+    except PasswordTooShort:
+        flash('Password must be at least six digits.','password')
+        return redirect(url_for('.changepassword'))
     flash(user.nickname + '\'s password has been successfully set to ' + password + '.', 'password')
     return redirect(url_for('.changepassword'))
 
