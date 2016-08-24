@@ -55,9 +55,7 @@
 			</div>
 			{% if free_join %}
 			<div class="col-sm-4">
-				<center><a href="#joinClub" data-toggle="modal" data-target="#joinClub">
-					<button class="btn btn-info btn-lg">Join</button>
-				</a></center>
+				<center><a href="#joinClub" data-toggle="modal" data-target="#joinClub" class="btn btn-info btn-lg">Join</a></center>
 			</div>
 			{% endif %}
 			{% if current_user in g.club.members %}
@@ -91,6 +89,7 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 				<form action="{{ url_for('clubblueprint.clubintro_submit', club=g.club.callsign) }}" method="post">
+					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 					<input type="submit" class="btn btn-primary" value="Join">
 				</form>
 			</div>

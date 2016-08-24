@@ -295,9 +295,13 @@ def newhm(club):
 def newhm_submit(club):
     '''Input HongMei plan into databse'''
     contents = request.form['contents']
-    date = datetime.strptime(request.form['year'] +
-                             request.form['month'] +
-                             request.form['day'], '%Y%m%d')
+    try:
+        date = datetime.strptime(request.form['year'] +
+                                 request.form['month'] +
+                                 request.form['day'], '%Y%m%d')
+    except ValueError:
+        flash('Please input valid date to submit.', 'newhm')
+        return redirect(url_for('.newhm', club=club.callsign))
     if contents == '' or date < date.today():
         flash('Please input contents or correct date to submit.', 'newhm')
         return redirect(url_for('.newhm', club=club.callsign))

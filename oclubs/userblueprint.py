@@ -4,6 +4,7 @@
 
 from __future__ import absolute_import, unicode_literals
 import traceback
+from datetime import date, timedelta, datetime
 
 from flask import (
     Blueprint, render_template, url_for, request, session, redirect, abort, flash, jsonify
@@ -77,8 +78,10 @@ def personal():
                                myclubs=myclubs,
                                UserType=UserType)
     else:
+        years = [(date.today() + timedelta(days=365*diff)).year for diff in range(2)]
         return render_template('user/admin.html',
-                               pictures=pictures)
+                               pictures=pictures,
+                               years=years)
 
 
 @userblueprint.route('/submit_info', methods=['POST'])
@@ -392,6 +395,34 @@ def changeuserinfo_submit():
     else:
         status = 'success'
     return jsonify({'result': status})
+
+
+@userblueprint.route('/check_hongmei_schedule/download', methods=['POST'])
+@special_access_required
+def checkhongmeischedule_download():
+    '''Allow admin to check HongMei schedule'''
+    info = []
+    try:
+        date = datetime.strptime(request.form['year'] +
+                                 request.form['month'] +
+                                 request.form['day'], '%Y%m%d')
+    except ValueError:
+        return download_xlsx('Wrong date.xlsx', [])
+    info.append((date.strftime('%b-%d-%Y'),))
+    info.append(('Club Name', 'Members'))
+    for act in Activity.get_activities_conditions(
+                    times=(ActivityTime.HONGMEI,),
+                    dates=date
+                ):
+        members = []
+        members.extend(member.user.nickname + ': ' +
+                       str(member.user.phone) + '(Consent From Handed? ' +
+                       'Yes' if member.consentform == 1 else 'No' + '\n'
+                       for member in act.signup_list())
+        info.append((act.club.name, members))
+    print info
+    return download_xlsx('HongMei\'s Schedule on' +
+                         date.strftime('%b-%d-%Y') + '.xlsx', info)
 
 
 @userblueprint.route('/<club>/register_hongmei')
