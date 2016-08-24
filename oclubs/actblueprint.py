@@ -47,10 +47,7 @@ def allactivities(club_type, page):
 def clubactivities(club, page):
     '''One Club's Activities'''
     act_num = 20
-    acts = club.activities([ActivityTime.UNKNOWN,
-                            ActivityTime.NOON,
-                            ActivityTime.AFTERSCHOOL,
-                            ActivityTime.OTHERS])
+    acts = club.activities()
 
     pagination = Pagination(page, act_num, len(acts))
     acts = acts[(page-1)*act_num: page*act_num]
