@@ -2,21 +2,21 @@
   font-weight: 300;
   font-style: normal;
   font-family: Kalam;
-  src: local("Kalam Light"), local(Kalam-Light), url(//fontstatic.useso.com/s/kalam/v6/wUg7Jkkt8VKT-zE4fSonbvesZW2xOQ-xsNqO47m55DA.eot) format("eot"), url(//fontstatic.useso.com/s/kalam/v6/hTIz1EhZk15xkDsCgpOJLvesZW2xOQ-xsNqO47m55DA.woff2) format("woff2"), url(//fontstatic.useso.com/s/kalam/v6/QylgPSjDydA7-sWvyWlYKfesZW2xOQ-xsNqO47m55DA.woff) format("woff");
+  src: local("Kalam Light"), local(Kalam-Light), url(/static/cdn/fonts/s/kalam/v6/wUg7Jkkt8VKT-zE4fSonbvesZW2xOQ-xsNqO47m55DA.eot) format("eot"), url(/static/cdn/fonts/s/kalam/v6/hTIz1EhZk15xkDsCgpOJLvesZW2xOQ-xsNqO47m55DA.woff2) format("woff2"), url(/static/cdn/fonts/s/kalam/v6/QylgPSjDydA7-sWvyWlYKfesZW2xOQ-xsNqO47m55DA.woff) format("woff");
 }
 
 @font-face {
   font-weight: 400;
   font-style: normal;
   font-family: Kalam;
-  src: local(Kalam), local(Kalam-Regular), url(//fontstatic.useso.com/s/kalam/v6/FJCCBIzAwkYx_x_MyRlfMw.eot) format("eot"), url(//fontstatic.useso.com/s/kalam/v6/IOem-i1iklYvPM2B8plGmg.woff2) format("woff2"), url(//fontstatic.useso.com/s/kalam/v6/90dVhmNmR8HPTvtUmM5aQg.woff) format("woff");
+  src: local(Kalam), local(Kalam-Regular), url(/static/cdn/fonts/s/kalam/v6/FJCCBIzAwkYx_x_MyRlfMw.eot) format("eot"), url(/static/cdn/fonts/s/kalam/v6/IOem-i1iklYvPM2B8plGmg.woff2) format("woff2"), url(/static/cdn/fonts/s/kalam/v6/90dVhmNmR8HPTvtUmM5aQg.woff) format("woff");
 }
 
 @font-face {
   font-weight: 700;
   font-style: normal;
   font-family: Kalam;
-  src: local("Kalam Bold"), local(Kalam-Bold), url(//fontstatic.useso.com/s/kalam/v6/6Zs-IslOKyjsbXpNUgUOr_esZW2xOQ-xsNqO47m55DA.eot) format("eot"), url(//fontstatic.useso.com/s/kalam/v6/V6yS6HmuVV3o39pJxMtJC_esZW2xOQ-xsNqO47m55DA.woff2) format("woff2"), url(//fontstatic.useso.com/s/kalam/v6/Qn-5-6XRdB09P8vdnMkOE_esZW2xOQ-xsNqO47m55DA.woff) format("woff");
+  src: local("Kalam Bold"), local(Kalam-Bold), url(/static/cdn/fonts/s/kalam/v6/6Zs-IslOKyjsbXpNUgUOr_esZW2xOQ-xsNqO47m55DA.eot) format("eot"), url(/static/cdn/fonts/s/kalam/v6/V6yS6HmuVV3o39pJxMtJC_esZW2xOQ-xsNqO47m55DA.woff2) format("woff2"), url(/static/cdn/fonts/s/kalam/v6/Qn-5-6XRdB09P8vdnMkOE_esZW2xOQ-xsNqO47m55DA.woff) format("woff");
 }
 
 a,

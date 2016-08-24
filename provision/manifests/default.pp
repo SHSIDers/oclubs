@@ -37,6 +37,13 @@ service { 'nginx':
     require => Package['nginx'],
 }
 
+file { '/var/nginx':
+    ensure => directory,
+    owner  => 'nginx',
+    group  => 'nginx',
+    before => Service['nginx'],
+}
+
 file { '/etc/nginx/conf.d/default.conf':
     ensure => file,
     mode   => '0644',

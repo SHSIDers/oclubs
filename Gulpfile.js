@@ -22,7 +22,7 @@ var plumberErrorHandler = {
 
 var urlrewriteConfig = {
 	rules: [
-        { from: /([a-z]+?)s?\.(?:g(static)|googleapis)\.com/, to: '$1$2.useso.com' },
+        { from: /\/\/fonts\.gstatic\.com\//, to: '/static/cdn/fonts/' },
     ]
 };
 
