@@ -103,10 +103,22 @@ class Activity(BaseObject):
             conds.update(additional_conds)
 
         conds['where'] = conds.get('where', [])
-        if dates == (True, False):
-            conds['where'].append(('<', 'act_date', date_int(date.today())))
-        elif dates == (False, True):
-            conds['where'].append(('>=', 'act_date', date_int(date.today())))
+
+        if isinstance(dates, date):
+            conds['where'].append(('=', 'act_date', date_int(dates)))
+        elif dates != (True, True):
+            start, end = dates
+
+            if start is True:
+                conds['where'].append(('<', 'act_date',
+                                       date_int(end or date.today())))
+            elif end is True:
+                conds['where'].append(('>=', 'act_date',
+                                       date_int(start or date.today())))
+            else:
+                conds['where'].append(('range', 'act_date',
+                                       (date_int(start or date.today()),
+                                        date_int(end or date.today()))))
 
         if times:
             times = [time.value for time in times]
