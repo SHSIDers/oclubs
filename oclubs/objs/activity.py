@@ -83,7 +83,7 @@ class Activity(BaseObject):
         return ret
 
     def signup_user_status(self, user):
-        return database.fetch_multirow(
+        return database.fetch_onerow(
             'signup',
             {
                 'signup_consentform': 'consentform',
