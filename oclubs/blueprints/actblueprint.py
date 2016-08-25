@@ -126,13 +126,19 @@ def newact_submit(club):
         if actdate < date.today():
             raise IndexError
         a.date = actdate
-        a.time = ActivityTime[request.form['act_type'].upper()]
+        time = ActivityTime[request.form['act_type'].upper()]
+        a.time = time
         a.location = request.form['location']
         time_type = request.form['time_type']
         if time_type == 'hours':
             a.cas = int(request.form['cas'])
         else:
             a.cas = int(request.form['cas']) / 60
+        if (time == ActivityTime.OTHERS or time == ActivityTime.UNKNOWN) and \
+                request.form['has_selection'] == 'yes':
+            a.selections = request.form['selections'].split(';')
+        else:
+            a.selections = []
         a.create()
         flash(a.name + ' has been successfully created.', 'newact')
     except ValueError:
@@ -142,7 +148,7 @@ def newact_submit(club):
         flash('Please choose the correct date.', 'newact')
     else:
         for member in club.members:
-            parameters = {'member': member, 'club': club, 'act': activity}
+            parameters = {'member': member, 'club': club, 'act': a}
             contents = render_email_template('newact', parameters)
             member.email_user(a.name + ' - ' + club.name, contents)
             member.notify_user(club.name + ' is going to host ' + a.name + '.')
@@ -258,7 +264,7 @@ def hongmei_invite_submit(activity):
         activity.signup(member)
         parameters = {'member': member, 'activity': activity, 'plan': plan}
         contents = render_email_template('invitehm', parameters)
-        member.email_user('HongMei Invitation - ' + club.name, contents)
+        member.email_user('HongMei Invitation - ' + activity.club.name, contents)
         member.notify_user('You have been invited to HongMei activity - ' +
                            activity.name + ' on ' +
                            activity.date.strftime('%b-%d-%y') + '.')

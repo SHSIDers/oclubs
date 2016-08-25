@@ -344,7 +344,6 @@ def adjustclubs():
 def adjustclubs_submit():
     '''Input change in clubs into database'''
     exc_clubs = Club.excellentclubs()
-    print exc_clubs
     club = Club(request.form['clubid'])
     if club in exc_clubs:
         exc_clubs.remove(club)
@@ -448,7 +447,6 @@ def checkhongmeischedule_download():
                              ')')
                             for member in act.signup_list())
         info.append((act.club.name, members))
-    print info
     return download_xlsx('HongMei\'s Schedule on' +
                          date.strftime('%b-%d-%Y') + '.xlsx', info)
 

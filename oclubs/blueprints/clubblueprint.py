@@ -208,7 +208,7 @@ def invitemember(club):
     else:
         parameters = {'club': club, 'member': new_member}
         contents = render_email_template('invitemember', parameters)
-        member.email_user('Invitation - ' + club.name, contents)
+        new_member.email_user('Invitation - ' + club.name, contents)
         club.send_invitation(new_member)
         flash('The invitation has been sent to %s.' % new_member.nickname,
               'invite_member')

@@ -319,7 +319,6 @@ def contactcreators_submit():
                   'content': content}
     contents = render_email_template('contactcreators', parameters)
     # email.send('creators@localhost', 'Contact Creators', contents)
-    print contents
     flash('The information has been successfully sent to creators.',
           'contact_creators')
     return redirect(url_for('.contactcreators'))
