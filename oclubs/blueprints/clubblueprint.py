@@ -209,7 +209,11 @@ def invitemember(club):
         parameters = {'club': club, 'member': new_member}
         contents = render_email_template('invitemember', parameters)
         new_member.email_user('Invitation - ' + club.name, contents)
-        club.send_invitation(new_member)
-        flash('The invitation has been sent to %s.' % new_member.nickname,
-              'invite_member')
+        if new_member in club.members:
+            flash('%s is already in the club.' % new_member.nickname,
+                  'invite_member')
+        else:
+            club.send_invitation(new_member)
+            flash('The invitation has been sent to %s.' % new_member.nickname,
+                  'invite_member')
     return redirect(url_for('.adjustmember', club=club.callsign))
