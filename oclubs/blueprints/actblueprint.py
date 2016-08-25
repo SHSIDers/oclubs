@@ -22,6 +22,7 @@ from oclubs.exceptions import UploadNotSupported, AlreadyExists, NoRow
 actblueprint = Blueprint('actblueprint', __name__)
 
 
+@actblueprint.route('/all_activities/<club_type>/', defaults={'page': 1})
 @actblueprint.route('/all_activities/<club_type>/<int:page>')
 def allactivities(club_type, page):
     '''All Activities'''
@@ -44,6 +45,7 @@ def allactivities(club_type, page):
                            pagination=pagination)
 
 
+@actblueprint.route('/<club>/club_activities/', defaults={'page': 1})
 @actblueprint.route('/<club>/club_activities/<int:page>')
 @get_callsign(Club, 'club')
 def clubactivities(club, page):
@@ -62,6 +64,7 @@ def clubactivities(club, page):
                            pagination=pagination)
 
 
+@actblueprint.route('/photos/', defaults={'page': 1})
 @actblueprint.route('/photos/<int:page>')
 def allphotos(page):
     pic_num = 20
@@ -82,6 +85,7 @@ def allphotos(page):
                            pagination=pagination)
 
 
+@actblueprint.route('/<club>/club_photo/', defaults={'page': 1})
 @actblueprint.route('/<club>/club_photo/<int:page>')
 @get_callsign(Club, 'club')
 def clubphoto(club, page):

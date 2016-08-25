@@ -340,11 +340,11 @@ def newclub_submit():
     return redirect(url_for('.newclub'))
 
 
-@userblueprint.route('/club_management_list')
+@userblueprint.route('/club_management_list/', defaults={'page': 1})
 @userblueprint.route('/club_management_list/<int:page>')
 @special_access_required
 @fresh_login_required
-def clubmanagementlist(page=1):
+def clubmanagementlist(page):
     '''Allow admin to access club management list'''
     num = 20
     count, clubs = Club.allclubs(limit=((page-1)*num, num))
@@ -518,7 +518,7 @@ def registerhm_submit(club):
     return redirect(url_for('.registerhm', club=club.callsign))
 
 
-@userblueprint.route('/notifications')
+@userblueprint.route('/notifications/', defaults={'page': 1})
 @userblueprint.route('/notifications/<int:page>')
 @login_required
 def notifications(page=1):
