@@ -8,8 +8,8 @@
 	<h1 class="title">Activity - {{ g.activity.name }}</h1>
 	<h2 class="title_next">{{ g.activity.club.name }}</h2>
 	<br>
-	<h2>Date: {{ g.activity.date }}</h2>
-	<h2>Current participating people: {{ members_num }}</h2>
+	<h2 class="shorttext">Date: {{ g.activity.date }}</h2>
+	<h2 class="shorttext">Current participating people: {{ members_num }}</h2>
 	{% if messages %}
 	<ul class="list-group" style="margin-top:0; color:black">
 		{% for message in messages %}
@@ -18,7 +18,7 @@
 	</ul>
 	{% endif %}
 	<br>
-	<table class="table table-hover table-bordered" style="font-size:150%; color:black">
+	<table class="table table-hover table-bordered actstatus" style="color:black">
 		<thead class="list">
 			<tr style="background-color:#bfbfbf">
 				<th>Name</th>
@@ -58,7 +58,7 @@
 	</table>
 	<br>
 	<center>
-		<a class="btn btn-success" href="{{ url_for('.actstatus_download', activity=g.activity.callsign) }}" target="_blank" style="padding: 3%; font-size:200%">Download as Excel Document</a>
+		<a class="btn btn-success downloadbtn" href="{{ url_for('.actstatus_download', activity=g.activity.callsign) }}" target="_blank">Download as Excel Document</a>
 	</center>
 </div>
 

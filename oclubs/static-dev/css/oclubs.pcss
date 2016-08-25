@@ -361,10 +361,14 @@ body {
 	@media screen and (max-width: 600px) {
 		width: 40%;
 		margin-top: 2em;
-		margin-left: calc(20% - 1em - 50px);
+		margin-left: 2em
 	}
 	@media screen and (max-width: 500px) {
 		margin-top: 1.5em;
+		margin-left: 1em;
+	}
+	@media screen and (max-width: 400px) {
+		margin-left: 0;
 	}
 }
 
@@ -1965,7 +1969,7 @@ tr.act {
 	}
 }
 
-table.attendance {
+table.attendance, table.actstatus{
 	font-size: 150%;
 	@media screen and (max-width: 768px) {
 		font-size: 125%;
@@ -1976,6 +1980,8 @@ table.attendance {
 	@media screen and (max-width: 400px) {
 		font-size: 80%;
 	}
+}
+table.attendance {
 	& span {
 		margin-right: 10px;
 	}

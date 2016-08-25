@@ -420,8 +420,7 @@ body {
 @media screen and (max-width: 600px) {
   .search {
     margin-top: 2em;
-    margin-left: -webkit-calc(20% - 1em - 50px);
-    margin-left: calc(20% - 1em - 50px);
+    margin-left: 2em;
     width: 40%;
   }
 }
@@ -429,6 +428,13 @@ body {
 @media screen and (max-width: 500px) {
   .search {
     margin-top: 1.5em;
+    margin-left: 1em;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .search {
+    margin-left: 0;
   }
 }
 
@@ -2306,23 +2312,27 @@ tr.act:hover {
   }
 }
 
+table.actstatus,
 table.attendance {
   font-size: 150%;
 }
 
 @media screen and (max-width: 768px) {
+  table.actstatus,
   table.attendance {
     font-size: 125%;
   }
 }
 
 @media screen and (max-width: 500px) {
+  table.actstatus,
   table.attendance {
     font-size: 100%;
   }
 }
 
 @media screen and (max-width: 400px) {
+  table.actstatus,
   table.attendance {
     font-size: 80%;
   }
