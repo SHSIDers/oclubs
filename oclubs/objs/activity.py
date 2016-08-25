@@ -70,13 +70,30 @@ class Activity(BaseObject):
 
         ret = database.fetch_multirow(
             'signup',
-            {'signup_user': 'user', 'signup_consentform': 'consentform'},
+            {
+                'signup_user': 'user',
+                'signup_consentform': 'consentform',
+                'signup_selection': 'selection'
+            },
             {'signup_act': self.id}
         )
         for item in ret:
             item['user'] = User(item['user'])
 
         return ret
+
+    def signup_user_status(self, user):
+        return database.fetch_multirow(
+            'signup',
+            {
+                'signup_consentform': 'consentform',
+                'signup_selection': 'selection'
+            },
+            {
+                'signup_act': self.id,
+                'signup_user': user.id
+            }
+        )
 
     def attend(self, user):
         database.insert_row(
