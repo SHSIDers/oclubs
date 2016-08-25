@@ -254,6 +254,19 @@ def rebuildsearch_submit():
     return redirect(url_for('.personal'))
 
 
+@userblueprint.route('/download_new_passwords')
+@special_access_required
+def download_new_passwords():
+    '''Allow admin to download new accounts' passwords'''
+    result = []
+    result.append(['Passport Name', 'Login Name', 'Password'])
+    users = User.get_new_passwords()
+    result.extend([(user.passportname,
+                    user.studentid,
+                    password) for user, password in users])
+    return download_xlsx('New Accounts\' Passwords.xlsx', result)
+
+
 @userblueprint.route('/disable_accounts')
 @special_access_required
 def disableaccounts():
