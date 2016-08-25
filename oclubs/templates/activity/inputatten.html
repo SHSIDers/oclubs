@@ -27,7 +27,7 @@
 				<p>{{ member.passportname }}</p>
 			</div>
 			<div class="col-sm-2">
-				<input type="checkbox" name="attendance" form="atten_form" value="{{ member.id }}"" id="{{ member.id }}">
+				<input type="checkbox" name="attendance" form="atten_form" value="{{ member.id }}"" id="{{ member.id }}" {% if member in g.activity.attendance %} disabled="disabled" checked="checked" {% endif %}>
 			</div>
 		</label>
 		{% endfor %}

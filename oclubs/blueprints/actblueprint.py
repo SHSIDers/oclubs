@@ -426,32 +426,49 @@ def inputatten_submit(activity):
     return redirect(url_for('.inputatten', activity=activity.callsign))
 
 
-@actblueprint.route('/<activity>/check_attendance')
+@actblueprint.route('/<activity>/attendance')
 @get_callsign(Activity, 'activity')
 @special_access_required
-def checkatten(activity):
+def attendance(activity):
     '''Check attendance'''
-    attendance = activity.attendance
-    attend, absent = partition(activity.signup_list(),
-                               lambda member: member['user'] in attendance)
-    return render_template('/activity/checkatten.html',
+    attend, absent = partition(activity.club.members,
+                               lambda member: member in activity.attendance)
+    return render_template('/activity/attendance.html',
                            attend=attend,
                            absent=absent)
 
 
-@actblueprint.route('/<activity>/check_attendance/download')
+@actblueprint.route('/<activity>/attendance/submit', methods=['POST'])
 @get_callsign(Activity, 'activity')
 @special_access_required
-def checkatten_download(activity):
+def attendance_submit(activity):
+    '''Submit change in attendance'''
+    member = User(request.form['userid'])
+    attend, absent = partition(activity.club.members,
+                               lambda member: member in activity.attendance)
+    if member in absent:
+        activity.attend(member)
+        flash(member.nickname + ' has attended ' + activity.name + '.',
+              'attendance')
+    else:
+        activity.attend_undo(member)
+        flash(member.nickname + ' has not attended ' + activity.name + '.',
+              'attendance')
+    return redirect(url_for('.attendance', activity=activity.callsign))
+
+
+@actblueprint.route('/<activity>/attendance/download')
+@get_callsign(Activity, 'activity')
+@special_access_required
+def attendance_download(activity):
     '''Download activity's attendance'''
     result = []
     result.append(('Nick Name', 'Student ID', 'Attendance'))
-    attendance = activity.attendance
-    attend, absent = partition(activity.signup_list(),
-                               lambda member: member['user'] in attendance)
+    attend, absent = partition(activity.club.members,
+                               lambda member: member in activity.attendance)
 
-    result.append([(member.nickname, member.studentid, 'Attended')
+    result.extend([(member.nickname, member.studentid, 'Attended')
                    for member in attend])
-    result.append([(member.nickname, member.studentid, 'Absent')
+    result.extend([(member.nickname, member.studentid, 'Absent')
                    for member in absent])
     return download_xlsx('Attendance for ' + activity.name + '.xlsx', result)
