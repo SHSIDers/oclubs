@@ -97,7 +97,7 @@ def clubphoto(club, page):
                            pagination=pagination)
 
 
-@actblueprint.route('/<club>/newact')
+@actblueprint.route('/<club>/new')
 @get_callsign(Club, 'club')
 @special_access_required
 def newact(club):
@@ -107,7 +107,7 @@ def newact(club):
                            years=years)
 
 
-@actblueprint.route('/<club>/newact/submit', methods=['POST'])
+@actblueprint.route('/<club>/new/submit', methods=['POST'])
 @get_callsign(Club, 'club')
 @special_access_required
 def newact_submit(club):
@@ -349,7 +349,7 @@ def newhm_submit(club):
     return redirect(url_for('.newhm', club=club.callsign))
 
 
-@actblueprint.route('/<activity>/actstatus')
+@actblueprint.route('/<activity>/signup_status')
 @get_callsign(Activity, 'activity')
 @special_access_required
 def actstatus(activity):
@@ -361,7 +361,7 @@ def actstatus(activity):
                            members_num=members_num)
 
 
-@actblueprint.route('/<activity>/actstatus/submit', methods=['POST'])
+@actblueprint.route('/<activity>/signup_status/submit', methods=['POST'])
 @get_callsign(Activity, 'activity')
 @special_access_required
 def actstatus_submit(activity):
@@ -379,7 +379,7 @@ def actstatus_submit(activity):
     return redirect(url_for('.actstatus', activity=activity.callsign))
 
 
-@actblueprint.route('/<activity>/actstatus/download')
+@actblueprint.route('/<activity>/signup_status/download')
 @get_callsign(Activity, 'activity')
 @special_access_required
 def actstatus_download(activity):
