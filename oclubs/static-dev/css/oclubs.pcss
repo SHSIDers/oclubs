@@ -1788,9 +1788,13 @@ tr.act {
 .downloadbtn {
 	padding: 3%;
 	font-size: 200%;
+	white-space: normal;
 
 	@media screen and (max-width: 720px) {
 		font-size: 150%;
+	}
+	@media screen and (max-width: 500px) {
+		font-size: 125%;
 	}
 }
 
@@ -1958,6 +1962,30 @@ tr.act {
 
 	@media screen and (max-width: 350px) {
 		font-size: 80%;
+	}
+}
+
+table.attendance {
+	font-size: 150%;
+	@media screen and (max-width: 768px) {
+		font-size: 125%;
+	}
+	@media screen and (max-width: 500px) {
+		font-size: 100%;
+	}
+	@media screen and (max-width: 400px) {
+		font-size: 80%;
+	}
+	& span {
+		margin-right: 10px;
+	}
+	& form {
+		display: inline;
+		& input {
+			@media screen and (max-width: 400px) {
+				font-size: 75%;
+			}
+		}
 	}
 }
 

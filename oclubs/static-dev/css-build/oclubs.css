@@ -2092,12 +2092,19 @@ tr.act:hover {
 
 .downloadbtn {
   padding: 3%;
+  white-space: normal;
   font-size: 200%;
 }
 
 @media screen and (max-width: 720px) {
   .downloadbtn {
     font-size: 150%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .downloadbtn {
+    font-size: 125%;
   }
 }
 
@@ -2296,6 +2303,42 @@ tr.act:hover {
 @media screen and (max-width: 350px) {
   .shorttext {
     font-size: 80%;
+  }
+}
+
+table.attendance {
+  font-size: 150%;
+}
+
+@media screen and (max-width: 768px) {
+  table.attendance {
+    font-size: 125%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  table.attendance {
+    font-size: 100%;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  table.attendance {
+    font-size: 80%;
+  }
+}
+
+table.attendance span {
+  margin-right: 10px;
+}
+
+table.attendance form {
+  display: inline;
+}
+
+@media screen and (max-width: 400px) {
+  table.attendance form input {
+    font-size: 75%;
   }
 }
 
