@@ -13,14 +13,13 @@ from pyexcel_xlsx import get_data
 from Crypto.Cipher import AES
 from Crypto import Random
 
-from flask import abort, request, g
+from flask import abort, g
 from flask_login import current_user, login_required
 from werkzeug.datastructures import Headers
 from werkzeug.wrappers import Response
 
 import pystache
 
-from oclubs.objs import Upload
 from oclubs.access import get_secret
 from oclubs.exceptions import NoRow
 from oclubs.enums import UserType
@@ -58,7 +57,8 @@ def download_xlsx(filename, info):
     output.seek(0)
     headers = Headers()
     headers.set('Content-Disposition', 'attachment', filename=filename)
-    return Response(output.read(), mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', headers=headers)
+    return Response(output.read(), mimetype='application/vnd.openxmlformats-'
+                    'officedocument.spreadsheetml.sheet', headers=headers)
 
 
 def read_xlsx(file, data_type, header):
