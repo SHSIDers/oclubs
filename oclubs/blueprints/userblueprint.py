@@ -444,7 +444,8 @@ def checkhongmeischedule_download():
                                  request.form['month'] +
                                  request.form['day'], '%Y%m%d')
     except ValueError:
-        return download_xlsx('Wrong date.xlsx', [])
+        flash('You have input wrong date for HongMei schedule.', 'status_info')
+        return redirect(url_for('.personal'))
     info.append((date.strftime('%b-%d-%Y'),))
     info.append(('Club Name', 'Members'))
     for act in Activity.get_activities_conditions(
