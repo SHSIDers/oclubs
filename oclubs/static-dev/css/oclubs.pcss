@@ -179,6 +179,7 @@ body {
 			float: left;
 			margin: 1.5em 0.5em 0 0.5em;
 			width: 12%;
+			min-width: 50px;
 		}
 
 		& .top-nav {
@@ -359,9 +360,11 @@ body {
 
 	@media screen and (max-width: 600px) {
 		width: 40%;
-		/* margin-top: 1.5em; FIXME: OVERRIDDEN */
-		/* margin-left: calc(20% - 1em - 50px); FIXME: OVERRIDDEN */
-		margin: 2em 0 0 1em;
+		margin-top: 2em;
+		margin-left: calc(20% - 1em - 50px);
+	}
+	@media screen and (max-width: 500px) {
+		margin-top: 1.5em;
 	}
 }
 
@@ -1602,6 +1605,10 @@ tr.act {
 			margin-top: 0px;
 		}
 	}
+	@media screen and (max-width: 400px) {
+		padding-right: 0;
+		padding-left: 0;
+	}
 }
 
 .large_container {
@@ -1973,11 +1980,5 @@ tr.act {
 	/* FIXME: what is this? */
 	.table > tbody > tr > td, .table > thead > tr > th {
 		padding: 4px !important;
-	}
-
-	/* FIXME: what is this? */
-	.large_container > .col-md-10 {
-		padding-right: 0;
-		padding-left: 0;
 	}
 }

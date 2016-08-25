@@ -209,6 +209,7 @@ body {
 .header .container .logo {
   float: left;
   margin: 1.5em .5em 0;
+  min-width: 50px;
   width: 12%;
 }
 
@@ -418,8 +419,16 @@ body {
 
 @media screen and (max-width: 600px) {
   .search {
-    margin: 2em 0 0 1em;
+    margin-top: 2em;
+    margin-left: -webkit-calc(20% - 1em - 50px);
+    margin-left: calc(20% - 1em - 50px);
     width: 40%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .search {
+    margin-top: 1.5em;
   }
 }
 
@@ -1879,6 +1888,13 @@ tr.act:hover {
   }
 }
 
+@media screen and (max-width: 400px) {
+  #act-club-list {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+
 .large_container {
   margin-right: auto;
   margin-left: auto;
@@ -2301,10 +2317,5 @@ tr.act:hover {
   .table > tbody > tr > td,
   .table > thead > tr > th {
     padding: 4px !important;
-  }
-
-  .large_container > .col-md-10 {
-    padding-right: 0;
-    padding-left: 0;
   }
 }
