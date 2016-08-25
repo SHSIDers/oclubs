@@ -384,23 +384,15 @@ def actstatus_submit(activity):
 def actstatus_download(activity):
     '''Download activity status'''
     info = []
-    if activity.selections:
-        info.append(['Nick Name', 'Email', 'Phone', 'Consent Form', 'Selection'])
-        info.extend([(member['user'].nickname,
-                      member['user'].email,
-                      str(member['user'].phone),
-                      'Handed in' if member['consentform'] == 1
-                      else 'Not handed in',
-                      member['selection'])
-                    for member in activity.signup_list()])
-    else:
-        info.append(['Nick Name', 'Email', 'Phone', 'Consent Form'])
-        info.extend([(member['user'].nickname,
-                      member['user'].email,
-                      str(member['user'].phone),
-                      'Handed in' if member['consentform'] == 1
-                      else 'Not handed in')
-                    for member in activity.signup_list()])
+    info.append(['Nick Name', 'Email', 'Phone', 'Consent Form',
+                 'Selection' if activity.selections else ''])
+    info.extend([(member['user'].nickname,
+                  member['user'].email,
+                  str(member['user'].phone),
+                  'Handed in' if member['consentform'] == 1
+                  else 'Not handed in',
+                  member['selection'] if activity.selections else '')
+                for member in activity.signup_list()])
     return download_xlsx('Activity Status - ' + activity.name + '.xlsx', info)
 
 
