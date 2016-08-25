@@ -18,7 +18,7 @@ from oclubs.shared import (
     get_callsign, special_access_required, download_xlsx, read_xlsx,
     render_email_template, Pagination
 )
-from oclubs.exceptions import PasswordTooShort
+from oclubs.exceptions import PasswordTooShort, NoRow
 
 userblueprint = Blueprint('userblueprint', __name__)
 
@@ -469,7 +469,14 @@ def checkhongmeischedule_download():
 @login_required
 def registerhm(club):
     '''Register Page for HongMei Activites'''
-    acts = club.activities([ActivityTime.HONGMEI], (False, True))
+    activities = club.activities([ActivityTime.HONGMEI], (False, True))
+    acts = []
+    for activity in activities:
+        try:
+            activity.signup_user_status(current_user)
+            acts.append((activity, True))
+        except NoRow:
+            acts.append((activity, False))
     return render_template('user/registerhm.html',
                            acts=acts)
 
