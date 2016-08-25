@@ -136,7 +136,7 @@ def newact_submit(club):
         if (time == ActivityTime.OTHERS or time == ActivityTime.UNKNOWN) and \
                 request.form['has_selection'] == 'yes':
             choices = request.form['selections'].split(';')
-            a.selections = [choice.strip(' ') for choice in choices]
+            a.selections = [choice.strip() for choice in choices]
         else:
             a.selections = []
         a.create()

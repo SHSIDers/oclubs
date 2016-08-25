@@ -157,6 +157,13 @@ def load_user(user_id):
         return None
 
 
+@login_manager.needs_refresh_handler
+def refresh_login():
+    '''Let user refresh its login status'''
+    flash('Please login again for security.', 'login')
+    return redirect(url_for('login'))
+
+
 @app.route('/login')
 def login():
     '''Login page'''

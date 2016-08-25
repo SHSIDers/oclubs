@@ -7,7 +7,7 @@ from __future__ import absolute_import, unicode_literals
 from flask import (
     Blueprint, render_template, url_for, request, redirect, flash, abort
 )
-from flask_login import current_user, login_required
+from flask_login import current_user, login_required, fresh_login_required
 
 from oclubs.objs import User, Club, Upload, FormattedText
 from oclubs.enums import UserType, ClubType, ClubJoinMode
@@ -84,7 +84,7 @@ def clubintro_submit(club):
 
 @clubblueprint.route('/<club>/new_leader')
 @get_callsign(Club, 'club')
-@login_required  # FIXME: fresh_login_required
+@fresh_login_required
 @special_access_required
 def newleader(club):
     '''Selecting New Club Leader'''
@@ -93,7 +93,7 @@ def newleader(club):
 
 @clubblueprint.route('/<club>/new_leader/submit', methods=['POST'])
 @get_callsign(Club, 'club')
-@login_required  # FIXME: fresh_login_required
+@fresh_login_required
 @special_access_required
 def newleader_submit(club):
     '''Change leader in database'''

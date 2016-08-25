@@ -10,7 +10,7 @@ from flask import (
     Blueprint, render_template, url_for, request, redirect, abort, flash,
     jsonify
 )
-from flask_login import current_user, login_required  # , fresh_login_required
+from flask_login import current_user, login_required, fresh_login_required
 
 from oclubs.objs import User, Club, Activity, Upload, FormattedText
 from oclubs.enums import UserType, ClubType, ActivityTime, ClubJoinMode
@@ -109,7 +109,7 @@ def personalsubmitinfo():
 
 
 @userblueprint.route('/submit_password', methods=['POST'])
-@login_required  # FIXME: fresh_login_required
+@fresh_login_required
 def personalsubmitpassword():
     '''Change user's password in database'''
     user_login = User.attempt_login(current_user.studentid,
