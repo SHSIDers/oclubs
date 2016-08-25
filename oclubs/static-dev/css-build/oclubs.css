@@ -1949,7 +1949,6 @@ tr.act:hover {
   height: 0;
   border: 3px solid #337ab7;
   border-radius: 5px;
-  font-size: 120%;
 }
 
 @media screen and (max-width: 992px) {
@@ -2197,36 +2196,36 @@ tr.act:hover {
   color: #ccc;
 }
 
-#shorttext {
+.shorttext {
   font-size: 150%;
 }
 
 @media screen and (max-width: 800px) {
-  #shorttext {
+  .shorttext {
     font-size: 130%;
   }
 }
 
 @media screen and (max-width: 650px) {
-  #shorttext {
+  .shorttext {
     font-size: 110%;
   }
 }
 
 @media screen and (max-width: 525px) {
-  #shorttext {
+  .shorttext {
     font-size: 100%;
   }
 }
 
 @media screen and (max-width: 400px) {
-  #shorttext {
+  .shorttext {
     font-size: 90%;
   }
 }
 
 @media screen and (max-width: 350px) {
-  #shorttext {
+  .shorttext {
     font-size: 80%;
   }
 }

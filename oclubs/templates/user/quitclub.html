@@ -10,7 +10,7 @@
         <img src="{{ url_for('static', filename='images/areyousure1.jpg') }}" class="img-responsive img-thumbnail" alt="Are you sure?">
     </div>
     <div class="col-sm-6">
-        <h1 class="color-lightgrey">Quitting Club</h1>
+        <h1 class="color-lightgrey title_next">Quitting Club</h1>
         {% if quit_messages %}
         <ul class="list-group" style="color:black">
             {% for message in quit_messages %}
@@ -22,7 +22,7 @@
         {% if quitting_clubs %}
     	<form class="form-group color-lightgrey" id="quit_club" action="{{ url_for('userblueprint.quitclub_submit') }}" method="post" style="margin-left:auto; margin-right:auto">
             <input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-            <p style="font-style:italic; font-size:150%">If you really want to quit a club, then please select the club and state your reason. Your quitting request will be emailed to the club leader.</p>
+            <p class="shorttext" style="font-style:italic">If you really want to quit a club, then please select the club and state your reason. Your quitting request will be emailed to the club leader.</p>
             <br>
     		<label for="clubs">The club:</label>
         	<select class="form-control" id="clubs" name="clubs" type="dropdown" style="color:black">
