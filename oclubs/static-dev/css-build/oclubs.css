@@ -1827,6 +1827,7 @@ tr.act:hover {
 }
 
 #act-club-list .btn.refresh {
+  margin-top: -30px;
   margin-bottom: 10px;
   color: #f2f2f2;
   font-weight: 700;
@@ -1835,30 +1836,35 @@ tr.act:hover {
 
 @media screen and (max-width: 800px) {
   #act-club-list .btn.refresh {
+    margin-top: -20px;
     font-size: 160%;
   }
 }
 
 @media screen and (max-width: 650px) {
   #act-club-list .btn.refresh {
+    margin-top: -15px;
     font-size: 120%;
   }
 }
 
 @media screen and (max-width: 525px) {
   #act-club-list .btn.refresh {
+    margin-top: -10px;
     font-size: 100%;
   }
 }
 
 @media screen and (max-width: 400px) {
   #act-club-list .btn.refresh {
+    margin-top: -5px;
     font-size: 80%;
   }
 }
 
 @media screen and (max-width: 350px) {
   #act-club-list .btn.refresh {
+    margin-top: 0;
     font-size: 70%;
   }
 }
