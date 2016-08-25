@@ -715,7 +715,7 @@ body {
   }
 }
 
-#content {
+#page-content {
   min-height: -webkit-calc(100vh - 400px);
   min-height: calc(100vh - 400px);
 }
