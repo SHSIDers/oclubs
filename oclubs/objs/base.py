@@ -58,7 +58,7 @@ class Property(object):
                 else:
                     raise
             self._cache[prop.name] = value
-        return value
+            return value
 
     def __set__(prop, self, value):
         # Proxies can't pass isinstance check
