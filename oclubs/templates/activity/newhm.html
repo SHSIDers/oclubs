@@ -20,7 +20,7 @@
 		<tbody>
 			{% for act in acts %}
 			<tr class="act">
-				<td>{{ act.date.strftime('%m/%d/%y') }}</td>
+				<td>{{ act.date.strftime('%b-%d-%y') }}</td>
 				<td>{{ act.name }}</td>
 			</tr>
 			{% endfor %}
