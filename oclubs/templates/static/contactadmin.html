@@ -1,11 +1,11 @@
 {% extends "base.html" %}
-{% block title %}Complaints{% endblock %}
+{% block title %}Contact Administrators{% endblock %}
 {% block content %}
-{% with messages = get_flashed_messages(category_filter=["complaints"]) %}
+{% with messages = get_flashed_messages(category_filter=["contact_admin"]) %}
 
 <!-- Below Navbar -->
 <div class="container">
-	<form class="form-group color-lightgrey" action="{{ url_for('complaints_submit') }}" method="post">
+	<form class="form-group color-lightgrey" action="{{ url_for('contactadmin_submit') }}" method="post">
 		<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 		<h1>Complaints</h1>
 		<p>Your account's information will be recorded. Please be aware of this when you submit your complaints.</p>
@@ -17,8 +17,8 @@
 		</ul>
 		<br>
 		{% endif %}
-		<label for="complaints">Content:</label>
-		<textarea class="form-control" rows="10" name="complaints" id="complaints"></textarea>
+		<label for="content">Content:</label>
+		<textarea class="form-control" rows="10" name="content" id="content"></textarea>
 		<br>
 		<p>*Your complaints will be directly sent to admininistrator.</p>
 		<input type="submit" class="btn btn-success large_button" value="Submit">

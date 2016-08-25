@@ -1,0 +1,19 @@
+To Administrator,
+
+{{ sender_name }} has contacted you.
+
+
+His/her contact information:
+
+{{ sender_contact }}
+
+
+The content:
+
+{{ content }}
+
+
+Please handle the issue accordingly.
+
+
+oClubs

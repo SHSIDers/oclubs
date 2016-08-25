@@ -12,16 +12,18 @@ from flask import (
     Flask, redirect, request, render_template, url_for, session, abort, flash,
     Markup
 )
-from flask_login import LoginManager, login_user, logout_user, login_required
+from flask_login import (
+    LoginManager, login_user, logout_user, login_required, current_user
+)
 from htmlmin.minify import html_minify
 
 from oclubs.objs import User, Club, Activity, Upload
-from oclubs.access import done as db_done, get_secret
+from oclubs.access import done as db_done, get_secret, email
 from oclubs.blueprints import actblueprint, clubblueprint, userblueprint
 from oclubs.enums import UserType, ClubType, ActivityTime, ClubJoinMode
 from oclubs.exceptions import NoRow
 from oclubs.redissession import RedisSessionInterface
-from oclubs.shared import encrypt, Pagination
+from oclubs.shared import encrypt, Pagination, render_email_template
 
 
 app = Flask(__name__)
@@ -300,21 +302,27 @@ def about():
                            is_about=True)
 
 
-@app.route('/advice')
-def advice():
+@app.route('/contact_creators')
+def contactcreators():
     '''Advice Page'''
-    return render_template('static/advice.html')
+    return render_template('static/contactcreators.html')
 
 
-@app.route('/advice/submit', methods=['POST'])
-def advice_submit():
+@app.route('/contact_creators/submit', methods=['POST'])
+def contactcreators_submit():
     '''Send advice to us'''
-    advicer_name = request.form['name']
-    advicer_contact = request.form['contact']
-    advice = request.form['advice']
-    # TODO: send email to us
-    flash('Thank you for your advice.', 'advice')
-    return redirect(url_for('.advice'))
+    sender_name = request.form['name']
+    sender_contact = request.form['contact']
+    content = request.form['content']
+    parameters = {'sender_name': sender_name,
+                  'sender_contact': sender_contact,
+                  'content': content}
+    contents = render_email_template('contactcreators', parameters)
+    # email.send('creators@localhost', 'Contact Creators', contents)
+    print contents
+    flash('The information has been successfully sent to creators.',
+          'contact_creators')
+    return redirect(url_for('.contactcreators'))
 
 
 @app.route('/creators')
@@ -323,19 +331,28 @@ def creators():
     return render_template('static/creators.html')
 
 
-@app.route('/complaints')
+@app.route('/contact_admin')
 @login_required
-def complaints():
+def contactadmin():
     '''Complaints Page'''
-    return render_template('static/complaints.html')
+    return render_template('static/contactadmin.html')
 
 
-@app.route('/complaints/submit')
+@app.route('/contact_admin/submit', methods=['POST'])
 @login_required
-def complaints_submit():
+def contactadmin_submit():
     '''Submit complaints'''
-    # FIXME
-    pass
+    content = request.form['content']
+    parameters = {'sender_name': current_user.nickname + ' (' +
+                  current_user.passportname + ')',
+                  'sender_contact': current_user.email + ' ' +
+                  str(current_user.phone),
+                  'content': content}
+    contents = render_email_template('contactadmin', parameters)
+    # email.send('clubsadmin@localhost', 'Contact Admin', contents)
+    flash('The information has been successfully sent to adminstrators.',
+          'contact_admin')
+    return redirect(url_for('.contactadmin'))
 
 
 if __name__ == '__main__':
