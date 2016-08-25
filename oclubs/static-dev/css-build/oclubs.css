@@ -880,6 +880,30 @@ thead.darklist {
   font-size: 150%;
 }
 
+@media screen and (max-width: 992px) {
+  .function_block div p {
+    font-size: 120%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .function_block div p {
+    font-size: 100%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .function_block div p {
+    font-size: 80%;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .function_block div p {
+    font-size: 60%;
+  }
+}
+
 .function_block img {
   position: relative;
   z-index: -1;
