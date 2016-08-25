@@ -17,7 +17,7 @@ from oclubs.shared import (
     download_xlsx, partition
 )
 from oclubs.objs import User, Club, Activity, Upload, FormattedText
-from oclubs.exceptions import UploadNotSupported, AlreadyExists
+from oclubs.exceptions import UploadNotSupported, AlreadyExists, NoRow
 
 actblueprint = Blueprint('actblueprint', __name__)
 
@@ -171,18 +171,22 @@ def actintro(activity):
         can_join = (current_user not in
                     [act['user'] for act in activity.signup_list()] and
                     current_user.type == UserType.STUDENT)
+        try:
+            selection = activity.signup_user_status(current_user)['selection']
+        except NoRow:
+            selection = ''
     else:
         can_join = False
         has_access = False
+        selection = ''
     is_other_act = (activity.time == ActivityTime.UNKNOWN or
                     activity.time == ActivityTime.OTHERS)
-    has_selection = True  # TODO: correct this
     return render_template('activity/actintro.html',
                            is_other_act=is_other_act,
                            is_past=date.today() >= activity.date,
                            has_access=has_access,
                            can_join=can_join,
-                           has_selection=has_selection)
+                           selection=selection)
 
 
 @actblueprint.route('/<activity>/introduction/submit', methods=['POST'])
@@ -190,7 +194,10 @@ def actintro(activity):
 @login_required
 def activity_submit(activity):
     '''Signup for activity'''
-    activity.signup(current_user)
+    if activity.selections:
+        activity.signup(current_user, selection=request.form['selection'])
+    else:
+        activity.signup(current_user)
     flash('You have successfully signed up for ' + activity.name + '.',
           'signup')
     return redirect(url_for('.actintro', activity=activity.callsign))
@@ -227,7 +234,6 @@ def changeactpost_submit(activity):
                 return redirect(url_for('.changeactpost',
                                         activity=activity.callsign))
     if request.form['post'] != '':
-        print request.form['post']
         activity.post = FormattedText.handle(current_user, activity.club,
                                              request.form['post'])
     flash('Activity post has been successfully modified.', 'actpost')
@@ -364,7 +370,6 @@ def actstatus_submit(activity):
               'consent_form')
     elif status == 1:
         activity.signup(member, consentform=False)
-        print 'Yifei is gayyyyy'
         flash(member.nickname + ' has not handed in the consent form.',
               'consent_form')
     return redirect(url_for('.actstatus', activity=activity.callsign))
@@ -376,13 +381,23 @@ def actstatus_submit(activity):
 def actstatus_download(activity):
     '''Download activity status'''
     info = []
-    info.append(['Nick Name', 'Email', 'Phone', 'Consent Form'])
-    info.extend([(member['user'].nickname,
-                  member['user'].email,
-                  str(member['user'].phone),
-                  'Handed in' if member['consentform'] == 1
-                  else 'Not handed in')
-                for member in activity.signup_list()])
+    if activity.selections:
+        info.append(['Nick Name', 'Email', 'Phone', 'Consent Form', 'Selection'])
+        info.extend([(member['user'].nickname,
+                      member['user'].email,
+                      str(member['user'].phone),
+                      'Handed in' if member['consentform'] == 1
+                      else 'Not handed in',
+                      member['selection'])
+                    for member in activity.signup_list()])
+    else:
+        info.append(['Nick Name', 'Email', 'Phone', 'Consent Form'])
+        info.extend([(member['user'].nickname,
+                      member['user'].email,
+                      str(member['user'].phone),
+                      'Handed in' if member['consentform'] == 1
+                      else 'Not handed in')
+                    for member in activity.signup_list()])
     return download_xlsx('Activity Status - ' + activity.name + '.xlsx', info)
 
 

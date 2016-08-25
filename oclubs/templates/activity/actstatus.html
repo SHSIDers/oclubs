@@ -21,10 +21,13 @@
 	<table class="table table-hover table-bordered" style="font-size:150%; color:black">
 		<thead class="list">
 			<tr style="background-color:#bfbfbf">
-				<th style="width:25%">Name</th>
-				<th style="width:25%">Email</th>
-				<th style="width:25%">Phone Number</th>
-				<th style="width:25%">Consent Form</th>
+				<th>Name</th>
+				<th>Email</th>
+				<th>Phone Number</th>
+				<th>Consent Form</th>
+				{% if g.activity.selections %}
+				<th>Selection</th>
+				{% endif %}
 			</tr>
 		</thead>
 		<tbody>
@@ -46,6 +49,9 @@
 						{% endif %}
 					</form>
 				</td>
+				{% if g.activity.selections %}
+				<td>{{ member.selection }}</td>
+				{% endif %}
 			</tr>
 			{% endfor %}
 		</tbody>

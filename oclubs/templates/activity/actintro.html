@@ -36,14 +36,19 @@
 			{% endfor %}
 		</ul>
 		{% endif %}
-		<p style="font-size: 150%;color: #f2f2f2">Selection:</p>
 
-		{% if has_selection %}
-		<select name="selection" form="join_form" class="selection_bar">
-			{% for choice in choices %}
-			<option value="{{ choice }}">{{ choice }}</option>
+		{% if g.activity.selections %}
+		{% if selection %}
+		<p style="font-size: 150%;color: #f2f2f2">Your Selection:</p>
+		<p style="font-size: 150%;color: #f2f2f2">{{ selection }}</p>
+		{% else %}
+		<p style="font-size: 150%;color: #f2f2f2">Selection:</p>
+		<select name="selection" form="join_form" class="selection_bar" style="color:#f2f2f2">
+			{% for choice in g.activity.selections %}
+			<option value="{{ choice }}" style="color:black">{{ choice }}</option>
 			{% endfor %}
 		</select>
+		{% endif %}
 		{% endif %}
 
 		<center>
