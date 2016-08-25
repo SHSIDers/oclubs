@@ -172,11 +172,11 @@ def actintro(activity):
                       current_user == activity.club.teacher or
                       current_user.type == UserType.ADMIN)
         try:
+            can_join = False
             selection = activity.signup_user_status(current_user)['selection']
-            can_join = (current_user.type == UserType.STUDENT)
         except NoRow:
             selection = ''
-            can_join = False
+            can_join = True
     else:
         can_join = False
         has_access = False
