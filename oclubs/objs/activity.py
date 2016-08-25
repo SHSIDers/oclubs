@@ -103,7 +103,7 @@ class Activity(BaseObject):
         del self.attendance
 
     def attend_undo(self, user):
-        database.delete_row(
+        database.delete_rows(
             'attendance',
             {'att_act': self.id, 'att_user': user.id}
         )
