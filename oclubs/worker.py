@@ -150,11 +150,10 @@ def _create_account(authority, _type='STUDENT'):
     u.type = UserType[_type]
     u.create(True)
 
-    # FIXME
-    # parameters = {'user': u}
-    # contents = render_email_template('newuser', parameters)
-    # u.email_user('Welcome to oClubs', contents)
-    # u.notify_user('Welcome to oClubs!')
+    parameters = {'user': u, 'password': password}
+    contents = render_email_template('newuser', parameters)
+    u.email_user('Welcome to oClubs', contents)
+    u.notify_user('Welcome to oClubs!')
     print 'CREATED USER ID %d WITH PASSWORD %s' % (u.id, password)
 
 

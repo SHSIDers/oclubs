@@ -139,7 +139,7 @@ def newact_submit(club):
         for member in club.members:
             parameters = {'member': member, 'club': club, 'act': activity}
             contents = render_email_template('newact', parameters)
-            # member.email_user(a.name + '' - ' + club.name, contents)
+            member.email_user(a.name + '' - ' + club.name, contents)
             member.notify_user(club.name + ' is going to host ' + a.name + '.')
     return redirect(url_for('.newact', club=club.callsign))
 
@@ -243,7 +243,7 @@ def hongmei_invite_submit(activity):
         activity.signup(member)
         parameters = {'member': member, 'activity': activity, 'plan': plan}
         contents = render_email_template('invitehm', parameters)
-        # member.email_user('HongMei Invitation - ' + club.name, contents)
+        member.email_user('HongMei Invitation - ' + club.name, contents)
         member.notify_user('You have been invited to HongMei activity - ' +
                            activity.name + ' on ' +
                            activity.date.strftime('%b-%d-%y') + '.')

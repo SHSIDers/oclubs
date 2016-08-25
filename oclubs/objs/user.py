@@ -79,7 +79,8 @@ class User(BaseObject, UserMixin):
 
     def email_user(self, title, contents):
         address = self.email or 'root@localhost'
-        email.send((address, self.passportname), title, contents)
+        # FIXME
+        False and email.send((address, self.passportname), title, contents)
 
     def notify_user(self, contents):
         from oclubs.objs.activity import date_int

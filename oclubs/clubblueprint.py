@@ -73,7 +73,7 @@ def clubintro_submit(club):
     club.add_member(current_user)
     parameters = {'club': club, 'current_user': current_user}
     contents = render_email_template('joinclubs', parameters)
-    # club.leader.email_user('New Club Member - ' + club.name, contents)
+    club.leader.email_user('New Club Member - ' + club.name, contents)
     club.leader.notify_user(current_user.nickname + ' has joined ' + club.name + '.')
     flash('You have successfully joined ' + club.name + '.', 'join')
     return redirect(url_for('.clubintro', club=club.callsign))
@@ -104,7 +104,7 @@ def newleader_submit(club):
     for member in club.members:
         parameters = {'user': member, 'club': club, 'leader_old': leader_old}
         contents = render_email_template('newleader', parameters)
-        # member.email_user('New Leader - ' + club.name, contents)
+        member.email_user('New Leader - ' + club.name, contents)
         member.notify_user(club.leader.nickname + ' becomes the new leader of ' + club.name + '.')
     return render_template('club/success.html')
 
@@ -157,7 +157,7 @@ def changeclubinfo_submit(club):
     for member in club.members:
         parameters = {'user': member, 'club': club}
         contents = render_email_template('changeclubinfo', parameters)
-        # member.email_user('Change Club Info - ' + club.name, contents)
+        member.email_user('Change Club Info - ' + club.name, contents)
         member.notify_user(club.name + '\'s information has been changed.')
     flash('The information about club has been successfully submitted.', 'clubinfo')
     return redirect(url_for('.changeclubinfo', club=club.callsign))
@@ -182,7 +182,7 @@ def adjustmember_submit(club):
     club.remove_member(member)
     parameters = {'member': member, 'club': club}
     contents = render_email_template('adjustmember', parameters)
-    # member.email_user('Member Adjustment - ' + club.name, contents)
+    member.email_user('Member Adjustment - ' + club.name, contents)
     member.notify_user('You have been moved out of ' + club.name + '.')
     flash(member.nickname + ' has been expelled.', 'expelled')
     return redirect(url_for('.adjustmember', club=club.callsign))
@@ -200,7 +200,7 @@ def invitemember(club):
     else:
         parameters = {'club': club, 'member': new_member}
         contents = render_email_template('invitemember', parameters)
-        # member.email_user('Invitation - ' + club.name, contents)
+        member.email_user('Invitation - ' + club.name, contents)
         club.send_invitation(new_member)
         flash('The invitation has been sent to %s.' % new_member.nickname,
               'invite_member')
