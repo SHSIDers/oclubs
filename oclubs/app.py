@@ -18,9 +18,7 @@ from htmlmin.minify import html_minify
 
 from oclubs.objs import User, Club, Activity, Upload
 from oclubs.access import done as db_done, get_secret
-from oclubs.userblueprint import userblueprint
-from oclubs.clubblueprint import clubblueprint
-from oclubs.actblueprint import actblueprint
+from oclubs.blueprints import actblueprint, clubblueprint, userblueprint
 from oclubs.enums import UserType, ClubType, ActivityTime, ClubJoinMode
 from oclubs.exceptions import NoRow
 from oclubs.redissession import RedisSessionInterface
@@ -335,6 +333,7 @@ def complaints():
 @login_required
 def complaints_submit():
     '''Submit complaints'''
+    # FIXME
     pass
 
 

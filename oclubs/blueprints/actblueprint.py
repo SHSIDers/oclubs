@@ -139,7 +139,7 @@ def newact_submit(club):
         for member in club.members:
             parameters = {'member': member, 'club': club, 'act': activity}
             contents = render_email_template('newact', parameters)
-            member.email_user(a.name + '' - ' + club.name, contents)
+            member.email_user(a.name + ' - ' + club.name, contents)
             member.notify_user(club.name + ' is going to host ' + a.name + '.')
     return redirect(url_for('.newact', club=club.callsign))
 
