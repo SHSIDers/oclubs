@@ -1549,27 +1549,53 @@ tr.act {
 }
 
 
+#act-club-list {
+	& .title {
+		margin-top: 0;
+		clear: right;
+		margin-right: 30px;
+		@media screen and (max-width: 768px) {
+			margin-right: 15px;
+		}
+
+	}
+
+	& .btn.refresh {
+		@apply --color-lightgrey-prop;
+
+		/* font-family: var(--serious-font); */
+		font-weight: bold;
+		font-size: 200%;
+		margin-bottom: 10px;
+
+		@media screen and (max-width: 800px) {
+			font-size: 160%;
+		}
+
+		@media screen and (max-width: 650px) {
+			font-size: 120%;
+		}
+
+		@media screen and (max-width: 525px) {
+			font-size: 100%;
+		}
+
+		@media screen and (max-width: 400px) {
+			font-size: 80%;
+		}
+
+		@media screen and (max-width: 350px) {
+			font-size: 70%;
+		}
+	}
+}
+
 .large_container {
 	padding-right: 15px;
 	padding-left: 15px;
 	margin-right: auto;
 	margin-left: auto;
 	width: 90%;
-
-	& #act-club-list {
-		& .title {
-			margin-top: 0;
-			clear: right;
-		}
-
-		& .btn.refresh {
-			@apply --color-lightgrey-prop;
-
-			/* font-family: var(--serious-font); */
-			font-weight: bold;
-			font-size: 200%;
-		}
-	}
 
 	& #intropage {
 		& .jumbotron {

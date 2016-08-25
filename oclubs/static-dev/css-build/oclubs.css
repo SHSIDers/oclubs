@@ -1799,23 +1799,61 @@ tr.act:hover {
   }
 }
 
+#act-club-list .title {
+  clear: right;
+  margin-top: 0;
+  margin-right: 30px;
+}
+
+@media screen and (max-width: 768px) {
+  #act-club-list .title {
+    margin-right: 15px;
+  }
+}
+
+#act-club-list .btn.refresh {
+  margin-bottom: 10px;
+  color: #f2f2f2;
+  font-weight: 700;
+  font-size: 200%;
+}
+
+@media screen and (max-width: 800px) {
+  #act-club-list .btn.refresh {
+    font-size: 160%;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  #act-club-list .btn.refresh {
+    font-size: 120%;
+  }
+}
+
+@media screen and (max-width: 525px) {
+  #act-club-list .btn.refresh {
+    font-size: 100%;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  #act-club-list .btn.refresh {
+    font-size: 80%;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  #act-club-list .btn.refresh {
+    font-size: 70%;
+  }
+}
+
 .large_container {
   margin-right: auto;
   margin-left: auto;
   padding-right: 15px;
   padding-left: 15px;
   width: 90%;
-}
-
-.large_container #act-club-list .title {
-  clear: right;
-  margin-top: 0;
-}
-
-.large_container #act-club-list .btn.refresh {
-  color: #f2f2f2;
-  font-weight: 700;
-  font-size: 200%;
 }
 
 .large_container #intropage .jumbotron {
