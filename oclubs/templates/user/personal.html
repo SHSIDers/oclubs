@@ -33,13 +33,21 @@
 	<div class="col-md-9 personal_info">
 		<h2 style="margin-top:0px">Nick Name: {{ current_user.nickname }}</h2>
 		<h2>Email Address: {{ current_user.email }}</h2>
-		<h2 style="margin-bottom:20px">Phone Number: {{ current_user.phone }}</h2>
+		<h2>Phone Number: {{ current_user.phone }}</h2>
 		<div class="clearfix"></div>
 		<center>
-		<a class="btn btn-info col-md-4" href="#changeInfo" data-toggle="modal" data-target="#changeInfo">Edit Basic Information</a>
-		<a class="btn btn-info col-md-4" href="#changePass" data-toggle="modal" data-target="#changePass">Change Password</a>
-		{% with unread_notifications_num = current_user.get_unread_notifications_num() %}
-		<a class="btn {% if unread_notifications_num %}btn-primary{% else %}btn-info{% endif %} col-md-4" href="{{ url_for('.notifications', page=1) }}">Notifications{% if unread_notifications_num %} <span class="badge">{{ unread_notifications_num }}</span>{% endif %}</a>
+			<div class="row">
+				<div class="col-sm-4">
+					<a class="btn btn-info" href="#changeInfo" data-toggle="modal" data-target="#changeInfo">Edit Basic Information</a>
+				</div>
+				<div class="col-sm-4">
+					<a class="btn btn-info" href="#changePass" data-toggle="modal" data-target="#changePass">Change Password</a>
+				</div>
+			{% with unread_notifications_num = current_user.get_unread_notifications_num() %}
+				<div class="col-sm-4">
+					<a class="btn {% if unread_notifications_num %}btn-primary{% else %}btn-info{% endif %}" href="{{ url_for('.notifications', page=1) }}">Notifications{% if unread_notifications_num %} <span class="badge">{{ unread_notifications_num }}</span>{% endif %}</a>
+				</div>
+			</div>
 		{% endwith %}
 		</center>
 	</div>

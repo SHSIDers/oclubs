@@ -1203,29 +1203,19 @@ tr.act:hover {
 }
 
 .personal_info a {
-  margin: .5%;
-  padding: 2%;
-  min-width: 200px;
-  width: 30%;
+  margin: 5px 0;
+  width: 100%;
   font-size: 125%;
 }
 
-@media screen and (max-width: 720px) {
-  #profilepic {
-    max-height: 122px;
-  }
+#profilepic {
+  min-width: 80px;
+  max-width: 225px;
 }
 
 @media screen and (max-width: 525px) {
   #profilepic {
     padding: 0 5px 0 0;
-    max-height: 110px;
-  }
-}
-
-@media screen and (max-width: 450px) {
-  #profilepic {
-    max-height: 98px;
   }
 }
 
