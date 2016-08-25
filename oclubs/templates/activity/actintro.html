@@ -39,11 +39,11 @@
 
 		{% if g.activity.selections %}
 		{% if selection %}
-		<p style="font-size: 150%;color: #f2f2f2">Your Selection:</p>
-		<p style="font-size: 150%;color: #f2f2f2">{{ selection }}</p>
+		<p class="color-lightgrey" style="font-size: 150%">Your Selection:</p>
+		<p class="color-lightgrey" style="font-size: 150%">{{ selection }}</p>
 		{% else %}
-		<p style="font-size: 150%;color: #f2f2f2">Selection:</p>
-		<select name="selection" form="join_form" class="selection_bar" style="color:#f2f2f2">
+		<p class="color-lightgrey" style="font-size: 150%">Selection:</p>
+		<select name="selection" form="join_form" class="selection_bar color-lightgrey">
 			{% for choice in g.activity.selections %}
 			<option value="{{ choice }}" style="color:black">{{ choice }}</option>
 			{% endfor %}
