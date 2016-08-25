@@ -26,12 +26,14 @@ REDIS_CACHE_TIME = 3600 * 24  # 1 day
 
 class Property(object):
     """Descriptor class."""
-    def __init__(prop, dbname, ie=None, search=False, rediscached=False):
+    def __init__(prop, dbname, ie=None, search=False, rediscached=False,
+                 error_default=Ellipsis):
         super(Property, prop).__init__()
         prop.dbname = dbname
         prop.imp, prop.exp = _get_ie(ie)
         prop.search = _get_search(search, ie)
         prop.rediscached = rediscached
+        prop.error_default = error_default
 
     def __get__(prop, self, owner=None):
         if self is None:
@@ -45,10 +47,18 @@ class Property(object):
                 else:
                     data = self._data[prop.name]
                     cache.set(data)
-                self._cache[prop.name] = prop.imp(data)
             else:
-                self._cache[prop.name] = prop.imp(self._data[prop.name])
-        return self._cache[prop.name]
+                data = self._data[prop.name]
+
+            try:
+                value = prop.imp(data)
+            except Exception:
+                if prop.error_default is not Ellipsis:
+                    value = prop.imp(prop.error_default)
+                else:
+                    raise
+            self._cache[prop.name] = value
+        return value
 
     def __set__(prop, self, value):
         # Proxies can't pass isinstance check

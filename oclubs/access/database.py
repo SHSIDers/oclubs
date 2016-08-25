@@ -290,17 +290,23 @@ def insert_row(table, insert):
 
 
 def insert_or_update_row(table, insert, update):
-    keys = _encode_name(insert.keys())
-    values = ','.join([_encode(value) for value in insert.values()])
+    if update:
+        keys = _encode_name(insert.keys())
+        values = ','.join([_encode(value) for value in insert.values()])
 
-    update = ["%s=%s" % (_encode_name(key), _encode(val))
-              for key, val in update.items()]
-    update = ','.join(update)
+        update = ["%s=%s" % (_encode_name(key), _encode(val))
+                  for key, val in update.items()]
+        update = ','.join(update)
 
-    return _execute(
-        "INSERT INTO %s (%s) VALUES (%s) ON DUPLICATE KEY UPDATE %s;"
-        % (_encode_name(table), keys, values, update),
-        write=True, ret='lastrowid')
+        return _execute(
+            "INSERT INTO %s (%s) VALUES (%s) ON DUPLICATE KEY UPDATE %s;"
+            % (_encode_name(table), keys, values, update),
+            write=True, ret='lastrowid')
+    else:
+        try:
+            return insert_row(table, insert)
+        except AlreadyExists:
+            return 0
 
 
 def update_row(table, update, conds):

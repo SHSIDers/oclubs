@@ -5,6 +5,7 @@
 from __future__ import absolute_import, unicode_literals, division
 
 from datetime import datetime, date
+import json
 
 from oclubs.access import database
 from oclubs.enums import ActivityTime
@@ -30,6 +31,7 @@ class Activity(BaseObject):
     location = Property('act_location')
     cas = Property('act_cas', (lambda val: val/60, lambda val: val*60))
     post = Property('act_post', 'FormattedText', search=True)
+    selections = Property('act_selections', json, error_default='[]')
     attendance = ListProperty('attendance', 'att_act', 'att_user', 'User')
     pictures = ListProperty('act_pic', 'actpic_act', 'actpic_upload', 'Upload')
 
@@ -39,13 +41,23 @@ class Activity(BaseObject):
     def ongoing_or_future(self):
         return self.datetime >= date.today()
 
-    def signup(self, user, consentform=False):
-        database.insert_or_update_row(
-            'signup',
-            {'signup_act': self.id, 'signup_user': user.id,
-                'signup_consentform': consentform},
-            {'signup_consentform': consentform}
-        )
+    def signup(self, user, **kwargs):
+        data = {
+            'signup_consentform': ('consentform', False),
+            'signup_selection': ('selection', '')
+        }
+
+        insert = {'signup_act': self.id, 'signup_user': user.id}
+        update = {}
+
+        for dbkey, (kwkey, default) in data:
+            if kwkey in kwargs:
+                insert[dbkey] = kwargs[kwkey]
+                update[dbkey] = kwargs[kwkey]
+            else:
+                insert[dbkey] = default
+
+        database.insert_or_update_row('signup', insert, update)
 
     def signup_undo(self, user):
         database.delete_rows(

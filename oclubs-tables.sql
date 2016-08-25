@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS club (
 	club_intro tinytext NOT NULL,
 	club_picture int NOT NULL, # Foreign key to upload.upload_id
 	club_desc int NOT NULL, # Foreign key to text.text_id
-	club_location varchar(255) NOT NULL, # stores object in JSON
+	club_location varchar(255) NOT NULL,
 	club_inactive boolean NOT NULL,
 	club_type tinyint NOT NULL, # 1 = academics, 2 = sports, 3 = arts, 4 = services, 5 = entertainment, 6 = others, 7 = school teams
 	club_joinmode tinyint NOT NULL # 1 = free join, 2 = by invitation
@@ -55,9 +55,10 @@ CREATE TABLE IF NOT EXISTS activity (
 	act_desc int NOT NULL, # Foreign key to text.text_id
 	act_date int unsigned NOT NULL,
 	act_time tinyint NOT NULL, # 0 = unknown, 1 = noon, 2 = afterschool, 3 = hongmei, 4 = others
-	act_location varchar(255) NOT NULL, # stores object in JSON
+	act_location varchar(255) NOT NULL,
 	act_cas int NOT NULL, # CAS hours
-	act_post int NOT NULL # Foreign key to text.text_id
+	act_post int NOT NULL, # Foreign key to text.text_id
+	act_selections varchar(255) NOT NULL # stores object in JSON
 );
 
 CREATE INDEX IF NOT EXISTS act_club ON activity (act_club);
@@ -127,6 +128,7 @@ CREATE TABLE IF NOT EXISTS signup (
 	signup_act int NOT NULL, # Foreign key to act.act_id
 	signup_user int NOT NULL, # Foreign key to user.user_id
 	signup_consentform boolean NOT NULL,
+	signup_selection varchar(255) NOT NULL,
 	PRIMARY KEY(signup_act, signup_user)
 );
 
