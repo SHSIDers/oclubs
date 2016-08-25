@@ -4,19 +4,16 @@
 
 from __future__ import absolute_import, unicode_literals
 
-import re
-
 from flask import (
-    Blueprint, render_template, url_for, request, session, redirect, flash, abort
+    Blueprint, render_template, url_for, request, redirect, flash, abort
 )
 from flask_login import current_user, login_required
 
 from oclubs.objs import User, Club, Upload, FormattedText
-from oclubs.enums import UserType, ClubType, ActivityTime, ClubJoinMode
+from oclubs.enums import UserType, ClubType, ClubJoinMode
 from oclubs.shared import (
     download_xlsx, get_callsign, special_access_required, render_email_template
 )
-from oclubs.access import email
 from oclubs.exceptions import UploadNotSupported
 
 clubblueprint = Blueprint('clubblueprint', __name__)
@@ -74,7 +71,8 @@ def clubintro_submit(club):
     parameters = {'club': club, 'current_user': current_user}
     contents = render_email_template('joinclubs', parameters)
     club.leader.email_user('New Club Member - ' + club.name, contents)
-    club.leader.notify_user(current_user.nickname + ' has joined ' + club.name + '.')
+    club.leader.notify_user(current_user.nickname + ' has joined ' +
+                            club.name + '.')
     flash('You have successfully joined ' + club.name + '.', 'join')
     return redirect(url_for('.clubintro', club=club.callsign))
 
@@ -105,7 +103,8 @@ def newleader_submit(club):
         parameters = {'user': member, 'club': club, 'leader_old': leader_old}
         contents = render_email_template('newleader', parameters)
         member.email_user('New Leader - ' + club.name, contents)
-        member.notify_user(club.leader.nickname + ' becomes the new leader of ' + club.name + '.')
+        member.notify_user(club.leader.nickname +
+                           ' becomes the new leader of ' + club.name + '.')
     return render_template('club/success.html')
 
 
@@ -127,7 +126,8 @@ def memberinfo_download(club):
     '''Download members' info'''
     info = []
     info.append(('Nick Name', 'Student ID', 'Passport Name', 'Email'))
-    info.extend([(member.nickname, member.studentid, member.passportname, member.email) for member in club.members])
+    info.extend([(member.nickname, member.studentid, member.passportname,
+                  member.email) for member in club.members])
     return download_xlsx('Member Info.xlsx', info)
 
 
@@ -147,10 +147,12 @@ def changeclubinfo_submit(club):
     if request.form['intro'] != '':
         club.intro = request.form['intro']
     if request.form['description'] != '':
-        club.description = FormattedText.handle(current_user, club, request.form['description'])
+        club.description = FormattedText.handle(current_user, club,
+                                                request.form['description'])
     if request.files['picture'].filename != '':
         try:
-            club.picture = Upload.handle(current_user, club, request.files['picture'])
+            club.picture = Upload.handle(current_user, club,
+                                         request.files['picture'])
         except UploadNotSupported:
             flash('Please upload the correct file type.', 'clubinfo')
             return redirect(url_for('.changeclubinfo', club=club.callsign))
@@ -159,7 +161,8 @@ def changeclubinfo_submit(club):
         contents = render_email_template('changeclubinfo', parameters)
         member.email_user('Change Club Info - ' + club.name, contents)
         member.notify_user(club.name + '\'s information has been changed.')
-    flash('The information about club has been successfully submitted.', 'clubinfo')
+    flash('The information about club has been successfully submitted.',
+          'clubinfo')
     return redirect(url_for('.changeclubinfo', club=club.callsign))
 
 

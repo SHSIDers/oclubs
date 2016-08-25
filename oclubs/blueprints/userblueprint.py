@@ -3,18 +3,22 @@
 #
 
 from __future__ import absolute_import, unicode_literals
-import traceback
+
 from datetime import date, timedelta, datetime
 
 from flask import (
-    Blueprint, render_template, url_for, request, session, redirect, abort, flash, jsonify
+    Blueprint, render_template, url_for, request, redirect, abort, flash,
+    jsonify
 )
-from flask_login import current_user, login_required, fresh_login_required
+from flask_login import current_user, login_required  # , fresh_login_required
 
 from oclubs.objs import User, Club, Activity, Upload, FormattedText
 from oclubs.enums import UserType, ClubType, ActivityTime, ClubJoinMode
-from oclubs.shared import get_callsign, special_access_required, download_xlsx, read_xlsx, render_email_template, Pagination
-from oclubs.exceptions import AlreadyExists, PasswordTooShort, UploadNotSupported
+from oclubs.shared import (
+    get_callsign, special_access_required, download_xlsx, read_xlsx,
+    render_email_template, Pagination
+)
+from oclubs.exceptions import PasswordTooShort
 
 userblueprint = Blueprint('userblueprint', __name__)
 
@@ -41,7 +45,8 @@ def quitclub_submit():
     parameters = {'user': current_user, 'club': club, 'reason': reason}
     contents = render_email_template('quitclub', parameters)
     club.leader.email_user('Quit Club - ' + current_user.nickname, contents)
-    club.leader.notify_user(current_user.nickname + ' has quit ' + club.name + '.')
+    club.leader.notify_user(current_user.nickname + ' has quit ' +
+                            club.name + '.')
     flash('You have successfully quitted ' + club.name + '.', 'quit')
     return redirect(url_for('.quitclub'))
 
@@ -53,9 +58,10 @@ def personal():
     pictures = [Upload(-num) for num in range(1, 21)]
     if current_user.type == UserType.STUDENT:
         clubs = current_user.clubs
-        castotal = sum(current_user.cas_in_club(club) for club in current_user.clubs)
-        meetings_obj = current_user.activities_reminder([ActivityTime.NOON,
-                                                         ActivityTime.AFTERSCHOOL])
+        castotal = sum(current_user.cas_in_club(club)
+                       for club in current_user.clubs)
+        meetings_obj = current_user.activities_reminder(
+            [ActivityTime.NOON, ActivityTime.AFTERSCHOOL])
         meetings = []
         meetings.extend([meeting for meeting in meetings_obj])
         acts_obj = current_user.activities_reminder([ActivityTime.UNKNOWN,
@@ -63,7 +69,8 @@ def personal():
                                                      ActivityTime.OTHERS])
         activities = []
         activities.extend([act for act in acts_obj])
-        leader_club = filter(lambda club_obj: current_user == club_obj.leader, clubs)
+        leader_club = filter(lambda club_obj: current_user == club_obj.leader,
+                             clubs)
         return render_template('user/student.html',
                                pictures=pictures,
                                clubs=clubs,
@@ -78,7 +85,8 @@ def personal():
                                myclubs=myclubs,
                                UserType=UserType)
     else:
-        years = [(date.today() + timedelta(days=365*diff)).year for diff in range(2)]
+        years = [(date.today() + timedelta(days=365*diff)).year
+                 for diff in range(2)]
         return render_template('user/admin.html',
                                pictures=pictures,
                                years=years)
@@ -104,20 +112,24 @@ def personalsubmitinfo():
 @login_required  # FIXME: fresh_login_required
 def personalsubmitpassword():
     '''Change user's password in database'''
-    user_login = User.attempt_login(current_user.studentid, request.form['old'])
+    user_login = User.attempt_login(current_user.studentid,
+                                    request.form['old'])
     if user_login is not None:
         if request.form['new'] == '':
             flash('Please enter new password.', 'status_pw')
         elif request.form['new'] == request.form['again']:
             try:
                 current_user.password = request.form['new']
-                flash('Your information has been successfully changed.', 'status_pw')
+                flash('Your information has been successfully changed.',
+                      'status_pw')
             except PasswordTooShort:
                 flash('Password must be at least six digits.', 'status_pw')
         else:
-            flash('You have entered two different passwords. Please enter again.', 'status_pw')
+            flash('You have entered two different passwords. '
+                  'Please enter again.', 'status_pw')
     else:
-        flash('You have entered wrong old password. Please enter again.', 'status_pw')
+        flash('You have entered wrong old password. Please enter again.',
+              'status_pw')
     return redirect(url_for('.personal'))
 
 
@@ -149,8 +161,12 @@ def toactive(club):
 def allclubsinfo():
     '''Allow admin to download all clubs' info'''
     info = []
-    info.append(('Club ID', 'Name', 'Leader', 'Teacher', 'Introduction', 'Location', 'Is Active or Not', 'Type'))
-    info.extend([(club.id, club.name, club.leader.passportname, club.teacher.passportname, club.intro, club.location, str(club.is_active), club.type.format_name) for club in Club.allclubs()])
+    info.append(('Club ID', 'Name', 'Leader', 'Teacher', 'Introduction',
+                 'Location', 'Is Active or Not', 'Type'))
+    info.extend([(club.id, club.name, club.leader.passportname,
+                  club.teacher.passportname, club.intro, club.location,
+                  str(club.is_active), club.type.format_name)
+                 for club in Club.allclubs()])
 
     return download_xlsx('All Clubs\' Info.xlsx', info)
 
@@ -160,8 +176,11 @@ def allclubsinfo():
 def allactivitiesinfo():
     '''Allow admin to download all activities' info'''
     info = []
-    info.append(('Activity ID', 'Name', 'Club', 'Date', 'Time (Type)', 'Location', 'CAS Hours'))
-    info.extend([(act.id, act.name, act.club.name, act.date.strftime('%b-%d-%y'), act.time.format_name, act.location, act.cas) for act in Activity.all_activities()])
+    info.append(('Activity ID', 'Name', 'Club', 'Date', 'Time (Type)',
+                 'Location', 'CAS Hours'))
+    info.extend([(act.id, act.name, act.club.name,
+                  act.date.strftime('%b-%d-%y'), act.time.format_name,
+                  act.location, act.cas) for act in Activity.all_activities()])
 
     return download_xlsx('All Activities\' Info.xlsx', info)
 
@@ -171,8 +190,10 @@ def allactivitiesinfo():
 def allusersinfo():
     '''Allow admin to download all users' info'''
     info = []
-    info.append(('ID', 'Student ID', 'Nick Name', 'Passport Name', 'Email', 'Phone'))
-    info.extend([(user.id, user.studentid, user.nickname, user.passportname, user.email, str(user.phone)) for user in User.allusers()])
+    info.append(('ID', 'Student ID', 'Nick Name', 'Passport Name', 'Email',
+                 'Phone'))
+    info.extend([(user.id, user.studentid, user.nickname, user.passportname,
+                  user.email, str(user.phone)) for user in User.allusers()])
 
     return download_xlsx('All Users\' Info.xlsx', info)
 
@@ -191,7 +212,8 @@ def newteachers_submit():
     if request.files['excel'].filename == '':
         raise ValueError
     try:
-        contents = read_xlsx(request.files['excel'], 'Teachers', ['ID', 'Official Name', 'Email Address'])
+        contents = read_xlsx(request.files['excel'], 'Teachers',
+                             ['ID', 'Official Name', 'Email Address'])
     except KeyError:
         flash('Please change sheet name to "Teachers"', 'newteachers')
         return redirect(url_for('.newteachers'))
@@ -206,7 +228,8 @@ def newteachers_submit():
     for each in contents:
         handle_teacher_xlsx.delay(*each)
 
-    flash('New teacher accounts have been successfully created. Their passwords have been sent to their accounts.', 'newteachers')
+    flash('New teacher accounts have been successfully created. '
+          'Their passwords have been sent to their accounts.', 'newteachers')
     return redirect(url_for('.newteachers'))
 
 
@@ -216,7 +239,8 @@ def refreshusers_submit():
     '''Upload excel file to create new users'''
     from oclubs.worker import refresh_user
     refresh_user.delay()
-    flash('Student accounts\' information has been successfully refreshed.', 'refresh_users')
+    flash('Student accounts\' information has been successfully refreshed.',
+          'refresh_users')
     return redirect(url_for('.personal'))
 
 
@@ -245,7 +269,8 @@ def disableaccounts_submit():
     '''Input disabling information into database'''
     user = User(request.form['id'])
     user.password = None
-    flash(user.passportname + ' has been successfully disabled.', 'disableaccounts')
+    flash(user.passportname + ' has been successfully disabled.',
+          'disableaccounts')
     return redirect(url_for('.disableaccounts'))
 
 
@@ -351,9 +376,10 @@ def changepassword_submit():
     try:
         user.password = password
     except PasswordTooShort:
-        flash('Password must be at least six digits.','password')
+        flash('Password must be at least six digits.', 'password')
         return redirect(url_for('.changepassword'))
-    flash(user.nickname + '\'s password has been successfully set to ' + password + '.', 'password')
+    flash(user.nickname + '\'s password has been successfully set to ' +
+          password + '.', 'password')
     return redirect(url_for('.changepassword'))
 
 
@@ -391,7 +417,6 @@ def changeuserinfo_submit():
         setattr(User(userid), property_type, content)
     except Exception as e:
         status = type(e).__name__
-        traceback.print_exc()
     else:
         status = 'success'
     return jsonify({'result': status})
