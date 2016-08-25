@@ -57,14 +57,10 @@
 			</div>
 			<div class="modal-body">
 				<div class="col-sm-6">
-					<a href="{{ url_for('.newleader', club=g.club.callsign) }}">
-						<button class="btn btn-danger large_button">Select New Leader</button>
-					</a>
+					<a class="btn btn-danger large_button" href="{{ url_for('.newleader', club=g.club.callsign) }}">Select New Leader</a>
 				</div>
 				<div class="col-sm-6">
-					<a href="{{ url_for('.adjustmember', club=g.club.callsign) }}">
-						<button class="btn btn-warning large_button">Adjust Club Members</button>
-					</a>
+					<a class="btn btn-warning large_button" href="{{ url_for('.adjustmember', club=g.club.callsign) }}">Adjust Club Members</a>
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -84,14 +80,10 @@
 			</div>
 			<div class="modal-body">
 				<div class="col-sm-6">
-					<a href="{{ url_for('actblueprint.newhm', club=g.club.callsign) }}">
-						<button class="btn btn-primary large_button">Input HongMei Schedule</button>
-					</a>
+					<a class="btn btn-primary large_button" href="{{ url_for('actblueprint.newhm', club=g.club.callsign) }}">Input HongMei Schedule</a>
 				</div>
 				<div class="col-sm-6">
-					<a href="{{ url_for('actblueprint.hongmei_status', club=g.club.callsign) }}">
-						<button class="btn btn-success large_button">Check HongMei Status</button>
-					</a>
+					<a class="btn btn-success large_button" href="{{ url_for('actblueprint.hongmei_status', club=g.club.callsign) }}">Check HongMei Status</a>
 				</div>
 				<div class="clearfix"></div>
 			</div>

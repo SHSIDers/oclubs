@@ -12,14 +12,14 @@
 </div>
 <div class="clearfix"></div>
 <div class="col-xs-6">
-	<center><a href="{{ url_for('clubblueprint.clublist', club_type='all') }}">
-		<button class="btn btn-info" style="padding:5% 10% 5% 10%; font-size:125%">Join Clubs</button>
-	</a></center>
+	<center>
+		<a class="btn btn-info" href="{{ url_for('clubblueprint.clublist', club_type='all') }}" style="padding:5% 10% 5% 10%; font-size:125%">Join Clubs</a>
+	</center>
 </div>
 <div class="col-xs-6">
-	<center><a href="{{ url_for('userblueprint.quitclub') }}">
-		<button class="btn btn-info" style="padding:5% 10% 5% 10%; font-size:125%">Quit Clubs</button>
-	</a></center>
+	<center>
+		<a class="btn btn-info" href="{{ url_for('userblueprint.quitclub') }}" style="padding:5% 10% 5% 10%; font-size:125%">Quit Clubs</a>
+	</center>
 </div>
 <div class="clearfix"></div>
 <br>
@@ -95,13 +95,13 @@
 			{% endfor %}
 		</tbody>
 	</table>
-	<center><a href="{{ url_for('actblueprint.allactivities', club_type='all', page='1') }}">
-		<button class="btn btn-info" style="padding:5% 10% 5% 10%; font-size:125%">Register Individual Club Activities</button>
-	</a></center>
+	<center>
+		<a class="btn btn-info" href="{{ url_for('actblueprint.allactivities', club_type='all', page='1') }}" style="padding:5% 10% 5% 10%; font-size:125%">Register Individual Club Activities</a>
+	</center>
 	<br>
-	<center><a href="{{ url_for('clubblueprint.clublist', club_type='all') }}">
-		<button class="btn btn-info" style="padding:5% 10% 5% 10%; font-size:125%">Register HongMei Activities</button>
-	</a></center>
+	<center>
+		<a class="btn btn-info" href="{{ url_for('clubblueprint.clublist', club_type='all') }}" style="padding:5% 10% 5% 10%; font-size:125%">Register HongMei Activities</a>
+	</center>
 </div>
 <div class="clearfix {% if leader_club %}clearfix-bordered{% endif %}"></div>
 
@@ -109,9 +109,7 @@
 <br>
 <div class="container">
 	{% for club in leader_club %}
-	<a href="{{ url_for('clubblueprint.club', club=club.callsign) }}">
-		<button class="btn btn-success" style="padding:2%;font-size:125%">Manage {{ club.name }}</button>
-	</a>
+	<a class="btn btn-success" href="{{ url_for('clubblueprint.club', club=club.callsign) }}" style="padding:2%;font-size:125%">Manage {{ club.name }}</a>
 	{% endfor %}
 </div>
 {% endif %}

@@ -44,30 +44,32 @@
 			</ul>
 			{% endif %}
 			<div class="col-sm-4">
-				<center><a href="{{ url_for('actblueprint.clubactivities', club=g.club.callsign, page='1') }}">
-					<button class="btn btn-info btn-lg">Activities</button>
-				</a></center>
+				<center>
+					<a class="btn btn-info btn-lg" href="{{ url_for('actblueprint.clubactivities', club=g.club.callsign, page='1') }}">Activities</a>
+				</center>
 			</div>
 			<div class="col-sm-4">
-				<center><a href="{{ url_for('actblueprint.clubphoto', club=g.club.callsign, page='1') }}">
-					<button class="btn btn-info btn-lg">Photos</button>
-				</a></center>
+				<center>
+					<a class="btn btn-info btn-lg" href="{{ url_for('actblueprint.clubphoto', club=g.club.callsign, page='1') }}">Photos</a>
+				</center>
 			</div>
 			{% if free_join %}
 			<div class="col-sm-4">
-				<center><a href="#joinClub" data-toggle="modal" data-target="#joinClub" class="btn btn-info btn-lg">Join</a></center>
+				<center>
+					<a class="btn btn-info btn-lg" href="#joinClub" data-toggle="modal" data-target="#joinClub">Join</a>
+				</center>
 			</div>
 			{% endif %}
 			{% if current_user in g.club.members %}
 			<div class="col-sm-4">
-				<center><a href="{{ url_for('clubblueprint.memberinfo', club=g.club.callsign) }}">
-					<button class="btn btn-info btn-lg">Member List</button>
-				</a></center>
+				<center>
+					<a class="btn btn-info btn-lg" href="{{ url_for('clubblueprint.memberinfo', club=g.club.callsign) }}">Member List</a>
+				</center>
 			</div>
 			<div class="col-sm-4">
-				<center><a href="{{ url_for('userblueprint.registerhm', club=g.club.callsign) }}">
-					<button class="btn btn-info btn-lg">Register HongMei Activities</button>
-				</a></center>
+				<center>
+					<a class="btn btn-info btn-lg" href="{{ url_for('userblueprint.registerhm', club=g.club.callsign) }}">Register HongMei Activities</a>
+				</center>
 			</div>
 			{% endif %}
 		</div>

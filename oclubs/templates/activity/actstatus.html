@@ -57,9 +57,9 @@
 		</tbody>
 	</table>
 	<br>
-	<center><a href="{{ url_for('.actstatus_download', activity=g.activity.callsign) }}" target="_blank">
-		<button class="btn btn-success" style="padding: 3%; font-size:200%">Download as Excel Document</button>
-	</a></center>
+	<center>
+		<a class="btn btn-success" href="{{ url_for('.actstatus_download', activity=g.activity.callsign) }}" target="_blank" style="padding: 3%; font-size:200%">Download as Excel Document</a>
+	</center>
 </div>
 
 {% endwith %}

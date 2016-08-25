@@ -34,13 +34,13 @@
 			<p>Intro: {{ club.intro }}</p>
 			<div class="clearfix"></div>
 			<div class="col-sm-6">
-				<a href="{{ url_for('actblueprint.clubactivities', club=club.callsign, page=1) }}"><button class="btn btn-primary">Activities Status</button></a>
+				<a class="btn btn-primary" href="{{ url_for('actblueprint.clubactivities', club=club.callsign, page=1) }}">Activities Status</a>
 			</div>
 			<div class="col-sm-6">
-				<a href="{{ url_for('actblueprint.hongmei_status', club=club.callsign) }}"><button class="btn btn-primary">HongMei Status</button></a>
+				<a class="btn btn-primary" href="{{ url_for('actblueprint.hongmei_status', club=club.callsign) }}">HongMei Status</a>
 			</div>
 			<div class="col-sm-6">
-				<a href="{{ url_for('clubblueprint.club', club=club.callsign) }}"><button class="btn btn-primary">Club Management</button></a>
+				<a class="btn btn-primary" href="{{ url_for('clubblueprint.club', club=club.callsign) }}">Club Management</a>
 			</div>
 			<div class="col-sm-6">
 				<form action="{{ url_for('.switchmode', club=club.callsign) }}" method="post">
@@ -56,9 +56,9 @@
 </div>
 <div class="clearfix clearfix-bordered"></div>
 
-<center><a href="{{ url_for('.newclub') }}">
-	<button class="btn btn-success large_button" style="margin-top:30px">Add New Club</button>
-</a></center>
+<center>
+	<a class="btn btn-success large_button" href="{{ url_for('.newclub') }}" style="margin-top:30px">Add New Club</a>
+</center>
 
 <div class="clearfix"></div>
 
