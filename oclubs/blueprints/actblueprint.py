@@ -4,19 +4,18 @@
 
 from __future__ import absolute_import, unicode_literals, division
 
+from datetime import date
+
 from flask import (
-    Blueprint, render_template, url_for, session, abort, request, redirect, flash
+    Blueprint, render_template, url_for, abort, request, redirect, flash
 )
 from flask_login import current_user, login_required
 
-import re
-import math
-from copy import deepcopy
-from datetime import datetime, date, timedelta
-import traceback
-
 from oclubs.enums import UserType, ClubType, ActivityTime
-from oclubs.shared import get_callsign, special_access_required, Pagination, download_xlsx, render_email_template, partition
+from oclubs.shared import (
+    get_callsign, special_access_required, Pagination, render_email_template,
+    download_xlsx, partition
+)
 from oclubs.objs import User, Club, Activity, Upload, FormattedText
 from oclubs.exceptions import UploadNotSupported, AlreadyExists
 
@@ -28,10 +27,13 @@ def allactivities(club_type, page):
     '''All Activities'''
     act_num = 20
     if club_type == 'all':
-        count, acts = Activity.get_activities_conditions(limit=((page-1)*act_num, act_num))
+        count, acts = Activity.get_activities_conditions(
+            limit=((page-1)*act_num, act_num))
     else:
         try:
-            count, acts = Activity.get_activities_conditions(club_types=[ClubType[club_type.upper()]], limit=((page-1)*act_num, act_num))
+            count, acts = Activity.get_activities_conditions(
+                club_types=[ClubType[club_type.upper()]],
+                limit=((page-1)*act_num, act_num))
         except KeyError:
             abort(404)
     pagination = Pagination(page, act_num, count)
@@ -63,8 +65,9 @@ def clubactivities(club, page):
 @actblueprint.route('/photos/<int:page>')
 def allphotos(page):
     pic_num = 20
-    count, acts = Activity.get_activities_conditions(require_photos=True,
-                                                     limit=((page-1)*pic_num, pic_num))
+    count, acts = Activity.get_activities_conditions(
+        require_photos=True,
+        limit=((page-1)*pic_num, pic_num))
     act_recent = ''
     if page == 1:
         try:
@@ -97,7 +100,7 @@ def clubphoto(club, page):
 @special_access_required
 def newact(club):
     '''Hosting New Activity'''
-    years = [(date.today() + timedelta(days=365*diff)).year for diff in range(2)]
+    years = (lambda m: map(lambda n: m + n, range(2)))(date.today().year)
     return render_template('activity/newact.html',
                            years=years)
 
@@ -112,16 +115,17 @@ def newact_submit(club):
         a.name = request.form['name']
         a.club = club
         if request.form['description']:
-            a.description = FormattedText.handle(current_user, club, request.form['description'])
+            a.description = FormattedText.handle(current_user, club,
+                                                 request.form['description'])
         else:
             a.description = FormattedText(0)
         a.post = FormattedText(0)
-        date = datetime.strptime(request.form['year'] +
-                                 request.form['month'] +
-                                 request.form['day'], '%Y%m%d')
-        if date < date.today():
+        actdate = date(int(request.form['year']),
+                       int(request.form['month']),
+                       int(request.form['day']))
+        if actdate < date.today():
             raise IndexError
-        a.date = date
+        a.date = actdate
         a.time = ActivityTime[request.form['act_type'].upper()]
         a.location = request.form['location']
         time_type = request.form['time_type']
@@ -132,7 +136,8 @@ def newact_submit(club):
         a.create()
         flash(a.name + ' has been successfully created.', 'newact')
     except ValueError:
-        flash('Please input all information to create a new activity.', 'newact')
+        flash('Please input all information to create a new activity.',
+              'newact')
     except IndexError:
         flash('Please choose the correct date.', 'newact')
     else:
@@ -175,7 +180,8 @@ def actintro(activity):
 def activity_submit(activity):
     '''Signup for activity'''
     activity.signup(current_user)
-    flash('You have successfully signed up for ' + activity.name + '.', 'signup')
+    flash('You have successfully signed up for ' + activity.name + '.',
+          'signup')
     return redirect(url_for('.actintro', activity=activity.callsign))
 
 
@@ -194,7 +200,8 @@ def changeactpost(activity):
     return render_template('activity/changeactpost.html')
 
 
-@actblueprint.route('/<activity>/change_activity_post/submit', methods=['POST'])
+@actblueprint.route('/<activity>/change_activity_post/submit',
+                    methods=['POST'])
 @get_callsign(Activity, 'activity')
 @special_access_required
 def changeactpost_submit(activity):
@@ -202,13 +209,16 @@ def changeactpost_submit(activity):
     for pic in request.files.getlist('picture'):
         if pic.filename != '':
             try:
-                activity.add_picture(Upload.handle(current_user, activity.club, pic))
+                activity.add_picture(
+                    Upload.handle(current_user, activity.club, pic))
             except UploadNotSupported:
                 flash('Please upload a correct file type.', 'actpost')
-                return redirect(url_for('.changeactpost', activity=activity.callsign))
+                return redirect(url_for('.changeactpost',
+                                        activity=activity.callsign))
     if request.form['post'] != '':
         print request.form['post']
-        activity.post = FormattedText.handle(current_user, activity.club, request.form['post'])
+        activity.post = FormattedText.handle(current_user, activity.club,
+                                             request.form['post'])
     flash('Activity post has been successfully modified.', 'actpost')
     return redirect(url_for('.changeactpost', activity=activity.callsign))
 
@@ -283,7 +293,7 @@ def hongmei_status_download(club):
 def newhm(club):
     '''Input HongMei Plan'''
     acts = club.activities([ActivityTime.HONGMEI], (False, True))
-    years = [(date.today() + timedelta(days=365*diff)).year for diff in range(2)]
+    years = (lambda m: map(lambda n: m + n, range(2)))(date.today().year)
     return render_template('activity/newhm.html',
                            acts=acts,
                            years=years)
@@ -359,7 +369,8 @@ def actstatus_download(activity):
     info.extend([(member['user'].nickname,
                   member['user'].email,
                   str(member['user'].phone),
-                  'Handed in' if member['consentform'] == 1 else 'Not handed in')
+                  'Handed in' if member['consentform'] == 1
+                  else 'Not handed in')
                 for member in activity.signup_list()])
     return download_xlsx('Activity Status - ' + activity.name + '.xlsx', info)
 
@@ -396,7 +407,8 @@ def inputatten_submit(activity):
 def checkatten(activity):
     '''Check attendance'''
     attendance = activity.attendance
-    attend, absent = partition(activity.signup_list(), lambda member: member['user'] in attendance)
+    attend, absent = partition(activity.signup_list(),
+                               lambda member: member['user'] in attendance)
     return render_template('/activity/checkatten.html',
                            attend=attend,
                            absent=absent)
@@ -410,8 +422,11 @@ def checkatten_download(activity):
     result = []
     result.append(('Nick Name', 'Student ID', 'Attendance'))
     attendance = activity.attendance
-    attend, absent = partition(activity.signup_list(), lambda member: member['user'] in attendance)
+    attend, absent = partition(activity.signup_list(),
+                               lambda member: member['user'] in attendance)
 
-    result.append([(member.nickname, member.studentid, 'Attended') for member in attend])
-    result.append([(member.nickname, member.studentid, 'Absent') for member in absent])
+    result.append([(member.nickname, member.studentid, 'Attended')
+                   for member in attend])
+    result.append([(member.nickname, member.studentid, 'Absent')
+                   for member in absent])
     return download_xlsx('Attendance for ' + activity.name + '.xlsx', result)

@@ -6,14 +6,13 @@ from __future__ import absolute_import, unicode_literals, division
 
 
 import traceback
-import os
-import math
 from uuid import uuid4
 
 from flask import (
-    Flask, redirect, request, render_template, url_for, session, jsonify, g, abort, flash, Markup
+    Flask, redirect, request, render_template, url_for, session, abort, flash,
+    Markup
 )
-from flask_login import LoginManager, login_user, logout_user, current_user, login_required
+from flask_login import LoginManager, login_user, logout_user, login_required
 from htmlmin.minify import html_minify
 
 from oclubs.objs import User, Club, Activity, Upload
@@ -145,6 +144,7 @@ def i_am_a_teapot(e=None):
                            error_type=418
                            ), 418
 
+
 @login_manager.user_loader
 def load_user(user_id):
     try:
@@ -171,7 +171,8 @@ def login_submit():
     if user is not None:
         login_user(user, remember=('remember' in request.form))
     else:
-        flash('Please enter your username and password correctly in order to login.', 'login')
+        flash('Please enter your username and password correctly '
+              'in order to login.', 'login')
         return redirect(url_for('login'))
     return redirect(url_for('userblueprint.personal'))
 
