@@ -12,7 +12,7 @@ from celery.schedules import crontab
 from elasticsearch.helpers import scan
 from elasticsearch.exceptions import NotFoundError
 
-from oclubs.access import done, database, db2, elasticsearch
+from oclubs.access import done, database, db2, elasticsearch, redis
 from oclubs.access.redis import r_url_celery
 from oclubs.app import app as flask_app
 from oclubs.enums import UserType
@@ -37,11 +37,12 @@ app.conf.update(
             'task': 'oclubs.worker.rebuild_elasticsearch',
             'schedule': crontab(minute=47, hour=3),
         },
-        'refresh_user_holiday_weekend_night': {
-            'task': 'oclubs.worker.refresh_user',
-            'schedule': crontab(minute=23, hour=2, day_of_week='sunday',
-                                month_of_year='1,2,7,8'),
-        },
+        # DISABLED due to admin unable to fetch new account passwords
+        # 'refresh_user_holiday_weekend_night': {
+        #     'task': 'oclubs.worker.refresh_user',
+        #     'schedule': crontab(minute=23, hour=2, day_of_week='sunday',
+        #                         month_of_year='1,2,7,8'),
+        # },
     }
 )
 
@@ -154,7 +155,10 @@ def _create_account(authority, _type='STUDENT'):
     contents = render_email_template('newuser', parameters)
     u.email_user('Welcome to oClubs', contents)
     u.notify_user('Welcome to oClubs!')
-    print 'CREATED USER ID %d WITH PASSWORD %s' % (u.id, password)
+
+    redis.RedisCache('tempuserpw:' + str(u.id), 3600 * 48).set(password)
+
+    print 'CREATED USER ID %d' % u.id
 
 
 @app.task()

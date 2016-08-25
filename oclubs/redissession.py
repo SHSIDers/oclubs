@@ -42,7 +42,7 @@ class RedisSessionInterface(SessionInterface):
         sid = request.cookies.get(app.session_cookie_name)
         sid = sid or self.generate_sid()
         session = self.session_class(self.prefix, sid)
-        session.unmanage()  # prevent race condition
+        session.detach()  # prevent race condition
         return session
 
     def save_session(self, app, session, response):

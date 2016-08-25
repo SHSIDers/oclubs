@@ -93,11 +93,12 @@ class RedisStuff(object):
     def modified(self):
         return self.serialize(self) != self._initial
 
-    def unmanage(self):
+    def detach(self):  # in TARS's voice
         try:
             del g.redisObjDict[self.key]
         except KeyError:
             pass
+        return self
 
 
 class RedisDict(RedisStuff, dict):

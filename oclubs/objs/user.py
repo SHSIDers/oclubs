@@ -9,7 +9,7 @@ from flask_login import UserMixin
 from passlib.context import CryptContext
 from xkcdpass import xkcd_password as xp
 
-from oclubs.access import database, email
+from oclubs.access import database, email, redis
 from oclubs.enums import UserType
 from oclubs.exceptions import NoRow, PasswordTooShort
 from oclubs.objs.activity import int_date
@@ -217,6 +217,13 @@ class User(BaseObject, UserMixin):
             []
         )
         return [cls(item) for item in tempdata]
+
+    @classmethod
+    def get_new_passwords(cls):
+        return [(
+            cls(int(key.split(':')[-1])),
+            redis.RedisCache(key).detach().get()
+        ) for key in redis.r.keys('tempuserpw:*')]
 
     @staticmethod
     def generate_password():
