@@ -88,7 +88,7 @@ def clubphoto(club, page):
     pic_num = 20
     uploads = club.allactphotos()
     pagination = Pagination(page, pic_num, len(uploads))
-    uploads = uploads[(page-1)*pic_num-pic_num: page*pic_num]
+    uploads = uploads[(page-1)*pic_num: page*pic_num]
     return render_template('activity/clubphoto.html',
                            uploads=uploads,
                            pagination=pagination)

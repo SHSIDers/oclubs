@@ -5,7 +5,7 @@
 <!-- Below Navbar -->
 <div class="large_container">
 	<h1 class="text-center title">Photos of {{ g.club.name }}</h1>
-	{% if acts %}
+	{% if uploads %}
 	{% for upload in uploads %}
 	<div class="photo bright">
 		<img src="{{ upload.location_external }}" class="img-responsive" alt="{{ upload.club.name }}">
@@ -15,6 +15,7 @@
 	<p class="text-center color-lightgrey" style="font-size:125%">{{ g.club.name }} does not have any activity with photos yet.</p>
 	{% endif %}
 	<br>
+	<div class="clearfix"></div>
 	<center>{{ render_pagination(pagination) }}</center>
 </div>
 
