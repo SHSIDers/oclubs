@@ -50,7 +50,7 @@ class Activity(BaseObject):
         insert = {'signup_act': self.id, 'signup_user': user.id}
         update = {}
 
-        for dbkey, (kwkey, default) in data:
+        for dbkey, (kwkey, default) in data.items():
             if kwkey in kwargs:
                 insert[dbkey] = kwargs[kwkey]
                 update[dbkey] = kwargs[kwkey]
