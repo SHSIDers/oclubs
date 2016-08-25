@@ -7,6 +7,7 @@ from __future__ import absolute_import, unicode_literals, division
 
 import traceback
 from uuid import uuid4
+from urlparse import urlparse, urljoin
 
 from flask import (
     Flask, redirect, request, render_template, url_for, session, abort, flash,
@@ -161,13 +162,21 @@ def load_user(user_id):
 def refresh_login():
     '''Let user refresh its login status'''
     flash('Please login again for security.', 'login')
-    return redirect(url_for('login'))
+    return redirect(url_for('login', next=request.referrer
+                            if request.method == 'POST' else request.path))
 
 
 @app.route('/login')
 def login():
     '''Login page'''
     return render_template('user/login.html')
+
+
+def is_safe_url(target):
+    ref_url = urlparse(request.host_url)
+    test_url = urlparse(urljoin(request.host_url, target))
+    return (test_url.scheme in ('http', 'https') and
+            ref_url.netloc == test_url.netloc)
 
 
 @app.route('/login/submit', methods=['POST'])
@@ -179,11 +188,15 @@ def login_submit():
     )
     if user is not None:
         login_user(user, remember=('remember' in request.form))
+
+        target = request.form.get('next')
+        if not target or not is_safe_url(target):
+            return redirect(url_for('userblueprint.personal'))
+        return redirect(target)
     else:
         flash('Please enter your username and password correctly '
               'in order to login.', 'login')
         return redirect(url_for('login'))
-    return redirect(url_for('userblueprint.personal'))
 
 
 @app.route('/logout')

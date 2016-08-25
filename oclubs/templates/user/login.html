@@ -16,6 +16,7 @@
 
     <form class="login_block form-group" action="{{ url_for('login_submit') }}" method="post">
         <input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+        <input name="next" type="hidden" value="{{ request.args.get('next') or '' }}">
         <label for="studentid">Student ID:</label>
         <input type="text" class="form-control" id="studentid" name="username" placeholder="Enter username">
         <br>

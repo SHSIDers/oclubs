@@ -24,7 +24,7 @@ userblueprint = Blueprint('userblueprint', __name__)
 
 
 @userblueprint.route('/quit_club')
-@login_required
+@fresh_login_required
 def quitclub():
     '''Quit Club Page'''
     quitting_clubs = []
@@ -36,7 +36,7 @@ def quitclub():
 
 
 @userblueprint.route('/quit_club/submit', methods=['POST'])
-@login_required
+@fresh_login_required
 def quitclub_submit():
     '''Delete connection between user and club in database'''
     club = Club(request.form['clubs'])
@@ -109,7 +109,7 @@ def personalsubmitinfo():
 
 
 @userblueprint.route('/submit_password', methods=['POST'])
-@fresh_login_required
+@login_required
 def personalsubmitpassword():
     '''Change user's password in database'''
     user_login = User.attempt_login(current_user.studentid,
@@ -158,6 +158,7 @@ def toactive(club):
 
 @userblueprint.route('/all_clubs_info')
 @special_access_required
+@fresh_login_required
 def allclubsinfo():
     '''Allow admin to download all clubs' info'''
     info = []
@@ -173,6 +174,7 @@ def allclubsinfo():
 
 @userblueprint.route('/all_activities_info')
 @special_access_required
+@fresh_login_required
 def allactivitiesinfo():
     '''Allow admin to download all activities' info'''
     info = []
@@ -187,6 +189,7 @@ def allactivitiesinfo():
 
 @userblueprint.route('/all_users_info')
 @special_access_required
+@fresh_login_required
 def allusersinfo():
     '''Allow admin to download all users' info'''
     info = []
@@ -200,6 +203,7 @@ def allusersinfo():
 
 @userblueprint.route('/new_teachers')
 @special_access_required
+@fresh_login_required
 def newteachers():
     '''Allow admin to create new user or clubs'''
     return render_template('user/newteachers.html')
@@ -207,6 +211,7 @@ def newteachers():
 
 @userblueprint.route('/new_teachers/submit', methods=['POST'])
 @special_access_required
+@fresh_login_required
 def newteachers_submit():
     '''Create new teacher accounts with xlsx'''
     if request.files['excel'].filename == '':
@@ -235,6 +240,7 @@ def newteachers_submit():
 
 @userblueprint.route('/refresh_users/submit', methods=['POST'])
 @special_access_required
+@fresh_login_required
 def refreshusers_submit():
     '''Upload excel file to create new users'''
     from oclubs.worker import refresh_user
@@ -246,6 +252,7 @@ def refreshusers_submit():
 
 @userblueprint.route('/rebuild_elastic_search/submit', methods=['POST'])
 @special_access_required
+@fresh_login_required
 def rebuildsearch_submit():
     '''Rebuild elastic search engine to fix asyncronized situation'''
     from oclubs.worker import rebuild_elasticsearch
@@ -256,6 +263,7 @@ def rebuildsearch_submit():
 
 @userblueprint.route('/download_new_passwords')
 @special_access_required
+@fresh_login_required
 def download_new_passwords():
     '''Allow admin to download new accounts' passwords'''
     result = []
@@ -269,6 +277,7 @@ def download_new_passwords():
 
 @userblueprint.route('/disable_accounts')
 @special_access_required
+@fresh_login_required
 def disableaccounts():
     '''Allow admin to disable any account'''
     users = User.allusers()
@@ -278,6 +287,7 @@ def disableaccounts():
 
 @userblueprint.route('/disable_accounts/submit', methods=['POST'])
 @special_access_required
+@fresh_login_required
 def disableaccounts_submit():
     '''Input disabling information into database'''
     user = User(request.form['id'])
@@ -288,7 +298,7 @@ def disableaccounts_submit():
 
 
 @userblueprint.route('/new_club')
-@login_required
+@fresh_login_required
 def newclub():
     '''Allow teacher or admin to create new club'''
     if current_user.type == UserType.STUDENT:
@@ -298,7 +308,7 @@ def newclub():
 
 
 @userblueprint.route('/new_club/submit', methods=['POST'])
-@login_required
+@fresh_login_required
 def newclub_submit():
     '''Upload excel file to create new clubs'''
     if current_user.type == UserType.STUDENT:
@@ -333,6 +343,7 @@ def newclub_submit():
 @userblueprint.route('/club_management_list')
 @userblueprint.route('/club_management_list/<int:page>')
 @special_access_required
+@fresh_login_required
 def clubmanagementlist(page=1):
     '''Allow admin to access club management list'''
     num = 20
@@ -345,6 +356,7 @@ def clubmanagementlist(page=1):
 
 @userblueprint.route('/adjust_clubs')
 @special_access_required
+@fresh_login_required
 def adjustclubs():
     '''Allow admin to change clubs' status'''
     clubs = Club.allclubs()
@@ -354,6 +366,7 @@ def adjustclubs():
 
 @userblueprint.route('/adjust_clubs/submit', methods=['POST'])
 @special_access_required
+@fresh_login_required
 def adjustclubs_submit():
     '''Input change in clubs into database'''
     exc_clubs = Club.excellentclubs()
@@ -369,6 +382,7 @@ def adjustclubs_submit():
 
 @userblueprint.route('/change_password')
 @special_access_required
+@fresh_login_required
 def changepassword():
     '''Allow admin to change users' password'''
     users = User.allusers()
@@ -378,6 +392,7 @@ def changepassword():
 
 @userblueprint.route('/change_password/submit', methods=['POST'])
 @special_access_required
+@fresh_login_required
 def changepassword_submit():
     '''Input new password into database'''
     password = request.form['password']
@@ -403,6 +418,7 @@ def forgotpw():
 
 @userblueprint.route('/change_user_info')
 @special_access_required
+@fresh_login_required
 def changeuserinfo():
     '''Allow admin to change users' information'''
     users = User.allusers()
@@ -412,6 +428,7 @@ def changeuserinfo():
 
 @userblueprint.route('/change_user_info/submit', methods=['POST'])
 @special_access_required
+@fresh_login_required
 def changeuserinfo_submit():
     '''Input change of info into database'''
     property_type = request.form['type']

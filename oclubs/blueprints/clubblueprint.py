@@ -84,8 +84,8 @@ def clubintro_submit(club):
 
 @clubblueprint.route('/<club>/new_leader')
 @get_callsign(Club, 'club')
-@fresh_login_required
 @special_access_required
+@fresh_login_required
 def newleader(club):
     '''Selecting New Club Leader'''
     return render_template('club/newleader.html')
@@ -93,8 +93,8 @@ def newleader(club):
 
 @clubblueprint.route('/<club>/new_leader/submit', methods=['POST'])
 @get_callsign(Club, 'club')
-@fresh_login_required
 @special_access_required
+@fresh_login_required
 def newleader_submit(club):
     '''Change leader in database'''
     leader_old = club.leader
@@ -174,6 +174,7 @@ def changeclubinfo_submit(club):
 @clubblueprint.route('/<club>/adjust_member')
 @get_callsign(Club, 'club')
 @special_access_required
+@fresh_login_required
 def adjustmember(club):
     '''Adjust Club Members'''
     invite_member = (club.joinmode == ClubJoinMode.BY_INVITATION)
@@ -184,6 +185,7 @@ def adjustmember(club):
 @clubblueprint.route('/<club>/adjust_member/submit', methods=['POST'])
 @get_callsign(Club, 'club')
 @special_access_required
+@fresh_login_required
 def adjustmember_submit(club):
     '''Input adjustment of club members'''
     member = User(request.form['studentid'])
@@ -199,6 +201,7 @@ def adjustmember_submit(club):
 @clubblueprint.route('/<club>/invite_member/submit', methods=['POST'])
 @get_callsign(Club, 'club')
 @special_access_required
+@fresh_login_required
 def invitemember(club):
     '''Allow club leader to invite member'''
     new_member = User.find_user(request.form['studentid'],
