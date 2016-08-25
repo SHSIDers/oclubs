@@ -127,6 +127,7 @@ class Club(BaseObject):
     def add_member(self, user):
         database.insert_row('club_member',
                             {'cm_club': self.id, 'cm_user': user.id})
+        user.delete_invitation(self)
         del self.members
 
     def remove_member(self, user):

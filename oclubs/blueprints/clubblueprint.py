@@ -14,7 +14,7 @@ from oclubs.enums import UserType, ClubType, ClubJoinMode
 from oclubs.shared import (
     download_xlsx, get_callsign, special_access_required, render_email_template
 )
-from oclubs.exceptions import UploadNotSupported
+from oclubs.exceptions import UploadNotSupported, AlreadyExists
 
 clubblueprint = Blueprint('clubblueprint', __name__)
 
@@ -72,12 +72,15 @@ def clubintro(club):
 @login_required
 def clubintro_submit(club):
     '''Add new member'''
-    club.add_member(current_user)
+    try:
+        club.add_member(current_user)
+    except AlreadyExists:
+        flash('You are already in %s.' % club.name)
+        return redirect(url_for('.clubintro', club=club.callsign))
     parameters = {'club': club, 'current_user': current_user}
     contents = render_email_template('joinclubs', parameters)
     club.leader.email_user('New Club Member - ' + club.name, contents)
-    club.leader.notify_user(current_user.nickname + ' has joined ' +
-                            club.name + '.')
+    club.leader.notify_user('%s has joined %s.' % (current_user.nickname, club.name))
     flash('You have successfully joined ' + club.name + '.', 'join')
     return redirect(url_for('.clubintro', club=club.callsign))
 
