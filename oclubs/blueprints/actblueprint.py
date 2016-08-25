@@ -68,11 +68,12 @@ def allphotos(page):
     count, acts = Activity.get_activities_conditions(
         require_photos=True,
         limit=((page-1)*pic_num, pic_num))
+    act_recent = ''
     if page == 1:
         try:
             act_recent = acts[0]
         except IndexError:
-            act_recent = ''
+            pass
     pagination = Pagination(page, pic_num, count)
     return render_template('activity/photos.html',
                            is_photos=True,
@@ -340,6 +341,7 @@ def newhm_submit(club):
     a.location = 'HongMei Elementary School'
     a.cas = 1
     a.post = FormattedText.emptytext()
+    a.selections = []
     a.create()
     return redirect(url_for('.newhm', club=club.callsign))
 
