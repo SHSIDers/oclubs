@@ -2338,15 +2338,18 @@ table.attendance {
   }
 }
 
+table.actstatus span,
 table.attendance span {
   margin-right: 10px;
 }
 
+table.actstatus form,
 table.attendance form {
   display: inline;
 }
 
 @media screen and (max-width: 400px) {
+  table.actstatus form input,
   table.attendance form input {
     font-size: 75%;
   }
