@@ -1209,6 +1209,16 @@ tr.act:hover {
   font-size: 125%;
 }
 
+.personal_info .btn {
+  padding: 10px 12px;
+}
+
+@media screen and (max-width: 768px) {
+  .personal_info .btn {
+    padding: 6px 12px;
+  }
+}
+
 #profilepic {
   min-width: 80px;
   max-width: 225px;
@@ -2089,22 +2099,65 @@ tr.act:hover {
   }
 }
 
-#stuclubmeeting {
-  border-color: #f2f2f2;
-  border-right-style: solid;
+#stuclubmeeting p {
+  font-size: 22px;
 }
 
 @media screen and (max-width: 768px) {
-  #stuclubmeeting {
-    border-right-style: none;
-    border-bottom-style: solid;
+  #stuclubmeeting p {
+    font-size: 18px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  #stuclubmeeting p {
+    font-size: 14px;
+  }
+}
+
+#stuactlist {
+  border-color: #f2f2f2;
+  border-left-style: solid;
+}
+
+@media screen and (max-width: 768px) {
+  #stuactlist {
+    border-top-style: solid;
+    border-left-style: none;
+  }
+}
+
+#stuactlist a.btn {
+  margin-bottom: 15px;
+  padding: 20px 40px;
+  font-size: 125%;
+}
+
+@media screen and (max-width: 768px) {
+  #stuactlist a.btn {
+    padding: 15px 30px;
+    font-size: 100%;
   }
 }
 
 @media screen and (max-width: 400px) {
+  #stuactlist a.btn {
+    padding: 10px 20px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  #stuactlist,
   #stuclubmeeting {
     padding-right: 0;
     padding-left: 0;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  #stuactlist table,
+  #stuclubmeeting table {
+    font-size: 80%;
   }
 }
 

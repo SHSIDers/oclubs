@@ -963,6 +963,12 @@ tr.act {
 		width: 100%;
 		margin: 5px 0;
 	}
+	& .btn {
+		padding: 10px 12px;
+		@media screen and (max-width: 768px) {
+			padding: 6px 12px;
+		}
+	}
 }
 
 #profilepic {
@@ -1796,17 +1802,46 @@ tr.act {
 }
 
 #stuclubmeeting {
-	border-color: var(--color-lightgrey);
-	border-right-style: solid;
-
-	@media screen and (max-width: 768px) {
-		border-right-style: none;
-		border-bottom-style: solid;
+	& p {
+		font-size: 22px;
+		@media screen and (max-width: 768px) {
+			font-size: 18px;
+		}
+		@media screen and (max-width: 450px) {
+			font-size: 14px;
+		}
 	}
+}
+#stuactlist {
+	border-color: var(--color-lightgrey);
+	border-left-style: solid;
+	@media screen and (max-width: 768px) {
+		border-left-style: none;
+		border-top-style: solid;
+	}
+	& a.btn {
+		margin-bottom: 15px;
+		font-size: 125%;
+		padding: 20px 40px;
+		@media screen and (max-width: 768px) {
+			font-size: 100%;
+			padding: 15px 30px;
+		}
+		@media screen and (max-width: 400px) {
+			padding: 10px 20px;
+		}
+	}
+}
 
+#stuactlist, #stuclubmeeting {
 	@media screen and (max-width: 400px) {
 		padding-right: 0;
 		padding-left: 0;
+	}
+	& table {
+		@media screen and (max-width: 768px) {
+			font-size: 80%;
+		}
 	}
 }
 
