@@ -168,13 +168,12 @@ def actintro(activity):
         has_access = (current_user == activity.club.leader or
                       current_user == activity.club.teacher or
                       current_user.type == UserType.ADMIN)
-        can_join = (current_user not in
-                    [act['user'] for act in activity.signup_list()] and
-                    current_user.type == UserType.STUDENT)
         try:
             selection = activity.signup_user_status(current_user)['selection']
+            can_join = (current_user.type == UserType.STUDENT)
         except NoRow:
             selection = ''
+            can_join = False
     else:
         can_join = False
         has_access = False
