@@ -68,12 +68,11 @@ def allphotos(page):
     count, acts = Activity.get_activities_conditions(
         require_photos=True,
         limit=((page-1)*pic_num, pic_num))
-    act_recent = ''
     if page == 1:
         try:
             act_recent = acts[0]
         except IndexError:
-            pass
+            act_recent = ''
     pagination = Pagination(page, pic_num, count)
     return render_template('activity/photos.html',
                            is_photos=True,
