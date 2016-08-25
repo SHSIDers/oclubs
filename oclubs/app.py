@@ -30,7 +30,7 @@ app.config['SECRET_KEY'] = get_secret('flask_key')
 
 app.register_blueprint(userblueprint, url_prefix='/user')
 app.register_blueprint(clubblueprint, url_prefix='/club')
-app.register_blueprint(actblueprint, url_prefix='/act')
+app.register_blueprint(actblueprint, url_prefix='/activity')
 
 app.session_interface = RedisSessionInterface()
 

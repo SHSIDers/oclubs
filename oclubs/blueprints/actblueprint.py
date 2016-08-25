@@ -149,6 +149,11 @@ def newact_submit(club):
     return redirect(url_for('.newact', club=club.callsign))
 
 
+@actblueprint.route('/<activity>/')
+def clubredirect(activity):
+    return redirect(url_for('.actintro', activity=activity))
+
+
 @actblueprint.route('/<activity>/introduction')
 @get_callsign(Activity, 'activity')
 def actintro(activity):

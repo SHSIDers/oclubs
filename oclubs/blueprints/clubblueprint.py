@@ -48,6 +48,11 @@ def club(club):
     return render_template('club/clubmanage.html')
 
 
+@clubblueprint.route('/<club>/')
+def clubredirect(club):
+    return redirect(url_for('.clubintro', club=club))
+
+
 @clubblueprint.route('/<club>/introduction')
 @get_callsign(Club, 'club')
 def clubintro(club):
