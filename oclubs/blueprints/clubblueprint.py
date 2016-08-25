@@ -80,7 +80,8 @@ def clubintro_submit(club):
     parameters = {'club': club, 'current_user': current_user}
     contents = render_email_template('joinclubs', parameters)
     club.leader.email_user('New Club Member - ' + club.name, contents)
-    club.leader.notify_user('%s has joined %s.' % (current_user.nickname, club.name))
+    club.leader.notify_user('%s has joined %s.'
+                            % (current_user.nickname, club.name))
     flash('You have successfully joined ' + club.name + '.', 'join')
     return redirect(url_for('.clubintro', club=club.callsign))
 

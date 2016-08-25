@@ -272,7 +272,8 @@ def hongmei_invite_submit(activity):
         activity.signup(member)
         parameters = {'member': member, 'activity': activity, 'plan': plan}
         contents = render_email_template('invitehm', parameters)
-        member.email_user('HongMei Invitation - ' + activity.club.name, contents)
+        member.email_user('HongMei Invitation - ' + activity.club.name,
+                          contents)
         member.notify_user('You have been invited to HongMei activity - ' +
                            activity.name + ' on ' +
                            activity.date.strftime('%b-%d-%y') + '.')
