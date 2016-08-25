@@ -51,10 +51,9 @@ def allactivities(club_type, page):
 def clubactivities(club, page):
     '''One Club's Activities'''
     act_num = 20
-    acts = club.activities()
+    count, acts = club.activities(limit=((page-1)*act_num, act_num))
 
-    pagination = Pagination(page, act_num, len(acts))
-    acts = acts[(page-1)*act_num: page*act_num]
+    pagination = Pagination(page, act_num, count)
     club_pic = []
     club_pic.extend(club.allactphotos(limit=3)[1])
     club_pic.extend([Upload(-101) for _ in range(3 - len(club_pic))])
@@ -91,9 +90,8 @@ def allphotos(page):
 def clubphoto(club, page):
     '''Individual Club's Photo Page'''
     pic_num = 20
-    uploads = club.allactphotos()
-    pagination = Pagination(page, pic_num, len(uploads))
-    uploads = uploads[(page-1)*pic_num: page*pic_num]
+    count, uploads = club.allactphotos(limit=((page-1)*pic_num, pic_num))
+    pagination = Pagination(page, pic_num, count)
     return render_template('activity/clubphoto.html',
                            uploads=uploads,
                            pagination=pagination)

@@ -521,7 +521,7 @@ def registerhm_submit(club):
 @userblueprint.route('/notifications/', defaults={'page': 1})
 @userblueprint.route('/notifications/<int:page>')
 @login_required
-def notifications(page=1):
+def notifications(page):
     '''Allow users to check their notifications'''
     note_num = 20
     notes_all = current_user.get_notifications(
