@@ -67,7 +67,7 @@ def clubintro(club):
                            free_join=free_join)
 
 
-@clubblueprint.route('/<club>/introduction/submit')
+@clubblueprint.route('/<club>/introduction/submit', methods=['POST'])
 @get_callsign(Club, 'club')
 @login_required
 def clubintro_submit(club):

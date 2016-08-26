@@ -30,7 +30,7 @@
 			{% endif %}
 		</div>
 		{% if messages_signup %}
-		<ul class="list-group" style="margin-top:0">
+		<ul class="list-group no-top-margin">
 			{% for message in messages_signup %}
 			<li class="list-group-item">{{ message }}</li>
 			{% endfor %}
@@ -39,13 +39,13 @@
 
 		{% if g.activity.selections %}
 		{% if selection %}
-		<p class="color-lightgrey" style="font-size: 150%">Your Selection:</p>
-		<p class="color-lightgrey" style="font-size: 150%">{{ selection }}</p>
+		<p class="color-lightgrey shorttext">Your Selection:</p>
+		<p class="color-lightgrey shorttext">{{ selection }}</p>
 		{% else %}
-		<p class="color-lightgrey" style="font-size: 150%">Selection:</p>
+		<p class="color-lightgrey shorttext">Selection:</p>
 		<select name="selection" form="join_form" class="selection_bar color-lightgrey">
 			{% for choice in g.activity.selections %}
-			<option value="{{ choice }}" style="color:black">{{ choice }}</option>
+			<option class="black" value="{{ choice }}">{{ choice }}</option>
 			{% endfor %}
 		</select>
 		{% endif %}

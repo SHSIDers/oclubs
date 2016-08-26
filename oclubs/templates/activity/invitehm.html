@@ -18,15 +18,17 @@
 	<div class="checkbox_block">
 		{% for member in g.activity.club.members %}
 		<label for="{{ member.id }}">
-			<div class="col-sm-3" style="padding:0 5px 0 5px">
-				<img src="{{ member.picture.location_external }}" class="img-responsive img-thumbnail" alt="{{ member.nickname }}" style="width:80%">
-			</div>
-			<div class="col-sm-7" style="white-space:nowrap">
-				<p>{{ member.nickname }}</p>
-				<p>{{ member.passportname }}</p>
-			</div>
-			<div class="col-sm-2" style="float:right; padding:0">
-				<input type="checkbox" name="invite" value="{{ member.id }}"" id="{{ member.id }}" form="invitehm">
+			<div class="row">
+				<div class="col-sm-3">
+					<img src="{{ member.picture.location_external }}" class="img-responsive img-thumbnail" alt="{{ member.nickname }}">
+				</div>
+				<div class="col-sm-7 nowrap">
+					<p>{{ member.nickname }}</p>
+					<p>{{ member.passportname }}</p>
+				</div>
+				<div class="col-sm-2 float-right no-padding">
+					<input type="checkbox" name="invite" value="{{ member.id }}"" id="{{ member.id }}" form="invitehm">
+				</div>
 			</div>
 		</label>
 		{% endfor %}
@@ -34,7 +36,7 @@
 	<br>
 	<center>
 		<form action="{{ url_for('.hongmei_invite_submit', activity=g.activity.callsign) }}" method="post" id="invitehm">
-			<input class="btn btn-info" type="submit" style="width:20%;padding: 3% 0 3% 0; font-size:200%;min-width:120px" value="Submit">
+			<input class="btn btn-info width-20 downloadbtn" type="submit" value="Submit">
 			<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 		</form>
 	</button>

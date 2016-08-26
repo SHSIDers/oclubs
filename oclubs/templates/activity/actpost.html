@@ -25,8 +25,8 @@
 			<p>Time: {{ g.activity.date }}</p>
 			<br>
 			{% for pic in g.activity.pictures %}
-			<div class="col-sm-3">
-				<img src="{{ pic.location_external }}" class="img-thumbnail" alt="{{ g.activity.name }}" style="margin-bottom:15px">
+			<div class="col-sm-3 emptyline">
+				<img src="{{ pic.location_external }}" class="img-thumbnail" alt="{{ g.activity.name }}">
 			</div>
 			{% endfor %}
 			<div class="clearfix"></div>

@@ -10,19 +10,19 @@
 		<h1 class="title">Change Club Info</h1>
 		<h2 class="title_next">{{ g.club.name }}</h2>
 		{% if messages %}
-		<ul class="list-group" style="color:black">
+		<ul class="list-group black">
 			{% for message in messages %}
 			<li class="list-group-item">{{ message }}</li>
 			{% endfor %}
 		</ul>
 		{% endif %}
-		<label for="intro" style="font-size:200%">One sentence Intro:</label>
+		<label class="midtext" for="intro">One sentence Intro:</label>
 		<input type="text" class="form-control" name="intro" id="intro" value="{{ g.club.intro }}">
 		<br>
 		<p>The shorter the better.</p>
 		<br>
-		<label for="picture" style="font-size:200%">Picture:</label>
-		<input type="file" name="picture" id="picture" accept="image/*" style="width:0.1px; height:0.1px; opacity:0">
+		<label for="picture" class="midtext">Picture:</label>
+		<input class="hide" type="file" name="picture" id="picture" accept="image/*">
 		<label for="picture" class="upload_button">
 			<span class="glyphicon glyphicon-upload"></span>
 			<span>Choose an image...</span>
@@ -30,7 +30,7 @@
 		<p class="upload_content" id="upload_content"></p>
 		<br>
 		<br>
-		<label for="description" style="font-size:200%">Introduction Paragraphs:</label>
+		<label for="description" class="midtext">Introduction Paragraphs:</label>
 		<textarea class="form-control" rows="10" name="description" id="description">{{ g.club.description.raw }}</textarea>
 		<br>
 		<p>*We support markdown in description.</p>

@@ -49,7 +49,7 @@
 				var init_view = function( item, content ) {
 					item.empty()
 						.append( $( '<div class="col-sm-8 content"><p></p></div>' ) )
-						.append( $( '<div class="col-sm-4 edit"><a style="cursor:pointer">Edit</a></div>' ) );
+						.append( $( '<div class="col-sm-4 edit"><a class="clickable">Edit</a></div>' ) );
 					item.find( 'p' )
 						.text( content );
 					item.find( 'a' )
@@ -60,7 +60,7 @@
 				var init_edit = function( item, content ) {
 					item.empty()
 						.append( $( '<div class="col-sm-8 content"><input type="text" class="input_content" name="content"></div>' ) )
-						.append( $( '<div class="col-sm-4 edit"><a style="cursor:pointer">Edit</a></div>' ) );
+						.append( $( '<div class="col-sm-4 edit"><a class="clickable">Edit</a></div>' ) );
 					item.find( 'input.input_content' )
 						.attr( 'value', content )
 						.focus();

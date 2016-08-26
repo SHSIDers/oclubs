@@ -93,7 +93,7 @@
 				<p>This operation will update students' accounts with SHSID's authoritative database, so you can use this when new students join. This will disable students' accounts if they disappear from school's database, so please use it with caution.</p>
 			</div>
 			<div class="modal-footer">
-				<button class="btn btn-success" data-dismiss="modal" style="float:left">Cancel</button>
+				<button class="btn btn-success float-left" data-dismiss="modal">Cancel</button>
 				<form action="{{ url_for('.refreshusers_submit') }}" method="post">
 					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 					<input type="submit" class="btn btn-danger" value="Refresh">
@@ -114,7 +114,7 @@
 				<p>When search engine is desynchronized with the database, you can use this operation to auto-fix the problem.</p>
 			</div>
 			<div class="modal-footer">
-				<button class="btn btn-success" data-dismiss="modal" style="float:left">Cancel</button>
+				<button class="btn btn-success float-left" data-dismiss="modal">Cancel</button>
 				<form action="{{ url_for('.rebuildsearch_submit') }}" method="post">
 					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 					<input type="submit" class="btn btn-danger" value="Fix">
@@ -156,7 +156,7 @@
 				<div class="clearfix"></div>
 			</div>
 			<div class="modal-footer">
-				<button class="btn btn-default" data-dismiss="modal" style="float:left">Close</button>
+				<button class="btn btn-default float-left" data-dismiss="modal">Close</button>
 				<form action="{{ url_for('.checkhongmeischedule_download') }}" target="_blank" id="download_schedule" method="post">
 					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 					<input type="submit" class="btn btn-success" value="Download">

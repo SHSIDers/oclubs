@@ -2278,6 +2278,40 @@ tr.act:hover {
   color: #ccc;
 }
 
+.midtext {
+  font-size: 200%;
+}
+
+@media screen and (max-width: 800px) {
+  .midtext {
+    font-size: 175%;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .midtext {
+    font-size: 150%;
+  }
+}
+
+@media screen and (max-width: 525px) {
+  .midtext {
+    font-size: 130%;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .midtext {
+    font-size: 110%;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .midtext {
+    font-size: 100%;
+  }
+}
+
 .shorttext {
   font-size: 150%;
 }
@@ -2310,6 +2344,118 @@ tr.act:hover {
   .shorttext {
     font-size: 80%;
   }
+}
+
+.tinytext {
+  font-size: 110%;
+}
+
+@media screen and (max-width: 800px) {
+  .tinytext {
+    font-size: 100%;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .tinytext {
+    font-size: 90%;
+  }
+}
+
+@media screen and (max-width: 525px) {
+  .tinytext {
+    font-size: 80%;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .tinytext {
+    font-size: 75%;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .tinytext {
+    font-size: 70%;
+  }
+}
+
+.black {
+  color: #000;
+}
+
+.no-top-margin {
+  margin-top: 0;
+}
+
+.emptyline {
+  margin-bottom: 15px;
+}
+
+.bg-color-grey {
+  background-color: #bfbfbf;
+}
+
+.width-75 {
+  width: 75%;
+}
+
+.width-70 {
+  width: 70%;
+}
+
+.width-25 {
+  width: 25%;
+}
+
+.width-20 {
+  width: 20%;
+}
+
+.width-15 {
+  width: 15%;
+}
+
+.width-10 {
+  width: 10%;
+}
+
+.hide {
+  display: none;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.dowrap {
+  white-space: normal;
+}
+
+.float-right {
+  float: right;
+}
+
+.float-left {
+  float: left;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+.inline {
+  display: inline;
+}
+
+.middle {
+  margin: 0 auto;
+}
+
+.about-title {
+  padding: 15px;
+  background-color: #5bc0de !important;
+  font-weight: 700;
 }
 
 table.actstatus,
