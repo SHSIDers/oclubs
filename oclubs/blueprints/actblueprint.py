@@ -115,18 +115,23 @@ def newact_submit(club):
     try:
         a = Activity.new()
         a.name = request.form['name']
+        if not a.name:
+            flash('Please enter the name of the new activity.')
+            return redirect(url_for('.newact', club=club.callsign))
         a.club = club
-        if request.form['description']:
-            a.description = FormattedText.handle(current_user, club,
-                                                 request.form['description'])
-        else:
-            a.description = FormattedText(0)
+        a.description = FormattedText.handle(current_user, club,
+                                             request.form['description'])
         a.post = FormattedText(0)
-        actdate = date(int(request.form['year']),
-                       int(request.form['month']),
-                       int(request.form['day']))
+        try:
+            actdate = date(int(request.form['year']),
+                           int(request.form['month']),
+                           int(request.form['day']))
+        except ValueError:
+            flash('Invalid date.', 'newact')
+            return redirect(url_for('.newact', club=club.callsign))
         if actdate < date.today():
-            raise IndexError
+            flash('Please choose the correct date.', 'newact')
+            return redirect(url_for('.newact', club=club.callsign))
         a.date = actdate
         time = ActivityTime[request.form['act_type'].upper()]
         a.time = time
@@ -147,14 +152,13 @@ def newact_submit(club):
     except ValueError:
         flash('Please input all information to create a new activity.',
               'newact')
-    except IndexError:
-        flash('Please choose the correct date.', 'newact')
     else:
         for member in club.members:
             parameters = {'member': member, 'club': club, 'act': a}
             contents = render_email_template('newact', parameters)
             member.email_user(a.name + ' - ' + club.name, contents)
-            member.notify_user(club.name + ' is going to host ' + a.name + '.')
+            member.notify_user(club.name + ' is going to host ' + a.name +
+                               ' on ' + date.strftime('%b-%d-%y') + '.')
     return redirect(url_for('.newact', club=club.callsign))
 
 
@@ -181,8 +185,8 @@ def actintro(activity):
         can_join = False
         has_access = False
         selection = ''
-    is_other_act = (activity.time == ActivityTime.UNKNOWN or
-                    activity.time == ActivityTime.OTHERS)
+
+    is_other_act = activity.time in [ActivityTime.UNKNOWN, ActivityTime.OTHERS]
     return render_template('activity/actintro.html',
                            is_other_act=is_other_act,
                            is_past=date.today() >= activity.date,
@@ -194,7 +198,7 @@ def actintro(activity):
 @actblueprint.route('/<activity>/introduction/submit', methods=['POST'])
 @get_callsign(Activity, 'activity')
 @login_required
-def activity_submit(activity):
+def actintro_submit(activity):
     '''Signup for activity'''
     if activity.selections:
         activity.signup(current_user, selection=request.form['selection'])
@@ -235,9 +239,8 @@ def changeactpost_submit(activity):
                 flash('Please upload a correct file type.', 'actpost')
                 return redirect(url_for('.changeactpost',
                                         activity=activity.callsign))
-    if request.form['post'] != '':
-        activity.post = FormattedText.handle(current_user, activity.club,
-                                             request.form['post'])
+    activity.post = FormattedText.handle(current_user, activity.club,
+                                         request.form['post'])
     flash('Activity post has been successfully modified.', 'actpost')
     return redirect(url_for('.changeactpost', activity=activity.callsign))
 
@@ -395,6 +398,32 @@ def actstatus_download(activity):
                   member['selection'] if activity.selections else '')
                 for member in activity.signup_list()])
     return download_xlsx('Activity Status - ' + activity.name + '.xlsx', info)
+
+
+@actblueprint.route('/<activity>/input_attendance')
+@get_callsign(Activity, 'activity')
+@special_access_required
+def inputatten(activity):
+    '''Input Attendance'''
+    return render_template('activity/inputatten.html')
+
+
+@actblueprint.route('/<activity>/input_attendance/submit', methods=['POST'])
+@get_callsign(Activity, 'activity')
+@special_access_required
+def inputatten_submit(activity):
+    '''Change attendance in database'''
+    attendances = request.form.getlist('attendance')
+    if attendances == []:
+        flash('Please select the people who attended the activity.', 'atten')
+    else:
+        for atten in attendances:
+            try:
+                activity.attend(User(atten))
+            except AlreadyExists:
+                pass
+        flash('The attendance has been successfully submitted.', 'atten')
+    return redirect(url_for('.inputatten', activity=activity.callsign))
 
 
 @actblueprint.route('/<activity>/attendance')

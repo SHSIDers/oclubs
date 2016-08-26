@@ -56,13 +56,13 @@ class FormattedText(BaseObject):
 
     @classmethod
     def handle(cls, user, club, text):
-        if not text:
+        if not text or not text.strip():
             return cls.emptytext()
         obj = cls.new()
         obj.club = club
         obj.uploader = user
         obj._flags = []
-        obj._blob = text.encode('utf-8')
+        obj._blob = text.strip().encode('utf-8')
         return obj.create()
 
     @staticmethod
