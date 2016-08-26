@@ -32,7 +32,6 @@ def delete(doc_type, doc_id):
     )['found']
 
 
-@delayed_func
 def get(doc_type, doc_id, fields=True):
     ret = es.get(
         index='oclubs',
