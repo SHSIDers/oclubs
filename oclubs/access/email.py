@@ -4,31 +4,18 @@
 
 from __future__ import absolute_import, unicode_literals
 
-from flask import g
 from envelopes import Envelope, SMTP
 import sendgrid
 from sendgrid.helpers.mail import Email, Content, Mail
 
 from oclubs.access import get_secret
+from oclubs.access.delay import delayed_func
 
 from_email = ('no-reply@oclubs.shsid.org', 'oClubs')
 
 
-def done(commit=True):
-    if g.get('emailsToSend', None):
-        if commit:
-            for args, kwargs in g.emailsToSend:
-                _send(*args, **kwargs)
-        g.emailsToSend = None
-        del emailsToSend
-
-
-def send(*args, **kwargs):
-    g.redisObjDict = g.get('redisObjDict', [])
-    g.redisObjDict.append((args, kwargs))
-
-
-def _send(to_email, subject, content):
+@delayed_func
+def send(to_email, subject, content):
     if to_email[0].endswith('@gmail.com'):
         sg = sendgrid.SendGridAPIClient(apikey=get_secret('sendgrid_key'))
         content = Content('text/plain', content)
