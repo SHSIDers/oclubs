@@ -16,6 +16,7 @@ from oclubs.access import redis
 
 def done(commit=True):
     database.done(commit)
+    email.done(commit)
     redis.done(commit)
 
 
