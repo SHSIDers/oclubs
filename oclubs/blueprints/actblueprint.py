@@ -405,8 +405,8 @@ def actstatus_download(activity):
 @special_access_required
 def attendance(activity):
     '''Check attendance'''
-    attend, absent = partition(activity.club.members,
-                               lambda member: member in activity.attendance)
+    attend, absent = partition(lambda member: member in activity.attendance,
+                               activity.club.members)
     return render_template('/activity/attendance.html',
                            attend=attend,
                            absent=absent)
@@ -418,8 +418,8 @@ def attendance(activity):
 def attendance_submit(activity):
     '''Submit change in attendance'''
     member = User(request.form['userid'])
-    attend, absent = partition(activity.club.members,
-                               lambda member: member in activity.attendance)
+    attend, absent = partition(lambda member: member in activity.attendance,
+                               activity.club.members)
     if member in absent:
         activity.attend(member)
         flash(member.nickname + ' has attended ' + activity.name + '.',
@@ -438,8 +438,8 @@ def attendance_download(activity):
     '''Download activity's attendance'''
     result = []
     result.append(('Nick Name', 'Student ID', 'Attendance'))
-    attend, absent = partition(activity.club.members,
-                               lambda member: member in activity.attendance)
+    attend, absent = partition(lambda member: member in activity.attendance,
+                               activity.club.members)
 
     result.extend([(member.nickname, member.studentid, 'Attended')
                    for member in attend])
