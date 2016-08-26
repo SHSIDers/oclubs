@@ -222,7 +222,9 @@ def done(commit=True):
         finally:
             g.dbconnection.close()
             g.dbconnection = False
+            del g.dbconnection
             g.dbtransaction = False
+            del g.dbtransaction
 
 
 def fetch_info(info):

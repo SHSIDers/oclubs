@@ -17,9 +17,14 @@ r_url_celery = 'redis://:' + get_secret('redis_pw') + '@localhost:6379/'
 def done(commit=True):
     if g.get('redisObjDict', None):
         if commit:
+            g.redisPipeline = g.get('redisPipeline', r.pipeline())
             for stuff in g.redisObjDict.values():
                 stuff.save()
+
+            g.redisPipeline.execute()
+            del g.redisPipeline
         g.redisObjDict.clear()
+        del g.redisObjDict
 
 
 class _RedisMetaclass(type):
@@ -73,17 +78,19 @@ class RedisStuff(object):
         return json.loads(data)
 
     def save(self):
+        p = g.get('redisPipeline', r)
+
         if not self:
-            r.delete(self.key)
+            p.delete(self.key)
             return
 
         dumped = self.serialize(self)
         if self._initial != dumped:
-            r.set(self.key, dumped)
+            p.set(self.key, dumped)
         if self.timeout < 0:
-            r.persist(self.key)
+            p.persist(self.key)
         else:
-            r.expire(self.key, self.timeout)
+            p.expire(self.key, self.timeout)
 
     @staticmethod
     def serialize(obj):

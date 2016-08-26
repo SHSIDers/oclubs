@@ -20,6 +20,7 @@ def done(commit=True):
             for args, kwargs in g.emailsToSend:
                 _send(*args, **kwargs)
         g.emailsToSend = None
+        del emailsToSend
 
 
 def send(*args, **kwargs):
