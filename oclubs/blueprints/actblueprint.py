@@ -397,32 +397,6 @@ def actstatus_download(activity):
     return download_xlsx('Activity Status - ' + activity.name + '.xlsx', info)
 
 
-@actblueprint.route('/<activity>/input_attendance')
-@get_callsign(Activity, 'activity')
-@special_access_required
-def inputatten(activity):
-    '''Input Attendance'''
-    return render_template('activity/inputatten.html')
-
-
-@actblueprint.route('/<activity>/input_attendance/submit', methods=['POST'])
-@get_callsign(Activity, 'activity')
-@special_access_required
-def inputatten_submit(activity):
-    '''Change attendance in database'''
-    attendances = request.form.getlist('attendance')
-    if attendances == []:
-        flash('Please select the people who attended the activity.', 'atten')
-    else:
-        for atten in attendances:
-            try:
-                activity.attend(User(atten))
-            except AlreadyExists:
-                pass
-        flash('The attendance has been successfully submitted.', 'atten')
-    return redirect(url_for('.inputatten', activity=activity.callsign))
-
-
 @actblueprint.route('/<activity>/attendance')
 @get_callsign(Activity, 'activity')
 @special_access_required
