@@ -27,10 +27,8 @@ userblueprint = Blueprint('userblueprint', __name__)
 @fresh_login_required
 def quitclub():
     '''Quit Club Page'''
-    quitting_clubs = []
-    for club in current_user.clubs:
-        if club not in Club.get_clubs_special_access(current_user):
-            quitting_clubs.append(club)
+    quitting_clubs = filter(lambda club: club if current_user.id == club.leader.id else None,
+                            current_user.clubs)
     return render_template('user/quitclub.html',
                            quitting_clubs=quitting_clubs)
 
