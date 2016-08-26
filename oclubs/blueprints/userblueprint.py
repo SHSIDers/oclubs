@@ -27,7 +27,7 @@ userblueprint = Blueprint('userblueprint', __name__)
 @fresh_login_required
 def quitclub():
     '''Quit Club Page'''
-    quitting_clubs = filter(lambda club: club.leader != current_user,
+    quitting_clubs = filter(lambda club: current_user != club.leader,
                             current_user.clubs)
     return render_template('user/quitclub.html',
                            quitting_clubs=quitting_clubs)
@@ -38,14 +38,22 @@ def quitclub():
 def quitclub_submit():
     '''Delete connection between user and club in database'''
     club = Club(request.form['clubs'])
-    club.remove_member(current_user)
-    reason = request.form['reason']
-    parameters = {'user': current_user, 'club': club, 'reason': reason}
-    contents = render_email_template('quitclub', parameters)
-    club.leader.email_user('Quit Club - ' + current_user.nickname, contents)
-    club.leader.notify_user(current_user.nickname + ' has quit ' +
-                            club.name + '.')
-    flash('You have successfully quitted ' + club.name + '.', 'quit')
+    if current_user == club.leader:
+        flash('You cannot quit a club you lead.', 'quit')
+        return redirect(url_for('.quitclub'))
+    try:
+        club.remove_member(current_user)
+    except NoRow:
+        flash('You are not a member of ' + club.name + '.', 'quit')
+    else:
+        reason = request.form['reason']
+        parameters = {'user': current_user, 'club': club, 'reason': reason}
+        contents = render_email_template('quitclub', parameters)
+        club.leader.email_user('Quit Club - ' + current_user.nickname,
+                               contents)
+        club.leader.notify_user(current_user.nickname + ' has quit ' +
+                                club.name + '.')
+        flash('You have successfully quitted ' + club.name + '.', 'quit')
     return redirect(url_for('.quitclub'))
 
 
@@ -94,14 +102,15 @@ def personal():
 @login_required
 def personalsubmitinfo():
     '''Change user's information in database'''
-    if request.form['name'] != '':
+    if request.form['name']:
         current_user.nickname = request.form['name']
-    if request.form['email'] != '':
-        current_user.email = request.form['email']
-    if request.form['phone'] != '':
-        current_user.phone = request.form['phone']
+    current_user.email = request.form['email']
+    phone = request.form['phone']
+    current_user.phone = None if phone == 'None' else phone
     if request.form['picture'] is not None:
-        current_user.picture = Upload(request.form['picture'])
+        pic = int(request.form['picture'])
+        if -pic in range(1, 21):
+            current_user.picture = Upload(pic)
     flash('Your information has been successfully changed.', 'status_info')
     return redirect(url_for('.personal'))
 
@@ -112,22 +121,21 @@ def personalsubmitpassword():
     '''Change user's password in database'''
     user_login = User.attempt_login(current_user.studentid,
                                     request.form['old'])
-    if user_login is not None:
-        if request.form['new'] == '':
-            flash('Please enter new password.', 'status_pw')
-        elif request.form['new'] == request.form['again']:
-            try:
-                current_user.password = request.form['new']
-                flash('Your information has been successfully changed.',
-                      'status_pw')
-            except PasswordTooShort:
-                flash('Password must be at least six digits.', 'status_pw')
-        else:
-            flash('You have entered two different passwords. '
-                  'Please enter again.', 'status_pw')
-    else:
+    if user_login is None:
         flash('You have entered wrong old password. Please enter again.',
               'status_pw')
+    elif request.form['new'] == '':
+        flash('Please enter new password.', 'status_pw')
+    elif request.form['new'] != request.form['again']:
+        flash('You have entered two different passwords. '
+              'Please enter again.', 'status_pw')
+    else:
+        try:
+            current_user.password = request.form['new']
+            flash('Your information has been successfully changed.',
+                  'status_pw')
+        except PasswordTooShort:
+            flash('Password must be at least six digits.', 'status_pw')
     return redirect(url_for('.personal'))
 
 
@@ -213,7 +221,8 @@ def newteachers():
 def newteachers_submit():
     '''Create new teacher accounts with xlsx'''
     if request.files['excel'].filename == '':
-        raise ValueError
+        flash('Please upload an excel file.', 'newteachers')
+        return redirect(url_for('.newteachers'))
     try:
         contents = read_xlsx(request.files['excel'], 'Teachers',
                              ['ID', 'Official Name', 'Email Address'])
@@ -243,8 +252,8 @@ def refreshusers_submit():
     '''Upload excel file to create new users'''
     from oclubs.worker import refresh_user
     refresh_user.delay()
-    flash('Student accounts\' information has been successfully refreshed.',
-          'refresh_users')
+    flash('Student accounts\' information has been successfully '
+          'scheduled to refresh.', 'refresh_users')
     return redirect(url_for('.personal'))
 
 
@@ -255,7 +264,7 @@ def rebuildsearch_submit():
     '''Rebuild elastic search engine to fix asyncronized situation'''
     from oclubs.worker import rebuild_elasticsearch
     rebuild_elasticsearch.delay()
-    flash('Search engine has been fixed.', 'rebuild_search')
+    flash('Search engine has been scheduled to fix.', 'rebuild_search')
     return redirect(url_for('.personal'))
 
 
@@ -527,9 +536,10 @@ def notifications(page):
     )
     current_user.set_notifications_readall()
     invitations_all = current_user.get_invitation()
+    num = current_user.get_unread_notifications_num() + len(invitations_all)
     return render_template('user/notifications.html',
                            notifications=notes_all[1],
-                           number=current_user.get_unread_notifications_num(),
+                           number=num,
                            pagination=Pagination(page, note_num, notes_all[0]),
                            invitations=invitations_all)
 
@@ -539,13 +549,8 @@ def notifications(page):
 def invitation_reply():
     reply = request.form['reply']
     club = Club(request.form['club'])
-    invitations = current_user.get_invitation()
-    isinvited = False
-    for invitation in invitations:
-        if invitation['club'] == club:
-            isinvited = True
-            break
-    if not isinvited:
+
+    if not any(inv['club'] == club for inv in current_user.get_invitation()):
         abort(403)
     if reply == "accept":
         club.add_member(current_user)

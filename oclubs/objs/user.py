@@ -145,16 +145,6 @@ class User(BaseObject, UserMixin):
             item['club'] = Club(item['club'])
         return ret
 
-    def get_invited_clubs(self):
-        try:
-            return database.fetch_onecol(
-                'invitation',
-                'invitation_club',
-                {'invitation_user': self.id}
-            )
-        except NoRow:
-            return ()
-
     def delete_invitation(self, club):
         try:
             database.delete_rows(
