@@ -688,7 +688,6 @@ thead {
 		bottom: 0;
 		margin: 5px;
 		padding: 6%;
-		background-color: #b3b3cc;
 
 		& p {
 			font-size: 150%;
@@ -765,8 +764,7 @@ thead {
 	padding: 0.05% 2% 2% 2%;
 
 	& #shsidtimes {
-		margin-top: 15%;
-		margin-bottom: 15%;
+		margin-top: 15px;
 	}
 
 	& img.homepage_clubphotos {
@@ -918,6 +916,7 @@ thead {
 	}
 
 	@media screen and (max-width: 650px) {
+		padding: 1%;
 		& p {
 		 	font-size: 100%;
 		}
@@ -1266,6 +1265,16 @@ tr.act {
 	}
 }
 
+.login_message {
+	width: 30%;
+	margin: 0 auto;
+	@media screen and (max-width: 992px) {
+		width: 40%;
+	}
+	@meida screen and (max-width: 720px) {
+		width: 70%;
+	}
+}
 .search_bar {
 	& select, & form {
 		@apply --color-lightgrey-prop;
@@ -1794,7 +1803,7 @@ tr.act {
 
 
 .downloadbtn {
-	padding: 3%;
+	padding: 3% 4%;
 	font-size: 200%;
 	white-space: normal;
 
@@ -1806,6 +1815,23 @@ tr.act {
 	}
 }
 
+.downloadbtn-sm {
+	padding: 2% 3%;
+	font-size: 125%;
+	white-space: normal;
+
+	@media screen and (max-width: 720px) {
+		font-size: 110%;
+	}
+	@media screen and (max-width: 500px) {
+		font-size: 100%;
+	}
+}
+
+.student-clubbtn {
+	padding:5% 10% 5% 10%; 
+	font-size:125%;
+}
 #hpexlist {
 	& h3 {
 		margin-top: 10px;
@@ -1950,7 +1976,7 @@ tr.act {
 	}
 }
 
-.midtext {
+.largetext {
 	font-size:200%;
 	@media screen and (max-width: 800px) {
 		font-size: 175%;
@@ -1973,7 +1999,7 @@ tr.act {
 	}
 }
 
-.shorttext {
+.midtext {
 	font-size:150%;
 	@media screen and (max-width: 800px) {
 		font-size: 130%;
@@ -1996,6 +2022,29 @@ tr.act {
 	}
 }
 
+.smalltext {
+	font-size:125%;
+	@media screen and (max-width: 800px) {
+		font-size: 110%;
+	}
+
+	@media screen and (max-width: 650px) {
+		font-size: 100%;
+	}
+
+	@media screen and (max-width: 525px) {
+		font-size: 90%;
+	}
+
+	@media screen and (max-width: 400px) {
+		font-size: 80%;
+	}
+
+	@media screen and (max-width: 350px) {
+		font-size: 72.5%;
+	}
+}
+
 .tinytext {
 	font-size:110%;
 	@media screen and (max-width: 800px) {
@@ -2011,12 +2060,48 @@ tr.act {
 	}
 
 	@media screen and (max-width: 400px) {
-		font-size: 75%;
+		font-size: 72.5%;
 	}
 
 	@media screen and (max-width: 350px) {
-		font-size: 70%;
+		font-size: 65%;
 	}
+}
+
+.minitext {
+	font-size: 100%;
+	@media screen and (max-width: 800px) {
+		font-size: 90%;
+	}
+
+	@media screen and (max-width: 650px) {
+		font-size: 80%;
+	}
+
+	@media screen and (max-width: 525px) {
+		font-size: 72.5%;
+	}
+
+	@media screen and (max-width: 400px) {
+		font-size: 65%;
+	}
+
+	@media screen and (max-width: 350px) {
+		font-size: 60%;
+	}
+}
+#hminfoinput > form {
+	background-color: #66a3ff;
+	padding: 5%;
+	border-style: solid;
+	border-color: #b3cce6;
+}
+
+.comment {
+	font-size: 80%;
+}
+.italic {
+	font-style: italic;
 }
 
 .black {
@@ -2027,14 +2112,26 @@ tr.act {
 	margin-top: 0px;
 }
 
+.noemptyline {
+	margin-bottom: 0px;
+}
+.personal-name {
+	margin-bottom: 0px;
+	padding-left: 3%;
+}
 .emptyline {
 	margin-bottom: 15px;
 }
 
+.emptyline-lg {
+	margin-bottom: 30px;
+}
 .bg-color-grey {
 	background-color: #bfbfbf;
 }
-
+.width-100{
+	width: 100%;
+}
 .width-75 {
 	width: 75%;
 }
@@ -2054,6 +2151,9 @@ tr.act {
 }
 .width-10 {
 	width: 10%;
+}
+.width-5 {
+	width: 5%;
 }
 
 .hide {
@@ -2082,9 +2182,15 @@ tr.act {
 .inline {
 	display: inline;
 }
-
+.inlineb {
+	display: inline-block;
+}
 .middle {
 	margin: 0 auto;
+}
+
+.padding-3 {
+	padding: 3%;
 }
 
 .about-title {
@@ -2092,6 +2198,58 @@ tr.act {
 	font-weight:bold;
 	padding: 15px;
 }
+
+.table-photo {
+	width: 3em;
+}
+.table-photo-lg {
+	width: 4em;
+}
+
+.cm-bg-1 {
+	background-color:rgba(77, 77, 77, 0.5)
+}
+.cm-bg-2{
+	background-color:rgba(0, 153, 153, 0.5)
+}
+.cm-bg-3 {
+	background-color:rgba(153, 0, 61, 0.5)
+}
+.cm-bg-4 {
+	background-color:rgba(38, 153, 0, 0.5)
+}
+.cm-bg-5 {
+	background-color:rgba(0, 0, 153, 0.5)
+}
+.cm-bg-6 {
+	background-color:rgba(115, 77, 38, 0.5)
+}
+.hp-lrnmr {
+	margin-top:27px;
+	@media screen and(max-width: 768px) {
+		margin-top: 29px;
+	}
+}
+.hp-container {
+	border-top-style:dotted;
+	border-color:#e4e6e7;
+}
+.hp-container .panel-heading {
+	background-color:#1a75ff
+}
+.hp-container .panel-body {
+	background-color:#66a3ff
+}
+.hp-excclub-pic {
+	width: 35%;
+	height: 35%;
+	margin-right: 2%;
+	float: left;
+}
+.no-border {
+	border-style: none;
+}
+
 table.attendance, table.actstatus{
 	font-size: 150%;
 	@media screen and (max-width: 768px) {
@@ -2114,6 +2272,9 @@ table.attendance, table.actstatus{
 			}
 		}
 	}
+}
+.admin_function a.btn {
+	padding: 5%;
 }
 @media screen and (max-width: 992px) {
 	/* FIXME: what is this? */

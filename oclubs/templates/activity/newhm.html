@@ -37,7 +37,7 @@
 	{% endif %}
 
 	<div class="container" id="hminfoinput">
-		<form class="form-group color-lightgrey" action="{{ url_for('.newhm_submit', club=g.club.callsign) }}" method="post" id="newhm" style="background-color:#66a3ff; padding:5%; border-style:solid; border-color:#b3cce6">
+		<form class="form-group color-lightgrey" action="{{ url_for('.newhm_submit', club=g.club.callsign) }}" method="post" id="newhm">
 			<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 			<h1>Input Information</h1>
 			<label for="date">Date:</label>
@@ -67,11 +67,11 @@
 			<label for="contents">Contents:</label>
 			<input type="text" class="form-control" name="contents" id="contents">
 			<br>
-			<center><input class="btn btn-primary" value="Submit" type="submit" style="font-size:125%; padding:3%"></center>
+			<center><input class="btn btn-primary smalltext padding-3" value="Submit" type="submit"></center>
 		</form>
 	</div>
 	<center>
-		<a class="btn btn-success" href="{{ url_for('clubblueprint.club', club=g.club.callsign) }}" style="padding: 3%; font-size:175%; max-width:100%; white-space: normal">Return to Club Management Page</a>
+		<a class="btn btn-success downloadbtn" href="{{ url_for('clubblueprint.club', club=g.club.callsign) }}">Return to Club Management Page</a>
 	</center>
 </div>
 

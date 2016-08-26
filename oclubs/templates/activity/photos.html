@@ -24,14 +24,14 @@
 	<div class="clearfix"></div>
 	{% if acts %}
 	{% for act in acts %}
-	<div class="photo clickable bright" data-href="{{ url_for('.actpost', activity=act.callsign) }}" style="cursor:pointer">
+	<div class="photo clickable bright" data-href="{{ url_for('.actpost', activity=act.callsign) }}">
 		<img src="{{ act.pictures[0].location_external }}" class="img-responsive" alt="{{ act.name }}">
 		<h4>{{ act.name }}</h4>
 		<p>{{ act.club.name }}</p>
 	</div>
 	{% endfor %}
 	{% else %}
-	<p class="text-center color-lightgrey" style="font-size:125%">No club has any activity with photos yet.</p>
+	<p class="text-center color-lightgrey smalltext">No club has any activity with photos yet.</p>
 	{% endif %}
 	<div class="clearfix"></div>
 	<br>

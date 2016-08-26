@@ -21,9 +21,9 @@
 	{% endfor %}
 </ul>
 {% endif %}
-<div id="teacher_clubs">
+<div id="teacher_clubs ">
 	{% for club in myclubs %}
-	<div class="teacher_club">
+	<div class="teacher_club emptyline-lg">
 		<div class="col-xs-3">
 			<img src="{{ club.picture.location_external }}" class="img-responsive" alt="">
 			<p class="text-center">{% if club.is_active %}Active{% else %}Inactive{% endif %}</p>
@@ -57,7 +57,7 @@
 <div class="clearfix clearfix-bordered"></div>
 
 <center>
-	<a class="btn btn-success large_button" href="{{ url_for('.newclub') }}" style="margin-top:30px">Add New Club</a>
+	<a class="btn btn-success large_button" href="{{ url_for('.newclub') }}">Add New Club</a>
 </center>
 
 <div class="clearfix"></div>

@@ -13,12 +13,12 @@
 <div class="clearfix"></div>
 <div class="col-xs-6">
 	<center>
-		<a class="btn btn-info" href="{{ url_for('clubblueprint.clublist', club_type='all') }}" style="padding:5% 10% 5% 10%; font-size:125%">Join Clubs</a>
+		<a class="btn btn-info student-clubbtn" href="{{ url_for('clubblueprint.clublist', club_type='all') }}">Join Clubs</a>
 	</center>
 </div>
 <div class="col-xs-6">
 	<center>
-		<a class="btn btn-info" href="{{ url_for('userblueprint.quitclub') }}" style="padding:5% 10% 5% 10%; font-size:125%">Quit Clubs</a>
+		<a class="btn btn-info student-clubbtn" href="{{ url_for('userblueprint.quitclub') }}">Quit Clubs</a>
 	</center>
 </div>
 <div class="clearfix"></div>
@@ -37,7 +37,7 @@
 </div>
 <div class="clearfix"></div>
 <div class="smallBlock">
-	<div style="width:100%"><p class="midtext">Total CAS Hours: {{ castotal }}</p></div>
+	<div class="width-100"><p class="largetext">Total CAS Hours: {{ castotal }}</p></div>
 </div>
 <div class="clearfix clearfix-bordered"></div>
 
@@ -67,13 +67,13 @@
 		</tbody>
 	</table>
 	<p class="color-lightgrey">You don't have to sign up for club meetings.</p>
-	<p class="color-lightgrey" style="margin-bottom:15px">Check activities page to see more.</p>
+	<p class="color-lightgrey emptyline">Check activities page to see more.</p>
 </div>
 <div class="col-sm-6" id="stuactlist">
 	<h2 class="color-lightgrey">Activities</h2>
 	<table class="table table-hover table-bordered">
 		<thead class="list">
-			<tr style="background-color:#bfbfbf">
+			<tr class="bg-color-grey">
 				<th>Name</th>
 				<th>Club</th>
 				<th>Date</th>
@@ -106,7 +106,7 @@
 <br>
 <div class="container">
 	{% for club in leader_club %}
-	<a class="btn btn-success" href="{{ url_for('clubblueprint.club', club=club.callsign) }}" style="padding:2%;font-size:125%">Manage {{ club.name }}</a>
+	<a class="btn btn-success downloadbtn-sm" href="{{ url_for('clubblueprint.club', club=club.callsign) }}">Manage {{ club.name }}</a>
 	{% endfor %}
 </div>
 {% endif %}

@@ -22,10 +22,10 @@
 		{% endfor %}
 	</ul>
 	{% endif %}
-	<table class="table table-hover table-bordered" id="memberinfotable">
+	<table class="table table-hover table-bordered emptyline-lg" id="memberinfotable">
 		<thead class="list">
-			<tr style="background-color:#bfbfbf">
-				<th style="width:5%">Photo</th>
+			<tr class="bg-color-grey">
+				<th class="width-5">Photo</th>
 				<th>Nick Name</th>
 				<th>Official Name</th>
 				<th>Student ID</th>
@@ -37,7 +37,7 @@
 			{% if member != g.club.leader %}
 			<tr class="act" id="{{ member.passportname }}">
 				<td>
-					<img src="{{ member.picture.location_external }}" class="img-responsive" alt="{{ member.nickname }}" style="width:3em">
+					<img src="{{ member.picture.location_external }}" class="img-responsive table-photo" alt="{{ member.nickname }}">
 				</td>
 				<td>{{ member.nickname }}</td>
 				<td>{{ member.passportname }}</td>
@@ -46,7 +46,7 @@
 					<form action="{{ url_for('.adjustmember_submit', club=g.club.callsign) }}" method="post">
 						<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 						<input type="hidden" name="studentid" value="{{ member.id }}">
-						<input type="submit" class="btn btn-danger" name="expel" value="Expel" style="font-size:110%">
+						<input class="tinytext" type="submit" class="btn btn-danger" name="expel" value="Expel">
 					</form>
 				</td>
 			</tr>
@@ -55,7 +55,7 @@
 		</tbody>
 	</table>
 	{% if invite_member %}
-	<center><button class="btn btn-success btn-lg" data-toggle="modal" data-target="#invite_member" style="margin-top:20px">Invite New Member</button></center>
+	<center><button class="btn btn-success btn-lg" data-toggle="modal" data-target="#invite_member">Invite New Member</button></center>
 	{% endif %}
 </div>
 

@@ -16,12 +16,12 @@
 			{% endfor %}
 		</ul>
 		{% endif %}
-		<label class="midtext" for="intro">One sentence Intro:</label>
+		<label class="largetext" for="intro">One sentence Intro:</label>
 		<input type="text" class="form-control" name="intro" id="intro" value="{{ g.club.intro }}">
 		<br>
 		<p>The shorter the better.</p>
 		<br>
-		<label for="picture" class="midtext">Picture:</label>
+		<label for="picture" class="largetext">Picture:</label>
 		<input class="hide" type="file" name="picture" id="picture" accept="image/*">
 		<label for="picture" class="upload_button">
 			<span class="glyphicon glyphicon-upload"></span>
@@ -30,7 +30,7 @@
 		<p class="upload_content" id="upload_content"></p>
 		<br>
 		<br>
-		<label for="description" class="midtext">Introduction Paragraphs:</label>
+		<label for="description" class="largetext">Introduction Paragraphs:</label>
 		<textarea class="form-control" rows="10" name="description" id="description">{{ g.club.description.raw }}</textarea>
 		<br>
 		<p>*We support markdown in description.</p>

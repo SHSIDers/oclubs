@@ -13,10 +13,10 @@
         {% endfor %}
     </ul>
     {% endif %}
-    <table class="table table-hover table-bordered shorttext">
+    <table class="table table-hover table-bordered midtext">
         <thead class="list">
             <tr class="bg-color-grey">
-                <th style="width:5%">Club Picture</th>
+                <th class="width-5">Club Picture</th>
                 <th>Club Name</th>
                 <th>Club Leader</th>
                 <th>Club Teacher</th>
@@ -29,7 +29,7 @@
             {% for club in clubs %}
             <tr class="act" id="{{ club.id }}">
                 <td>
-                    <img src="{{ club.picture.location_external }}" class="img-responsive" alt="{{ club.name }}" style="width:3em">
+                    <img src="{{ club.picture.location_external }}" class="img-responsive table-photo" alt="{{ club.name }}"">
                 </td>
                 <td>{{ club.name }}</td>
                 <td>{{ club.leader.nickname }}</td>

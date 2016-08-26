@@ -886,7 +886,6 @@ thead.darklist {
   padding: 6%;
   width: 96%;
   height: 30%;
-  background-color: #b3b3cc;
 }
 
 .function_block div p {
@@ -978,8 +977,7 @@ thead.darklist {
 }
 
 .homepage_block #shsidtimes {
-  margin-top: 15%;
-  margin-bottom: 15%;
+  margin-top: 15px;
 }
 
 .homepage_block img.homepage_clubphotos {
@@ -1153,6 +1151,10 @@ thead.darklist {
 }
 
 @media screen and (max-width: 650px) {
+  .checkbox_block label {
+    padding: 1%;
+  }
+
   .checkbox_block label p {
     font-size: 100%;
   }
@@ -1519,6 +1521,20 @@ tr.act:hover {
   .login_block {
     width: 80%;
     font-size: 100%;
+  }
+}
+
+.login_message {
+  @meida screen and (max-width:720px) {
+    width: 70%;
+  }
+  margin: 0 auto;
+  width: 30%;
+}
+
+@media screen and (max-width: 992px) {
+  .login_message {
+    width: 40%;
   }
 }
 
@@ -2097,7 +2113,7 @@ tr.act:hover {
 }
 
 .downloadbtn {
-  padding: 3%;
+  padding: 3% 4%;
   white-space: normal;
   font-size: 200%;
 }
@@ -2112,6 +2128,29 @@ tr.act:hover {
   .downloadbtn {
     font-size: 125%;
   }
+}
+
+.downloadbtn-sm {
+  padding: 2% 3%;
+  white-space: normal;
+  font-size: 125%;
+}
+
+@media screen and (max-width: 720px) {
+  .downloadbtn-sm {
+    font-size: 110%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .downloadbtn-sm {
+    font-size: 100%;
+  }
+}
+
+.student-clubbtn {
+  padding: 5% 10%;
+  font-size: 125%;
 }
 
 #hpexlist h3 {
@@ -2278,71 +2317,105 @@ tr.act:hover {
   color: #ccc;
 }
 
-.midtext {
+.largetext {
   font-size: 200%;
 }
 
 @media screen and (max-width: 800px) {
-  .midtext {
+  .largetext {
     font-size: 175%;
   }
 }
 
 @media screen and (max-width: 650px) {
-  .midtext {
+  .largetext {
     font-size: 150%;
   }
 }
 
 @media screen and (max-width: 525px) {
-  .midtext {
+  .largetext {
     font-size: 130%;
   }
 }
 
 @media screen and (max-width: 400px) {
-  .midtext {
+  .largetext {
     font-size: 110%;
   }
 }
 
 @media screen and (max-width: 350px) {
-  .midtext {
+  .largetext {
     font-size: 100%;
   }
 }
 
-.shorttext {
+.midtext {
   font-size: 150%;
 }
 
 @media screen and (max-width: 800px) {
-  .shorttext {
+  .midtext {
     font-size: 130%;
   }
 }
 
 @media screen and (max-width: 650px) {
-  .shorttext {
+  .midtext {
     font-size: 110%;
   }
 }
 
 @media screen and (max-width: 525px) {
-  .shorttext {
+  .midtext {
     font-size: 100%;
   }
 }
 
 @media screen and (max-width: 400px) {
-  .shorttext {
+  .midtext {
     font-size: 90%;
   }
 }
 
 @media screen and (max-width: 350px) {
-  .shorttext {
+  .midtext {
     font-size: 80%;
+  }
+}
+
+.smalltext {
+  font-size: 125%;
+}
+
+@media screen and (max-width: 800px) {
+  .smalltext {
+    font-size: 110%;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .smalltext {
+    font-size: 100%;
+  }
+}
+
+@media screen and (max-width: 525px) {
+  .smalltext {
+    font-size: 90%;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .smalltext {
+    font-size: 80%;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .smalltext {
+    font-size: 72.5%;
   }
 }
 
@@ -2370,14 +2443,63 @@ tr.act:hover {
 
 @media screen and (max-width: 400px) {
   .tinytext {
-    font-size: 75%;
+    font-size: 72.5%;
   }
 }
 
 @media screen and (max-width: 350px) {
   .tinytext {
-    font-size: 70%;
+    font-size: 65%;
   }
+}
+
+.minitext {
+  font-size: 100%;
+}
+
+@media screen and (max-width: 800px) {
+  .minitext {
+    font-size: 90%;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .minitext {
+    font-size: 80%;
+  }
+}
+
+@media screen and (max-width: 525px) {
+  .minitext {
+    font-size: 72.5%;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .minitext {
+    font-size: 65%;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .minitext {
+    font-size: 60%;
+  }
+}
+
+#hminfoinput > form {
+  padding: 5%;
+  border-style: solid;
+  border-color: #b3cce6;
+  background-color: #66a3ff;
+}
+
+.comment {
+  font-size: 80%;
+}
+
+.italic {
+  font-style: italic;
 }
 
 .black {
@@ -2388,12 +2510,29 @@ tr.act:hover {
   margin-top: 0;
 }
 
+.noemptyline,
+.personal-name {
+  margin-bottom: 0;
+}
+
+.personal-name {
+  padding-left: 3%;
+}
+
 .emptyline {
   margin-bottom: 15px;
 }
 
+.emptyline-lg {
+  margin-bottom: 30px;
+}
+
 .bg-color-grey {
   background-color: #bfbfbf;
+}
+
+.width-100 {
+  width: 100%;
 }
 
 .width-75 {
@@ -2418,6 +2557,10 @@ tr.act:hover {
 
 .width-10 {
   width: 10%;
+}
+
+.width-5 {
+  width: 5%;
 }
 
 .hide {
@@ -2448,14 +2591,94 @@ tr.act:hover {
   display: inline;
 }
 
+.inlineb {
+  display: inline-block;
+}
+
 .middle {
   margin: 0 auto;
+}
+
+.padding-3 {
+  padding: 3%;
 }
 
 .about-title {
   padding: 15px;
   background-color: #5bc0de !important;
   font-weight: 700;
+}
+
+.table-photo {
+  width: 3em;
+}
+
+.table-photo-lg {
+  width: 4em;
+}
+
+.cm-bg-1 {
+  background-color: #4d4d4d;
+  background-color: rgba(77, 77, 77, .5);
+}
+
+.cm-bg-2 {
+  background-color: #099;
+  background-color: rgba(0, 153, 153, .5);
+}
+
+.cm-bg-3 {
+  background-color: #99003d;
+  background-color: rgba(153, 0, 61, .5);
+}
+
+.cm-bg-4 {
+  background-color: #269900;
+  background-color: rgba(38, 153, 0, .5);
+}
+
+.cm-bg-5 {
+  background-color: #009;
+  background-color: rgba(0, 0, 153, .5);
+}
+
+.cm-bg-6 {
+  background-color: #734d26;
+  background-color: rgba(115, 77, 38, .5);
+}
+
+.hp-lrnmr {
+  margin-top: 27px;
+}
+
+@media screen and (max-width: 768px) {
+  .hp-lrnmr {
+    margin-top: 29px;
+  }
+}
+
+.hp-container {
+  border-color: #e4e6e7;
+  border-top-style: dotted;
+}
+
+.hp-container .panel-heading {
+  background-color: #1a75ff;
+}
+
+.hp-container .panel-body {
+  background-color: #66a3ff;
+}
+
+.hp-excclub-pic {
+  float: left;
+  margin-right: 2%;
+  width: 35%;
+  height: 35%;
+}
+
+.no-border {
+  border-style: none;
 }
 
 table.actstatus,
@@ -2499,6 +2722,10 @@ table.attendance form {
   table.attendance form input {
     font-size: 75%;
   }
+}
+
+.admin_function a.btn {
+  padding: 5%;
 }
 
 @media screen and (max-width: 992px) {

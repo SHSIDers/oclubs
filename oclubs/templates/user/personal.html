@@ -6,7 +6,7 @@
 
 <!-- Below Navbar -->
 <div class="container">
-	<h2 class="title_next" style="padding-left: 3%; margin-bottom:0;">{{ current_user.passportname }}&nbsp;&nbsp;&nbsp; {% if activities %}<span style="font-size:66%;white-space:nowrap">{{ current_user.studentid }}&nbsp;&nbsp;Class {{ current_user.grade }} - {{ current_user.currentclass }}</span>{% endif %}<a href="{{ url_for('logout') }}" id="logoutlink"><span class="glyphicon glyphicon-log-out">&nbsp;Logout</span></a></h2>
+	<h2 class="title_next personal-name">{{ current_user.passportname }}&nbsp;&nbsp;&nbsp; {% if activities %}<span class="comment nowrap">{{ current_user.studentid }}&nbsp;&nbsp;Class {{ current_user.grade }} - {{ current_user.currentclass }}</span>{% endif %}<a href="{{ url_for('logout') }}" id="logoutlink"><span class="glyphicon glyphicon-log-out">&nbsp;Logout</span></a></h2>
 	<div class="clearfix clearfix-bordered"></div>
 	{% if status_info %}
 	<br>
@@ -31,7 +31,7 @@
 		<br><br>
 	</div>
 	<div class="col-md-9 personal_info">
-		<h2 style="margin-top:0px">Nick Name: {{ current_user.nickname }}</h2>
+		<h2 class="no-top-margin">Nick Name: {{ current_user.nickname }}</h2>
 		<h2>Email Address: {{ current_user.email }}</h2>
 		<h2>Phone Number: {{ current_user.phone }}</h2>
 		<div class="clearfix"></div>
