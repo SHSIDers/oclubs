@@ -11,7 +11,7 @@ from urlparse import urlparse, urljoin
 
 from flask import (
     Flask, redirect, request, render_template, url_for, session, abort, flash,
-    Markup
+    Markup, Response
 )
 from flask_login import (
     LoginManager, login_user, logout_user, login_required, current_user
@@ -303,16 +303,32 @@ def homepage():
         'link': '#'
     } for _ in range(len(sizes) - len(top_pic))])
 
-    for pic, size in zip(top_pic, sizes):
+    for num, (pic, size) in enumerate(zip(top_pic, sizes)):
+        pic['id'] = 'img' + str(num)
         pic['size'] = size
+
+    blockpiccss = url_for('gen_blockpic_css', **{pic['id']: pic['picture'].id
+                                                 for pic in top_pic})
 
     ex_clubs = Club.excellentclubs(3)
     pic_acts = top_pic[0:3]
     return render_template('static/homepage.html',
                            is_home=True,
                            top_pic=top_pic,
+                           blockpiccss=blockpiccss,
                            ex_clubs=ex_clubs,
                            pic_acts=pic_acts)
+
+
+@app.route('/blockpic.css')
+def gen_blockpic_css():
+    css = "#blockpic-img%d{background-image:url(%s)}"
+    ret = ''
+    for key, value in request.args.iteritems():
+        if key.startswith('img'):
+            ret += css % (int(key[3:]), Upload(int(value)).location_external)
+
+    return Response(ret, mimetype='text/css')
 
 
 @app.route('/about')
