@@ -57,12 +57,11 @@ def clubredirect(club):
 @get_callsign(Club, 'club')
 def clubintro(club):
     '''Club Intro'''
-    if current_user.is_active:
-        free_join = (club.joinmode == ClubJoinMode.FREE_JOIN) and \
-                    (current_user.type == UserType.STUDENT) and \
-                    (current_user not in club.members)
-    else:
-        free_join = False
+    free_join = (current_user.is_active and
+                 club.joinmode == ClubJoinMode.FREE_JOIN and
+                 current_user.type == UserType.STUDENT and
+                 current_user not in club.members)
+
     return render_template('club/clubintro.html',
                            free_join=free_join)
 
@@ -72,6 +71,12 @@ def clubintro(club):
 @login_required
 def clubintro_submit(club):
     '''Add new member'''
+    if current_user.type != UserType.STUDENT:
+        flash('You may not join clubs.' % club.name)
+        return redirect(url_for('.clubintro', club=club.callsign))
+    if club.joinmode != ClubJoinMode.FREE_JOIN:
+        flash('You may not join this club.' % club.name)
+        return redirect(url_for('.clubintro', club=club.callsign))
     try:
         club.add_member(current_user)
     except AlreadyExists:
@@ -108,6 +113,8 @@ def newleader_submit(club):
         if leader_name == member_obj.passportname:
             club.leader = member_obj
             break
+    else:
+        assert False, 'wtf?'
     for member in club.members:
         parameters = {'user': member, 'club': club, 'leader_old': leader_old}
         contents = render_email_template('newleader', parameters)
@@ -155,7 +162,9 @@ def changeclubinfo_submit(club):
     '''Change club's info'''
     if request.form['intro'] != '':
         club.intro = request.form['intro']
-    if request.form['description'] != '':
+
+    desc = request.form['description'].strip()
+    if desc != club.description:
         club.description = FormattedText.handle(current_user, club,
                                                 request.form['description'])
     if request.files['picture'].filename != '':
@@ -181,7 +190,7 @@ def changeclubinfo_submit(club):
 @fresh_login_required
 def adjustmember(club):
     '''Adjust Club Members'''
-    invite_member = (club.joinmode == ClubJoinMode.BY_INVITATION)
+    invite_member = club.joinmode == ClubJoinMode.BY_INVITATION
     return render_template('club/adjustmember.html',
                            invite_member=invite_member)
 
@@ -193,6 +202,9 @@ def adjustmember(club):
 def adjustmember_submit(club):
     '''Input adjustment of club members'''
     member = User(request.form['studentid'])
+    if current_user == member:
+        flash('You cannot expel yourself.', 'expelled')
+        return redirect(url_for('.adjustmember', club=club.callsign))
     club.remove_member(member)
     parameters = {'member': member, 'club': club}
     contents = render_email_template('adjustmember', parameters)
@@ -208,6 +220,9 @@ def adjustmember_submit(club):
 @fresh_login_required
 def invitemember(club):
     '''Allow club leader to invite member'''
+    if club.joinmode != ClubJoinMode.BY_INVITATION:
+        flash('You cannot invite members when the join mode is not '
+              'by invitation.', 'invite_member')
     new_member = User.find_user(request.form['studentid'],
                                 request.form['passportname'])
     if new_member is None:
