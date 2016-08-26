@@ -6,7 +6,7 @@
 <div class="container">
 	<h1 class="title text-center">Search Results</h1>
 	<div class="search_bar clearfix">
-		<form action="{{ url_for('search', page=1) }}" id="search_form" method="get" style="display:inline-block">
+		<form action="{{ url_for('search') }}" id="search_form" method="get" style="display:inline-block">
 			<input type="text" name="keywords" placeholder="Search" value="{{ keywords }}">
 			<span class="glyphicon glyphicon-search"><input type="submit" value=""></span>
 		</form>

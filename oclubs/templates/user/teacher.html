@@ -34,7 +34,7 @@
 			<p>Intro: {{ club.intro }}</p>
 			<div class="clearfix"></div>
 			<div class="col-sm-6">
-				<a class="btn btn-primary" href="{{ url_for('actblueprint.clubactivities', club=club.callsign, page=1) }}">Activities Status</a>
+				<a class="btn btn-primary" href="{{ url_for('actblueprint.clubactivities', club=club.callsign) }}">Activities Status</a>
 			</div>
 			<div class="col-sm-6">
 				<a class="btn btn-primary" href="{{ url_for('actblueprint.hongmei_status', club=club.callsign) }}">HongMei Status</a>

@@ -45,7 +45,7 @@
 				</div>
 			{% with unread_notifications_num = current_user.get_unread_notifications_num() %}
 				<div class="col-sm-4">
-					<a class="btn {% if unread_notifications_num %}btn-primary{% else %}btn-info{% endif %}" href="{{ url_for('.notifications', page=1) }}">Notifications{% if unread_notifications_num %} <span class="badge">{{ unread_notifications_num }}</span>{% endif %}</a>
+					<a class="btn {% if unread_notifications_num %}btn-primary{% else %}btn-info{% endif %}" href="{{ url_for('.notifications') }}">Notifications{% if unread_notifications_num %} <span class="badge">{{ unread_notifications_num }}</span>{% endif %}</a>
 				</div>
 			</div>
 		{% endwith %}
