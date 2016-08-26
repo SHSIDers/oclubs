@@ -66,7 +66,7 @@ class Upload(BaseObject):
             # resize to 600, 450
             im = Image.open(temppath)
             im.thumbnail((600, 450))
-            im.save(permpath)
+            im.save(permpath, optimize=True)
         finally:
             os.remove(temppath)
 
