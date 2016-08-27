@@ -16,7 +16,7 @@ from oclubs.shared import (
     get_callsign, special_access_required, Pagination, render_email_template,
     download_xlsx, partition
 )
-from oclubs.objs import User, Club, Activity, Upload, FormattedText
+from oclubs.objs import User, Activity, Upload, FormattedText
 from oclubs.exceptions import UploadNotSupported, NoRow
 
 actblueprint = Blueprint('actblueprint', __name__)
