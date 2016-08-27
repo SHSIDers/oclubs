@@ -131,6 +131,11 @@ body {
   font-weight: 700;
 }
 
+.smallBlock > a.width-100,
+.smallBlock > div.width-100 {
+  width: 100%;
+}
+
 .smallBlock > a {
   max-width: 100%;
   background-color: #f2f2f2;
