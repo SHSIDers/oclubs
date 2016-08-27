@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block title %}HongMei Schedule{% endblock %}
 {% block content %}
-{% with messages = get_flashed_messages(category_filter=["newhm"]) %}
 
 <!-- Below Navbar -->
 <div class="container">
@@ -27,6 +26,7 @@
 		</tbody>
 	</table>
 
+	{% with messages = get_flashed_messages(category_filter=["newhm"]) %}
 	{% if messages %}
 	<br>
 	<ul class="list-group">
@@ -35,6 +35,7 @@
 		{% endfor %}
 	</ul>
 	{% endif %}
+	{% endwith %}
 
 	<div class="container" id="hminfoinput">
 		<form class="form-group white" action="{{ url_for('.newhm_submit', club=g.club.callsign) }}" method="post" id="newhm">
@@ -75,5 +76,4 @@
 	</center>
 </div>
 
-{% endwith %}
 {% endblock %}

@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block title %}{{ g.activity.name }}{% endblock %}
 {% block content %}
-{% with messages_signup = get_flashed_messages(category_filter=["signup"]) %}
 
 <!-- Below Navbar -->
 <div class="large_container">
@@ -29,6 +28,7 @@
 			{{ g.activity.description.formatted }}
 			{% endif %}
 		</div>
+		{% with messages_signup = get_flashed_messages(category_filter=["signup"]) %}
 		{% if messages_signup %}
 		<ul class="list-group no-top-margin">
 			{% for message in messages_signup %}
@@ -36,6 +36,7 @@
 			{% endfor %}
 		</ul>
 		{% endif %}
+		{% endwith %}
 
 		{% if g.activity.selections %}
 		{% if selection %}
@@ -93,5 +94,4 @@
 
 <div class="clearfix"></div>
 
-{% endwith %}
 {% endblock %}

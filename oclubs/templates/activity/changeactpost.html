@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Change Activity Post{% endblock %}
 {% block content %}
-{% with messages = get_flashed_messages(category_filter=["actpost"]) %}
 
 <!-- Below Navbar -->
 <div class="container">
@@ -10,6 +9,7 @@
 		<h1 class="title">Change Activity Info</h1>
 		<h2 class="title_next">{{ g.activity.club.name }}</h2>
 		<h2 class="title_next">{{ g.activity.name }}</h2>
+		{% with messages = get_flashed_messages(category_filter=["actpost"]) %}
 		{% if messages %}
 		<ul class="list-group black">
 			{% for message in messages %}
@@ -17,6 +17,7 @@
 			{% endfor %}
 		</ul>
 		{% endif %}
+		{% endwith %}
 		<p>*Please input below.</p>
 		<label class="largetext" for="picture">Picture:</label>
 		<div class="clearfix"></div>
@@ -41,5 +42,4 @@
 
 <div class="clearfix"></div>
 
-{% endwith %}
 {% endblock %}

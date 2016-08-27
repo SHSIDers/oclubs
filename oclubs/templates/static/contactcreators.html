@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Contact Creators{% endblock %}
 {% block content %}
-{% with messages = get_flashed_messages(category_filter=["contact_creators"]) %}
 
 <!-- Below Navbar -->
 <div class="container">
@@ -14,6 +13,7 @@
 		<form class="form-group white" action="{{ url_for('contactcreators_submit') }}" method="post">
 			<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 			<h1>Contact Creators</h1>
+			{% with messages = get_flashed_messages(category_filter=["contact_creators"]) %}
 			{% if messages %}
 			<ul class="list-group black">
 				{% for message in messages %}
@@ -22,6 +22,7 @@
 			</ul>
 			<br>
 			{% endif %}
+			{% endwith %}
 			<p>Your advice is important to oClubs.</p>
 			<p>*Name and contact can be left blank if you want to stay anonymous.</p>
 			<label for="name">Your Name:</label>
@@ -38,5 +39,4 @@
 	</div>
 </div>
 
-{% endwith %}
 {% endblock %}

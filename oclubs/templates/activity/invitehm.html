@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% block title %}HongMei Invitation{% endblock %}
 {% block content %}
-{% with messages = get_flashed_messages(category_filter=["invite_hm"]) %}
 
 <!-- Below Navbar -->
 <div class="container">
 	<h1 class="title">HongMei Invitation</h1>
 	<h2 class="title_next">{{ g.activity.name }}</h2>
 	<h2 class="title_next">{{ g.activity.date.strftime('%b-%d-%y') }}</h2>
+	{% with messages = get_flashed_messages(category_filter=["invite_hm"]) %}
 	{% if messages %}
 	<ul class="list-group">
 		{% for message in messages %}
@@ -15,6 +15,7 @@
 		{% endfor %}
 	</ul>
 	{% endif %}
+	{% endwith %}
 	<div class="checkbox_block">
 		{% for member in g.activity.club.members %}
 		<label for="{{ member.id }}">
@@ -27,7 +28,7 @@
 					<p>{{ member.passportname }}</p>
 				</div>
 				<div class="col-sm-2 float-right no-padding">
-					<input type="checkbox" name="invite" value="{{ member.id }}"" id="{{ member.id }}" form="invitehm">
+					<input type="checkbox" name="invite" value="{{ member.id }}" id="{{ member.id }}" form="invitehm">
 				</div>
 			</div>
 		</label>
@@ -42,5 +43,4 @@
 	</button>
 </div>
 
-{% endwith %}
 {% endblock %}

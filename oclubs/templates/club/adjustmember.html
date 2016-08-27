@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 {% block title %}Adjust Members{% endblock %}
 {% block content %}
-{% with expel_messages = get_flashed_messages(category_filter=["expelled"]) %}
-{% with invite_messages = get_flashed_messages(category_filter=["invite_member"]) %}
 
 <!-- Below Navbar -->
 <div class="container">
 	<h1 class="title">Adjust Members</h1>
 	<h2 class="title_next">{{ g.club.name }}</h2>
+	{% with expel_messages = get_flashed_messages(category_filter=["expelled"]) %}
 	{% if expel_messages %}
 	<ul class="list-group">
 		{% for message in expel_messages %}
@@ -15,6 +14,8 @@
 		{% endfor %}
 	</ul>
 	{% endif %}
+	{% endwith %}
+	{% with invite_messages = get_flashed_messages(category_filter=["invite_member"]) %}
 	{% if invite_messages %}
 	<ul class="list-group">
 		{% for message in invite_messages %}
@@ -22,6 +23,7 @@
 		{% endfor %}
 	</ul>
 	{% endif %}
+	{% endwith %}
 	<table class="table table-hover table-bordered emptyline-lg" id="memberinfotable">
 		<thead>
 			<tr>
@@ -84,6 +86,4 @@
 	</div>
 </div>
 
-{% endwith %}
-{% endwith %}
 {% endblock %}

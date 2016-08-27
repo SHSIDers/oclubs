@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Activity Post{% endblock %}
 {% block content %}
-{% with messages_signup = get_flashed_messages(category_filter=["signup"]) %}
 
 <!-- Below Navbar -->
 <div class="large_container">
@@ -51,5 +50,4 @@
 
 <div class="clearfix"></div>
 
-{% endwith %}
 {% endblock %}

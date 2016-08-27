@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Adjust Clubs{% endblock %}
 {% block content %}
-{% with messages = get_flashed_messages(category_filter=['adjustclubs']) %}
 
 <!-- Below Navbar -->
 <div class="container">
 	<h1 class="title">Adjust Clubs</h1>
+	{% with messages = get_flashed_messages(category_filter=['adjustclubs']) %}
 	{% if messages %}
 	<ul class="list-group">
 		{% for message in messages %}
@@ -13,6 +13,7 @@
 		{% endfor %}
 	</ul>
 	{% endif %}
+	{% endwith %}
 	<table class="table table-hover table-bordered midtext">
 		<thead>
 			<tr>
@@ -29,7 +30,7 @@
 			{% for club in clubs %}
 			<tr class="act" id="{{ club.id }}">
 				<td>
-					<img src="{{ club.picture.location_external }}" class="img-responsive table-photo" alt="{{ club.name }}"">
+					<img src="{{ club.picture.location_external }}" class="img-responsive table-photo" alt="{{ club.name }}">
 				</td>
 				<td>{{ club.name }}</td>
 				<td>{{ club.leader.nickname }}</td>
@@ -49,5 +50,4 @@
 	</table>
 </div>
 
-{% endwith %}
 {% endblock %}

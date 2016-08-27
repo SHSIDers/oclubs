@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Contact Administrators{% endblock %}
 {% block content %}
-{% with messages = get_flashed_messages(category_filter=["contact_admin"]) %}
 
 <!-- Below Navbar -->
 <div class="container">
@@ -9,6 +8,7 @@
 		<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 		<h1>Contact Administrator</h1>
 		<p>Your account's information will be recorded. Please be aware of this when you submit your contents.</p>
+		{% with messages = get_flashed_messages(category_filter=["contact_admin"]) %}
 		{% if messages %}
 		<ul class="list-group black">
 			{% for message in messages %}
@@ -17,6 +17,7 @@
 		</ul>
 		<br>
 		{% endif %}
+		{% endwith %}
 		<label for="content">Content:</label>
 		<textarea class="form-control" rows="10" name="content" id="content"></textarea>
 		<br>
@@ -25,5 +26,4 @@
 	</form>
 </div>
 
-{% endwith %}
 {% endblock %}

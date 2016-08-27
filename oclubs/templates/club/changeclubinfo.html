@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Change Club Info{% endblock %}
 {% block content %}
-{% with messages = get_flashed_messages(category_filter=["clubinfo"]) %}
 
 <!-- Below Navbar -->
 <div class="container">
@@ -9,6 +8,7 @@
 		<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 		<h1 class="title">Change Club Info</h1>
 		<h2 class="title_next">{{ g.club.name }}</h2>
+		{% with messages = get_flashed_messages(category_filter=["clubinfo"]) %}
 		{% if messages %}
 		<ul class="list-group black">
 			{% for message in messages %}
@@ -16,6 +16,7 @@
 			{% endfor %}
 		</ul>
 		{% endif %}
+		{% endwith %}
 		<label class="largetext" for="intro">One sentence Intro:</label>
 		<input type="text" class="form-control" name="intro" id="intro" value="{{ g.club.intro }}">
 		<br>
@@ -42,5 +43,4 @@
 
 <div class="clearfix"></div>
 
-{% endwith %}
 {% endblock %}

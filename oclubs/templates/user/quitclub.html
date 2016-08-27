@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Quit Club{% endblock %}
 {% block content %}
-{% with quit_messages = get_flashed_messages(category_filter=["quit"]) %}
-
 
 <!-- Below Navbar -->
 <div class="container">
@@ -11,6 +9,7 @@
 	</div>
 	<div class="col-sm-6">
 		<h1 class="white title_next">Quitting Club</h1>
+		{% with quit_messages = get_flashed_messages(category_filter=["quit"]) %}
 		{% if quit_messages %}
 		<ul class="list-group black">
 			{% for message in quit_messages %}
@@ -19,6 +18,7 @@
 		</ul>
 		<br>
 		{% endif %}
+		{% endwith %}
 		{% if quitting_clubs %}
 		<form class="form-group white middle" id="quit_club" action="{{ url_for('userblueprint.quitclub_submit') }}" method="post">
 			<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
@@ -63,5 +63,4 @@
 	</div>
 </div>
 
-{% endwith %}
 {% endblock %}

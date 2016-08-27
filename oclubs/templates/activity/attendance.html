@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 {% block title %}Check Attendance{% endblock %}
 {% block content %}
-{% with messages = get_flashed_messages(category_filter=["attendance"]) %}
-
 
 <!-- Below Navbar -->
 <div class="container">
 	<h1 class="title">Attendance for {{ g.activity.name }}</h1>
 	<h2 class="title_next">{{ g.activity.club.name }}</h2>
+	{% with messages = get_flashed_messages(category_filter=["attendance"]) %}
 	{% if messages %}
 	<ul class="list-group">
 		{% for message in messages %}
@@ -15,6 +14,7 @@
 		{% endfor %}
 	</ul>
 	{% endif %}
+	{% endwith %}
 	<table class="table table-hover table-bordered" id="attendancetable">
 		<thead>
 			<tr>
@@ -63,5 +63,4 @@
 	</center>
 </div>
 
-{% endwith %}
 {% endblock %}

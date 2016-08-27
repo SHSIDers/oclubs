@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Club Intro{% endblock %}
 {% block content %}
-{% with messages_join = get_flashed_messages(category_filter=["join"]) %}
 
 <!-- Below Navbar -->
 <div class="large_container">
@@ -36,6 +35,7 @@
 		<div class="longdesc">{{g.club.description.formatted}}</div>
 
 		<div class="intro_function">
+			{% with messages_join = get_flashed_messages(category_filter=["join"]) %}
 			{% if messages_join %}
 			<ul class="list-group">
 				{% for message in messages_join %}
@@ -43,6 +43,7 @@
 				{% endfor %}
 			</ul>
 			{% endif %}
+			{% endwith %}
 			<div class="col-sm-4">
 				<center>
 					<a class="btn btn-info btn-lg" href="{{ url_for('actblueprint.clubactivities', club=g.club.callsign) }}">Activities</a>
@@ -99,5 +100,4 @@
 	</div>
 </div>
 
-{% endwith %}
 {% endblock %}

@@ -1,10 +1,9 @@
 {% extends "user/personal.html" %}
 {% block personal %}
-{% with joinmode_messages = get_flashed_messages(category_filter=["joinmode"]) %}
-{% with active_messages = get_flashed_messages(category_filter=["is_active"]) %}
 
 <h2 class="white">Guiding Clubs</h2>
 <br>
+{% with joinmode_messages = get_flashed_messages(category_filter=["joinmode"]) %}
 {% if joinmode_messages %}
 <br>
 <ul class="list-group">
@@ -13,6 +12,8 @@
 	{% endfor %}
 </ul>
 {% endif %}
+{% endwith %}
+{% with active_messages = get_flashed_messages(category_filter=["is_active"]) %}
 {% if active_messages %}
 <br>
 <ul class="list-group">
@@ -21,6 +22,7 @@
 	{% endfor %}
 </ul>
 {% endif %}
+{% endwith %}
 <div id="teacher_clubs">
 	{% for club in myclubs %}
 	<div class="teacher_club emptyline-lg">
@@ -62,6 +64,4 @@
 
 <div class="clearfix"></div>
 
-{% endwith %}
-{% endwith %}
 {% endblock %}

@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Disable Accounts{% endblock %}
 {% block content %}
-{% with messages = get_flashed_messages(category_filter=["disableaccounts"]) %}
-
 
 <!-- Below Navbar -->
 <div class="large_container">
 	<h1 class="title">Disable Accounts</h1>
+	{% with messages = get_flashed_messages(category_filter=["disableaccounts"]) %}
 	{% if messages %}
 	<ul class="list-group">
 		{% for message in messages %}
@@ -15,6 +14,7 @@
 	</ul>
 	<br>
 	{% endif %}
+	{% endwith %}
 	<p class="white midtext">You can enable an account by setting their passwords.</p>
 	<table class="table table-hover table-bordered midtext">
 		<thead>
@@ -48,5 +48,4 @@
 	</table>
 </div>
 
-{% endwith %}
 {% endblock %}

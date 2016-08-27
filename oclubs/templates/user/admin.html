@@ -1,7 +1,5 @@
 {% extends "user/personal.html" %}
 {% block personal %}
-{% with refresh_messages = get_flashed_messages(category_filter=["refresh_users"]) %}
-{% with rebuild_messages = get_flashed_messages(category_filter=["rebuild_search"]) %}
 
 <h2 class="title_next">Download</h2>
 <div class="col-sm-3 admin_function">
@@ -58,6 +56,7 @@
 <div class="clearfix clearfix-bordered"></div>
 
 <h2 class="title_next">Please be careful with following operation</h2>
+{% with refresh_messages = get_flashed_messages(category_filter=["refresh_users"]) %}
 {% if refresh_messages %}
 <ul class="list-group">
 	{% for message in refresh_messages %}
@@ -65,6 +64,8 @@
 	{% endfor %}
 </ul>
 {% endif %}
+{% endwith %}
+{% with rebuild_messages = get_flashed_messages(category_filter=["rebuild_search"]) %}
 {% if rebuild_messages %}
 <ul class="list-group">
 	{% for message in rebuild_messages %}
@@ -72,6 +73,7 @@
 	{% endfor %}
 </ul>
 {% endif %}
+{% endwith %}
 <div class="admin_button">
 	<button class="btn btn-warning" data-toggle="modal" data-target="#confirm_refresh">Refresh Student Accounts</button>
 </div>
@@ -166,6 +168,4 @@
 	</div>
 </div>
 
-{% endwith %}
-{% endwith %}
 {% endblock %}

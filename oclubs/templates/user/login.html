@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Login{% endblock %}
 {% block content %}
-{% with messages = get_flashed_messages(category_filter=["login"]) %}
 
 <!-- Below Navbar -->
 <div class="container">
 	<h1 class="title text-center">Login to oClubs!</h1>
+	{% with messages = get_flashed_messages(category_filter=["login"]) %}
 	{% if messages %}
 	<ul class="list-group login_message">
 		{% for message in messages %}
@@ -13,6 +13,7 @@
 		{% endfor %}
 	</ul>
 	{% endif %}
+	{% endwith %}
 
 	<form class="login_block form-group" action="{{ url_for('login_submit') }}" method="post">
 		<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
@@ -33,5 +34,4 @@
 	</div>
 </div>
 
-{% endwith %}
 {% endblock %}

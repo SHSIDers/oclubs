@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% block title %}New Activity{% endblock %}
 {% block content %}
-{% with messages = get_flashed_messages(category_filter=["newact"]) %}
 
 <!-- Below Navbar -->
 <div class="container">
 	<div class="col-sm-6">
 		<h1 class="title">New Activity</h1>
+		{% with messages = get_flashed_messages(category_filter=["newact"]) %}
 		{% if messages %}
 		<br>
 		<ul class="list-group">
@@ -15,6 +15,7 @@
 			{% endfor %}
 		</ul>
 		{% endif %}
+		{% endwith %}
 		<div class="form-horizontal white smalltext" role="form">
 			<form class="form-group" id="newact" action="{{ url_for('.newact_submit', club=g.club.callsign) }}" method="post">
 				<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
@@ -110,9 +111,8 @@
 	</div>
 
 	<div class="clearfix"></div>
-	
+
 	<center><input class="midtext padding-3" type="submit" class="btn btn-info" form="newact" value="Submit"></center>
 </div>
 
-{% endwith %}
 {% endblock %}

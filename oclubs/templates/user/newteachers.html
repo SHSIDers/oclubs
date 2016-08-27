@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% block title %}New teachers{% endblock %}
 {% block content %}
-{% with messages = get_flashed_messages(category_filter=["newteachers"]) %}
 
 <div class="container">
 	<div class="admin_function">
 		<h2 class="title_next">Add New Teachers</h2>
 		<br>
+		{% with messages = get_flashed_messages(category_filter=["newteachers"]) %}
 		{% if messages %}
 		<ul class="list-group">
 			{% for message in messages %}
@@ -15,6 +15,7 @@
 		</ul>
 		<br>
 		{% endif %}
+		{% endwith %}
 		<form action="{{ url_for('.newteachers_submit') }}" method="post" enctype="multipart/form-data">
 			<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 			<p>Please upload a xlsx file with a sheet named "Teachers".</p>
@@ -51,5 +52,4 @@
 	</div>
 </div>
 
-{% endwith %}
 {% endblock %}

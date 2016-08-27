@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 {% block title %}{{ current_user.nickname }}{% endblock %}
 {% block content %}
-{% with status_info = get_flashed_messages(category_filter=["status_info"]) %}
-{% with status_pw = get_flashed_messages(category_filter=["status_pw"]) %}
 
 <!-- Below Navbar -->
 <div class="container">
 	<h2 class="title_next personal-name">{{ current_user.passportname }}&nbsp;&nbsp;&nbsp; {% if activities %}<span class="comment nowrap">{{ current_user.studentid }}&nbsp;&nbsp;Class {{ current_user.grade }} - {{ current_user.currentclass }}</span>{% endif %}<a href="{{ url_for('logout') }}" id="logoutlink"><span class="glyphicon glyphicon-log-out">&nbsp;Logout</span></a></h2>
 	<div class="clearfix clearfix-bordered"></div>
+	{% with status_info = get_flashed_messages(category_filter=["status_info"]) %}
 	{% if status_info %}
 	<br>
 	<ul class="list-group">
@@ -16,6 +15,8 @@
 		{% endfor %}
 	</ul>
 	{% endif %}
+	{% endwith %}
+	{% with status_pw = get_flashed_messages(category_filter=["status_pw"]) %}
 	{% if status_pw %}
 	<br>
 	<ul class="list-group">
@@ -23,9 +24,9 @@
 		<li class="list-group-item">{{ message }}</li>
 		{% endfor %}
 	</ul>
-	{% else %}
-	<br><br>
 	{% endif %}
+	{% endwith %}
+	<br>
 	<div class="col-xs-3" id="profilepic">
 		<img src="{{ current_user.picture.location_external }}" class="img-responsive img-thumbnail" alt="Profile Picture">
 		<br><br>
@@ -43,12 +44,12 @@
 				<div class="col-sm-4">
 					<a class="btn btn-info" href="#changePass" data-toggle="modal" data-target="#changePass">Change Password</a>
 				</div>
-			{% with unread_notifications_num = current_user.get_unread_notifications_num() %}
+				{% with unread_notifications_num = current_user.get_unread_notifications_num() %}
 				<div class="col-sm-4">
 					<a class="btn {% if unread_notifications_num %}btn-primary{% else %}btn-info{% endif %}" href="{{ url_for('.notifications') }}">Notifications{% if unread_notifications_num %} <span class="badge">{{ unread_notifications_num }}</span>{% endif %}</a>
 				</div>
+				{% endwith %}
 			</div>
-		{% endwith %}
 		</center>
 	</div>
 	<div class="clearfix clearfix-bordered"></div>
@@ -123,6 +124,4 @@
 	</div>
 </div>
 
-{% endwith %}
-{% endwith %}
 {% endblock %}

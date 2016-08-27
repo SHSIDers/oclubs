@@ -1,10 +1,10 @@
 {% extends "base.html" %}{% from 'macros.html' import render_pagination %}
 {% block title %}Notifications{% endblock %}
 {% block content %}
-{% with messages = get_flashed_messages(category_filter=["reply"]) %}
 
 <!-- Below Navbar -->
 <div class="container">
+	{% with messages = get_flashed_messages(category_filter=["reply"]) %}
 	{% if messages %}
 	<ul class="list-group">
 		{% for message in messages %}
@@ -12,6 +12,7 @@
 		{% endfor %}
 	</ul>
 	{% endif %}
+	{% endwith %}
 	<h1 class="title text-center">Notifications</h1>
 	<center><p class="search_result">You have {{ number }} new notifications.</p></center>
 	<br>
@@ -22,7 +23,7 @@
 			<form action="{{ url_for('.invitation_reply') }}" method="post">
 				<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 				<input name="club" type="hidden" value="{{ invitation.club.id }}">
-				<button class="btn btn-success" name="reply" value="accept"><span class="glyphicon glyphicon-ok"></span></button>		
+				<button class="btn btn-success" name="reply" value="accept"><span class="glyphicon glyphicon-ok"></span></button>
  				<button class="btn btn-danger" name="reply" value="decline"><span class="glyphicon glyphicon-remove"></span></button>
 			</form>
 		</div>
@@ -47,5 +48,4 @@
 	<center>{{ render_pagination(pagination) }}</center>
 </div>
 
-{% endwith %}
 {% endblock %}

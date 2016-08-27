@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Change Users' Info{% endblock %}
 {% block content %}
-{% with messages = get_flashed_messages(category_filter=["admin_info"]) %}
-
 
 <!-- Below Navbar -->
 <div class="large_container">
 	<h1 class="title">Change Users' Information</h1>
+	{% with messages = get_flashed_messages(category_filter=["admin_info"]) %}
 	{% if messages %}
 	<ul class="list-group">
 		{% for message in messages %}
@@ -15,6 +14,7 @@
 	</ul>
 	<br>
 	{% endif %}
+	{% endwith %}
 	<table class="table table-hover table-bordered midtext" id="admin_user_table" data-csrf={{ csrf_token() }}>
 		<thead>
 			<tr>
@@ -44,5 +44,4 @@
 	</table>
 </div>
 
-{% endwith %}
 {% endblock %}

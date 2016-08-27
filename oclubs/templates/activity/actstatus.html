@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block title %}{{ g.activity.name }}{% endblock %}
 {% block content %}
-{% with messages = get_flashed_messages(category_filter=["consent_form"]) %}
 
 <!-- Below Navbar -->
 <div class="container white">
@@ -10,6 +9,7 @@
 	<br>
 	<h2 class="midtext">Date: {{ g.activity.date }}</h2>
 	<h2 class="midtext">Current participating people: {{ members_num }}</h2>
+	{% with messages = get_flashed_messages(category_filter=["consent_form"]) %}
 	{% if messages %}
 	<ul class="list-group no-top-margin black">
 		{% for message in messages %}
@@ -17,6 +17,7 @@
 		{% endfor %}
 	</ul>
 	{% endif %}
+	{% endwith %}
 	<br>
 	<table class="table table-hover table-bordered black" id="actstatustable">
 		<thead>
@@ -62,5 +63,4 @@
 	</center>
 </div>
 
-{% endwith %}
 {% endblock %}
