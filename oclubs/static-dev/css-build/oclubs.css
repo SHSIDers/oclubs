@@ -778,6 +778,10 @@ body {
   height: 100px;
 }
 
+.photo img.no-padding {
+  padding-top: 0;
+}
+
 @media screen and (max-width: 720px) {
   .photo {
     width: 33%;
@@ -1282,7 +1286,6 @@ thead {
 
 @media screen and (max-width: 600px) {
   #teacher_clubs div.teacher_club .btn {
-    width: 90%;
     font-size: 100%;
   }
 
