@@ -242,3 +242,235 @@ def invitemember(club):
             flash('The invitation has been sent to %s.' % new_member.nickname,
                   'invite_member')
     return redirect(url_for('.adjustmember', club=club.callsign))
+
+
+@clubblueprint.route('/<club>/club_activities/', defaults={'page': 1})
+@clubblueprint.route('/<club>/club_activities/<int:page>')
+@get_callsign(Club, 'club')
+def clubactivities(club, page):
+    '''One Club's Activities'''
+    act_num = 20
+    count, acts = club.activities(limit=((page-1)*act_num, act_num))
+    pagination = Pagination(page, act_num, count)
+    club_pic = []
+    club_pic.extend(club.allactphotos(limit=3)[1])
+    club_pic.extend([Upload(-101) for _ in range(3 - len(club_pic))])
+    return render_template('club/clubact.html',
+                           club_pic=club_pic,
+                           acts=acts,
+                           pagination=pagination)
+
+
+@clubblueprint.route('/<club>/club_photo/', defaults={'page': 1})
+@clubblueprint.route('/<club>/club_photo/<int:page>')
+@get_callsign(Club, 'club')
+def clubphoto(club, page):
+    '''Individual Club's Photo Page'''
+    pic_num = 20
+    count, uploads = club.allactphotos(limit=((page-1)*pic_num, pic_num))
+    pagination = Pagination(page, pic_num, count)
+    return render_template('club/clubphoto.html',
+                           uploads=uploads,
+                           pagination=pagination)
+
+
+@clubblueprint.route('/<club>/new')
+@get_callsign(Club, 'club')
+@special_access_required
+def newact(club):
+    '''Hosting New Activity'''
+    years = (lambda m: map(lambda n: m + n, range(2)))(date.today().year)
+    return render_template('club/newact.html',
+                           years=years)
+
+
+@clubblueprint.route('/<club>/new/submit', methods=['POST'])
+@get_callsign(Club, 'club')
+@special_access_required
+def newact_submit(club):
+    '''Input new activity's information into database'''
+    try:
+        a = Activity.new()
+        a.name = request.form['name']
+        if not a.name:
+            flash('Please enter the name of the new activity.')
+            return redirect(url_for('.newact', club=club.callsign))
+        a.club = club
+        a.description = FormattedText.handle(current_user, club,
+                                             request.form['description'])
+        a.post = FormattedText(0)
+        try:
+            actdate = date(int(request.form['year']),
+                           int(request.form['month']),
+                           int(request.form['day']))
+        except ValueError:
+            flash('Invalid date.', 'newact')
+            return redirect(url_for('.newact', club=club.callsign))
+        if actdate < date.today():
+            flash('Please choose the correct date.', 'newact')
+            return redirect(url_for('.newact', club=club.callsign))
+        a.date = actdate
+        time = ActivityTime[request.form['act_type'].upper()]
+        a.time = time
+        a.location = request.form['location']
+        time_type = request.form['time_type']
+        if time_type == 'hours':
+            a.cas = int(request.form['cas'])
+        else:
+            a.cas = int(request.form['cas']) / 60
+        if (time == ActivityTime.OTHERS or time == ActivityTime.UNKNOWN) and \
+                request.form['has_selection'] == 'yes':
+            choices = request.form['selections'].split(';')
+            a.selections = [choice.strip() for choice in choices]
+        else:
+            a.selections = []
+        a.create()
+        flash(a.name + ' has been successfully created.', 'newact')
+    except ValueError:
+        flash('Please input all information to create a new activity.',
+              'newact')
+    else:
+        for member in club.members:
+            parameters = {'member': member, 'club': club, 'act': a}
+            contents = render_email_template('newact', parameters)
+            member.email_user(a.name + ' - ' + club.name, contents)
+            member.notify_user(club.name + ' is going to host ' + a.name +
+                               ' on ' + date.strftime('%b-%d-%y') + '.')
+    return redirect(url_for('.newact', club=club.callsign))
+
+
+@clubblueprint.route('/<club>/hongmei_status')
+@get_callsign(Club, 'club')
+@special_access_required
+def hongmei_status(club):
+    '''Check HongMei Status'''
+    acts = club.activities([ActivityTime.HONGMEI], (False, True))
+    return render_template('club/hmstatus.html',
+                           acts=acts)
+
+
+@clubblueprint.route('/<club>/hongmei_status/download')
+@get_callsign(Club, 'club')
+@special_access_required
+def hongmei_status_download(club):
+    '''Download HongMei status'''
+    result = []
+    result.append(['Date', 'Members'])
+    hongmei = club.activities([ActivityTime.HONGMEI], (False, True))
+    for each in hongmei:
+        result_each = []
+        result_each.append(each.date.strftime('%b-%d-%y'))
+        members = each.signup_list()
+        members_result = ''
+        for member in members:
+            if member['consentform'] == 0:
+                consentform = 'No'
+            else:
+                consentform = 'Yes'
+            members_result += member['user'].nickname + ': ' \
+                + str(member['user'].phone) + ' (Consent From Handed? ' \
+                + consentform + ')\n'
+        result_each.append(members_result)
+        result.append(result_each)
+    return download_xlsx('HongMei Status - ' + club.name + '.xlsx', result)
+
+
+@clubblueprint.route('/<club>/new_hongmei_schedule')
+@get_callsign(Club, 'club')
+@special_access_required
+def newhm(club):
+    '''Input HongMei Plan'''
+    acts = club.activities([ActivityTime.HONGMEI], (False, True))
+    years = (lambda m: map(lambda n: m + n, range(2)))(date.today().year)
+    return render_template('club/newhm.html',
+                           acts=acts,
+                           years=years)
+
+
+@clubblueprint.route('/<club>/new_hongmei_schedule/submit', methods=['POST'])
+@get_callsign(Club, 'club')
+@special_access_required
+def newhm_submit(club):
+    '''Input HongMei plan into databse'''
+    contents = request.form['contents']
+    try:
+        actdate = date(int(request.form['year']),
+                       int(request.form['month']),
+                       int(request.form['day']))
+    except ValueError:
+        flash('Please input valid date to submit.', 'newhm')
+        return redirect(url_for('.newhm', club=club.callsign))
+    if contents == '' or actdate < date.today():
+        flash('Please input contents or correct date to submit.', 'newhm')
+        return redirect(url_for('.newhm', club=club.callsign))
+    a = Activity.new()
+    a.name = contents
+    a.club = club
+    a.description = FormattedText.emptytext()
+    a.date = actdate
+    a.time = ActivityTime.HONGMEI
+    a.location = 'HongMei Elementary School'
+    a.cas = 1
+    a.post = FormattedText.emptytext()
+    a.selections = []
+    a.create()
+    return redirect(url_for('.newhm', club=club.callsign))
+
+
+@clubblueprint.route('/<club>/switch_mode/submit', methods=['POST'])
+@get_callsign(Club, 'club')
+@special_access_required
+def switchmode(club):
+    '''Allow club teacher to switch club's mode'''
+    if club.joinmode == ClubJoinMode.FREE_JOIN:
+        club.joinmode = ClubJoinMode.BY_INVITATION
+    elif club.joinmode == ClubJoinMode.BY_INVITATION:
+        club.joinmode = ClubJoinMode.FREE_JOIN
+    flash(club.name + '\'s mode has been successfully changed.', 'joinmode')
+    return redirect(url_for('userblueprint.personal'))
+
+
+@clubblueprint.route('/<club>/to_active/submit', methods=['POST'])
+@get_callsign(Club, 'club')
+@special_access_required
+def toactive(club):
+    '''Allow club teacher to change club to active'''
+    club.is_active = True
+    flash(club.name + ' is active now.', 'is_active')
+    return redirect(url_for('userblueprint.personal'))
+
+
+@clubblueprint.route('/<club>/register_hongmei')
+@get_callsign(Club, 'club')
+@login_required
+def registerhm(club):
+    '''Register Page for HongMei Activites'''
+    activities = club.activities([ActivityTime.HONGMEI], (False, True))
+    acts = []
+    for activity in activities:
+        try:
+            activity.signup_user_status(current_user)
+            acts.append((activity, True))
+        except NoRow:
+            acts.append((activity, False))
+    return render_template('club/registerhm.html',
+                           acts=acts)
+
+
+@clubblueprint.route('/<club>/register_hongmei/submit', methods=['POST'])
+@get_callsign(Club, 'club')
+@login_required
+def registerhm_submit(club):
+    '''Submit HongMei signup info to database'''
+    register = request.form.getlist('register')
+    plan = ''
+    for reg in register:
+        act = Activity(reg)
+        act.signup(current_user)
+        plan += 'Date: ' + act.date.strftime('%b-%d-%y') + '\n\n' + \
+            'Content: ' + act.name + '\n\n'
+    parameters = {'user': current_user, 'club': club, 'plan': plan}
+    contents = render_email_template('registerhm', parameters)
+    current_user.email_user('HongMei Plan - ' + club.name, contents)
+    flash('Your application has been successfully submitted.', 'reghm')
+    return redirect(url_for('.registerhm', club=club.callsign))

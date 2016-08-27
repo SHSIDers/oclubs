@@ -24,7 +24,7 @@
 					{% endfor %}
 				</td>
 				<td>
-					<a href="{{ url_for('.hongmei_invite', activity=act.callsign) }}" class="btn btn-primary btn-lg">Invite Members</a>
+					<a href="{{ url_for('actblueprint.hongmei_invite', activity=act.callsign) }}" class="btn btn-primary btn-lg">Invite Members</a>
 				</td>
 			</tr>
 			{% endfor %}

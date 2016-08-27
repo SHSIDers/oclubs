@@ -7,7 +7,7 @@
 	<h1 class="text-center title">Photos of {{ g.club.name }}</h1>
 	{% if uploads %}
 	{% for upload in uploads %}
-	<div class="photo clickable" data-href="{{ url_for('.actpost', activity=upload.activity.callsign) }}">
+	<div class="photo clickable" data-href="{{ url_for('actblueprint.actpost', activity=upload.activity.callsign) }}">
 		<img src="{{ upload.upload.location_external }}" class="img-responsive no-padding" alt="{{ upload.activity.club.name }}">
 	</div>
 	{% endfor %}

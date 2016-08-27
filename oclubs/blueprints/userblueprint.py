@@ -139,29 +139,6 @@ def personalsubmitpassword():
     return redirect(url_for('.personal'))
 
 
-@userblueprint.route('/<club>/switch_mode/submit', methods=['POST'])
-@get_callsign(Club, 'club')
-@special_access_required
-def switchmode(club):
-    '''Allow club teacher to switch club's mode'''
-    if club.joinmode == ClubJoinMode.FREE_JOIN:
-        club.joinmode = ClubJoinMode.BY_INVITATION
-    elif club.joinmode == ClubJoinMode.BY_INVITATION:
-        club.joinmode = ClubJoinMode.FREE_JOIN
-    flash(club.name + '\'s mode has been successfully changed.', 'joinmode')
-    return redirect(url_for('.personal'))
-
-
-@userblueprint.route('/<club>/to_active/submit', methods=['POST'])
-@get_callsign(Club, 'club')
-@special_access_required
-def toactive(club):
-    '''Allow club teacher to change club to active'''
-    club.is_active = True
-    flash(club.name + ' is active now.', 'is_active')
-    return redirect(url_for('.personal'))
-
-
 @userblueprint.route('/all_clubs_info')
 @special_access_required
 @fresh_login_required
@@ -487,42 +464,6 @@ def checkhongmeischedule_download():
         info.append((act.club.name, members))
     return download_xlsx('HongMei\'s Schedule on' +
                          date.strftime('%b-%d-%Y') + '.xlsx', info)
-
-
-@userblueprint.route('/<club>/register_hongmei')
-@get_callsign(Club, 'club')
-@login_required
-def registerhm(club):
-    '''Register Page for HongMei Activites'''
-    activities = club.activities([ActivityTime.HONGMEI], (False, True))
-    acts = []
-    for activity in activities:
-        try:
-            activity.signup_user_status(current_user)
-            acts.append((activity, True))
-        except NoRow:
-            acts.append((activity, False))
-    return render_template('user/registerhm.html',
-                           acts=acts)
-
-
-@userblueprint.route('/<club>/register_hongmei/submit', methods=['POST'])
-@get_callsign(Club, 'club')
-@login_required
-def registerhm_submit(club):
-    '''Submit HongMei signup info to database'''
-    register = request.form.getlist('register')
-    plan = ''
-    for reg in register:
-        act = Activity(reg)
-        act.signup(current_user)
-        plan += 'Date: ' + act.date.strftime('%b-%d-%y') + '\n\n' + \
-            'Content: ' + act.name + '\n\n'
-    parameters = {'user': current_user, 'club': club, 'plan': plan}
-    contents = render_email_template('registerhm', parameters)
-    current_user.email_user('HongMei Plan - ' + club.name, contents)
-    flash('Your application has been successfully submitted.', 'reghm')
-    return redirect(url_for('.registerhm', club=club.callsign))
 
 
 @userblueprint.route('/notifications/', defaults={'page': 1})
