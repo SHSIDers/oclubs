@@ -11,7 +11,7 @@ from sendgrid.helpers.mail import Email, Content, Mail
 from oclubs.access import get_secret
 from oclubs.access.delay import delayed_func
 
-from_email = ('no-reply@oclubs.shsid.org', 'oClubs')
+from_email = ('no-reply@oclubs', 'oClubs')
 
 
 @delayed_func

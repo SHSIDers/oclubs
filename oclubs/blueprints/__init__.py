@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 #
 
-"""oclubs.shsid.org Module."""
+"""oclubs Module."""
 
 from __future__ import absolute_import
 

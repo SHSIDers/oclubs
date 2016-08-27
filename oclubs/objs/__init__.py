@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 #
 
-"""oclubs.shsid.org Objects."""
+"""oclubs Objects."""
 
 from __future__ import absolute_import
 

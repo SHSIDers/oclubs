@@ -1,5 +1,5 @@
 {
-  "name": "oclubs.shsid.org",
+  "name": "oclubs",
   "version": "1.0.0",
   "description": "",
   "main": "Gulpfile.js",
@@ -27,12 +27,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zhuyifei1999/oclubs.shsid.org.git"
+    "url": "git+https://github.com/zhuyifei1999/oclubs.git"
   },
   "author": "",
   "license": "ARR",
   "bugs": {
-    "url": "https://github.com/zhuyifei1999/oclubs.shsid.org/issues"
+    "url": "https://github.com/zhuyifei1999/oclubs/issues"
   },
-  "homepage": "https://github.com/zhuyifei1999/oclubs.shsid.org#readme"
+  "homepage": "https://github.com/zhuyifei1999/oclubs#readme"
 }

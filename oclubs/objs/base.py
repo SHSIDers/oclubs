@@ -3,7 +3,7 @@
 #
 
 
-"""oclubs.shsid.org Base Object."""
+"""oclubs Base Object."""
 
 from __future__ import absolute_import, unicode_literals
 
