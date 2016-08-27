@@ -6,7 +6,7 @@
 <div class="large_container">
 	<div id="sidebar" class="col-sm-2">
 		{% for pic in club_pic %}
-		<img src="{{ pic.location_external }}" class="img-responsive img-thumbnail" alt="Club Image">
+		<img src="{{ pic.upload.location_external }}" class="img-responsive img-thumbnail" alt="{{ upload.activity.club.name }}">
 		{% endfor %}
 	</div>
 

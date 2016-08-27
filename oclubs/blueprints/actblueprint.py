@@ -17,7 +17,7 @@ from oclubs.shared import (
     download_xlsx, partition
 )
 from oclubs.objs import User, Club, Activity, Upload, FormattedText
-from oclubs.exceptions import UploadNotSupported, AlreadyExists, NoRow
+from oclubs.exceptions import UploadNotSupported, NoRow
 
 actblueprint = Blueprint('actblueprint', __name__)
 

@@ -8,7 +8,7 @@
 	{% if uploads %}
 	{% for upload in uploads %}
 	<div class="photo">
-		<img src="{{ upload.location_external }}" class="img-responsive no-padding" alt="{{ upload.club.name }}">
+		<img src="{{ upload.upload.location_external }}" class="img-responsive no-padding" alt="{{ upload.activity.club.name }}">
 	</div>
 	{% endfor %}
 	{% else %}

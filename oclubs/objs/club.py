@@ -110,20 +110,27 @@ class Club(BaseObject):
 
     @paged_db_read
     def allactphotos(self, pager=None):
-        from oclubs.objs import Upload
+        from oclubs.objs import Activity, Upload
 
         pager_fetch, pager_return = pager
         tempdata = pager_fetch(
-            database.fetch_onecol,
+            database.fetch_multirow,
             'act_pic',
-            'actpic_upload',
+            {
+                'actpic_upload': 'upload',
+                'act_id': 'activity',
+            },
             {
                 'join': [('inner', 'activity', [('actpic_act', 'act_id')])],
                 'where': [('=', 'act_club', self.id)],
             }
         )
 
-        return pager_return([Upload(item) for item in tempdata])
+        for item in tempdata:
+            item['upload'] = Upload(item['upload'])
+            item['activity'] = Activity(item['activity'])
+
+        return pager_return(tempdata)
 
     def add_member(self, user):
         database.insert_row('club_member',
