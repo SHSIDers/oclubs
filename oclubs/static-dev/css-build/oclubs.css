@@ -810,6 +810,12 @@ body {
   width: 20%;
 }
 
+@media screen and (max-width: 600px) {
+  .huge_block {
+    margin: 0 10%;
+  }
+}
+
 .radio_block {
   display: block;
   float: left;
@@ -2286,12 +2292,6 @@ thead {
 @media screen and (max-width: 600px) {
   .img-thumbnail {
     padding: 0;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  #currentleader {
-    margin: 0 10%;
   }
 }
 
