@@ -15,7 +15,7 @@
 			{% endfor %}
 		</ul>
 		{% endif %}
-		<div class="form-horizontal color-lightgrey smalltext" role="form">
+		<div class="form-horizontal color-white smalltext" role="form">
 			<form class="form-group" id="newact" action="{{ url_for('.newact_submit', club=g.club.callsign) }}" method="post">
 				<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 				<label class="col-sm-2" for="name">Name:</label>
@@ -83,13 +83,13 @@
 	<div class="clearfix"></div>
 	<br>
 
-	<div class="form-group color-lightgrey smalltext">
+	<div class="form-group color-white smalltext">
 		<label for="description">Description: <span>(optional)</span></label>
 		<textarea class="form-control" rows="10" id="description" form="newact" name="description"></textarea>
 		<p>You can describe the selection below here if you want to allow members to choose.</p>
 	</div>
 
-	<div class="form-group color-lightgrey smalltext">
+	<div class="form-group color-white smalltext">
 		<div class="col-sm-6">
 			<div class="col-sm-6">
 				<label for="has_selection">Allow Selection for Members?</label>

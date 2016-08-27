@@ -7,12 +7,12 @@
 	<h1 class="text-center title">Photos of {{ g.club.name }}</h1>
 	{% if uploads %}
 	{% for upload in uploads %}
-	<div class="photo bright">
+	<div class="photo">
 		<img src="{{ upload.location_external }}" class="img-responsive" alt="{{ upload.club.name }}">
 	</div>
 	{% endfor %}
 	{% else %}
-	<p class="text-center color-lightgrey midtext">{{ g.club.name }} does not have any activity with photos yet.</p>
+	<p class="text-center color-white midtext">{{ g.club.name }} does not have any activity with photos yet.</p>
 	{% endif %}
 	<br>
 	<div class="clearfix"></div>

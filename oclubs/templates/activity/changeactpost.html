@@ -5,7 +5,7 @@
 
 <!-- Below Navbar -->
 <div class="container">
-	<form class="form-group color-lightgrey" action="{{ url_for('.changeactpost_submit', activity=g.activity.callsign) }}" method="post" enctype="multipart/form-data">
+	<form class="form-group color-white" action="{{ url_for('.changeactpost_submit', activity=g.activity.callsign) }}" method="post" enctype="multipart/form-data">
 		<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 		<h1 class="title">Change Activity Info</h1>
 		<h2 class="title_next">{{ g.activity.club.name }}</h2>
