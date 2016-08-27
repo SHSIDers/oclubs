@@ -1,0 +1,36 @@
+{% extends "base.html" %}{% from 'macros.html' import get_messages %}
+{% block title %}Register for HongMei{% endblock %}
+{% block content %}
+
+<!-- Below Navbar -->
+<div class="container">
+	<h1 class="title">Register for HongMei Activities</h1>
+	<h2 class="title_next">{{ g.club.name }}</h2>
+	{{ get_messages(['reghm']) }}
+	{% if acts %}
+	<div class="checkbox_block">
+		{% for act, joined in acts %}
+		<label for="{{ act.id }}">
+			<div class="col-xs-10 no-padding">
+				<p>{{ act.date }}</p>
+				{{ act.description.formatted }}
+			</div>
+			<div class="col-xs-2 float-right no-padding">
+				<input type="checkbox" name="register" value="{{ act.id }}" id="{{ act.id }}" form="registerhm" {% if joined %} checked="checked" disabled="disabled" {% endif %}>
+			</div>
+		</label>
+		{% endfor %}
+	</div>
+	<br>
+	<center>
+	<form action="{{ url_for('.registerhm_submit', club=g.club.callsign) }}" method="post" id="registerhm">
+		<input class="btn btn-info largetext downloadbtn" type="submit" value="Submit">
+		<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+	</form>
+	</center>
+	{% else %}
+	<p class="text-center white midtext">{{ g.club.name }} does not have any future HongMei activities yet.</p>
+	{% endif %}
+</div>
+
+{% endblock %}

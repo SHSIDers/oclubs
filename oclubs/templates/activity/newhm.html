@@ -1,0 +1,70 @@
+{% extends "base.html" %}{% from 'macros.html' import get_messages %}
+{% block title %}HongMei Schedule{% endblock %}
+{% block content %}
+
+<!-- Below Navbar -->
+<div class="container">
+	<h1 class="title">Input HongMei Schedule</h1>
+	<h2 class="title_next">{{ g.club.name }}</h2>
+	<br>
+
+	<h2 class="white">Schedule</h2>
+	<table class="table table-bordered" id="schedule">
+		<thead>
+			<tr>
+				<th>Date</th>
+				<th>Contents</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for act in acts %}
+			<tr class="act">
+				<td>{{ act.date.strftime('%b-%d-%y') }}</td>
+				<td>{{ act.name }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	{{ get_messages(['newhm'], br_before=True) }}
+
+	<div class="container" id="hminfoinput">
+		<form class="form-group white" action="{{ url_for('.newhm_submit', club=g.club.callsign) }}" method="post" id="newhm">
+			<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+			<h1>Input Information</h1>
+			<label for="date">Date:</label>
+			<div class="clearfix"></div>
+			<div class="col-sm-4">
+				<select name="year" class="form-control">
+					{% for year in years %}
+					<option value="{{ year }}">{{ year }}</option>
+					{% endfor %}
+				</select>
+			</div>
+			<div class="col-sm-4">
+				<select name="month" class="form-control">
+					{% for month in range(1,13) %}
+					<option value="{{ month }}">{{ month }}</option>
+					{% endfor %}
+				</select>
+			</div>
+			<div class="col-sm-4">
+				<select name="day" class="form-control">
+					{% for day in range(1,32) %}
+					<option value="{{ day }}">{{ day }}</option>
+					{% endfor %}
+				</select>
+			</div>
+			<br>
+			<label for="contents">Contents:</label>
+			<input type="text" class="form-control" name="contents" id="contents">
+			<br>
+			<center><input class="btn btn-primary smalltext padding-3" value="Submit" type="submit"></center>
+		</form>
+	</div>
+	<center>
+		<a class="btn btn-success downloadbtn" href="{{ url_for('clubblueprint.club', club=g.club.callsign) }}">Return to Club Management Page</a>
+	</center>
+</div>
+
+{% endblock %}
