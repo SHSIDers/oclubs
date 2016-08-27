@@ -36,14 +36,14 @@
 				<td><label class="btn btn-primary btn-lg" for="{{ member.id }}"><input type="checkbox" name="attendance" value="{{ member.id }}" form="attendance_form" id="{{ member.id }}">&nbsp;Change Attendance</label></td>
 			</tr>
 			{% endfor %}
-			<tr class="act" colspan="5">
-				<center><form action="{{ url_for('.attendance_submit', activity=g.activity.callsign) }}" method="post" id="attendance_form">
-					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-					<input class="btn btn-primary btn-lg" type="submit" value="Submit the Attendance">
-				</form></center>
-			</tr>
 		</tbody>
 	</table>
+	<center>
+	<form action="{{ url_for('.attendance_submit', activity=g.activity.callsign) }}" method="post" id="attendance_form">
+		<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+		<input class="btn btn-primary btn-lg" type="submit" value="Submit the Attendance">
+	</form>
+	</center>
 	<br>
 	<center>
 		<a class="btn btn-success downloadbtn" href="{{ url_for('.attendance_download', activity=g.activity.callsign) }}" target="_blank">Download as Excel Document</a>
