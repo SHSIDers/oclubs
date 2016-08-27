@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{% from 'macros.html' import get_messages %}
 {% block title %}Contact Creators{% endblock %}
 {% block content %}
 
@@ -13,16 +13,7 @@
 		<form class="form-group white" action="{{ url_for('contactcreators_submit') }}" method="post">
 			<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 			<h1>Contact Creators</h1>
-			{% with messages = get_flashed_messages(category_filter=["contact_creators"]) %}
-			{% if messages %}
-			<ul class="list-group black">
-				{% for message in messages %}
-				<li class="list-group-item">{{ message }}</li>
-				{% endfor %}
-			</ul>
-			<br>
-			{% endif %}
-			{% endwith %}
+			{{ get_messages(['contact_creators'], br_after=True) }}
 			<p>Your advice is important to oClubs.</p>
 			<p>*Name and contact can be left blank if you want to stay anonymous.</p>
 			<label for="name">Your Name:</label>

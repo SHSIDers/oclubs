@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{% from 'macros.html' import get_messages %}
 {% block title %}HongMei Invitation{% endblock %}
 {% block content %}
 
@@ -7,15 +7,7 @@
 	<h1 class="title">HongMei Invitation</h1>
 	<h2 class="title_next">{{ g.activity.name }}</h2>
 	<h2 class="title_next">{{ g.activity.date.strftime('%b-%d-%y') }}</h2>
-	{% with messages = get_flashed_messages(category_filter=["invite_hm"]) %}
-	{% if messages %}
-	<ul class="list-group">
-		{% for message in messages %}
-		<li class="list-group-item">{{ message }}</li>
-		{% endfor %}
-	</ul>
-	{% endif %}
-	{% endwith %}
+	{{ get_messages(['invite_hm']) }}
 	<div class="checkbox_block">
 		{% for member in g.activity.club.members %}
 		<label for="{{ member.id }}">

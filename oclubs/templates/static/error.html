@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{% from 'macros.html' import get_messages %}
 {% block title %}
 {% if error_type is equalto 500 %}
 500 Internal Server Error
@@ -25,15 +25,7 @@
 	<center><img src="{{ getpicture('smiley_face', 'png') }}" class="img-responsive" alt="Sad face" width="40%"></center>
 	<br><br>
 	<center><p>Oops. This is an awkward moment. Please contact us and tell us about what you have done so far. Hopefully you can also send the content below to us. We will reply and fix this error as soon as possible. Please click advice/opinion at the bottom of this page to contact us. Thank you for your coorperation.</p></center>
-	{% with errors = get_flashed_messages(category_filter=["500"]) %}
-	{% if errors %}
-	<ul class="list-group">
-		{% for message in errors %}
-		<li class="list-group-item">{{ message }}</li>
-		{% endfor %}
-	</ul>
-	{% endif %}
-	{% endwith %}
+	{{ get_messages(['500']) }}
 {% endif %}
 {% if error_type is equalto 404 %}
 	<h1 class="title text-center">404 Page Not Found</h1>

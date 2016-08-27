@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{% from 'macros.html' import get_messages %}
 {% block title %}Contact Administrators{% endblock %}
 {% block content %}
 
@@ -8,16 +8,7 @@
 		<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 		<h1>Contact Administrator</h1>
 		<p>Your account's information will be recorded. Please be aware of this when you submit your contents.</p>
-		{% with messages = get_flashed_messages(category_filter=["contact_admin"]) %}
-		{% if messages %}
-		<ul class="list-group black">
-			{% for message in messages %}
-			<li class="list-group-item">{{ message }}</li>
-			{% endfor %}
-		</ul>
-		<br>
-		{% endif %}
-		{% endwith %}
+		{{ get_messages(['contact_admin'], br_after=True) }}
 		<label for="content">Content:</label>
 		<textarea class="form-control" rows="10" name="content" id="content"></textarea>
 		<br>

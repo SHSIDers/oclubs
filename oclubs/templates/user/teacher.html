@@ -1,28 +1,9 @@
-{% extends "user/personal.html" %}
+{% extends "user/personal.html" %}{% from 'macros.html' import get_messages %}
 {% block personal %}
 
 <h2 class="white">Guiding Clubs</h2>
 <br>
-{% with joinmode_messages = get_flashed_messages(category_filter=["joinmode"]) %}
-{% if joinmode_messages %}
-<br>
-<ul class="list-group">
-	{% for message in joinmode_messages %}
-	<li class="list-group-item">{{ message }}</li>
-	{% endfor %}
-</ul>
-{% endif %}
-{% endwith %}
-{% with active_messages = get_flashed_messages(category_filter=["is_active"]) %}
-{% if active_messages %}
-<br>
-<ul class="list-group">
-	{% for message in active_messages %}
-	<li class="list-group-item">{{ message }}</li>
-	{% endfor %}
-</ul>
-{% endif %}
-{% endwith %}
+{{ get_messages(['joinmode', 'is_active'], br_before=True) }}
 <div id="teacher_clubs">
 	{% for club in myclubs %}
 	<div class="teacher_club emptyline-lg">

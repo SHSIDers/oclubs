@@ -1,19 +1,11 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{% from 'macros.html' import get_messages %}
 {% block title %}Adjust Clubs{% endblock %}
 {% block content %}
 
 <!-- Below Navbar -->
 <div class="container">
 	<h1 class="title">Adjust Clubs</h1>
-	{% with messages = get_flashed_messages(category_filter=['adjustclubs']) %}
-	{% if messages %}
-	<ul class="list-group">
-		{% for message in messages %}
-		<li class="list-group-item">{{ message }}</li>
-		{% endfor %}
-	</ul>
-	{% endif %}
-	{% endwith %}
+	{{ get_messages(['adjustclubs']) }}
 	<table class="table table-hover table-bordered midtext">
 		<thead>
 			<tr>

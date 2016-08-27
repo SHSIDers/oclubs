@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{% from 'macros.html' import get_messages %}
 {% block title %}{{ g.activity.name }}{% endblock %}
 {% block content %}
 
@@ -28,15 +28,7 @@
 			{{ g.activity.description.formatted }}
 			{% endif %}
 		</div>
-		{% with messages_signup = get_flashed_messages(category_filter=["signup"]) %}
-		{% if messages_signup %}
-		<ul class="list-group no-top-margin">
-			{% for message in messages_signup %}
-			<li class="list-group-item">{{ message }}</li>
-			{% endfor %}
-		</ul>
-		{% endif %}
-		{% endwith %}
+		{{ get_messages(['signup']) }}
 
 		{% if g.activity.selections %}
 		{% if selection %}

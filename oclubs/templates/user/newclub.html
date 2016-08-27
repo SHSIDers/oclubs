@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{% from 'macros.html' import get_messages %}
 {% block title %}New Club{% endblock %}
 {% block content %}
 
@@ -8,15 +8,7 @@
 		<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 		<h1 class="title">Add New Club</h1>
 		<h2 class="title_next">Club Teacher: {{ current_user.nickname }}</h2>
-		{% with messages = get_flashed_messages(category_filter=["newclub"]) %}
-		{% if messages %}
-		<ul class="list-group black">
-			{% for message in messages %}
-			<li class="list-group-item">{{ message }}</li>
-			{% endfor %}
-		</ul>
-		{% endif %}
-		{% endwith %}
+		{{ get_messages(['newclub']) }}
 		<p>*Please input below.</p>
 		<label for="clubname largetext">Club Name:</label>
 		<input type="text" class="form-control" name="clubname" id="clubname">

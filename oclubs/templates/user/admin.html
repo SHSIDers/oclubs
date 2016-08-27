@@ -1,4 +1,4 @@
-{% extends "user/personal.html" %}
+{% extends "user/personal.html" %}{% from 'macros.html' import get_messages %}
 {% block personal %}
 
 <h2 class="title_next">Download</h2>
@@ -56,24 +56,7 @@
 <div class="clearfix clearfix-bordered"></div>
 
 <h2 class="title_next">Please be careful with following operation</h2>
-{% with refresh_messages = get_flashed_messages(category_filter=["refresh_users"]) %}
-{% if refresh_messages %}
-<ul class="list-group">
-	{% for message in refresh_messages %}
-	<li class="list-group-item">{{ message }}</li>
-	{% endfor %}
-</ul>
-{% endif %}
-{% endwith %}
-{% with rebuild_messages = get_flashed_messages(category_filter=["rebuild_search"]) %}
-{% if rebuild_messages %}
-<ul class="list-group">
-	{% for message in rebuild_messages %}
-	<li class="list-group-item">{{ message }}</li>
-	{% endfor %}
-</ul>
-{% endif %}
-{% endwith %}
+{{ get_messages(['refresh_users', 'rebuild_search']) }}
 <div class="admin_button">
 	<button class="btn btn-warning" data-toggle="modal" data-target="#confirm_refresh">Refresh Student Accounts</button>
 </div>

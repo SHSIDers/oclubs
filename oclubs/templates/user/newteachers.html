@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{% from 'macros.html' import get_messages %}
 {% block title %}New teachers{% endblock %}
 {% block content %}
 
@@ -6,16 +6,7 @@
 	<div class="admin_function">
 		<h2 class="title_next">Add New Teachers</h2>
 		<br>
-		{% with messages = get_flashed_messages(category_filter=["newteachers"]) %}
-		{% if messages %}
-		<ul class="list-group">
-			{% for message in messages %}
-			<li class="list-group-item">{{ message }}</li>
-			{% endfor %}
-		</ul>
-		<br>
-		{% endif %}
-		{% endwith %}
+		{{ get_messages(['newteachers'], br_after=True) }}
 		<form action="{{ url_for('.newteachers_submit') }}" method="post" enctype="multipart/form-data">
 			<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 			<p>Please upload a xlsx file with a sheet named "Teachers".</p>

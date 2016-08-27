@@ -1,18 +1,10 @@
-{% extends "base.html" %}{% from 'macros.html' import render_pagination %}
+{% extends "base.html" %}{% from 'macros.html' import render_pagination, get_messages %}
 {% block title %}Notifications{% endblock %}
 {% block content %}
 
 <!-- Below Navbar -->
 <div class="container">
-	{% with messages = get_flashed_messages(category_filter=["reply"]) %}
-	{% if messages %}
-	<ul class="list-group">
-		{% for message in messages %}
-		<li class="list-group-item">{{ message }}</li>
-		{% endfor %}
-	</ul>
-	{% endif %}
-	{% endwith %}
+	{{ get_messages(['reply']) }}
 	<h1 class="title text-center">Notifications</h1>
 	<center><p class="search_result">You have {{ number }} new notifications.</p></center>
 	<br>

@@ -19,3 +19,17 @@
 {% endif %}
 </div>
 {% endmacro %}
+
+{% macro get_messages(categories, br_before=False, br_after=False) %}
+{% with messages = get_flashed_messages(category_filter=categories) %}
+{% if messages %}
+{% if br_before %}<br>{% endif %}
+<ul class="list-group no-top-margin black">
+	{% for message in messages %}
+	<li class="list-group-item">{{ message }}</li>
+	{% endfor %}
+</ul>
+{% if br_after %}<br>{% endif %}
+{% endif %}
+{% endwith %}
+{% endmacro %}

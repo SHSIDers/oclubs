@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{% from 'macros.html' import get_messages %}
 {% block title %}New Activity{% endblock %}
 {% block content %}
 
@@ -6,16 +6,7 @@
 <div class="container">
 	<div class="col-sm-6">
 		<h1 class="title">New Activity</h1>
-		{% with messages = get_flashed_messages(category_filter=["newact"]) %}
-		{% if messages %}
-		<br>
-		<ul class="list-group">
-			{% for message in messages %}
-			<li class="list-group-item">{{ message }}</li>
-			{% endfor %}
-		</ul>
-		{% endif %}
-		{% endwith %}
+		{{ get_messages(['newact'], br_before=True) }}
 		<div class="form-horizontal white smalltext" role="form">
 			<form class="form-group" id="newact" action="{{ url_for('.newact_submit', club=g.club.callsign) }}" method="post">
 				<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">

@@ -1,20 +1,11 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{% from 'macros.html' import get_messages %}
 {% block title %}Change Users' Info{% endblock %}
 {% block content %}
 
 <!-- Below Navbar -->
 <div class="large_container">
 	<h1 class="title">Change Users' Information</h1>
-	{% with messages = get_flashed_messages(category_filter=["admin_info"]) %}
-	{% if messages %}
-	<ul class="list-group">
-		{% for message in messages %}
-		<li class="list-group-item">{{ message }}</li>
-		{% endfor %}
-	</ul>
-	<br>
-	{% endif %}
-	{% endwith %}
+	{{ get_messages(['admin_info'], br_after=True) }}
 	<table class="table table-hover table-bordered midtext" id="admin_user_table" data-csrf={{ csrf_token() }}>
 		<thead>
 			<tr>

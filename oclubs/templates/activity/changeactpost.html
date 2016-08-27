@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{% from 'macros.html' import get_messages %}
 {% block title %}Change Activity Post{% endblock %}
 {% block content %}
 
@@ -9,15 +9,7 @@
 		<h1 class="title">Change Activity Info</h1>
 		<h2 class="title_next">{{ g.activity.club.name }}</h2>
 		<h2 class="title_next">{{ g.activity.name }}</h2>
-		{% with messages = get_flashed_messages(category_filter=["actpost"]) %}
-		{% if messages %}
-		<ul class="list-group black">
-			{% for message in messages %}
-			<li class="list-group-item">{{ message }}</li>
-			{% endfor %}
-		</ul>
-		{% endif %}
-		{% endwith %}
+		{{ get_messages(['actpost']) }}
 		<p>*Please input below.</p>
 		<label class="largetext" for="picture">Picture:</label>
 		<div class="clearfix"></div>

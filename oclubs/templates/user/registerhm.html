@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{% from 'macros.html' import get_messages %}
 {% block title %}Register for HongMei{% endblock %}
 {% block content %}
 
@@ -6,15 +6,7 @@
 <div class="container">
 	<h1 class="title">Register for HongMei Activities</h1>
 	<h2 class="title_next">{{ g.club.name }}</h2>
-	{% with messages = get_flashed_messages(category_filter=["reghm"]) %}
-	{% if messages %}
-	<ul class="list-group">
-		{% for message in messages %}
-		<li class="list-group-item">{{ message }}</li>
-		{% endfor %}
-	</ul>
-	{% endif %}
-	{% endwith %}
+	{{ get_messages(['reghm']) }}
 	{% if acts %}
 	<div class="checkbox_block">
 		{% for act, joined in acts %}
