@@ -199,6 +199,8 @@ def actintro(activity):
 @login_required
 def actintro_submit(activity):
     '''Signup for activity'''
+    if current_user not in activity.club.members:
+        abort(403)
     if activity.selections:
         activity.signup(current_user, selection=request.form['selection'])
     else:
@@ -416,17 +418,17 @@ def attendance(activity):
 @special_access_required
 def attendance_submit(activity):
     '''Submit change in attendance'''
-    member = User(request.form['userid'])
+    ids = request.form.getlist('attendance')
+    members = []
+    members.extend([(User(each)) for each in ids])
     attend, absent = partition(lambda member: member in activity.attendance,
                                activity.club.members)
-    if member in absent:
-        activity.attend(member)
-        flash(member.nickname + ' has attended ' + activity.name + '.',
-              'attendance')
-    elif member in attend:
-        activity.attend_undo(member)
-        flash(member.nickname + ' has not attended ' + activity.name + '.',
-              'attendance')
+    for member in members:
+        if member in absent:
+            activity.attend(member)
+        elif member in attend:
+            activity.attend_undo(member)
+    flash('The change in attendance has been submitted.', 'attendance')
     return redirect(url_for('.attendance', activity=activity.callsign))
 
 

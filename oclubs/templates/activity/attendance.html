@@ -1,5 +1,5 @@
 {% extends "base.html" %}{% from 'macros.html' import get_messages %}
-{% block title %}Check Attendance{% endblock %}
+{% block title %}Attendance{% endblock %}
 {% block content %}
 
 <!-- Below Navbar -->
@@ -13,7 +13,8 @@
 				<th class="width-10">Picture</th>
 				<th>Nick Name</th>
 				<th>Student ID</th>
-				<th>Attendance</th>
+				<th>Current Attendance</th>
+				<th>Change Attendance</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -22,14 +23,8 @@
 				<td><img src="{{ member.picture.location_external }}" class="img-responsive width-70" alt="{{ member.nickname }}"></td>
 				<td>{{ member.nickname }}</td>
 				<td>{{ member.studentid }}</td>
-				<td>
-					<span class="glyphicon glyphicon-check"></span>
-					<form action="{{ url_for('.attendance_submit', activity=g.activity.callsign) }}" method="post">
-						<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-						<input type="hidden" name="userid" value="{{ member.id }}">
-						<input class="btn btn-warning" type="submit" value="Cancel">
-					</form>
-				</td>
+				<td><span class="glyphicon glyphicon-check"></span></td>
+				<td><label class="btn btn-primary btn-lg" for="{{ member.id }}"><input type="checkbox" name="attendance" value="{{ member.id }}" form="attendance_form" id="{{ member.id }}">&nbsp;Change Attendance</label></td>
 			</tr>
 			{% endfor %}
 			{% for member in absent %}
@@ -37,16 +32,16 @@
 				<td><img src="{{ member.picture.location_external }}" class="img-responsive width-70" alt="{{ member.nickname }}"></td>
 				<td>{{ member.nickname }}</td>
 				<td>{{ member.studentid }}</td>
-				<td>
-					<span class="glyphicon glyphicon-unchecked"></span>
-					<form action="{{ url_for('.attendance_submit', activity=g.activity.callsign) }}" method="post">
-						<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-						<input type="hidden" name="userid" value="{{ member.id }}">
-						<input class="btn btn-primary" type="submit" value="Attend">
-					</form>
-				</td>
+				<td><span class="glyphicon glyphicon-unchecked"></span></td>
+				<td><label class="btn btn-primary btn-lg" for="{{ member.id }}"><input type="checkbox" name="attendance" value="{{ member.id }}" form="attendance_form" id="{{ member.id }}">&nbsp;Change Attendance</label></td>
 			</tr>
 			{% endfor %}
+			<tr class="act" colspan="5">
+				<center><form action="{{ url_for('.attendance_submit', activity=g.activity.callsign) }}" method="post" id="attendance_form">
+					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+					<input class="btn btn-primary btn-lg" type="submit" value="Submit the Attendance">
+				</form></center>
+			</tr>
 		</tbody>
 	</table>
 	<br>
