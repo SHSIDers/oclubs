@@ -9,6 +9,7 @@ import os
 from PIL import Image
 import magic
 
+from oclubs.access import fs
 from oclubs.exceptions import UploadNotSupported
 from oclubs.objs.base import BaseObject, Property
 
@@ -67,6 +68,7 @@ class Upload(BaseObject):
             im = Image.open(temppath)
             im.thumbnail((600, 450))
             im.save(permpath, optimize=True)
+            fs.watch(permpath)
         finally:
             os.remove(temppath)
 
