@@ -11,7 +11,7 @@
 		</center>
 	</div>
 	<div class="col-sm-8">
-		<form class="form-group color-white" action="{{ url_for('contactcreators_submit') }}" method="post">
+		<form class="form-group white" action="{{ url_for('contactcreators_submit') }}" method="post">
 			<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 			<h1>Contact Creators</h1>
 			{% if messages %}

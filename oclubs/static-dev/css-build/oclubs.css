@@ -25,10 +25,6 @@ a:hover {
   text-decoration: none;
 }
 
-.color-white {
-  color: #f2f2f2;
-}
-
 body {
   background: #01273a;
   background: -webkit-gradient(linear, left top, right top, from(#01273a), color-stop(50%, #02679a), to(#01273a));
@@ -112,7 +108,7 @@ body {
 }
 
 .list-group .list-group-item.selected {
-  background-color: #eee;
+  background-color: #e2e2e2;
   font-weight: 700;
 }
 
@@ -132,8 +128,6 @@ body {
   border: 1px solid #e2e2e2;
   border-radius: 5px;
   background-color: #f2f2f2;
-  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05) inset;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
   font-weight: 700;
 }
 
@@ -197,7 +191,7 @@ body {
 .header {
   margin-bottom: 20px;
   background-color: #222;
-  color: #9d9d9d;
+  color: #999;
 }
 
 .header .container {
@@ -727,7 +721,7 @@ body {
 
 .footer h3 {
   margin: 0 0 .5em;
-  color: #e4e6e7;
+  color: #e2e2e2;
   font-weight: 600;
   font-size: 1.7em;
 }
@@ -760,15 +754,6 @@ body {
   }
 }
 
-thead.list {
-  background-color: #f2f2f2;
-}
-
-thead.darklist {
-  background-color: #595959;
-  color: #fff;
-}
-
 .photo {
   float: left;
   margin: 1vw;
@@ -777,8 +762,6 @@ thead.darklist {
   border: 1px solid #e2e2e2;
   border-radius: 4px;
   background-color: #f2f2f2;
-  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05) inset;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
   text-align: center;
 }
 
@@ -876,7 +859,7 @@ thead.darklist {
 
 .function_block div p {
   margin: 0;
-  color: #fff;
+  color: #f2f2f2;
   font-weight: 700;
   font-size: 150%;
 }
@@ -979,7 +962,7 @@ thead.darklist {
 }
 
 .homepage_block #homepage_allclubphotos:hover {
-  color: #d9d9d9;
+  color: #ccc;
 }
 
 @media screen and (max-width: 768px) {
@@ -1011,7 +994,7 @@ thead.darklist {
 }
 
 #homepage_functions {
-  border-color: #e4e6e7;
+  border-color: #e2e2e2;
   border-top-style: dotted;
   text-align: center;
   white-space: nowrap;
@@ -1175,12 +1158,12 @@ thead.darklist {
   cursor: pointer;
 }
 
-tr.act {
+tbody {
   background-color: #fff;
 }
 
-tr.act:hover {
-  background-color: #f5f5f5;
+thead {
+  background-color: #ccc;
 }
 
 .personal_info h2 {
@@ -1245,8 +1228,6 @@ tr.act:hover {
   border: 1px solid #e2e2e2;
   border-radius: 10px;
   background-color: #f2f2f2;
-  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05) inset;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
   font-weight: 700;
 }
 
@@ -1668,7 +1649,7 @@ tr.act:hover {
   padding-top: 60px;
   width: 0;
   height: 100%;
-  background-color: #111;
+  background-color: #000;
   white-space: nowrap;
   -webkit-transition: .5s;
   -o-transition: .5s;
@@ -1678,7 +1659,7 @@ tr.act:hover {
 #sidenav a {
   display: block;
   padding: 8px 8px 8px 32px;
-  color: #818181;
+  color: #999;
   font-size: 25px;
   -webkit-transition: .3s;
   -o-transition: .3s;
@@ -1687,7 +1668,7 @@ tr.act:hover {
 
 #sidenav .active,
 #sidenav a:hover {
-  color: #f1f1f1;
+  color: #f2f2f2;
 }
 
 @media screen and (max-width: 450px) {
@@ -1715,7 +1696,7 @@ tr.act:hover {
   z-index: 100;
   float: right;
   padding: 10px;
-  border: 2px solid #a1a1a1;
+  border: 2px solid #ccc;
   border-radius: 25px;
   background: #f2f2f2;
   font-size: 110%;
@@ -2084,6 +2065,49 @@ tr.act:hover {
 @media screen and (max-width: 400px) {
   #actinfotable {
     font-size: 70%;
+  }
+}
+
+#actstatustable,
+#attendancetable {
+  font-size: 150%;
+}
+
+@media screen and (max-width: 768px) {
+  #actstatustable,
+  #attendancetable {
+    font-size: 125%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  #actstatustable,
+  #attendancetable {
+    font-size: 100%;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  #actstatustable,
+  #attendancetable {
+    font-size: 80%;
+  }
+}
+
+#actstatustable span,
+#attendancetable span {
+  margin-right: 10px;
+}
+
+#actstatustable form,
+#attendancetable form {
+  display: inline;
+}
+
+@media screen and (max-width: 400px) {
+  #actstatustable form input,
+  #attendancetable form input {
+    font-size: 75%;
   }
 }
 
@@ -2473,12 +2497,12 @@ tr.act:hover {
   font-size: 80%;
 }
 
-.italic {
-  font-style: italic;
+.white {
+  color: #f2f2f2;
 }
 
 .black {
-  color: #000;
+  color: #222;
 }
 
 .no-top-margin {
@@ -2500,10 +2524,6 @@ tr.act:hover {
 
 .emptyline-lg {
   margin-bottom: 30px;
-}
-
-.bg-color-grey {
-  background-color: #bfbfbf;
 }
 
 .width-100 {
@@ -2633,7 +2653,7 @@ tr.act:hover {
 }
 
 .hp-container {
-  border-color: #e4e6e7;
+  border-color: #e2e2e2;
   border-top-style: dotted;
 }
 
@@ -2654,49 +2674,6 @@ tr.act:hover {
 
 .no-border {
   border-style: none;
-}
-
-table.actstatus,
-table.attendance {
-  font-size: 150%;
-}
-
-@media screen and (max-width: 768px) {
-  table.actstatus,
-  table.attendance {
-    font-size: 125%;
-  }
-}
-
-@media screen and (max-width: 500px) {
-  table.actstatus,
-  table.attendance {
-    font-size: 100%;
-  }
-}
-
-@media screen and (max-width: 400px) {
-  table.actstatus,
-  table.attendance {
-    font-size: 80%;
-  }
-}
-
-table.actstatus span,
-table.attendance span {
-  margin-right: 10px;
-}
-
-table.actstatus form,
-table.attendance form {
-  display: inline;
-}
-
-@media screen and (max-width: 400px) {
-  table.actstatus form input,
-  table.attendance form input {
-    font-size: 75%;
-  }
 }
 
 .admin_function a.btn {

@@ -4,7 +4,7 @@
 {% with messages = get_flashed_messages(category_filter=["consent_form"]) %}
 
 <!-- Below Navbar -->
-<div class="container color-white">
+<div class="container white">
 	<h1 class="title">Activity - {{ g.activity.name }}</h1>
 	<h2 class="title_next">{{ g.activity.club.name }}</h2>
 	<br>
@@ -18,9 +18,9 @@
 	</ul>
 	{% endif %}
 	<br>
-	<table class="table table-hover table-bordered actstatus black">
-		<thead class="list">
-			<tr class="bg-color-grey">
+	<table class="table table-hover table-bordered black" id="actstatustable">
+		<thead>
+			<tr>
 				<th>Name</th>
 				<th>Email</th>
 				<th>Phone Number</th>

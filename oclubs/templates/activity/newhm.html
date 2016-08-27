@@ -9,10 +9,10 @@
 	<h2 class="title_next">{{ g.club.name }}</h2>
 	<br>
 
-	<h2 class="color-white">Schedule</h2>
+	<h2 class="white">Schedule</h2>
 	<table class="table table-bordered" id="schedule">
-		<thead class="list">
-			<tr class="bg-color-black">
+		<thead>
+			<tr>
 				<th>Date</th>
 				<th>Contents</th>
 			</tr>
@@ -37,7 +37,7 @@
 	{% endif %}
 
 	<div class="container" id="hminfoinput">
-		<form class="form-group color-white" action="{{ url_for('.newhm_submit', club=g.club.callsign) }}" method="post" id="newhm">
+		<form class="form-group white" action="{{ url_for('.newhm_submit', club=g.club.callsign) }}" method="post" id="newhm">
 			<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 			<h1>Input Information</h1>
 			<label for="date">Date:</label>

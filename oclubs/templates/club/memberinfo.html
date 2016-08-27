@@ -8,8 +8,8 @@
 	<h2 class="title_next">{{ g.club.name }}</h2>
 	<table class="table table-hover table-bordered" id="memberinfotable">
 		{% if has_access %}
-		<thead class="list">
-			<tr class="bg-color-grey">
+		<thead>
+			<tr>
 				<th class="width-25">Nick Name</th>
 				<th class="width-25">Student ID</th>
 				<th class="width-25">Passport Name</th>
@@ -27,8 +27,8 @@
 			{% endfor %}
 		</tbody>
 		{% else %}
-		<thead class="list">
-			<tr class="bg-color-grey">
+		<thead>
+			<tr>
 				<th class="width-25">Picture</th>
 				<th class="width-75">Nick Name</th>
 			</tr>

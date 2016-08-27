@@ -1,34 +1,34 @@
 :root {
-	--color-white: #f2f2f2;
-	--color-lightgrey: #e2e2e2;
-	--color-grey: #ccc;
-	--color-darkgrey: #999;
-	--color-black: #222;
+	--white: #f2f2f2;
+	--lightgrey: #e2e2e2;
+	--grey: #ccc;
+	--darkgrey: #999; /* foreground of header & sidenav */
+	--black: #222;
 
-	--color-blue: #337ab7;
+	--blue: #337ab7;
 
 	--color-white-prop: {
-		color: var(--color-white);
+		color: var(--white);
 	};
 
 	--bg-white-hover-grey: {
-		background-color: var(--color-white);
+		background-color: var(--white);
 
 		&:hover {
-			background-color: var(--color-grey);
+			background-color: var(--grey);
 		}
 	};
 
 	--bg-white-border-lightgrey: {
-		background-color: var(--color-white);
-		border: 1px solid var(--color-lightgrey);
+		background-color: var(--white);
+		border: 1px solid var(--lightgrey);
 	};
 
 	--color-white-hover-grey: {
-		color: var(--color-white);
+		color: var(--white);
 
 		&:hover {
-			color: var(--color-grey);
+			color: var(--grey);
 		}
 	};
 
@@ -38,10 +38,6 @@
 
 a, a:hover, a:focus {
 	text-decoration: none;
-}
-
-.color-white {
-	@apply --color-white-prop;
 }
 
 body {
@@ -110,7 +106,7 @@ body {
 
 .list-group .list-group-item.selected {
 	font-weight: bold;
-	background-color: #eee;
+	background-color: var(--lightgrey);
 }
 
 .smallBlock {
@@ -131,8 +127,7 @@ body {
 		margin-bottom: 3%;
 		font-weight: bold;
 		display: inline-block;
-		box-shadow: 0 1px 1px rgba(0, 0, 0, .05) inset;
-
+		/* box-shadow: 0 1px 1px rgba(0, 0, 0, .05) inset; FIXME: NOOP? */
 	}
 
 	& > a {
@@ -191,9 +186,9 @@ body {
 }
 
 .header {
-	margin-bottom:20px;
-	background-color: var(--color-black);
-	color: #9d9d9d;
+	margin-bottom: 20px;
+	background-color: var(--black);
+	color: var(--darkgrey);
 
 	& .container {
 		padding-right: 0;
@@ -225,12 +220,12 @@ body {
 						background: #66a3ff;
 
 						& a {
-							color: var(--color-white);
+							color: var(--white);
 						}
 					}
 
 					& a {
-						color: var(--color-darkgrey);
+						color: var(--darkgrey);
 						font-size: 1em;
 						margin-right: .4em;
 						float: left;
@@ -241,7 +236,7 @@ body {
 						white-space: nowrap;
 
 						&:hover {
-							color: var(--color-white);
+							color: var(--white);
 						}
 					}
 				}
@@ -330,12 +325,12 @@ body {
 	background: #0000b3;
 	margin: 2em 0 0;
 	font-size: 1.2em;
-	background-color: var(--color-black);
+	background-color: var(--black);
 	/* font-family: var(--fancy-font); */
 	padding: 0 0.5em 0.5em;
 
 	& a {
-		color: var(--color-darkgrey);
+		color: var(--darkgrey);
 	}
 
 	@media screen and (max-width: 600px) {
@@ -349,7 +344,7 @@ body {
 	padding: 0.25em 0;
 	float: left;
 	margin-top: 2.4em;
-	background-color: var(--color-black);
+	background-color: var(--black);
 
 	& input {
 		&[type="text"] {
@@ -357,10 +352,10 @@ body {
 			outline: none;
 			padding: 0em 0.5em;
 			font-size: 1em;
-			color: var(--color-darkgrey);
+			color: var(--darkgrey);
 			position: relative;
 			border: none;
-			background-color: var(--color-black);
+			background-color: var(--black);
 		}
 
 		&[type="submit"] {
@@ -400,11 +395,11 @@ body {
 	height: 300px;
 	margin: 0px;
 	float: left;
-	border: 0px solid var(--color-white);
+	border: 0px solid var(--white);
 	overflow: hidden;
 	position: relative;
 	text-align: center;
-	box-shadow: 1px 1px 2px var(--color-lightgrey);
+	box-shadow: 1px 1px 2px var(--lightgrey);
 	cursor: default;
 
 	& .mask {
@@ -547,13 +542,13 @@ body {
 
 .footer {
 	padding: 4em 0;
-	background-color: var(--color-black);
+	background-color: var(--black);
 	margin: 1.75em 0 0 0;
 	position: relative;
 	font-size: 125%;
 
 	& h3 {
-		color: #e4e6e7;
+		color: var(--lightgrey);
 		font-size: 1.7em;
 		margin: 0 0 0.5em;
 		font-weight: 600;
@@ -585,17 +580,6 @@ body {
 	}
 }
 
-thead {
-	&.list {
-		background-color: var(--color-white);
-	}
-
-	&.darklist {
-		background-color: #595959;
-		color: white;
-	}
-}
-
 .photo {
 	@apply --bg-white-hover-grey;
 	@apply --bg-white-border-lightgrey;
@@ -606,7 +590,7 @@ thead {
 	border-radius: 4px;
 	margin: 1vw;
 	text-align: center;
-	box-shadow: 0 1px 1px rgba(0, 0, 0, .05) inset;
+	/* box-shadow: 0 1px 1px rgba(0, 0, 0, .05) inset; FIXME: NOOP? */
 
 	& img {
 		padding-top: 10px;
@@ -694,18 +678,18 @@ thead {
 		& p {
 			font-size: 150%;
 			font-weight: bold;
-			color: white;
+			color: var(--white);
 			margin: 0;
-			@media screen and (max-width:992px){
+			@media screen and (max-width:992px) {
 				font-size: 120%;
 			}
-			@media screen and (max-width:768px){
+			@media screen and (max-width:768px) {
 				font-size: 100%;
 			}
-			@media screen and (max-width:600px){
+			@media screen and (max-width:600px) {
 				font-size: 80%;
 			}
-			@media screen and (max-width:400px){
+			@media screen and (max-width:400px) {
 				font-size: 60%;
 			}
 		}
@@ -778,11 +762,7 @@ thead {
 	}
 
 	& #homepage_allclubphotos {
-		@apply --color-white-prop;
-
-		&:hover {
-			color: #d9d9d9;
-		}
+		@apply --color-white-hover-grey;
 	}
 
 	@media screen and (max-width: 768px) {
@@ -812,7 +792,7 @@ thead {
 
 #homepage_functions {
 	border-top-style: dotted;
-	border-color: #e4e6e7;
+	border-color: var(--lightgrey);
 	text-align: center;
 	white-space: nowrap;
 
@@ -941,12 +921,13 @@ thead {
 	cursor: pointer;
 }
 
-tr.act {
+tbody {
+	/* bootstrap assumes white background */
 	background-color: white;
+}
 
-	&:hover {
-		background-color: #f5f5f5;
-	}
+thead {
+	background-color: var(--grey)
 }
 
 .personal_info {
@@ -990,7 +971,7 @@ tr.act {
 
 .clearfix-bordered {
 	border-bottom-style: solid;
-	border-color: var(--color-white);
+	border-color: var(--white);
 }
 
 #teacher_clubs div.teacher_club {
@@ -1002,7 +983,7 @@ tr.act {
 	font-weight: bold;
 	margin-bottom: 2%;
 	display: inline-block;
-	box-shadow: 0 1px 1px rgba(0, 0, 0, .05) inset;
+	/* box-shadow: 0 1px 1px rgba(0, 0, 0, .05) inset; FIXME: NOOP? */
 
 	& h1 {
 		font-size: 300%;
@@ -1125,7 +1106,7 @@ tr.act {
 
 	& .panel {
 		border-style: solid;
-		border-color: var(--color-blue);
+		border-color: var(--blue);
 	}
 
 	& .bg {
@@ -1224,7 +1205,7 @@ tr.act {
 	margin: 4% auto;
 	border-radius: 10px;
 	border-style: solid;
-	border-color: var(--color-blue);
+	border-color: var(--blue);
 	width: 37.5%;
 	font-size: 110%;
 
@@ -1272,7 +1253,7 @@ tr.act {
 		font-size: 120%;
 		background-color: transparent;
 		border-style: solid;
-		border-color: var(--color-blue);
+		border-color: var(--blue);
 		border-radius: 5px;
 	}
 
@@ -1340,14 +1321,14 @@ tr.act {
 	margin-bottom: 15px;
 	border-radius: 10px;
 	border-style: solid;
-	border-color: var(--color-blue);
+	border-color: var(--blue);
 
 	& h1 {
 		@apply --color-white-prop;
 
 		font-size: 150%;
 		border-bottom-style: solid;
-		border-color: var(--color-white);
+		border-color: var(--white);
 	}
 
 	&:hover {
@@ -1381,7 +1362,7 @@ tr.act {
 	padding: 0 2% 2% 2%;
 	margin: 0 3% 0 3%;
 	border-style: solid;
-	border-color: var(--color-white);
+	border-color: var(--white);
 	border-radius: 5px;
 	border-width: 5px;
 
@@ -1423,7 +1404,7 @@ tr.act {
 	z-index: 100;
 	top: 0;
 	left: 0;
-	background-color: #111;
+	background-color: black;
 	overflow-x: hidden;
 	padding-top: 60px;
 	transition: 0.5s;
@@ -1432,17 +1413,17 @@ tr.act {
 	& a {
 		padding: 8px 8px 8px 32px;
 		font-size: 25px;
-		color: #818181;
+		color: var(--darkgrey);
 		display: block;
 		transition: 0.3s;
 
 		&:hover {
-			color: #f1f1f1;
+			color: var(--white);
 		}
 	}
 
-	& .active	{
-		color: #f1f1f1;
+	& .active {
+		color: var(--white);
 	}
 
 	@media screen and (max-width: 450px) {
@@ -1468,9 +1449,9 @@ tr.act {
 	top: 65%;
 	left: 0;
 	z-index: 100;
-	border: 2px solid #a1a1a1;
+	border: 2px solid var(--grey);
 	padding: 10px;
-	background: var(--color-white);
+	background: var(--white);
 	border-radius: 25px;
 	font-size: 110%;
 
@@ -1626,7 +1607,7 @@ tr.act {
 	& #intropage {
 		& .jumbotron {
 			background-color: #3366ff;
-			color: var(--color-white);
+			color: var(--white);
 			border-radius: 5px;
 			padding-left: 30px;
 			padding-right: 30px;
@@ -1635,16 +1616,16 @@ tr.act {
 		& .longdesc {
 			@apply --color-white-prop;
 
-			font-size:150%;
+			font-size: 150%;
 			margin: 1.25em 0;
-			line-height:1.2
+			line-height: 1.2
 		}
 
 		& .selection_bar {
 			font-size: 120%;
 			margin-bottom: 2%;
 			background-color: transparent;
-			border-color: var(--color-blue);
+			border-color: var(--blue);
 			border-style: solid;
 			border-width: 3px;
 			width: 40%;
@@ -1684,15 +1665,15 @@ tr.act {
 		}
 
 		& #photodesc {
-			margin-left:2em;
-			margin-right:2em;
+			margin-left: 2em;
+			margin-right: 2em;
 		}
 	}
 
 	& select.mobileselect {
 		padding: 0.5em;
 		border-style: solid;
-		border-color: var(--color-blue);
+		border-color: var(--blue);
 		border-radius: 5px;
 		width: 49%;
 		border-width: 3px;
@@ -1751,6 +1732,7 @@ tr.act {
 		width: 90%;
 	}
 }
+
 #memberinfotable {
 	font-size: 150%;
 
@@ -1789,6 +1771,35 @@ tr.act {
 	}
 }
 
+#attendancetable, #actstatustable {
+	font-size: 150%;
+
+	@media screen and (max-width: 768px) {
+		font-size: 125%;
+	}
+
+	@media screen and (max-width: 500px) {
+		font-size: 100%;
+	}
+
+	@media screen and (max-width: 400px) {
+		font-size: 80%;
+	}
+
+	& span {
+		margin-right: 10px;
+	}
+
+	& form {
+		display: inline;
+		& input {
+			@media screen and (max-width: 400px) {
+				font-size: 75%;
+			}
+		}
+	}
+}
+
 
 .downloadbtn {
 	padding: 3% 4%;
@@ -1817,9 +1828,10 @@ tr.act {
 }
 
 .student-clubbtn {
-	padding:5% 10% 5% 10%;
-	font-size:125%;
+	padding: 5% 10% 5% 10%;
+	font-size: 125%;
 }
+
 #hpexlist {
 	& h3 {
 		margin-top: 10px;
@@ -1845,8 +1857,9 @@ tr.act {
 		}
 	}
 }
+
 #stuactlist {
-	border-color: var(--color-white);
+	border-color: var(--white);
 	border-left-style: solid;
 	@media screen and (max-width: 768px) {
 		border-left-style: none;
@@ -1896,7 +1909,7 @@ tr.act {
 	margin-bottom: 15px;
 	border-radius: 10px;
 	border-style: solid;
-	border-color: var(--color-blue);
+	border-color: var(--blue);
 
 	& p {
 		font-size: 200%;
@@ -1961,7 +1974,7 @@ tr.act {
 }
 
 .largetext {
-	font-size:200%;
+	font-size: 200%;
 	@media screen and (max-width: 800px) {
 		font-size: 175%;
 	}
@@ -1984,7 +1997,7 @@ tr.act {
 }
 
 .midtext {
-	font-size:150%;
+	font-size: 150%;
 	@media screen and (max-width: 800px) {
 		font-size: 130%;
 	}
@@ -2007,7 +2020,7 @@ tr.act {
 }
 
 .smalltext {
-	font-size:125%;
+	font-size: 125%;
 	@media screen and (max-width: 800px) {
 		font-size: 110%;
 	}
@@ -2030,7 +2043,7 @@ tr.act {
 }
 
 .tinytext {
-	font-size:110%;
+	font-size: 110%;
 	@media screen and (max-width: 800px) {
 		font-size: 100%;
 	}
@@ -2084,12 +2097,17 @@ tr.act {
 .comment {
 	font-size: 80%;
 }
-.italic {
+
+/*.italic {
 	font-style: italic;
+} FIXME: NOOP? */
+
+.white {
+	@apply --color-white-prop;
 }
 
 .black {
-	color: black;
+	color: var(--black);
 }
 
 .no-top-margin {
@@ -2110,20 +2128,16 @@ tr.act {
 .emptyline-lg {
 	margin-bottom: 30px;
 }
-.bg-color-grey {
-	background-color: #bfbfbf;
-}
-.width-100{
+
+.width-100 {
 	width: 100%;
 }
 .width-75 {
 	width: 75%;
 }
-
 .width-70 {
 	width: 70%;
 }
-
 .width-25 {
 	width: 25%;
 }
@@ -2148,7 +2162,7 @@ tr.act {
 	white-space: nowrap;
 }
 
-.dowrap{
+.dowrap {
 	white-space: normal;
 }
 
@@ -2178,8 +2192,8 @@ tr.act {
 }
 
 .about-title {
-	background-color:#5bc0de !important;
-	font-weight:bold;
+	background-color: #5bc0de !important;
+	font-weight: bold;
 	padding: 15px;
 }
 
@@ -2191,38 +2205,39 @@ tr.act {
 }
 
 .cm-bg-1 {
-	background-color:rgba(77, 77, 77, 0.5)
+	background-color: rgba(77, 77, 77, 0.5)
 }
-.cm-bg-2{
-	background-color:rgba(0, 153, 153, 0.5)
+.cm-bg-2 {
+	background-color: rgba(0, 153, 153, 0.5)
 }
 .cm-bg-3 {
-	background-color:rgba(153, 0, 61, 0.5)
+	background-color: rgba(153, 0, 61, 0.5)
 }
 .cm-bg-4 {
-	background-color:rgba(38, 153, 0, 0.5)
+	background-color: rgba(38, 153, 0, 0.5)
 }
 .cm-bg-5 {
-	background-color:rgba(0, 0, 153, 0.5)
+	background-color: rgba(0, 0, 153, 0.5)
 }
 .cm-bg-6 {
-	background-color:rgba(115, 77, 38, 0.5)
+	background-color: rgba(115, 77, 38, 0.5)
 }
+
 .hp-lrnmr {
-	margin-top:27px;
+	margin-top: 27px;
 	@media screen and(max-width: 768px) {
 		margin-top: 29px;
 	}
 }
 .hp-container {
-	border-top-style:dotted;
-	border-color:#e4e6e7;
+	border-top-style: dotted;
+	border-color: var(--lightgrey);
 }
 .hp-container .panel-heading {
-	background-color:#1a75ff
+	background-color: #1a75ff
 }
 .hp-container .panel-body {
-	background-color:#66a3ff
+	background-color: #66a3ff
 }
 .hp-excclub-pic {
 	width: 35%;
@@ -2230,36 +2245,15 @@ tr.act {
 	margin-right: 2%;
 	float: left;
 }
+
 .no-border {
 	border-style: none;
 }
 
-table.attendance, table.actstatus{
-	font-size: 150%;
-	@media screen and (max-width: 768px) {
-		font-size: 125%;
-	}
-	@media screen and (max-width: 500px) {
-		font-size: 100%;
-	}
-	@media screen and (max-width: 400px) {
-		font-size: 80%;
-	}
-	& span {
-		margin-right: 10px;
-	}
-	& form {
-		display: inline;
-		& input {
-			@media screen and (max-width: 400px) {
-				font-size: 75%;
-			}
-		}
-	}
-}
 .admin_function a.btn {
 	padding: 5%;
 }
+
 @media screen and (max-width: 992px) {
 	/* FIXME: what is this? */
 	.col-md-10 > center > img {

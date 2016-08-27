@@ -10,7 +10,7 @@
         <img src="{{ url_for('static', filename='images/areyousure1.jpg') }}" class="img-responsive img-thumbnail" alt="Are you sure?">
     </div>
     <div class="col-sm-6">
-        <h1 class="color-white title_next">Quitting Club</h1>
+        <h1 class="white title_next">Quitting Club</h1>
         {% if quit_messages %}
         <ul class="list-group black">
             {% for message in quit_messages %}
@@ -20,7 +20,7 @@
         <br>
         {% endif %}
         {% if quitting_clubs %}
-    	<form class="form-group color-white middle" id="quit_club" action="{{ url_for('userblueprint.quitclub_submit') }}" method="post">
+    	<form class="form-group white middle" id="quit_club" action="{{ url_for('userblueprint.quitclub_submit') }}" method="post">
             <input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
             <p class="midtext"><i>If you really want to quit a club, then please select the club and state your reason. Your quitting request will be emailed to the club leader.</i></p>
             <br>
@@ -37,7 +37,7 @@
             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#confirmation" id="updatequit">Submit</button>
         </form>
         {% else %}
-        <p class="color-white midtext">You do not have any club to quit yet.</p>
+        <p class="white midtext">You do not have any club to quit yet.</p>
         {% endif %}
     </div>
     <div class="col-sm-3">
