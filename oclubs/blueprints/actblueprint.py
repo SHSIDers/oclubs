@@ -52,7 +52,6 @@ def clubactivities(club, page):
     '''One Club's Activities'''
     act_num = 20
     count, acts = club.activities(limit=((page-1)*act_num, act_num))
-
     pagination = Pagination(page, act_num, count)
     club_pic = []
     club_pic.extend(club.allactphotos(limit=3)[1])
