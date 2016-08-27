@@ -2598,9 +2598,9 @@ thead {
   padding: 3%;
 }
 
-.about-title {
+.list-group-item.active.about-title {
   padding: 15px;
-  background-color: #5bc0de !important;
+  background-color: #5bc0de;
   font-weight: 700;
 }
 
