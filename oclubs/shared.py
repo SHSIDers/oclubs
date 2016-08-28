@@ -4,6 +4,7 @@
 
 import os
 from functools import wraps
+from datetime import date
 from math import ceil
 import re
 from StringIO import StringIO
@@ -108,6 +109,66 @@ def special_access_required(func):
             else:
                 if current_user.id != club.leader.id:
                     abort(403)
+        return func(*args, **kwargs)
+
+    return decorated_function
+
+
+def require_membership(func):
+    # @wraps(func)
+    def decorated_function(*args, **kwargs):
+        if current_user.type != UserType.ADMIN:
+            if 'club' in kwargs:
+                club = kwargs['club']
+            elif 'activity' in kwargs:
+                club = kwargs['activity'].club
+            else:
+                raise NoRow  # Wrong usage of decorator
+
+            if current_user not in club.members:
+                abort(403)
+
+        return func(*args, **kwargs)
+
+    return decorated_function
+
+
+def require_active_club(func):
+    # @wraps(func)
+    def decorated_function(*args, **kwargs):
+        if 'club' not in kwargs:
+            abort()
+
+        return func(*args, **kwargs)
+
+    return decorated_function
+
+
+def require_past_activity(func):
+    # @wraps(func)
+    def decorated_function(*args, **kwargs):
+        if 'activity' not in kwargs:
+            abort(404)
+        activity = kwargs['activity']
+
+        if activity.date > date.today():
+            abort(403)
+
+        return func(*args, **kwargs)
+
+    return decorated_function
+
+
+def require_future_activity(func):
+    # @wraps(func)
+    def decorated_function(*args, **kwargs):
+        if 'activity' not in kwargs:
+            abort(404)
+        activity = kwargs['activity']
+
+        if activity.date <= date.today():
+            abort(403)
+
         return func(*args, **kwargs)
 
     return decorated_function

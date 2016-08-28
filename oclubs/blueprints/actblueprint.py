@@ -14,7 +14,7 @@ from flask_login import current_user, login_required, fresh_login_required
 from oclubs.enums import UserType, ClubType, ActivityTime
 from oclubs.shared import (
     get_callsign, special_access_required, Pagination, render_email_template,
-    download_xlsx, partition
+    download_xlsx, partition, require_membership, require_past_activity
 )
 from oclubs.objs import User, Activity, Upload, FormattedText
 from oclubs.exceptions import UploadNotSupported, NoRow
@@ -102,10 +102,9 @@ def actintro(activity):
 @actblueprint.route('/<activity>/introduction/submit', methods=['POST'])
 @get_callsign(Activity, 'activity')
 @login_required
+@require_membership
 def actintro_submit(activity):
     '''Signup for activity'''
-    if current_user not in activity.club.members:
-        abort(403)
     if activity.selections:
         activity.signup(current_user, selection=request.form['selection'])
     else:
@@ -117,6 +116,7 @@ def actintro_submit(activity):
 
 @actblueprint.route('/<activity>/post')
 @get_callsign(Activity, 'activity')
+@require_past_activity
 def actpost(activity):
     '''Activity Post Page'''
     return render_template('activity/actpost.html')
@@ -125,15 +125,16 @@ def actpost(activity):
 @actblueprint.route('/<activity>/post/change')
 @get_callsign(Activity, 'activity')
 @special_access_required
+@require_past_activity
 def changeactpost(activity):
     '''Page for club leader to change activity post'''
     return render_template('activity/changeactpost.html')
 
 
-@actblueprint.route('/<activity>/post/change/submit',
-                    methods=['POST'])
+@actblueprint.route('/<activity>/post/change/submit', methods=['POST'])
 @get_callsign(Activity, 'activity')
 @special_access_required
+@require_past_activity
 def changeactpost_submit(activity):
     '''Input info into database'''
     for pic in request.files.getlist('picture'):
