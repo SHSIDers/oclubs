@@ -112,7 +112,13 @@ body {
   font-weight: 700;
 }
 
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 1425px) and (min-width: 1200px) {
+  .clubblocks .col-xs-6 {
+    width: 33.33333%;
+  }
+}
+
+@media screen and (max-width: 1050px) {
   .clubblocks .col-xs-6 {
     padding-right: 10px;
     padding-left: 10px;
@@ -133,7 +139,7 @@ body {
   }
 }
 
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 1050px) {
   .clubblocks.row {
     margin-right: -10px;
     margin-left: -10px;
@@ -191,7 +197,9 @@ body {
 .smallblock img {
   float: left;
   margin-right: 15px;
+  padding-bottom: 50%;
   min-width: 45px;
+  max-width: 90px;
   width: 30%;
   border-radius: 2px;
   vertical-align: middle;
@@ -204,6 +212,10 @@ body {
 }
 
 @media screen and (max-width: 992px) {
+  .smallblock {
+    height: 100px;
+  }
+
   .smallblock img {
     width: 25%;
   }
@@ -242,10 +254,21 @@ body {
 @media screen and (max-width: 400px) {
   .smallblock {
     padding: 3px;
+    height: 60px;
   }
 
   .smallblock img {
     margin-right: 3px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .smallblock {
+    height: 55px;
+  }
+
+  .smallblock img {
+    min-width: 35px;
   }
 }
 
@@ -1276,7 +1299,7 @@ thead {
 }
 
 #profilepic {
-  min-width: 80px;
+  min-width: 55px;
   max-width: 225px;
 }
 
@@ -2078,7 +2101,7 @@ thead {
   margin-top: 50px;
 }
 
-@media screen and (max-width: 992px) {
+@media screen and (max-width: 991px) {
   .large_container #sidebar .list-group {
     display: none;
   }
@@ -2294,6 +2317,16 @@ thead {
   }
 }
 
+#stuclubmeeting:after {
+  position: absolute;
+  top: 0;
+  right: -4px;
+  bottom: 0;
+  left: 0;
+  border-right: 4px solid #f2f2f2;
+  content: "";
+}
+
 #stuactlist {
   border-color: #f2f2f2;
   border-left-style: solid;
@@ -2416,7 +2449,7 @@ thead {
   font-size: 200%;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 850px) {
   .largetext {
     font-size: 175%;
   }
@@ -2446,11 +2479,17 @@ thead {
   }
 }
 
+@media screen and (max-width: 275px) {
+  .largetext {
+    font-size: 90%;
+  }
+}
+
 .midtext {
   font-size: 150%;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 850px) {
   .midtext {
     font-size: 130%;
   }
@@ -2480,11 +2519,17 @@ thead {
   }
 }
 
+@media screen and (max-width: 275px) {
+  .midtext {
+    font-size: 70%;
+  }
+}
+
 .smalltext {
   font-size: 130%;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 850px) {
   .smalltext {
     font-size: 110%;
   }
@@ -2514,11 +2559,17 @@ thead {
   }
 }
 
+@media screen and (max-width: 275px) {
+  .smalltext {
+    font-size: 60%;
+  }
+}
+
 .tinytext {
   font-size: 110%;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 850px) {
   .tinytext {
     font-size: 100%;
   }
@@ -2548,11 +2599,17 @@ thead {
   }
 }
 
+@media screen and (max-width: 275px) {
+  .tinytext {
+    font-size: 55%;
+  }
+}
+
 .minitext {
   font-size: 100%;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 850px) {
   .minitext {
     font-size: 90%;
   }
@@ -2579,6 +2636,7 @@ thead {
 @media screen and (max-width: 350px) {
   .minitext {
     font-size: 60%;
+    font-size: 50%;
   }
 }
 

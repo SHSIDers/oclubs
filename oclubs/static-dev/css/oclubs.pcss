@@ -109,7 +109,10 @@ body {
 	background-color: var(--lightgrey);
 }
 .clubblocks .col-xs-6 {
-	@media screen and (max-width: 650px) {
+	@media screen and (max-width: 1425px) and (min-width: 1200px) {
+		width: 33.33333%;
+	}
+	@media screen and (max-width: 1050px) {
 		padding-left: 10px;
 		padding-right: 10px;
 	}
@@ -123,7 +126,7 @@ body {
 	}
 }
 .clubblocks.row {
-	@media screen and (max-width: 650px) {
+	@media screen and (max-width: 1050px) {
 		margin-left: -10px;
 		margin-right: -10px;
 	}
@@ -166,11 +169,13 @@ body {
 
 	& img {
 		min-width: 45px;
+		max-width: 90px;
 		width: 30%;
 		vertical-align: middle;
 		margin-right: 15px;
 		float: left;
 		border-radius: 2px;
+		padding-bottom: 50%;
 	}
 	@media screen and (max-width: 1200px) {
 		padding: 10px;
@@ -179,17 +184,18 @@ body {
 		& img {
 			width: 25%;
 		}
+		height: 100px;
 	}
 	@media screen and (max-width: 650px) {
 		margin-bottom: 7.5px;
 		& img {
 			margin-right: 10px;
 		}
-
+		height: 80px;
 		& .clubname {
 			font-size: 125%;
 		}
-		height: 80px;
+
 		& p {
 			margin-bottom: 2px;
 		}
@@ -208,6 +214,14 @@ body {
 		& img {
 			margin-right: 3px;
 		}
+		height: 60px;
+	}
+
+	@media screen and (max-width: 350px) {
+		& img {
+			min-width: 35px;
+		}
+		height: 55px;
 	}
 }
 
@@ -996,7 +1010,7 @@ thead {
 
 #profilepic {
 	max-width: 225px;
-	min-width: 80px;
+	min-width: 55px;
 
 	@media screen and (max-width: 525px) {
 		padding: 0 5px 0 0;
@@ -1743,7 +1757,7 @@ thead {
 		& .list-group {
 			margin-top: 50px;
 
-			@media screen and (max-width: 992px) {
+			@media screen and (max-width: 991px) {
 				display: none;
 			}
 		}
@@ -1900,6 +1914,7 @@ thead {
 }
 
 #stuclubmeeting {
+
 	& p {
 		font-size: 22px;
 		@media screen and (max-width: 768px) {
@@ -1911,6 +1926,12 @@ thead {
 	}
 }
 
+#stuclubmeeting::after {
+	content: "";
+    position: absolute;
+    bottom: 0; top: 0; left: 0; right: -4px;
+    border-right:4px solid var(--white);
+}
 #stuactlist {
 	border-color: var(--white);
 	border-left-style: solid;
@@ -2014,7 +2035,7 @@ thead {
 
 .largetext {
 	font-size: 200%;
-	@media screen and (max-width: 800px) {
+	@media screen and (max-width: 850px) {
 		font-size: 175%;
 	}
 
@@ -2033,11 +2054,14 @@ thead {
 	@media screen and (max-width: 350px) {
 		font-size: 100%;
 	}
+	@media screen and (max-width: 275px) {
+		font-size: 90%;
+	}
 }
 
 .midtext {
 	font-size: 150%;
-	@media screen and (max-width: 800px) {
+	@media screen and (max-width: 850px) {
 		font-size: 130%;
 	}
 
@@ -2056,11 +2080,14 @@ thead {
 	@media screen and (max-width: 350px) {
 		font-size: 80%;
 	}
+	@media screen and (max-width: 275px) {
+		font-size: 70%;
+	}
 }
 
 .smalltext {
 	font-size: 130%;
-	@media screen and (max-width: 800px) {
+	@media screen and (max-width: 850px) {
 		font-size: 110%;
 	}
 
@@ -2079,11 +2106,14 @@ thead {
 	@media screen and (max-width: 350px) {
 		font-size: 70%;
 	}
+	@media screen and (max-width: 275px) {
+		font-size: 60%;
+	}
 }
 
 .tinytext {
 	font-size: 110%;
-	@media screen and (max-width: 800px) {
+	@media screen and (max-width: 850px) {
 		font-size: 100%;
 	}
 
@@ -2098,15 +2128,17 @@ thead {
 	@media screen and (max-width: 400px) {
 		font-size: 72.5%;
 	}
-
 	@media screen and (max-width: 350px) {
 		font-size: 65%;
+	}
+	@media screen and (max-width: 275px) {
+		font-size: 55%;
 	}
 }
 
 .minitext {
 	font-size: 100%;
-	@media screen and (max-width: 800px) {
+	@media screen and (max-width: 850px) {
 		font-size: 90%;
 	}
 
@@ -2124,6 +2156,9 @@ thead {
 
 	@media screen and (max-width: 350px) {
 		font-size: 60%;
+	}
+	@media screen and (max-width: 350px) {
+		font-size: 50%;
 	}
 }
 
