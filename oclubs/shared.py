@@ -4,7 +4,6 @@
 
 import os
 from functools import wraps
-from datetime import date
 from math import ceil
 import re
 from StringIO import StringIO
@@ -114,8 +113,26 @@ def special_access_required(func):
     return decorated_function
 
 
+def require_student_membership(func):
+    @wraps(func)
+    def decorated_function(*args, **kwargs):
+        if 'club' in kwargs:
+            club = kwargs['club']
+        elif 'activity' in kwargs:
+            club = kwargs['activity'].club
+        else:
+            assert False
+
+        if current_user not in club.members:
+            abort(403)
+
+        return func(*args, **kwargs)
+
+    return decorated_function
+
+
 def require_membership(func):
-    # @wraps(func)
+    @wraps(func)
     def decorated_function(*args, **kwargs):
         if current_user.type != UserType.ADMIN:
             if 'club' in kwargs:
@@ -123,10 +140,11 @@ def require_membership(func):
             elif 'activity' in kwargs:
                 club = kwargs['activity'].club
             else:
-                raise NoRow  # Wrong usage of decorator
+                assert False
 
-            if current_user not in club.members:
-                abort(403)
+            if current_user != club.teacher:
+                if current_user not in club.members:
+                    abort(403)
 
         return func(*args, **kwargs)
 
@@ -134,10 +152,17 @@ def require_membership(func):
 
 
 def require_active_club(func):
-    # @wraps(func)
+    @wraps(func)
     def decorated_function(*args, **kwargs):
-        if 'club' not in kwargs:
-            abort()
+        if 'club' in kwargs:
+            club = kwargs['club']
+        elif 'activity' in kwargs:
+            club = kwargs['activity'].club
+        else:
+            assert False
+
+        if not club.is_active:
+            abort(403)
 
         return func(*args, **kwargs)
 
@@ -145,13 +170,13 @@ def require_active_club(func):
 
 
 def require_past_activity(func):
-    # @wraps(func)
+    @wraps(func)
     def decorated_function(*args, **kwargs):
         if 'activity' not in kwargs:
             abort(404)
         activity = kwargs['activity']
 
-        if activity.date > date.today():
+        if not activity.ongoing_or_future:
             abort(403)
 
         return func(*args, **kwargs)
@@ -160,13 +185,24 @@ def require_past_activity(func):
 
 
 def require_future_activity(func):
-    # @wraps(func)
+    @wraps(func)
     def decorated_function(*args, **kwargs):
         if 'activity' not in kwargs:
             abort(404)
         activity = kwargs['activity']
 
-        if activity.date <= date.today():
+        if activity.ongoing_or_future:
+            abort(403)
+
+        return func(*args, **kwargs)
+
+    return decorated_function
+
+
+def require_not_student(func):
+    @wraps(func)
+    def decorated_function(*args, **kwargs):
+        if current_user.type == UserType.STUDENT:
             abort(403)
 
         return func(*args, **kwargs)

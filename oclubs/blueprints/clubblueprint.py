@@ -15,7 +15,8 @@ from oclubs.objs import Activity, User, Club, Upload, FormattedText
 from oclubs.enums import UserType, ClubType, ClubJoinMode, ActivityTime
 from oclubs.shared import (
     download_xlsx, get_callsign, special_access_required,
-    render_email_template, Pagination
+    render_email_template, Pagination, require_active_club,
+    require_student_membership, require_membership, require_not_student
 )
 from oclubs.exceptions import UploadNotSupported, AlreadyExists, NoRow
 
@@ -45,6 +46,7 @@ def clublist(club_type):
 
 @clubblueprint.route('/<club>/manage')
 @get_callsign(Club, 'club')
+@require_active_club
 @special_access_required
 def club(club):
     '''Club Management Page'''
@@ -72,6 +74,7 @@ def clubintro(club):
 @clubblueprint.route('/<club>/introduction/submit', methods=['POST'])
 @get_callsign(Club, 'club')
 @login_required
+@require_active_club
 def clubintro_submit(club):
     '''Add new member'''
     if current_user.type != UserType.STUDENT:
@@ -96,6 +99,7 @@ def clubintro_submit(club):
 
 @clubblueprint.route('/<club>/new_leader')
 @get_callsign(Club, 'club')
+@require_active_club
 @special_access_required
 @fresh_login_required
 def newleader(club):
@@ -105,6 +109,7 @@ def newleader(club):
 
 @clubblueprint.route('/<club>/new_leader/submit', methods=['POST'])
 @get_callsign(Club, 'club')
+@require_active_club
 @special_access_required
 @fresh_login_required
 def newleader_submit(club):
@@ -129,6 +134,7 @@ def newleader_submit(club):
 
 @clubblueprint.route('/<club>/member_info')
 @get_callsign(Club, 'club')
+@require_membership
 def memberinfo(club):
     '''Check Members' Info'''
     has_access = (current_user.id == club.leader.id or
@@ -140,6 +146,7 @@ def memberinfo(club):
 
 @clubblueprint.route('/<club>/member_info/download')
 @get_callsign(Club, 'club')
+@require_membership
 @special_access_required
 def memberinfo_download(club):
     '''Download members' info'''
@@ -152,6 +159,7 @@ def memberinfo_download(club):
 
 @clubblueprint.route('/<club>/change_info')
 @get_callsign(Club, 'club')
+@require_active_club
 @special_access_required
 def changeclubinfo(club):
     '''Change Club's Info'''
@@ -160,6 +168,7 @@ def changeclubinfo(club):
 
 @clubblueprint.route('/<club>/change_info/submit', methods=['POST'])
 @get_callsign(Club, 'club')
+@require_active_club
 @special_access_required
 def changeclubinfo_submit(club):
     '''Change club's info'''
@@ -189,6 +198,7 @@ def changeclubinfo_submit(club):
 
 @clubblueprint.route('/<club>/adjust_member')
 @get_callsign(Club, 'club')
+@require_active_club
 @special_access_required
 @fresh_login_required
 def adjustmember(club):
@@ -200,6 +210,7 @@ def adjustmember(club):
 
 @clubblueprint.route('/<club>/adjust_member/submit', methods=['POST'])
 @get_callsign(Club, 'club')
+@require_active_club
 @special_access_required
 @fresh_login_required
 def adjustmember_submit(club):
@@ -219,6 +230,7 @@ def adjustmember_submit(club):
 
 @clubblueprint.route('/<club>/invite_member/submit', methods=['POST'])
 @get_callsign(Club, 'club')
+@require_active_club
 @special_access_required
 @fresh_login_required
 def invitemember(club):
@@ -276,6 +288,7 @@ def clubphoto(club, page):
 
 @clubblueprint.route('/<club>/new_activity')
 @get_callsign(Club, 'club')
+@require_active_club
 @special_access_required
 def newact(club):
     '''Hosting New Activity'''
@@ -286,6 +299,7 @@ def newact(club):
 
 @clubblueprint.route('/<club>/new_activity/submit', methods=['POST'])
 @get_callsign(Club, 'club')
+@require_active_club
 @special_access_required
 def newact_submit(club):
     '''Input new activity's information into database'''
@@ -377,6 +391,7 @@ def hongmei_status_download(club):
 
 @clubblueprint.route('/<club>/new_hongmei_schedule')
 @get_callsign(Club, 'club')
+@require_active_club
 @special_access_required
 def newhm(club):
     '''Input HongMei Plan'''
@@ -389,6 +404,7 @@ def newhm(club):
 
 @clubblueprint.route('/<club>/new_hongmei_schedule/submit', methods=['POST'])
 @get_callsign(Club, 'club')
+@require_active_club
 @special_access_required
 def newhm_submit(club):
     '''Input HongMei plan into databse'''
@@ -419,6 +435,7 @@ def newhm_submit(club):
 
 @clubblueprint.route('/<club>/switch_mode/submit', methods=['POST'])
 @get_callsign(Club, 'club')
+@require_active_club
 @special_access_required
 def switchmode(club):
     '''Allow club teacher to switch club's mode'''
@@ -443,6 +460,8 @@ def toactive(club):
 @clubblueprint.route('/<club>/register_hongmei')
 @get_callsign(Club, 'club')
 @login_required
+@require_student_membership
+@require_active_club
 def registerhm(club):
     '''Register Page for HongMei Activites'''
     activities = club.activities([ActivityTime.HONGMEI], (False, True))
@@ -460,6 +479,8 @@ def registerhm(club):
 @clubblueprint.route('/<club>/register_hongmei/submit', methods=['POST'])
 @get_callsign(Club, 'club')
 @login_required
+@require_student_membership
+@require_active_club
 def registerhm_submit(club):
     '''Submit HongMei signup info to database'''
     register = request.form.getlist('register')
@@ -528,20 +549,18 @@ def allclubsinfo():
 
 @clubblueprint.route('/new')
 @fresh_login_required
+@require_not_student
 def newclub():
     '''Allow teacher or admin to create new club'''
-    if current_user.type == UserType.STUDENT:
-        abort(403)
     return render_template('club/newclub.html',
                            clubtype=ClubType)
 
 
 @clubblueprint.route('/new/submit', methods=['POST'])
 @fresh_login_required
+@require_not_student
 def newclub_submit():
     '''Upload excel file to create new clubs'''
-    if current_user.type == UserType.STUDENT:
-        abort(403)
     clubname = request.form['clubname']
     studentid = request.form['studentid']
     passportname = request.form['passportname']

@@ -142,9 +142,6 @@ def newteachers_submit():
     except ValueError:
         flash('Please input in the correct order.', 'newteachers')
         return redirect(url_for('.newteachers'))
-    # except BadZipfile:
-    #     flash('Please upload an excel file.', 'newteachers')
-    #     return redirect(url_for('.newteachers'))
 
     from oclubs.worker import handle_teacher_xlsx
     for each in contents:

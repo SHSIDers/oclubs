@@ -14,7 +14,8 @@ from flask_login import current_user, login_required, fresh_login_required
 from oclubs.enums import UserType, ClubType, ActivityTime
 from oclubs.shared import (
     get_callsign, special_access_required, Pagination, render_email_template,
-    download_xlsx, partition, require_membership, require_past_activity
+    download_xlsx, partition, require_student_membership,
+    require_past_activity, require_future_activity, require_active_club
 )
 from oclubs.objs import User, Activity, Upload, FormattedText
 from oclubs.exceptions import UploadNotSupported, NoRow
@@ -67,12 +68,14 @@ def allphotos(page):
 
 
 @actblueprint.route('/<activity>/')
+@require_active_club
 def actredirect(activity):
     return redirect(url_for('.actintro', activity=activity))
 
 
 @actblueprint.route('/<activity>/introduction')
 @get_callsign(Activity, 'activity')
+@require_active_club
 def actintro(activity):
     '''Club Activity Page'''
     if current_user.is_authenticated:
@@ -102,7 +105,8 @@ def actintro(activity):
 @actblueprint.route('/<activity>/introduction/submit', methods=['POST'])
 @get_callsign(Activity, 'activity')
 @login_required
-@require_membership
+@require_active_club
+@require_student_membership
 def actintro_submit(activity):
     '''Signup for activity'''
     if activity.selections:
@@ -116,6 +120,7 @@ def actintro_submit(activity):
 
 @actblueprint.route('/<activity>/post')
 @get_callsign(Activity, 'activity')
+@require_active_club
 @require_past_activity
 def actpost(activity):
     '''Activity Post Page'''
@@ -125,6 +130,7 @@ def actpost(activity):
 @actblueprint.route('/<activity>/post/change')
 @get_callsign(Activity, 'activity')
 @special_access_required
+@require_active_club
 @require_past_activity
 def changeactpost(activity):
     '''Page for club leader to change activity post'''
@@ -134,6 +140,7 @@ def changeactpost(activity):
 @actblueprint.route('/<activity>/post/change/submit', methods=['POST'])
 @get_callsign(Activity, 'activity')
 @special_access_required
+@require_active_club
 @require_past_activity
 def changeactpost_submit(activity):
     '''Input info into database'''
@@ -154,7 +161,9 @@ def changeactpost_submit(activity):
 
 @actblueprint.route('/<activity>/invite_hongmei')
 @get_callsign(Activity, 'activity')
+@require_active_club
 @special_access_required
+@require_future_activity
 def hongmei_invite(activity):
     '''Allow club leader to invite members to hongmei activy'''
     return render_template('activity/invitehm.html')
@@ -162,7 +171,9 @@ def hongmei_invite(activity):
 
 @actblueprint.route('/<activity>/invite_hongmei/submit', methods=['POST'])
 @get_callsign(Activity, 'activity')
+@require_active_club
 @special_access_required
+@require_future_activity
 def hongmei_invite_submit(activity):
     '''Input invitation result into database'''
     invite = request.form.getlist('invite')
@@ -183,7 +194,9 @@ def hongmei_invite_submit(activity):
 
 @actblueprint.route('/<activity>/signup_status')
 @get_callsign(Activity, 'activity')
+@require_active_club
 @special_access_required
+@require_future_activity
 def actstatus(activity):
     '''Check Activity Status'''
     members_num = 0
@@ -196,6 +209,7 @@ def actstatus(activity):
 @actblueprint.route('/<activity>/signup_status/submit', methods=['POST'])
 @get_callsign(Activity, 'activity')
 @special_access_required
+@require_future_activity
 def actstatus_submit(activity):
     '''Change consent form status'''
     member = User(request.form['studentid'])
@@ -232,6 +246,7 @@ def actstatus_download(activity):
 @actblueprint.route('/<activity>/attendance')
 @get_callsign(Activity, 'activity')
 @special_access_required
+@require_past_activity
 def attendance(activity):
     '''Check attendance'''
     attend, absent = partition(lambda member: member in activity.attendance,
@@ -244,6 +259,7 @@ def attendance(activity):
 @actblueprint.route('/<activity>/attendance/submit', methods=['POST'])
 @get_callsign(Activity, 'activity')
 @special_access_required
+@require_past_activity
 def attendance_submit(activity):
     '''Submit change in attendance'''
     ids = request.form.getlist('attendance')
