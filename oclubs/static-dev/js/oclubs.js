@@ -45,7 +45,7 @@
 							.val() );
 				} );
 
-			if ( /\/change_user_info/.test( window.location.href ) ) {
+			if ( /\/user\/change_info/.test( window.location.href ) ) {
 				var init_view = function( item, content ) {
 					item.empty()
 						.append( $( '<div class="col-sm-8 content"><p></p></div>' ) )
