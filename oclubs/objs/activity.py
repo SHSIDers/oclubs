@@ -139,15 +139,16 @@ class Activity(BaseObject):
             start, end = dates
 
             if start is True:
-                conds['where'].append(('<', 'act_date',
+                conds['where'].append(('<=', 'act_date',
                                        date_int(end or date.today())))
             elif end is True:
-                conds['where'].append(('>=', 'act_date',
+                conds['where'].append(('>', 'act_date',
                                        date_int(start or date.today())))
             else:
-                conds['where'].append(('range', 'act_date',
-                                       (date_int(start or date.today()),
-                                        date_int(end or date.today()))))
+                raise NotImplementedError  # range is incompatiable
+                # conds['where'].append(('range', 'act_date',
+                #                        (date_int(start or date.today()),
+                #                         date_int(end or date.today()))))
 
         if times:
             times = [time.value for time in times]
