@@ -14,7 +14,8 @@ from flask import (
     Markup, Response
 )
 from flask_login import (
-    LoginManager, login_user, logout_user, login_required, current_user
+    LoginManager, login_user, logout_user, login_required, current_user,
+    form_is_valid
 )
 from htmlmin.minify import html_minify
 
@@ -90,7 +91,7 @@ def response_minify(response):
 
 @app.after_request
 def access_done(response):
-    if response.status_code < 400:
+    if response.status_code < 400 and form_is_valid():
         db_done(True)
     else:
         db_done(False)

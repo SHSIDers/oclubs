@@ -15,7 +15,7 @@ from flask_login import current_user, login_required, fresh_login_required
 from oclubs.objs import User, Club, Upload
 from oclubs.enums import UserType, ActivityTime
 from oclubs.shared import (
-    special_access_required, download_xlsx, read_xlsx, Pagination
+    special_access_required, download_xlsx, read_xlsx, Pagination, fail
 )
 from oclubs.exceptions import PasswordTooShort
 
@@ -86,20 +86,20 @@ def personalsubmitpassword():
     user_login = User.attempt_login(current_user.studentid,
                                     request.form['old'])
     if user_login is None:
-        flash('You have entered wrong old password. Please enter again.',
-              'status_pw')
+        fail('You have entered wrong old password. Please enter again.',
+             'status_pw')
     elif request.form['new'] == '':
-        flash('Please enter new password.', 'status_pw')
+        fail('Please enter new password.', 'status_pw')
     elif request.form['new'] != request.form['again']:
-        flash('You have entered two different passwords. '
-              'Please enter again.', 'status_pw')
+        fail('You have entered two different passwords. '
+             'Please enter again.', 'status_pw')
     else:
         try:
             current_user.password = request.form['new']
             flash('Your information has been successfully changed.',
                   'status_pw')
         except PasswordTooShort:
-            flash('Password must be at least six digits.', 'status_pw')
+            fail('Password must be at least six digits.', 'status_pw')
     return redirect(url_for('.personal'))
 
 
@@ -131,16 +131,16 @@ def newteachers():
 def newteachers_submit():
     '''Create new teacher accounts with xlsx'''
     if request.files['excel'].filename == '':
-        flash('Please upload an excel file.', 'newteachers')
+        fail('Please upload an excel file.', 'newteachers')
         return redirect(url_for('.newteachers'))
     try:
         contents = read_xlsx(request.files['excel'], 'Teachers',
                              ['ID', 'Official Name', 'Email Address'])
     except KeyError:
-        flash('Please change sheet name to "Teachers"', 'newteachers')
+        fail('Please change sheet name to "Teachers"', 'newteachers')
         return redirect(url_for('.newteachers'))
     except ValueError:
-        flash('Please input in the correct order.', 'newteachers')
+        fail('Please input in the correct order.', 'newteachers')
         return redirect(url_for('.newteachers'))
 
     from oclubs.worker import handle_teacher_xlsx
@@ -228,13 +228,13 @@ def changepassword_submit():
     '''Input new password into database'''
     password = request.form['password']
     if password == '':
-        flash('Please input valid password.', 'password')
+        fail('Please input valid password.', 'password')
         return redirect(url_for('.changepassword'))
     user = User(request.form['id'])
     try:
         user.password = password
     except PasswordTooShort:
-        flash('Password must be at least six digits.', 'password')
+        fail('Password must be at least six digits.', 'password')
         return redirect(url_for('.changepassword'))
     flash(user.nickname + '\'s password has been successfully set to ' +
           password + '.', 'password')

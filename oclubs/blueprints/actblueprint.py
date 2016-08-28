@@ -15,7 +15,8 @@ from oclubs.enums import UserType, ClubType, ActivityTime
 from oclubs.shared import (
     get_callsign, special_access_required, Pagination, render_email_template,
     download_xlsx, partition, require_student_membership,
-    require_past_activity, require_future_activity, require_active_club
+    require_past_activity, require_future_activity, require_active_club,
+    true_or_fail, form_is_valid, error_or_fail, fail
 )
 from oclubs.objs import User, Activity, Upload, FormattedText
 from oclubs.exceptions import UploadNotSupported, NoRow
@@ -107,11 +108,19 @@ def actintro(activity):
 def actintro_submit(activity):
     '''Signup for activity'''
     if activity.selections:
-        activity.signup(current_user, selection=request.form['selection'])
+        selection = request.form['selection'].strip()
+        true_or_fail(selection in activity.selections,
+                     'Please select a valid choice.', 'signup')
     else:
-        activity.signup(current_user)
-    flash('You have successfully signed up for ' + activity.name + '.',
-          'signup')
+        selection = ''
+
+    error_or_fail(lambda: activity.signup_user_status(current_user), NoRow,
+                  'You have already signed up for this activity.', 'signup')
+
+    if form_is_valid():
+        activity.signup(current_user, selection=selection)
+        flash('You have successfully signed up for ' + activity.name + '.',
+              'signup')
     return redirect(url_for('.actintro', activity=activity.callsign))
 
 
@@ -146,7 +155,7 @@ def changeactpost_submit(activity):
                 activity.add_picture(
                     Upload.handle(current_user, activity.club, pic))
             except UploadNotSupported:
-                flash('Please upload a correct file type.', 'actpost')
+                fail('Please upload a correct file type.', 'actpost')
                 return redirect(url_for('.changeactpost',
                                         activity=activity.callsign))
     activity.post = FormattedText.handle(current_user, activity.club,
@@ -176,14 +185,17 @@ def hongmei_invite_submit(activity):
     plan = ''
     for each in invite:
         member = User(each)
-        activity.signup(member)
-        parameters = {'member': member, 'activity': activity, 'plan': plan}
-        contents = render_email_template('invitehm', parameters)
-        member.email_user('HongMei Invitation - ' + activity.club.name,
-                          contents)
-        member.notify_user('You have been invited to HongMei activity - ' +
-                           activity.name + ' on ' +
-                           activity.date.strftime('%b-%d-%y') + '.')
+        true_or_fail(member in activity.club.members, member.nickname +
+                     ' is not a member of this club.', 'invite_hm')
+        if form_is_valid():
+            activity.signup(member)
+            parameters = {'member': member, 'activity': activity, 'plan': plan}
+            contents = render_email_template('invitehm', parameters)
+            member.email_user('HongMei Invitation - ' + activity.club.name,
+                              contents)
+            member.notify_user('You have been invited to HongMei activity - ' +
+                               activity.name + ' on ' +
+                               activity.date.strftime('%b-%d-%y') + '.')
     flash('These members have been successfully invited.', 'invite_hm')
     return redirect(url_for('.hongmei_invite', activity=activity.callsign))
 
@@ -195,29 +207,32 @@ def hongmei_invite_submit(activity):
 @require_future_activity
 def actstatus(activity):
     '''Check Activity Status'''
-    members_num = 0
-    for member in activity.signup_list():
-        members_num += 1
+    members_num = len(activity.signup_list())  # Jinja2 doesn't have len()
     return render_template('activity/actstatus.html',
                            members_num=members_num)
 
 
 @actblueprint.route('/<activity>/signup_status/submit', methods=['POST'])
 @get_callsign(Activity, 'activity')
+@require_active_club
 @special_access_required
 @require_future_activity
 def actstatus_submit(activity):
     '''Change consent form status'''
     member = User(request.form['studentid'])
-    status = int(request.form['status'])
-    if status == 0:
-        activity.signup(member, consentform=True)
-        flash(member.nickname + ' has handed in the consent form.',
-              'consent_form')
-    elif status == 1:
-        activity.signup(member, consentform=False)
-        flash(member.nickname + ' has not handed in the consent form.',
-              'consent_form')
+    true_or_fail(member in activity.club.members, member.nickname +
+                 ' is not a member of this club.', 'consent_form')
+
+    if form_is_valid():
+        status = int(request.form['status'])
+        if status == 0:
+            activity.signup(member, consentform=True)
+            flash(member.nickname + ' has handed in the consent form.',
+                  'consent_form')
+        elif status == 1:
+            activity.signup(member, consentform=False)
+            flash(member.nickname + ' has not handed in the consent form.',
+                  'consent_form')
     return redirect(url_for('.actstatus', activity=activity.callsign))
 
 
@@ -259,8 +274,7 @@ def attendance(activity):
 def attendance_submit(activity):
     '''Submit change in attendance'''
     ids = request.form.getlist('attendance')
-    members = []
-    members.extend([(User(each)) for each in ids])
+    members = map(User, ids)
     attend, absent = partition(lambda member: member in activity.attendance,
                                activity.club.members)
     for member in members:
@@ -314,7 +328,7 @@ def checkhongmeischedule_download():
                        int(request.form['month']),
                        int(request.form['day']))
     except ValueError:
-        flash('You have input wrong date for HongMei schedule.', 'status_info')
+        fail('You have input wrong date for HongMei schedule.', 'status_info')
         return redirect(url_for('userblueprint.personal'))
     info.append((actdate.strftime('%b-%d-%Y'),))
     info.append(('Club Name', 'Members'))

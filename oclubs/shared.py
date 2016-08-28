@@ -13,7 +13,7 @@ from pyexcel_xlsx import get_data
 from Crypto.Cipher import AES
 from Crypto import Random
 
-from flask import abort, g
+from flask import abort, g, flash
 from flask_login import current_user, login_required
 from werkzeug.datastructures import Headers
 from werkzeug.wrappers import Response
@@ -203,6 +203,36 @@ def require_not_student(func):
         return func(*args, **kwargs)
 
     return decorated_function
+
+
+def fail(msg, group):
+    flash(msg, group)
+    g.hasfailures = True
+
+
+def true_or_fail(cond, msg, group):
+    if not cond:
+        fail(msg, group)
+
+
+def error_or_fail(cond, exc, msg, group):
+    try:
+        cond()
+    except exc:
+        pass
+    else:
+        fail(msg, group)
+
+
+def pass_or_fail(cond, exc, msg, group):
+    try:
+        cond()
+    except exc:
+        fail(msg, group)
+
+
+def form_is_valid():
+    return not g.get('hasfailures', False)
 
 
 def _strify(st):

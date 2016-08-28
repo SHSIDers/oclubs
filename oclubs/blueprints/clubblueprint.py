@@ -16,7 +16,8 @@ from oclubs.enums import UserType, ClubType, ClubJoinMode, ActivityTime
 from oclubs.shared import (
     download_xlsx, get_callsign, special_access_required,
     render_email_template, Pagination, require_active_club,
-    require_student_membership, require_membership, require_not_student
+    require_student_membership, require_membership, require_not_student,
+    true_or_fail, form_is_valid, fail
 )
 from oclubs.exceptions import UploadNotSupported, AlreadyExists, NoRow
 
@@ -77,23 +78,22 @@ def clubintro(club):
 @require_active_club
 def clubintro_submit(club):
     '''Add new member'''
-    if current_user.type != UserType.STUDENT:
-        flash('You may not join clubs.' % club.name)
-        return redirect(url_for('.clubintro', club=club.callsign))
-    if club.joinmode != ClubJoinMode.FREE_JOIN:
-        flash('You may not join this club.' % club.name)
-        return redirect(url_for('.clubintro', club=club.callsign))
-    try:
-        club.add_member(current_user)
-    except AlreadyExists:
-        flash('You are already in %s.' % club.name)
-        return redirect(url_for('.clubintro', club=club.callsign))
-    parameters = {'club': club, 'current_user': current_user}
-    contents = render_email_template('joinclubs', parameters)
-    club.leader.email_user('New Club Member - ' + club.name, contents)
-    club.leader.notify_user('%s has joined %s.'
-                            % (current_user.nickname, club.name))
-    flash('You have successfully joined ' + club.name + '.', 'join')
+    true_or_fail(current_user.type == UserType.STUDENT,
+                 'You may not join clubs.', 'join')
+    true_or_fail(club.joinmode == ClubJoinMode.FREE_JOIN,
+                 'You may not join this club.', 'join')
+    if form_is_valid():
+        try:
+            club.add_member(current_user)
+        except AlreadyExists:
+            fail('You are already in %s.' % club.name)
+            return redirect(url_for('.clubintro', club=club.callsign))
+        parameters = {'club': club, 'current_user': current_user}
+        contents = render_email_template('joinclubs', parameters)
+        club.leader.email_user('New Club Member - ' + club.name, contents)
+        club.leader.notify_user('%s has joined %s.'
+                                % (current_user.nickname, club.name))
+        flash('You have successfully joined ' + club.name + '.', 'join')
     return redirect(url_for('.clubintro', club=club.callsign))
 
 
@@ -184,7 +184,7 @@ def changeclubinfo_submit(club):
             club.picture = Upload.handle(current_user, club,
                                          request.files['picture'])
         except UploadNotSupported:
-            flash('Please upload the correct file type.', 'clubinfo')
+            fail('Please upload the correct file type.', 'clubinfo')
             return redirect(url_for('.changeclubinfo', club=club.callsign))
     for member in club.members:
         parameters = {'user': member, 'club': club}
@@ -216,15 +216,15 @@ def adjustmember(club):
 def adjustmember_submit(club):
     '''Input adjustment of club members'''
     member = User(request.form['studentid'])
-    if current_user == member:
-        flash('You cannot expel yourself.', 'expelled')
-        return redirect(url_for('.adjustmember', club=club.callsign))
-    club.remove_member(member)
-    parameters = {'member': member, 'club': club}
-    contents = render_email_template('adjustmember', parameters)
-    member.email_user('Member Adjustment - ' + club.name, contents)
-    member.notify_user('You have been moved out of ' + club.name + '.')
-    flash(member.nickname + ' has been expelled.', 'expelled')
+    true_or_fail(current_user != member,
+                 'You cannot expel yourself.', 'expelled')
+    if form_is_valid():
+        club.remove_member(member)
+        parameters = {'member': member, 'club': club}
+        contents = render_email_template('adjustmember', parameters)
+        member.email_user('Member Adjustment - ' + club.name, contents)
+        member.notify_user('You have been moved out of ' + club.name + '.')
+        flash(member.nickname + ' has been expelled.', 'expelled')
     return redirect(url_for('.adjustmember', club=club.callsign))
 
 
@@ -235,24 +235,25 @@ def adjustmember_submit(club):
 @fresh_login_required
 def invitemember(club):
     '''Allow club leader to invite member'''
-    if club.joinmode != ClubJoinMode.BY_INVITATION:
-        flash('You cannot invite members when the join mode is not '
-              'by invitation.', 'invite_member')
-    new_member = User.find_user(request.form['studentid'],
-                                request.form['passportname'])
-    if new_member is None:
-        flash('Please input correct user info to invite.', 'invite_member')
-    else:
-        parameters = {'club': club, 'member': new_member}
-        contents = render_email_template('invitemember', parameters)
-        new_member.email_user('Invitation - ' + club.name, contents)
-        if new_member in club.members:
-            flash('%s is already in the club.' % new_member.nickname,
-                  'invite_member')
+    true_or_fail(club.joinmode == ClubJoinMode.BY_INVITATION,
+                 'You cannot invite members when the join mode is not '
+                 'by invitation.', 'invite_member')
+    if form_is_valid():
+        new_member = User.find_user(request.form['studentid'],
+                                    request.form['passportname'])
+        if new_member is None:
+            fail('Please input correct user info to invite.', 'invite_member')
         else:
-            club.send_invitation(new_member)
-            flash('The invitation has been sent to %s.' % new_member.nickname,
-                  'invite_member')
+            parameters = {'club': club, 'member': new_member}
+            contents = render_email_template('invitemember', parameters)
+            new_member.email_user('Invitation - ' + club.name, contents)
+            if new_member in club.members:
+                fail('%s is already in the club.' % new_member.nickname,
+                     'invite_member')
+            else:
+                club.send_invitation(new_member)
+                flash('The invitation has been sent to %s.'
+                      % new_member.nickname, 'invite_member')
     return redirect(url_for('.adjustmember', club=club.callsign))
 
 
@@ -307,7 +308,7 @@ def newact_submit(club):
         a = Activity.new()
         a.name = request.form['name']
         if not a.name:
-            flash('Please enter the name of the new activity.')
+            fail('Please enter the name of the new activity.')
             return redirect(url_for('.newact', club=club.callsign))
         a.club = club
         a.description = FormattedText.handle(current_user, club,
@@ -318,10 +319,10 @@ def newact_submit(club):
                            int(request.form['month']),
                            int(request.form['day']))
         except ValueError:
-            flash('Invalid date.', 'newact')
+            fail('Invalid date.', 'newact')
             return redirect(url_for('.newact', club=club.callsign))
         if actdate < date.today():
-            flash('Please choose the correct date.', 'newact')
+            fail('Please choose the correct date.', 'newact')
             return redirect(url_for('.newact', club=club.callsign))
         a.date = actdate
         time = ActivityTime[request.form['act_type'].upper()]
@@ -341,8 +342,8 @@ def newact_submit(club):
         a.create()
         flash(a.name + ' has been successfully created.', 'newact')
     except ValueError:
-        flash('Please input all information to create a new activity.',
-              'newact')
+        fail('Please input all information to create a new activity.',
+             'newact')
     else:
         for member in club.members:
             parameters = {'member': member, 'club': club, 'act': a}
@@ -414,22 +415,21 @@ def newhm_submit(club):
                        int(request.form['month']),
                        int(request.form['day']))
     except ValueError:
-        flash('Please input valid date to submit.', 'newhm')
-        return redirect(url_for('.newhm', club=club.callsign))
+        fail('Please input valid date to submit.', 'newhm')
     if contents == '' or actdate < date.today():
-        flash('Please input contents or correct date to submit.', 'newhm')
-        return redirect(url_for('.newhm', club=club.callsign))
-    a = Activity.new()
-    a.name = contents
-    a.club = club
-    a.description = FormattedText.emptytext()
-    a.date = actdate
-    a.time = ActivityTime.HONGMEI
-    a.location = 'HongMei Elementary School'
-    a.cas = 1
-    a.post = FormattedText.emptytext()
-    a.selections = []
-    a.create()
+        fail('Please input contents or correct date to submit.', 'newhm')
+    if form_is_valid():
+        a = Activity.new()
+        a.name = contents
+        a.club = club
+        a.description = FormattedText.emptytext()
+        a.date = actdate
+        a.time = ActivityTime.HONGMEI
+        a.location = 'HongMei Elementary School'
+        a.cas = 1
+        a.post = FormattedText.emptytext()
+        a.selections = []
+        a.create()
     return redirect(url_for('.newhm', club=club.callsign))
 
 
@@ -437,6 +437,7 @@ def newhm_submit(club):
 @get_callsign(Club, 'club')
 @require_active_club
 @special_access_required
+@require_not_student
 def switchmode(club):
     '''Allow club teacher to switch club's mode'''
     if club.joinmode == ClubJoinMode.FREE_JOIN:
@@ -450,6 +451,7 @@ def switchmode(club):
 @clubblueprint.route('/<club>/to_active/submit', methods=['POST'])
 @get_callsign(Club, 'club')
 @special_access_required
+@require_not_student
 def toactive(club):
     '''Allow club teacher to change club to active'''
     club.is_active = True
@@ -487,13 +489,17 @@ def registerhm_submit(club):
     plan = ''
     for reg in register:
         act = Activity(reg)
-        act.signup(current_user)
-        plan += 'Date: ' + act.date.strftime('%b-%d-%y') + '\n\n' + \
-            'Content: ' + act.name + '\n\n'
-    parameters = {'user': current_user, 'club': club, 'plan': plan}
-    contents = render_email_template('registerhm', parameters)
-    current_user.email_user('HongMei Plan - ' + club.name, contents)
-    flash('Your application has been successfully submitted.', 'reghm')
+        true_or_fail(act.club == club, 'wtf? Please enter a valid activity.',
+                     'reghm')
+        if form_is_valid():
+            act.signup(current_user)
+            plan += 'Date: ' + act.date.strftime('%b-%d-%y') + '\n\n' + \
+                'Content: ' + act.name + '\n\n'
+    if form_is_valid():
+        parameters = {'user': current_user, 'club': club, 'plan': plan}
+        contents = render_email_template('registerhm', parameters)
+        current_user.email_user('HongMei Plan - ' + club.name, contents)
+        flash('Your application has been successfully submitted.', 'reghm')
     return redirect(url_for('.registerhm', club=club.callsign))
 
 
@@ -513,12 +519,12 @@ def quitclub_submit():
     '''Delete connection between user and club in database'''
     club = Club(request.form['clubs'])
     if current_user == club.leader:
-        flash('You cannot quit a club you lead.', 'quit')
+        fail('You cannot quit a club you lead.', 'quit')
         return redirect(url_for('.quitclub'))
     try:
         club.remove_member(current_user)
     except NoRow:
-        flash('You are not a member of ' + club.name + '.', 'quit')
+        fail('You are not a member of ' + club.name + '.', 'quit')
     else:
         reason = request.form['reason']
         parameters = {'user': current_user, 'club': club, 'reason': reason}
@@ -566,11 +572,11 @@ def newclub_submit():
     passportname = request.form['passportname']
     clubtype = int(request.form['clubtype'])
     leader = User.find_user(studentid, passportname)
-    if leader is None:
-        flash('Please input correct student info.', 'newclub')
-    elif clubname == '':
-        flash('Please input club name.', 'newclub')
-    else:
+    true_or_fail(leader is not None, 'Please input correct student info.',
+                 'newclub')
+    true_or_fail(clubname, 'Please input club name.', 'newclub')
+
+    if form_is_valid():
         c = Club.new()
         c.name = clubname
         c.teacher = current_user
