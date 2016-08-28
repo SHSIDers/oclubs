@@ -5,13 +5,13 @@
 <div class="col-sm-3 admin_function">
 	<h2 class="text-center">Download All Clubs' Info</h2>
 	<center>
-		<a class="btn btn-success smalltext" href="{{ url_for('.allclubsinfo') }}" target="_blank">Download</a>
+		<a class="btn btn-success smalltext" href="{{ url_for('clubblueprint.allclubsinfo') }}" target="_blank">Download</a>
 	</center>
 </div>
 <div class="col-sm-3 admin_function">
 	<h2 class="text-center">Download All Activities' Info</h2>
 	<center>
-		<a class="btn btn-success smalltext" href="{{ url_for('.allactivitiesinfo') }}" target="_blank">Download</a>
+		<a class="btn btn-success smalltext" href="{{ url_for('actblueprint.allactivitiesinfo') }}" target="_blank">Download</a>
 	</center>
 </div>
 <div class="col-sm-3 admin_function">
@@ -27,16 +27,16 @@
 
 <h2 class="title_next">Other Administrative Functions</h2>
 <div class="admin_button">
-	<a href="{{ url_for('.newclub') }}" class="btn btn-success">Add New Club</a>
+	<a href="{{ url_for('clubblueprint.newclub') }}" class="btn btn-success">Add New Club</a>
 </div>
 <div class="admin_button">
 	<a href="{{ url_for('.newteachers') }}" class="btn btn-success">Add New Teachers</a>
 </div>
 <div class="admin_button">
-	<a href="{{ url_for('.adjustclubs') }}" class="btn btn-success">Adjust Excellent Clubs</a>
+	<a href="{{ url_for('clubblueprint.adjustclubs') }}" class="btn btn-success">Adjust Excellent Clubs</a>
 </div>
 <div class="admin_button">
-	<a href="{{ url_for('.clubmanagementlist') }}" class="btn btn-success">Access to Clubs' Management</a>
+	<a href="{{ url_for('clubblueprint.clubmanagementlist') }}" class="btn btn-success">Access to Clubs' Management</a>
 </div>
 <div class="admin_button">
 	<a href="{{ url_for('.changepassword') }}" class="btn btn-success">Change Accounts' Password</a>
@@ -142,7 +142,7 @@
 			</div>
 			<div class="modal-footer">
 				<button class="btn btn-default float-left" data-dismiss="modal">Close</button>
-				<form action="{{ url_for('.checkhongmeischedule_download') }}" target="_blank" id="download_schedule" method="post">
+				<form action="{{ url_for('actblueprint.checkhongmeischedule_download') }}" target="_blank" id="download_schedule" method="post">
 					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 					<input type="submit" class="btn btn-success" value="Download">
 				</form>

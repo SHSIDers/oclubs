@@ -474,3 +474,112 @@ def registerhm_submit(club):
     current_user.email_user('HongMei Plan - ' + club.name, contents)
     flash('Your application has been successfully submitted.', 'reghm')
     return redirect(url_for('.registerhm', club=club.callsign))
+
+
+@clubblueprint.route('/quit_club')
+@fresh_login_required
+def quitclub():
+    '''Quit Club Page'''
+    quitting_clubs = filter(lambda club: current_user != club.leader,
+                            current_user.clubs)
+    return render_template('club/quitclub.html',
+                           quitting_clubs=quitting_clubs)
+
+
+@clubblueprint.route('/all_clubs_info')
+@special_access_required
+@fresh_login_required
+def allclubsinfo():
+    '''Allow admin to download all clubs' info'''
+    info = []
+    info.append(('Club ID', 'Name', 'Leader', 'Teacher', 'Introduction',
+                 'Location', 'Is Active or Not', 'Type'))
+    info.extend([(club.id, club.name, club.leader.passportname,
+                  club.teacher.passportname, club.intro, club.location,
+                  str(club.is_active), club.type.format_name)
+                 for club in Club.allclubs()])
+
+    return download_xlsx('All Clubs\' Info.xlsx', info)
+
+
+@clubblueprint.route('/new_club')
+@fresh_login_required
+def newclub():
+    '''Allow teacher or admin to create new club'''
+    if current_user.type == UserType.STUDENT:
+        abort(403)
+    return render_template('club/newclub.html',
+                           clubtype=ClubType)
+
+
+@clubblueprint.route('/new_club/submit', methods=['POST'])
+@fresh_login_required
+def newclub_submit():
+    '''Upload excel file to create new clubs'''
+    if current_user.type == UserType.STUDENT:
+        abort(403)
+    clubname = request.form['clubname']
+    studentid = request.form['studentid']
+    passportname = request.form['passportname']
+    clubtype = int(request.form['clubtype'])
+    leader = User.find_user(studentid, passportname)
+    if leader is None:
+        flash('Please input correct student info.', 'newclub')
+    elif clubname == '':
+        flash('Please input club name.', 'newclub')
+    else:
+        c = Club.new()
+        c.name = clubname
+        c.teacher = current_user
+        c.leader = leader
+        c.description = FormattedText.emptytext()
+        c.location = ''
+        c.is_active = True
+        c.intro = ''
+        c.picture = Upload(-101)
+        c.type = ClubType(clubtype)
+        c.joinmode = ClubJoinMode.FREE_JOIN
+        c.create()
+        c.add_member(leader)
+        flash(c.name + ' has been successfully created.', 'newclub')
+    return redirect(url_for('.newclub'))
+
+
+@clubblueprint.route('/club_management_list/', defaults={'page': 1})
+@clubblueprint.route('/club_management_list/<int:page>')
+@special_access_required
+@fresh_login_required
+def clubmanagementlist(page):
+    '''Allow admin to access club management list'''
+    num = 20
+    count, clubs = Club.allclubs(limit=((page-1)*num, num))
+    pagination = Pagination(page, num, count)
+    return render_template('club/clubmanagementlist.html',
+                           clubs=clubs,
+                           pagination=pagination)
+
+
+@clubblueprint.route('/adjust_clubs')
+@special_access_required
+@fresh_login_required
+def adjustclubs():
+    '''Allow admin to change clubs' status'''
+    clubs = Club.allclubs()
+    return render_template('club/adjustclubs.html',
+                           clubs=clubs)
+
+
+@clubblueprint.route('/adjust_clubs/submit', methods=['POST'])
+@special_access_required
+@fresh_login_required
+def adjustclubs_submit():
+    '''Input change in clubs into database'''
+    exc_clubs = Club.excellentclubs()
+    club = Club(request.form['clubid'])
+    if club in exc_clubs:
+        exc_clubs.remove(club)
+    else:
+        exc_clubs.append(club)
+    Club.set_excellentclubs(exc_clubs)
+    flash('The change has been successfully submitted', 'adjustclubs')
+    return redirect(url_for('.adjustclubs'))

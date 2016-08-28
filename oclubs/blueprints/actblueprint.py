@@ -67,7 +67,7 @@ def allphotos(page):
 
 
 @actblueprint.route('/<activity>/')
-def clubredirect(activity):
+def actredirect(activity):
     return redirect(url_for('.actintro', activity=activity))
 
 
@@ -274,3 +274,49 @@ def attendance_download(activity):
     result.extend([(member.nickname, member.studentid, 'Absent')
                    for member in absent])
     return download_xlsx('Attendance for ' + activity.name + '.xlsx', result)
+
+
+@actblueprint.route('/all_activities_info')
+@special_access_required
+@fresh_login_required
+def allactivitiesinfo():
+    '''Allow admin to download all activities' info'''
+    info = []
+    info.append(('Activity ID', 'Name', 'Club', 'Date', 'Time (Type)',
+                 'Location', 'CAS Hours'))
+    info.extend([(act.id, act.name, act.club.name,
+                  act.date.strftime('%b-%d-%y'), act.time.format_name,
+                  act.location, act.cas) for act in Activity.all_activities()])
+
+    return download_xlsx('All Activities\' Info.xlsx', info)
+
+
+@actblueprint.route('/check_hongmei_schedule/download', methods=['POST'])
+@special_access_required
+def checkhongmeischedule_download():
+    '''Allow admin to check HongMei schedule'''
+    info = []
+    try:
+        date = datetime.strptime(request.form['year'] +
+                                 request.form['month'] +
+                                 request.form['day'], '%Y%m%d')
+    except ValueError:
+        flash('You have input wrong date for HongMei schedule.', 'status_info')
+        return redirect(url_for('userblueprint.personal'))
+    info.append((date.strftime('%b-%d-%Y'),))
+    info.append(('Club Name', 'Members'))
+    for act in Activity.get_activities_conditions(
+                    times=(ActivityTime.HONGMEI,),
+                    dates=date
+                ):
+        members = ''
+
+        members = '\n'.join((member['user'].nickname + ': ' +
+                             str(member['user'].phone) +
+                             '(Consent From Handed? ' +
+                             ('Yes' if member['consentform'] == 1 else 'No') +
+                             ')')
+                            for member in act.signup_list())
+        info.append((act.club.name, members))
+    return download_xlsx('HongMei\'s Schedule on' +
+                         date.strftime('%b-%d-%Y') + '.xlsx', info)

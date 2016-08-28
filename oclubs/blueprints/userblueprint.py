@@ -23,16 +23,6 @@ from oclubs.exceptions import PasswordTooShort, NoRow
 userblueprint = Blueprint('userblueprint', __name__)
 
 
-@userblueprint.route('/quit_club')
-@fresh_login_required
-def quitclub():
-    '''Quit Club Page'''
-    quitting_clubs = filter(lambda club: current_user != club.leader,
-                            current_user.clubs)
-    return render_template('user/quitclub.html',
-                           quitting_clubs=quitting_clubs)
-
-
 @userblueprint.route('/quit_club/submit', methods=['POST'])
 @fresh_login_required
 def quitclub_submit():
@@ -40,7 +30,7 @@ def quitclub_submit():
     club = Club(request.form['clubs'])
     if current_user == club.leader:
         flash('You cannot quit a club you lead.', 'quit')
-        return redirect(url_for('.quitclub'))
+        return redirect(url_for('clubblueprint.quitclub'))
     try:
         club.remove_member(current_user)
     except NoRow:
@@ -54,7 +44,7 @@ def quitclub_submit():
         club.leader.notify_user(current_user.nickname + ' has quit ' +
                                 club.name + '.')
         flash('You have successfully quitted ' + club.name + '.', 'quit')
-    return redirect(url_for('.quitclub'))
+    return redirect(url_for('clubblueprint.quitclub'))
 
 
 @userblueprint.route('/')
@@ -137,37 +127,6 @@ def personalsubmitpassword():
         except PasswordTooShort:
             flash('Password must be at least six digits.', 'status_pw')
     return redirect(url_for('.personal'))
-
-
-@userblueprint.route('/all_clubs_info')
-@special_access_required
-@fresh_login_required
-def allclubsinfo():
-    '''Allow admin to download all clubs' info'''
-    info = []
-    info.append(('Club ID', 'Name', 'Leader', 'Teacher', 'Introduction',
-                 'Location', 'Is Active or Not', 'Type'))
-    info.extend([(club.id, club.name, club.leader.passportname,
-                  club.teacher.passportname, club.intro, club.location,
-                  str(club.is_active), club.type.format_name)
-                 for club in Club.allclubs()])
-
-    return download_xlsx('All Clubs\' Info.xlsx', info)
-
-
-@userblueprint.route('/all_activities_info')
-@special_access_required
-@fresh_login_required
-def allactivitiesinfo():
-    '''Allow admin to download all activities' info'''
-    info = []
-    info.append(('Activity ID', 'Name', 'Club', 'Date', 'Time (Type)',
-                 'Location', 'CAS Hours'))
-    info.extend([(act.id, act.name, act.club.name,
-                  act.date.strftime('%b-%d-%y'), act.time.format_name,
-                  act.location, act.cas) for act in Activity.all_activities()])
-
-    return download_xlsx('All Activities\' Info.xlsx', info)
 
 
 @userblueprint.route('/all_users_info')
@@ -281,89 +240,6 @@ def disableaccounts_submit():
     return redirect(url_for('.disableaccounts'))
 
 
-@userblueprint.route('/new_club')
-@fresh_login_required
-def newclub():
-    '''Allow teacher or admin to create new club'''
-    if current_user.type == UserType.STUDENT:
-        abort(403)
-    return render_template('user/newclub.html',
-                           clubtype=ClubType)
-
-
-@userblueprint.route('/new_club/submit', methods=['POST'])
-@fresh_login_required
-def newclub_submit():
-    '''Upload excel file to create new clubs'''
-    if current_user.type == UserType.STUDENT:
-        abort(403)
-    clubname = request.form['clubname']
-    studentid = request.form['studentid']
-    passportname = request.form['passportname']
-    clubtype = int(request.form['clubtype'])
-    leader = User.find_user(studentid, passportname)
-    if leader is None:
-        flash('Please input correct student info.', 'newclub')
-    elif clubname == '':
-        flash('Please input club name.', 'newclub')
-    else:
-        c = Club.new()
-        c.name = clubname
-        c.teacher = current_user
-        c.leader = leader
-        c.description = FormattedText.emptytext()
-        c.location = ''
-        c.is_active = True
-        c.intro = ''
-        c.picture = Upload(-101)
-        c.type = ClubType(clubtype)
-        c.joinmode = ClubJoinMode.FREE_JOIN
-        c.create()
-        c.add_member(leader)
-        flash(c.name + ' has been successfully created.', 'newclub')
-    return redirect(url_for('.newclub'))
-
-
-@userblueprint.route('/club_management_list/', defaults={'page': 1})
-@userblueprint.route('/club_management_list/<int:page>')
-@special_access_required
-@fresh_login_required
-def clubmanagementlist(page):
-    '''Allow admin to access club management list'''
-    num = 20
-    count, clubs = Club.allclubs(limit=((page-1)*num, num))
-    pagination = Pagination(page, num, count)
-    return render_template('user/clubmanagementlist.html',
-                           clubs=clubs,
-                           pagination=pagination)
-
-
-@userblueprint.route('/adjust_clubs')
-@special_access_required
-@fresh_login_required
-def adjustclubs():
-    '''Allow admin to change clubs' status'''
-    clubs = Club.allclubs()
-    return render_template('user/adjustclubs.html',
-                           clubs=clubs)
-
-
-@userblueprint.route('/adjust_clubs/submit', methods=['POST'])
-@special_access_required
-@fresh_login_required
-def adjustclubs_submit():
-    '''Input change in clubs into database'''
-    exc_clubs = Club.excellentclubs()
-    club = Club(request.form['clubid'])
-    if club in exc_clubs:
-        exc_clubs.remove(club)
-    else:
-        exc_clubs.append(club)
-    Club.set_excellentclubs(exc_clubs)
-    flash('The change has been successfully submitted', 'adjustclubs')
-    return redirect(url_for('.adjustclubs'))
-
-
 @userblueprint.route('/change_password')
 @special_access_required
 @fresh_login_required
@@ -433,37 +309,6 @@ def changeuserinfo_submit():
     else:
         status = 'success'
     return jsonify({'result': status})
-
-
-@userblueprint.route('/check_hongmei_schedule/download', methods=['POST'])
-@special_access_required
-def checkhongmeischedule_download():
-    '''Allow admin to check HongMei schedule'''
-    info = []
-    try:
-        date = datetime.strptime(request.form['year'] +
-                                 request.form['month'] +
-                                 request.form['day'], '%Y%m%d')
-    except ValueError:
-        flash('You have input wrong date for HongMei schedule.', 'status_info')
-        return redirect(url_for('.personal'))
-    info.append((date.strftime('%b-%d-%Y'),))
-    info.append(('Club Name', 'Members'))
-    for act in Activity.get_activities_conditions(
-                    times=(ActivityTime.HONGMEI,),
-                    dates=date
-                ):
-        members = ''
-
-        members = '\n'.join((member['user'].nickname + ': ' +
-                             str(member['user'].phone) +
-                             '(Consent From Handed? ' +
-                             ('Yes' if member['consentform'] == 1 else 'No') +
-                             ')')
-                            for member in act.signup_list())
-        info.append((act.club.name, members))
-    return download_xlsx('HongMei\'s Schedule on' +
-                         date.strftime('%b-%d-%Y') + '.xlsx', info)
 
 
 @userblueprint.route('/notifications/', defaults={'page': 1})
