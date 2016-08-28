@@ -266,7 +266,7 @@ def clubactivities(club, page):
     count, acts = club.activities(limit=((page-1)*act_num, act_num))
     pagination = Pagination(page, act_num, count)
     club_pic = []
-    club_pic.extend(club.allactphotos(limit=3)[1])
+    club_pic.extend([item['upload'] for item in club.allactphotos(limit=3)[1]])
     club_pic.extend([Upload(-101) for _ in range(3 - len(club_pic))])
     return render_template('club/clubact.html',
                            club_pic=club_pic,
