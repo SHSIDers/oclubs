@@ -107,6 +107,12 @@ body {
   }
 }
 
+@media screen and (max-width: 500px) {
+  .pagination > li > a {
+    padding: 5px 8.5px;
+  }
+}
+
 .list-group .list-group-item.selected {
   background-color: #e2e2e2;
   font-weight: 700;

@@ -103,7 +103,11 @@ body {
 		font-size: 125%;
 	}
 }
-
+.pagination > li > a {
+       @media screen and (max-width: 500px) {
+            padding: 5px 8.5px;
+       }
+}
 .list-group .list-group-item.selected {
 	font-weight: bold;
 	background-color: var(--lightgrey);
