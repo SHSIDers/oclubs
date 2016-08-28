@@ -8,7 +8,15 @@
 	<div class="teacher_club emptyline-lg">
 		<div class="col-xs-3">
 			<img src="{{ club.picture.location_external }}" class="img-responsive" alt="">
-			<p class="text-center">{% if club.is_active %}Active{% else %}Inactive{% endif %}</p>
+			{% if club.is_active %}
+			<p class="text-center">Active</p>
+			{% else %}
+			<p class="text-center">Inactive</p>
+			<form action="{{ url_for('clubblueprint.toactive', club=club.callsign) }}" method="post">
+				<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+				<input class="btn btn-danger btn-lg" type="submit" value="Turn to Active">
+			</form>
+			{% endif %}
 		</div>
 		<div class="col-sm-9">
 			<h1>{{ club.name }}</h1>
