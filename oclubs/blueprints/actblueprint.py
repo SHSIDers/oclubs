@@ -182,14 +182,13 @@ def hongmei_invite(activity):
 def hongmei_invite_submit(activity):
     '''Input invitation result into database'''
     invite = request.form.getlist('invite')
-    plan = ''
     for each in invite:
         member = User(each)
         true_or_fail(member in activity.club.members, member.nickname +
                      ' is not a member of this club.', 'invite_hm')
         if form_is_valid():
             activity.signup(member)
-            parameters = {'member': member, 'activity': activity, 'plan': plan}
+            parameters = {'member': member, 'activity': activity}
             contents = render_email_template('invitehm', parameters)
             member.email_user('HongMei Invitation - ' + activity.club.name,
                               contents)
