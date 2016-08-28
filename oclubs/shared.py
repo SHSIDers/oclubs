@@ -173,7 +173,7 @@ def require_past_activity(func):
     def decorated_function(*args, **kwargs):
         activity = kwargs['activity']
 
-        if not activity.is_future:
+        if activity.is_future:
             abort(403)
 
         return func(*args, **kwargs)
@@ -186,7 +186,7 @@ def require_future_activity(func):
     def decorated_function(*args, **kwargs):
         activity = kwargs['activity']
 
-        if activity.is_future:
+        if not activity.is_future:
             abort(403)
 
         return func(*args, **kwargs)
