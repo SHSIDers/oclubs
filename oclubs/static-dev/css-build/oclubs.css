@@ -1395,14 +1395,50 @@ thead {
   }
 }
 
+@media screen and (max-width: 768px) {
+  .aboutlist {
+    max-width: 590px;
+  }
+}
+
 .large_list p {
   margin: 0;
   font-size: 1.4em;
 }
 
-@media screen and (max-width: 525px) {
+@media screen and (max-width: 1200px) {
+  .large_list p {
+    font-size: .95em;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .large_list p {
+    font-size: .75em;
+  }
+}
+
+@media screen and (max-width: 768px) {
   .large_list p {
     font-size: 1em;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .large_list p {
+    font-size: .8em;
+  }
+}
+
+@media screen and (max-width: 325px) {
+  .large_list p {
+    font-size: .7em;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .large_list .list-group-item {
+    padding: 7.5px 11.25px;
   }
 }
 
@@ -1798,6 +1834,13 @@ thead {
   background-color: transparent;
 }
 
+@media screen and (max-width: 768px) {
+  .float-left.about,
+  .float-right.about {
+    float: none;
+  }
+}
+
 #slidecont {
   max-width: 1170px;
   width: 45%;
@@ -1808,10 +1851,6 @@ thead {
 
 #slidecont .carousel-indicators {
   bottom: 0;
-}
-
-#slidecont .carousel-caption h3 {
-  font-size: 175%;
 }
 
 @media screen and (max-width: 1500px) {
@@ -1834,7 +1873,7 @@ thead {
 
 @media screen and (max-width: 768px) {
   #slidecont {
-    width: 85%;
+    width: 80%;
   }
 }
 
@@ -1864,7 +1903,7 @@ thead {
 
 @media screen and (max-width: 500px) {
   #slidecont {
-    width: 95%;
+    width: 90%;
   }
 }
 
@@ -2659,6 +2698,12 @@ thead {
   padding: 15px;
   background-color: #5bc0de;
   font-weight: 700;
+}
+
+@media screen and (max-width: 992px) {
+  .list-group-item.active.about-title {
+    padding: 10px;
+  }
 }
 
 .table-photo {

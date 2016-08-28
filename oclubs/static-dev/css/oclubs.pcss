@@ -1106,13 +1106,34 @@ thead {
 		}
 	}
 }
-
+.aboutlist {
+	@media screen and (max-width: 768px) {
+		max-width: 590px;
+	}
+}
 .large_list p {
 	font-size: 1.4em;
 	margin: 0;
-
-	@media screen and (max-width: 525px) {
+	@media screen and (max-width: 1200px) {
+		font-size: 0.95em;
+	}
+	@media screen and (max-width: 992px) {
+		font-size: 0.75em;
+	}
+	@media screen and (max-width: 768px) {
 		font-size: 1em;
+	}
+	@media screen and (max-width: 400px) {
+		font-size: 0.8em;
+	}
+	@media screen and (max-width: 325px) {
+		font-size: 0.7em;
+	}
+}
+
+.large_list .list-group-item {
+	@media screen and (max-width: 992px) {
+		padding: 7.5px 11.25px;
 	}
 }
 
@@ -1507,7 +1528,11 @@ thead {
 	background-color: transparent;
 	overflow-x: hidden;
 }
-
+.float-right.about, .float-left.about {
+	@media screen and (max-width: 768px) {
+		float: none;
+	}
+}
 #slidecont {
 	transition: 0.5s;
 	width: 45%;
@@ -1515,9 +1540,6 @@ thead {
 
 	& .carousel-indicators {
 		bottom: 0;
-	}
-	& .carousel-caption h3 {
-		font-size: 175%;
 	}
 
 	@media screen and (max-width: 1500px) {
@@ -1533,7 +1555,7 @@ thead {
 	}
 
 	@media screen and (max-width: 768px) {
-		width: 85%;
+		width: 80%;
 	}
 
 	@media screen and (max-width: 600px) {
@@ -1561,7 +1583,7 @@ thead {
 	}
 
 	@media screen and (max-width: 500px) {
-		width: 95%;
+		width: 90%;
 	}
 
 	@media screen and (max-width: 400px) {
@@ -1578,8 +1600,6 @@ thead {
 		}
 	}
 }
-
-
 #act-club-list {
 	& .title {
 		margin-top: 0;
@@ -2211,6 +2231,9 @@ thead {
 	background-color: #5bc0de;
 	font-weight: bold;
 	padding: 15px;
+	@media screen and (max-width: 992px) {
+		padding: 10px;
+	}
 }
 
 .table-photo {
