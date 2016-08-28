@@ -149,6 +149,7 @@ body {
 	margin-bottom: 15px;
 	font-weight: bold;
 	display: inline-block;
+	line-height: 1.2;
 	/* box-shadow: 0 1px 1px rgba(0, 0, 0, .05) inset; FIXME: NOOP? */
 
 	& p {
@@ -179,6 +180,7 @@ body {
 	}
 	@media screen and (max-width: 1200px) {
 		padding: 10px;
+		height: 110px;
 	}
 	@media screen and (max-width: 992px) {
 		& img {
@@ -625,12 +627,10 @@ body {
 	@apply --bg-white-border-lightgrey;
 
 	float: left;
-	width: 17.25%;
+	width: 100%;
 	min-height: 20px;
 	border-radius: 4px;
-	margin: 1vw;
 	text-align: center;
-	/* box-shadow: 0 1px 1px rgba(0, 0, 0, .05) inset; FIXME: NOOP? */
 
 	& img {
 		padding-top: 10px;
@@ -644,13 +644,27 @@ body {
 			padding-top: 0;
 		}
 	}
+}
 
-	@media screen and (max-width: 720px) {
-		width: 33%;
+.photoblocks.row {
+	@media screen and (max-width: 500px) {
+		margin-left: -10px;
+		margin-right: -10px;
+	}
+	@media screen and (max-width: 400px) {
+		margin-left: -5px;
+		margin-right: -5px;
 	}
 
+}
+.photoblocks .col-xs-6 {
 	@media screen and (max-width: 500px) {
-		width: 50%;
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+	@media screen and (max-width: 400px) {
+		padding-left: 5px;
+		padding-right: 5px;
 	}
 }
 
@@ -1031,7 +1045,6 @@ thead {
 	font-weight: bold;
 	margin-bottom: 2%;
 	display: inline-block;
-	/* box-shadow: 0 1px 1px rgba(0, 0, 0, .05) inset; FIXME: NOOP? */
 
 	& h1 {
 		font-size: 300%;
@@ -1914,7 +1927,6 @@ thead {
 }
 
 #stuclubmeeting {
-
 	& p {
 		font-size: 22px;
 		@media screen and (max-width: 768px) {
@@ -2338,15 +2350,14 @@ thead {
 }
 
 @media screen and (max-width: 600px) {
-	/* FIXME: what is this? */
-	.large_container, .large_container > .col-sm-10 {
+	.large_container, .large_container > .main-content {
 		padding-left: 0;
 		padding-right: 0;
 	}
 }
 
 @media screen and (max-width: 400px) {
-	/* FIXME: what is this? */
+	/* apply to all table in general */
 	.table > tbody > tr > td, .table > thead > tr > th {
 		padding: 4px !important;
 	}

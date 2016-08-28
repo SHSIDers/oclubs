@@ -13,7 +13,7 @@
 		</div>
 	</div>
 
-	<div class="col-md-10" id="act-club-list">
+	<div class="main-content col-md-10" id="act-club-list">
 		<h1 class="title">Activites - {{ club_type.replace('_', ' ').title() }}</h1>
 		<select class="mobileselect">
 			{% for typ in [('all', 'All')] + list(ClubType) %}
