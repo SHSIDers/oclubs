@@ -32,13 +32,15 @@
 			{% endfor %}
 		</select>
 		<div class="clearfix"></div>
-		<div class="smallBlock">
+		<div class="clubblocks row">
 			{% for club in clubs %}
-			<a href="{{ url_for('clubblueprint.clubintro', club=club.callsign) }}">
-				<img src="{{ club.picture.location_external }}" class="img-responsive" alt="{{ current_user.nickname }}">
-				<p class="clubname">{{ club.name }}</p>
-				<p>{{ club.intro }}</p>
-			</a>
+			<div class="col-lg-3 col-sm-4 col-xs-6">
+				<a class="smallblock" href="{{ url_for('clubblueprint.clubintro', club=club.callsign) }}">
+					<img src="{{ club.picture.location_external }}" class="img-responsive" alt="{{ current_user.nickname }}">
+					<p class="smalltext">{{ club.name }}</p>
+					<p class="minitext">{{ club.intro }}</p>
+				</a>
+			</div>
 			{% endfor %}
 		</div>
 	</div>

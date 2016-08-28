@@ -112,84 +112,140 @@ body {
   font-weight: 700;
 }
 
-.smallBlock p {
-  margin-bottom: .05vw;
+@media screen and (max-width: 650px) {
+  .clubblocks .col-xs-6 {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
 }
 
-.smallBlock > a,
-.smallBlock > div {
+@media screen and (max-width: 500px) {
+  .clubblocks .col-xs-6 {
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+}
+
+@media screen and (max-width: 325px) {
+  .clubblocks .col-xs-6 {
+    padding-right: 2px;
+    padding-left: 2px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .clubblocks.row {
+    margin-right: -10px;
+    margin-left: -10px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .clubblocks.row {
+    margin-right: -5px;
+    margin-left: -5px;
+  }
+}
+
+@media screen and (max-width: 325px) {
+  .clubblocks.row {
+    margin-right: -2px;
+    margin-left: -2px;
+  }
+}
+
+.smallblock {
   display: inline-block;
   float: left;
-  margin-right: 3%;
-  margin-bottom: 3%;
-  padding: 1.5em;
-  width: 24em;
-  height: 9em;
+  margin-bottom: 15px;
+  padding: 15px;
+  width: 100%;
+  height: 120px;
   border: 1px solid #e2e2e2;
   border-radius: 5px;
   background-color: #f2f2f2;
   font-weight: 700;
 }
 
-.smallBlock > a.width-100,
-.smallBlock > div.width-100 {
-  width: 100%;
+.smallblock p {
+  margin-bottom: 5px;
 }
 
-.smallBlock > a {
+.smallblock .minitext {
+  font-weight: 500;
+}
+
+.smallblock > a {
   max-width: 100%;
   background-color: #f2f2f2;
 }
 
-.smallBlock > a:hover {
+.smallblock > a:hover {
   background-color: #ccc;
 }
 
-.smallBlock > a > p {
+.smallblock > a > p {
   line-height: 1em;
 }
 
-.smallBlock img {
+.smallblock img {
   float: left;
-  margin-right: 10%;
-  max-width: 9em;
-  max-height: 6.5em;
+  margin-right: 15px;
+  min-width: 45px;
+  width: 30%;
+  border-radius: 2px;
   vertical-align: middle;
 }
 
-.smallBlock .clubname {
-  font-size: 150%;
+@media screen and (max-width: 1200px) {
+  .smallblock {
+    padding: 10px;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .smallblock img {
+    width: 25%;
+  }
 }
 
 @media screen and (max-width: 650px) {
-  .smallBlock > div {
-    padding: 1em;
+  .smallblock {
+    margin-bottom: 7.5px;
+    height: 80px;
   }
 
-  .smallBlock .clubname {
+  .smallblock img {
+    margin-right: 10px;
+  }
+
+  .smallblock .clubname {
     font-size: 125%;
   }
-}
 
-@media screen and (max-width: 600px) {
-  .smallBlock > a {
-    padding: 1em;
-  }
-
-  .smallBlock img {
-    margin-right: .7em;
+  .smallblock p {
+    margin-bottom: 2px;
   }
 }
 
 @media screen and (max-width: 525px) {
-  .smallBlock > div {
-    padding: .5em;
+  .smallblock {
+    padding: 5px;
+    height: 70px;
+  }
+
+  .smallblock img {
+    margin-right: 5px;
   }
 }
 
 @media screen and (max-width: 400px) {
-  .smallBlock > div {
-    padding: 1px;
+  .smallblock {
+    padding: 3px;
+  }
+
+  .smallblock img {
+    margin-right: 3px;
   }
 }
 
@@ -1496,9 +1552,6 @@ thead {
 }
 
 .login_message {
-  @meida screen and (max-width:720px) {
-    width: 70%;
-  }
   margin: 0 auto;
   width: 30%;
 }
@@ -1506,6 +1559,12 @@ thead {
 @media screen and (max-width: 992px) {
   .login_message {
     width: 40%;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .login_message {
+    width: 70%;
   }
 }
 
@@ -2303,16 +2362,6 @@ thead {
   }
 }
 
-#onecas {
-  width: 30%;
-}
-
-@media screen and (max-width: 450px) {
-  #onecas {
-    width: 47%;
-  }
-}
-
 #logoutlink {
   float: right;
   margin-right: 4%;
@@ -2393,7 +2442,7 @@ thead {
 }
 
 .smalltext {
-  font-size: 125%;
+  font-size: 130%;
 }
 
 @media screen and (max-width: 800px) {
@@ -2422,7 +2471,7 @@ thead {
 
 @media screen and (max-width: 350px) {
   .smalltext {
-    font-size: 72.5%;
+    font-size: 70%;
   }
 }
 
