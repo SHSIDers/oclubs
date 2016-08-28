@@ -14,8 +14,7 @@ from flask import (
     Markup, Response
 )
 from flask_login import (
-    LoginManager, login_user, logout_user, login_required, current_user,
-    form_is_valid
+    LoginManager, login_user, logout_user, login_required, current_user
 )
 from htmlmin.minify import html_minify
 
@@ -25,7 +24,9 @@ from oclubs.blueprints import actblueprint, clubblueprint, userblueprint
 from oclubs.enums import UserType, ClubType, ActivityTime, ClubJoinMode
 from oclubs.exceptions import NoRow
 from oclubs.redissession import RedisSessionInterface
-from oclubs.shared import encrypt, Pagination, render_email_template
+from oclubs.shared import (
+    encrypt, Pagination, render_email_template, form_is_valid
+)
 
 
 app = Flask(__name__)

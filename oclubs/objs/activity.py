@@ -39,7 +39,7 @@ class Activity(BaseObject):
 
     @property
     def is_future(self):
-        return self.datetime > date.today()
+        return self.date > date.today()
 
     def signup(self, user, **kwargs):
         data = {
