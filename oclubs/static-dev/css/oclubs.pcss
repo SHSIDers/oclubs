@@ -1927,15 +1927,17 @@ thead {
 }
 
 #stuclubmeeting::after {
-	content: "";
-    position: absolute;
-    bottom: 0; top: 0; left: 0; right: -4px;
-    border-right:4px solid var(--white);
+	@media screen and (min-width: 992px) {
+		content: "";
+		position: absolute;
+		bottom: 0; top: 0; left: 0; right: -4px;
+		border-right:4px solid var(--white);
+	}
 }
 #stuactlist {
 	border-color: var(--white);
 	border-left-style: solid;
-	@media screen and (max-width: 768px) {
+	@media screen and (max-width: 992px) {
 		border-left-style: none;
 		border-top-style: solid;
 	}

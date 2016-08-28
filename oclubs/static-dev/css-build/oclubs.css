@@ -2317,14 +2317,16 @@ thead {
   }
 }
 
-#stuclubmeeting:after {
-  position: absolute;
-  top: 0;
-  right: -4px;
-  bottom: 0;
-  left: 0;
-  border-right: 4px solid #f2f2f2;
-  content: "";
+@media screen and (min-width: 992px) {
+  #stuclubmeeting:after {
+    position: absolute;
+    top: 0;
+    right: -4px;
+    bottom: 0;
+    left: 0;
+    border-right: 4px solid #f2f2f2;
+    content: "";
+  }
 }
 
 #stuactlist {
@@ -2332,7 +2334,7 @@ thead {
   border-left-style: solid;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 992px) {
   #stuactlist {
     border-top-style: solid;
     border-left-style: none;
