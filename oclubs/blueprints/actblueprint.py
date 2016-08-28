@@ -68,14 +68,12 @@ def allphotos(page):
 
 
 @actblueprint.route('/<activity>/')
-@require_active_club
 def actredirect(activity):
     return redirect(url_for('.actintro', activity=activity))
 
 
 @actblueprint.route('/<activity>/introduction')
 @get_callsign(Activity, 'activity')
-@require_active_club
 def actintro(activity):
     '''Club Activity Page'''
     if current_user.is_authenticated:
@@ -120,7 +118,6 @@ def actintro_submit(activity):
 
 @actblueprint.route('/<activity>/post')
 @get_callsign(Activity, 'activity')
-@require_active_club
 @require_past_activity
 def actpost(activity):
     '''Activity Post Page'''
