@@ -94,7 +94,6 @@ def actintro(activity):
     is_other_act = activity.time in [ActivityTime.UNKNOWN, ActivityTime.OTHERS]
     return render_template('activity/actintro.html',
                            is_other_act=is_other_act,
-                           is_past=date.today() >= activity.date,
                            has_access=has_access,
                            can_join=can_join,
                            selection=selection)

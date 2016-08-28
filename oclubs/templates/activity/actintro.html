@@ -50,26 +50,26 @@
 				<a class="btn btn-info btn-lg" href="{{ url_for('clubblueprint.clubintro', club=g.activity.club.callsign) }}">Club Introduction</a>
 			</div>
 
-			{% if is_other_act and not is_past and can_join %}
+			{% if is_other_act and g.activity.is_future and can_join %}
 			<div class="col-sm-6">
 				<form action="{{ url_for('.actintro_submit', activity=g.activity.callsign) }}" method="post" id="join_form">
 					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 					<input class="btn btn-info btn-lg" type="submit" value="Join">
 				</form>
 			</div>
-			{% elif is_past %}
+			{% elif not g.activity.is_future %}
 			<div class="col-sm-6">
 				<a class="btn btn-info btn-lg" href="{{ url_for('.actpost', activity=g.activity.callsign) }}">Activity Post</a>
 			</div>
 			{% endif %}
 
-			{% if has_access and not is_past %}
+			{% if has_access and g.activity.is_future %}
 			<div class="col-sm-6">
 				<a class="btn btn-info btn-lg" href="{{ url_for('.actstatus', activity=g.activity.callsign) }}">Signup Status</a>
 			</div>
 			{% endif %}
 
-			{% if has_access and is_past %}
+			{% if has_access and not g.activity.is_future %}
 			<div class="col-sm-6">
 				<a class="btn btn-info btn-lg" href="{{ url_for('.attendance', activity=g.activity.callsign) }}">Attendance</a>
 			</div>
