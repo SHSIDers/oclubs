@@ -142,9 +142,8 @@ def require_membership(func):
             else:
                 assert False
 
-            if current_user != club.teacher:
-                if current_user not in club.members:
-                    abort(403)
+            if current_user not in [club.teacher] + club.members:
+                abort(403)
 
         return func(*args, **kwargs)
 
@@ -172,11 +171,9 @@ def require_active_club(func):
 def require_past_activity(func):
     @wraps(func)
     def decorated_function(*args, **kwargs):
-        if 'activity' not in kwargs:
-            abort(404)
         activity = kwargs['activity']
 
-        if not activity.ongoing_or_future:
+        if not activity.is_future:
             abort(403)
 
         return func(*args, **kwargs)
@@ -187,11 +184,9 @@ def require_past_activity(func):
 def require_future_activity(func):
     @wraps(func)
     def decorated_function(*args, **kwargs):
-        if 'activity' not in kwargs:
-            abort(404)
         activity = kwargs['activity']
 
-        if activity.ongoing_or_future:
+        if activity.is_future:
             abort(403)
 
         return func(*args, **kwargs)

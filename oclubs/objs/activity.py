@@ -38,8 +38,8 @@ class Activity(BaseObject):
     date_fmtstr = '%Y%m%d'
 
     @property
-    def ongoing_or_future(self):
-        return self.datetime >= date.today()
+    def is_future(self):
+        return self.datetime > date.today()
 
     def signup(self, user, **kwargs):
         data = {
