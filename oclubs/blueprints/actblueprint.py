@@ -9,7 +9,7 @@ from datetime import date
 from flask import (
     Blueprint, render_template, url_for, abort, request, redirect, flash
 )
-from flask_login import current_user, login_required
+from flask_login import current_user, login_required, fresh_login_required
 
 from oclubs.enums import UserType, ClubType, ActivityTime
 from oclubs.shared import (
@@ -22,8 +22,8 @@ from oclubs.exceptions import UploadNotSupported, NoRow
 actblueprint = Blueprint('actblueprint', __name__)
 
 
-@actblueprint.route('/all_activities/<club_type>/', defaults={'page': 1})
-@actblueprint.route('/all_activities/<club_type>/<int:page>')
+@actblueprint.route('/all/<club_type>/', defaults={'page': 1})
+@actblueprint.route('/all/<club_type>/<int:page>')
 def allactivities(club_type, page):
     '''All Activities'''
     act_num = 20
@@ -122,7 +122,7 @@ def actpost(activity):
     return render_template('activity/actpost.html')
 
 
-@actblueprint.route('/<activity>/change_activity_post')
+@actblueprint.route('/<activity>/post/change')
 @get_callsign(Activity, 'activity')
 @special_access_required
 def changeactpost(activity):
@@ -130,7 +130,7 @@ def changeactpost(activity):
     return render_template('activity/changeactpost.html')
 
 
-@actblueprint.route('/<activity>/change_activity_post/submit',
+@actblueprint.route('/<activity>/post/change/submit',
                     methods=['POST'])
 @get_callsign(Activity, 'activity')
 @special_access_required
@@ -276,7 +276,7 @@ def attendance_download(activity):
     return download_xlsx('Attendance for ' + activity.name + '.xlsx', result)
 
 
-@actblueprint.route('/all_activities_info')
+@actblueprint.route('/info_download_all')
 @special_access_required
 @fresh_login_required
 def allactivitiesinfo():
@@ -297,17 +297,17 @@ def checkhongmeischedule_download():
     '''Allow admin to check HongMei schedule'''
     info = []
     try:
-        date = datetime.strptime(request.form['year'] +
-                                 request.form['month'] +
-                                 request.form['day'], '%Y%m%d')
+        actdate = date(int(request.form['year']),
+                       int(request.form['month']),
+                       int(request.form['day']))
     except ValueError:
         flash('You have input wrong date for HongMei schedule.', 'status_info')
         return redirect(url_for('userblueprint.personal'))
-    info.append((date.strftime('%b-%d-%Y'),))
+    info.append((actdate.strftime('%b-%d-%Y'),))
     info.append(('Club Name', 'Members'))
     for act in Activity.get_activities_conditions(
                     times=(ActivityTime.HONGMEI,),
-                    dates=date
+                    dates=actdate
                 ):
         members = ''
 

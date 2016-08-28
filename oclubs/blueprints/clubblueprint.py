@@ -22,7 +22,7 @@ from oclubs.exceptions import UploadNotSupported, AlreadyExists, NoRow
 clubblueprint = Blueprint('clubblueprint', __name__)
 
 
-@clubblueprint.route('/clublist/<club_type>')
+@clubblueprint.route('/list/<club_type>')
 def clublist(club_type):
     '''Club list by club type'''
     num = 18
@@ -150,7 +150,7 @@ def memberinfo_download(club):
     return download_xlsx('Member Info.xlsx', info)
 
 
-@clubblueprint.route('/<club>/change_club_info')
+@clubblueprint.route('/<club>/change_info')
 @get_callsign(Club, 'club')
 @special_access_required
 def changeclubinfo(club):
@@ -158,7 +158,7 @@ def changeclubinfo(club):
     return render_template('club/changeclubinfo.html')
 
 
-@clubblueprint.route('/<club>/change_club_info/submit', methods=['POST'])
+@clubblueprint.route('/<club>/change_info/submit', methods=['POST'])
 @get_callsign(Club, 'club')
 @special_access_required
 def changeclubinfo_submit(club):
@@ -244,8 +244,8 @@ def invitemember(club):
     return redirect(url_for('.adjustmember', club=club.callsign))
 
 
-@clubblueprint.route('/<club>/club_activities/', defaults={'page': 1})
-@clubblueprint.route('/<club>/club_activities/<int:page>')
+@clubblueprint.route('/<club>/activities/', defaults={'page': 1})
+@clubblueprint.route('/<club>/activities/<int:page>')
 @get_callsign(Club, 'club')
 def clubactivities(club, page):
     '''One Club's Activities'''
@@ -261,8 +261,8 @@ def clubactivities(club, page):
                            pagination=pagination)
 
 
-@clubblueprint.route('/<club>/club_photo/', defaults={'page': 1})
-@clubblueprint.route('/<club>/club_photo/<int:page>')
+@clubblueprint.route('/<club>/photos/', defaults={'page': 1})
+@clubblueprint.route('/<club>/photos/<int:page>')
 @get_callsign(Club, 'club')
 def clubphoto(club, page):
     '''Individual Club's Photo Page'''
@@ -274,7 +274,7 @@ def clubphoto(club, page):
                            pagination=pagination)
 
 
-@clubblueprint.route('/<club>/new')
+@clubblueprint.route('/<club>/new_activity')
 @get_callsign(Club, 'club')
 @special_access_required
 def newact(club):
@@ -284,7 +284,7 @@ def newact(club):
                            years=years)
 
 
-@clubblueprint.route('/<club>/new/submit', methods=['POST'])
+@clubblueprint.route('/<club>/new_activity/submit', methods=['POST'])
 @get_callsign(Club, 'club')
 @special_access_required
 def newact_submit(club):
@@ -476,7 +476,7 @@ def registerhm_submit(club):
     return redirect(url_for('.registerhm', club=club.callsign))
 
 
-@clubblueprint.route('/quit_club')
+@clubblueprint.route('/quit')
 @fresh_login_required
 def quitclub():
     '''Quit Club Page'''
@@ -486,7 +486,31 @@ def quitclub():
                            quitting_clubs=quitting_clubs)
 
 
-@clubblueprint.route('/all_clubs_info')
+@clubblueprint.route('/quit/submit', methods=['POST'])
+@fresh_login_required
+def quitclub_submit():
+    '''Delete connection between user and club in database'''
+    club = Club(request.form['clubs'])
+    if current_user == club.leader:
+        flash('You cannot quit a club you lead.', 'quit')
+        return redirect(url_for('.quitclub'))
+    try:
+        club.remove_member(current_user)
+    except NoRow:
+        flash('You are not a member of ' + club.name + '.', 'quit')
+    else:
+        reason = request.form['reason']
+        parameters = {'user': current_user, 'club': club, 'reason': reason}
+        contents = render_email_template('quitclub', parameters)
+        club.leader.email_user('Quit Club - ' + current_user.nickname,
+                               contents)
+        club.leader.notify_user(current_user.nickname + ' has quit ' +
+                                club.name + '.')
+        flash('You have successfully quitted ' + club.name + '.', 'quit')
+    return redirect(url_for('.quitclub'))
+
+
+@clubblueprint.route('/info_download_all')
 @special_access_required
 @fresh_login_required
 def allclubsinfo():
@@ -502,7 +526,7 @@ def allclubsinfo():
     return download_xlsx('All Clubs\' Info.xlsx', info)
 
 
-@clubblueprint.route('/new_club')
+@clubblueprint.route('/new')
 @fresh_login_required
 def newclub():
     '''Allow teacher or admin to create new club'''
@@ -512,7 +536,7 @@ def newclub():
                            clubtype=ClubType)
 
 
-@clubblueprint.route('/new_club/submit', methods=['POST'])
+@clubblueprint.route('/new/submit', methods=['POST'])
 @fresh_login_required
 def newclub_submit():
     '''Upload excel file to create new clubs'''
@@ -545,8 +569,8 @@ def newclub_submit():
     return redirect(url_for('.newclub'))
 
 
-@clubblueprint.route('/club_management_list/', defaults={'page': 1})
-@clubblueprint.route('/club_management_list/<int:page>')
+@clubblueprint.route('/management_list/', defaults={'page': 1})
+@clubblueprint.route('/management_list/<int:page>')
 @special_access_required
 @fresh_login_required
 def clubmanagementlist(page):
@@ -559,7 +583,7 @@ def clubmanagementlist(page):
                            pagination=pagination)
 
 
-@clubblueprint.route('/adjust_clubs')
+@clubblueprint.route('/adjust_excellent_clubs')
 @special_access_required
 @fresh_login_required
 def adjustclubs():
@@ -569,7 +593,7 @@ def adjustclubs():
                            clubs=clubs)
 
 
-@clubblueprint.route('/adjust_clubs/submit', methods=['POST'])
+@clubblueprint.route('/adjust_excellent_clubs/submit', methods=['POST'])
 @special_access_required
 @fresh_login_required
 def adjustclubs_submit():

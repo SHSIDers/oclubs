@@ -11,7 +11,7 @@
 		<h1 class="white title_next">Quitting Club</h1>
 		{{ get_messages(['quit'], br_after=True) }}
 		{% if quitting_clubs %}
-		<form class="form-group white middle" id="quit_club" action="{{ url_for('userblueprint.quitclub_submit') }}" method="post">
+		<form class="form-group white middle" id="quit_club" action="{{ url_for('.quitclub_submit') }}" method="post">
 			<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 			<p class="midtext"><i>If you really want to quit a club, then please select the club and state your reason. Your quitting request will be emailed to the club leader.</i></p>
 			<br>

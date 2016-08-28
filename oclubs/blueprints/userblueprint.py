@@ -4,7 +4,7 @@
 
 from __future__ import absolute_import, unicode_literals
 
-from datetime import date, timedelta, datetime
+from datetime import date
 
 from flask import (
     Blueprint, render_template, url_for, request, redirect, abort, flash,
@@ -12,39 +12,14 @@ from flask import (
 )
 from flask_login import current_user, login_required, fresh_login_required
 
-from oclubs.objs import User, Club, Activity, Upload, FormattedText
-from oclubs.enums import UserType, ClubType, ActivityTime, ClubJoinMode
+from oclubs.objs import User, Club, Upload
+from oclubs.enums import UserType, ActivityTime
 from oclubs.shared import (
-    special_access_required, download_xlsx, read_xlsx, render_email_template,
-    Pagination
+    special_access_required, download_xlsx, read_xlsx, Pagination
 )
-from oclubs.exceptions import PasswordTooShort, NoRow
+from oclubs.exceptions import PasswordTooShort
 
 userblueprint = Blueprint('userblueprint', __name__)
-
-
-@userblueprint.route('/quit_club/submit', methods=['POST'])
-@fresh_login_required
-def quitclub_submit():
-    '''Delete connection between user and club in database'''
-    club = Club(request.form['clubs'])
-    if current_user == club.leader:
-        flash('You cannot quit a club you lead.', 'quit')
-        return redirect(url_for('clubblueprint.quitclub'))
-    try:
-        club.remove_member(current_user)
-    except NoRow:
-        flash('You are not a member of ' + club.name + '.', 'quit')
-    else:
-        reason = request.form['reason']
-        parameters = {'user': current_user, 'club': club, 'reason': reason}
-        contents = render_email_template('quitclub', parameters)
-        club.leader.email_user('Quit Club - ' + current_user.nickname,
-                               contents)
-        club.leader.notify_user(current_user.nickname + ' has quit ' +
-                                club.name + '.')
-        flash('You have successfully quitted ' + club.name + '.', 'quit')
-    return redirect(url_for('clubblueprint.quitclub'))
 
 
 @userblueprint.route('/')
@@ -81,8 +56,7 @@ def personal():
                                myclubs=myclubs,
                                UserType=UserType)
     else:
-        years = [(date.today() + timedelta(days=365*diff)).year
-                 for diff in range(2)]
+        years = (lambda m: map(lambda n: m + n, range(2)))(date.today().year)
         return render_template('user/admin.html',
                                pictures=pictures,
                                years=years)
@@ -129,7 +103,7 @@ def personalsubmitpassword():
     return redirect(url_for('.personal'))
 
 
-@userblueprint.route('/all_users_info')
+@userblueprint.route('/info_download_all')
 @special_access_required
 @fresh_login_required
 def allusersinfo():
@@ -276,7 +250,7 @@ def forgotpw():
     return render_template('user/forgotpassword.html')
 
 
-@userblueprint.route('/change_user_info')
+@userblueprint.route('/change_info')
 @special_access_required
 @fresh_login_required
 def changeuserinfo():
@@ -286,7 +260,7 @@ def changeuserinfo():
                            users=users)
 
 
-@userblueprint.route('/change_user_info/submit', methods=['POST'])
+@userblueprint.route('/change_info/submit', methods=['POST'])
 @special_access_required
 @fresh_login_required
 def changeuserinfo_submit():
