@@ -176,7 +176,7 @@ def changeclubinfo_submit(club):
         club.intro = request.form['intro']
 
     desc = request.form['description'].strip()
-    if desc != club.description:
+    if desc != club.description and desc != '':
         club.description = FormattedText.handle(current_user, club,
                                                 request.form['description'])
     if request.files['picture'].filename != '':
