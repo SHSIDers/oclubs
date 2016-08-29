@@ -114,10 +114,11 @@ def personalsubmitpassword():
 def allusersinfo():
     '''Allow admin to download all users' info'''
     info = []
-    info.append(('ID', 'Student ID', 'Nick Name', 'Passport Name', 'Email',
+    info.append(('ID', 'Class', 'Nick Name', 'Passport Name', 'Email',
                  'Phone'))
-    info.extend([(user.id, user.studentid, user.nickname, user.passportname,
-                  user.email, str(user.phone)) for user in User.allusers()])
+    info.extend([(user.id, user.grade_and_class, user.nickname,
+                  user.passportname, user.email, str(user.phone))
+                 for user in User.allusers()])
 
     return download_xlsx('All Users\' Info.xlsx', info)
 
@@ -186,10 +187,11 @@ def rebuildsearch_submit():
 def download_new_passwords():
     '''Allow admin to download new accounts' passwords'''
     result = []
-    result.append(['Passport Name', 'Login Name', 'Password'])
+    result.append(['Passport Name', 'Login Name', 'Class', 'Password'])
     users = User.get_new_passwords()
     result.extend([(user.passportname,
                     user.studentid,
+                    user.grade_and_class,
                     password) for user, password in users])
     return download_xlsx('New Accounts\' Passwords.xlsx', result)
 

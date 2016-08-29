@@ -151,8 +151,8 @@ def memberinfo(club):
 def memberinfo_download(club):
     '''Download members' info'''
     info = []
-    info.append(('Nick Name', 'Student ID', 'Passport Name', 'Email'))
-    info.extend([(member.nickname, member.studentid, member.passportname,
+    info.append(('Nick Name', 'Class', 'Passport Name', 'Email'))
+    info.extend([(member.nickname, member.grade_and_class, member.passportname,
                   member.email) for member in club.members])
     return download_xlsx('Member Info.xlsx', info)
 
@@ -215,7 +215,7 @@ def adjustmember(club):
 @fresh_login_required
 def adjustmember_submit(club):
     '''Input adjustment of club members'''
-    member = User(request.form['studentid'])
+    member = User(request.form['uid'])
     true_or_fail(current_user != member,
                  'You cannot expel yourself.', 'expelled')
     if form_is_valid():
@@ -239,7 +239,7 @@ def invitemember(club):
                  'You cannot invite members when the join mode is not '
                  'by invitation.', 'invite_member')
     if form_is_valid():
-        new_member = User.find_user(request.form['studentid'],
+        new_member = User.find_user(request.form['gradeclass'],
                                     request.form['passportname'])
         if new_member is None:
             fail('Please input correct user info to invite.', 'invite_member')
@@ -568,10 +568,10 @@ def newclub():
 def newclub_submit():
     '''Upload excel file to create new clubs'''
     clubname = request.form['clubname']
-    studentid = request.form['studentid']
+    gradeclass = request.form['gradeclass']
     passportname = request.form['passportname']
     clubtype = int(request.form['clubtype'])
-    leader = User.find_user(studentid, passportname)
+    leader = User.find_user(gradeclass, passportname)
     true_or_fail(leader is not None, 'Please input correct student info.',
                  'newclub')
     true_or_fail(clubname, 'Please input club name.', 'newclub')

@@ -4,6 +4,7 @@
 
 from __future__ import absolute_import, unicode_literals
 
+import re
 from datetime import date
 from flask_login import UserMixin
 from passlib.context import CryptContext
@@ -40,6 +41,12 @@ class User(BaseObject, UserMixin):
     grade = Property('user_grade')
     currentclass = Property('user_class')
     clubs = ListProperty('club_member', 'cm_user', 'cm_club', 'Club')
+
+    GRADECLASSREGEX = re.compile(r'^\s*(\d+)\s*[-_/\\]\s*(\d+)\s*$')
+
+    @property
+    def grade_and_class(self):
+        return '%d - %d' % (self.grade, self.currentclass)
 
     def cas_in_club(self, club):
         return database.fetch_oneentry(
@@ -153,8 +160,8 @@ class User(BaseObject, UserMixin):
         except NoRow:
             pass
 
-    @staticmethod
-    def attempt_login(studentid, password):
+    @classmethod
+    def attempt_login(cls, studentid, password):
         def emptypw():
             # to gave some delay, verify empty password and discard the results
             _crypt.verify(
@@ -180,18 +187,25 @@ class User(BaseObject, UserMixin):
                 emptypw()
                 return
             elif _crypt.verify(password, data['password']):
-                return User(data['id'])
+                return cls(data['id'])
             else:
                 return
 
-    @staticmethod
-    def find_user(studentid, passportname):
+    @classmethod
+    def find_user(cls, gradeclass, passportname):
+        reobj = cls.GRADECLASSREGEX.match(gradeclass)
+        if not reobj:
+            return
+
+        grade, currentclass = reobj.group(1), reobj.group(2)
+
         try:
-            return User(database.fetch_oneentry(
+            return cls(database.fetch_oneentry(
                 'user',
                 'user_id',
                 {
-                    'user_login_name': studentid,
+                    'user_grade': grade,
+                    'user_class': currentclass,
                     'user_passport_name': passportname
                 }
             ))

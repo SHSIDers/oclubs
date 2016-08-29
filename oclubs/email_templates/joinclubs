@@ -5,7 +5,7 @@ Hi {{ club.leader.nickname }},
 
 Below is his/her information:
 
-Student ID: {{ current_user.studentid }}
+Class: {{ current_user.grade_and_class }}
 
 Nick name: {{ current_user.nickname }}
 

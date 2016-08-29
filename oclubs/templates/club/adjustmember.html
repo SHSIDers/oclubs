@@ -13,7 +13,7 @@
 				<th class="width-5">Photo</th>
 				<th>Nick Name</th>
 				<th>Official Name</th>
-				<th>Student ID</th>
+				<th>Class</th>
 				<th>Operation</th>
 			</tr>
 		</thead>
@@ -26,11 +26,11 @@
 				</td>
 				<td>{{ member.nickname }}</td>
 				<td>{{ member.passportname }}</td>
-				<td>{{ member.studentid }}</td>
+				<td>{{ member.grade_and_class }}</td>
 				<td>
 					<form action="{{ url_for('.adjustmember_submit', club=g.club.callsign) }}" method="post">
 						<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-						<input type="hidden" name="studentid" value="{{ member.id }}">
+						<input type="hidden" name="uid" value="{{ member.id }}">
 						<input class="btn btn-danger tinytext" type="submit" name="expel" value="Expel">
 					</form>
 				</td>
@@ -54,8 +54,8 @@
 			<div class="modal-body">
 				<form action="{{ url_for('.invitemember', club=g.club.callsign) }}" method="post" id="invite_form">
 					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-					<label for="studentid">Student ID:</label>
-					<input class="form-control" id="studentid" type="text" name="studentid">
+					<label for="gradeclass">Grade and class:</label>
+					<input class="form-control" id="gradeclass" type="text" name="gradeclass">
 					<br>
 					<label for="passportname">Passport Name:</label>
 					<input class="form-control" id="passportname" type="text" name="passportname">

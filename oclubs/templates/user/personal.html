@@ -4,7 +4,7 @@
 
 <!-- Below Navbar -->
 <div class="container">
-	<h2 class="title_next personal-name">{{ current_user.passportname }}&nbsp;&nbsp;&nbsp; {% if activities %}<span class="comment nowrap">{{ current_user.studentid }}&nbsp;&nbsp;Class {{ current_user.grade }} - {{ current_user.currentclass }}</span>{% endif %}<a href="{{ url_for('logout') }}" id="logoutlink"><span class="glyphicon glyphicon-log-out">&nbsp;Logout</span></a></h2>
+	<h2 class="title_next personal-name">{{ current_user.passportname }}&nbsp;&nbsp;&nbsp; {% if activities %}<span class="comment nowrap">{{ current_user.studentid }}&nbsp;&nbsp;Class {{ current_user.grade_and_class }}</span>{% endif %}<a href="{{ url_for('logout') }}" id="logoutlink"><span class="glyphicon glyphicon-log-out">&nbsp;Logout</span></a></h2>
 	<div class="clearfix clearfix-bordered"></div>
 	{{ get_messages(['status_info', 'status_pw'], br_before=True) }}
 	<br>

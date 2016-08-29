@@ -218,7 +218,7 @@ def actstatus(activity):
 @require_future_activity
 def actstatus_submit(activity):
     '''Change consent form status'''
-    member = User(request.form['studentid'])
+    member = User(request.form['uid'])
     true_or_fail(member in activity.club.members, member.nickname +
                  ' is not a member of this club.', 'consent_form')
 
@@ -291,13 +291,13 @@ def attendance_submit(activity):
 def attendance_download(activity):
     '''Download activity's attendance'''
     result = []
-    result.append(('Nick Name', 'Student ID', 'Attendance'))
+    result.append(('Nick Name', 'Class', 'Attendance'))
     attend, absent = partition(lambda member: member in activity.attendance,
                                activity.club.members)
 
-    result.extend([(member.nickname, member.studentid, 'Attended')
+    result.extend([(member.nickname, member.grade_and_class, 'Attended')
                    for member in attend])
-    result.extend([(member.nickname, member.studentid, 'Absent')
+    result.extend([(member.nickname, member.grade_and_class, 'Absent')
                    for member in absent])
     return download_xlsx('Attendance for ' + activity.name + '.xlsx', result)
 

@@ -11,7 +11,7 @@
 		<thead>
 			<tr>
 				<th class="width-25">Nick Name</th>
-				<th class="width-25">Student ID</th>
+				<th class="width-25">Class</th>
 				<th class="width-25">Passport Name</th>
 				<th class="width-25">Email Address</th>
 			</tr>
@@ -20,7 +20,7 @@
 			{% for member in g.club.members %}
 			<tr class="act">
 				<td>{{ member.nickname }}</td>
-				<td>{{ member.studentid }}</td>
+				<td>{{ member.grade_and_class }}</td>
 				<td>{{ member.passportname }}</td>
 				<td>{{ member.email }}</td>
 			</tr>

@@ -31,7 +31,7 @@
 				<td>
 					<form action="{{ url_for('.actstatus_submit', activity=g.activity.callsign) }}" method="post">
 						<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-						<input type="hidden" name="studentid" value="{{ member.user.id }}">
+						<input type="hidden" name="uid" value="{{ member.user.id }}">
 						<input type="hidden" name="status" value="{{ member.consentform }}">
 						{% if member.consentform == 0 %}
 						<input type="submit" class="btn btn-primary tinytext" value="Hand In">
