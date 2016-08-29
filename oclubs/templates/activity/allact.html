@@ -7,7 +7,7 @@
 	<div id="sidebar" class="col-md-2">
 		<div class="list-group">
 			<li class="list-group-item active">Club Types</li>
-			{% for typ in [('all', 'All')] + list(ClubType) %}
+			{% for typ in [('all', 'All')] + ClubType|list %}
 			<a href="{{ url_for('.allactivities', club_type=typ[0].lower()) }}" class="list-group-item {% if club_type==typ[0].lower() %}selected{% endif %}">{{ typ[1] }}</a>
 			{% endfor %}
 		</div>
@@ -16,7 +16,7 @@
 	<div class="main-content col-md-10" id="act-club-list">
 		<h1 class="title">Activites - {{ club_type.replace('_', ' ').title() }}</h1>
 		<select class="mobileselect emptyline">
-			{% for typ in [('all', 'All')] + list(ClubType) %}
+			{% for typ in [('all', 'All')] + ClubType|list %}
 			<option value="{{ url_for('.allactivities', club_type=typ[0].lower()) }}" {% if club_type==typ[0].lower() %}selected="selected"{% endif %}>{{ typ[1] }}</option>
 			{% endfor %}
 		</select>

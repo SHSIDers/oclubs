@@ -8,7 +8,7 @@
 	<div id="sidebar" class="col-md-2">
 		<div class="list-group">
 			<li class="list-group-item active">Club Types</li>
-			{% for typ in [('all', 'All')] + list(ClubType) %}
+			{% for typ in [('all', 'All')] + ClubType|list %}
 			<a href="{{ url_for('.clublist', club_type=typ[0].lower()) }}" class="list-group-item {% if g.club.type.name==typ[0] %}selected{% endif %}">{{ typ[1] }}</a>
 			{% endfor %}
 		</div>

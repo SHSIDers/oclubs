@@ -27,7 +27,7 @@
 		<p class="white midtext">For fairness, we randomly choose 18 clubs each time you click refresh button.</p>
 
 		<select class="mobileselect emptyline">
-			{% for typ in [('all', 'All Clubs'), ('excellent', 'Excellent Clubs')] + list(ClubType) %}
+			{% for typ in [('all', 'All Clubs'), ('excellent', 'Excellent Clubs')] + ClubType|list %}
 			<option value="{{ url_for('.clublist', club_type=typ[0].lower()) }}" {% if club_type==typ[0].lower() %}selected="selected"{% endif %}>{{ typ[1] }}</option>
 			{% endfor %}
 		</select>

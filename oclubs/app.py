@@ -39,7 +39,6 @@ app.register_blueprint(actblueprint, url_prefix='/activity')
 
 app.session_interface = RedisSessionInterface()
 
-app.jinja_env.globals['list'] = list  # HACK
 app.jinja_env.globals['UserType'] = UserType
 app.jinja_env.globals['ClubType'] = ClubType
 app.jinja_env.globals['ActivityTime'] = ActivityTime
