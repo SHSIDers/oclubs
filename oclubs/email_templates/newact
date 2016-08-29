@@ -5,13 +5,20 @@ Hi {{ member.nickname }},
 Below is the information:
 
 Name: {{ act.name }}
+
 Club: {{ act.club.name }}
+
 Date: {{ act.date }}
+
 Time: {{ act.time.format_name }}
+
 Location: {{ act.location }}
+
 CAS hour: {{ act.cas }}
 
+
 Description:
+
 {{ act.description.formatted }}
 
 If you want to participate, please search {{ act.name }} on oClubs and join this activity on its introduction page.
