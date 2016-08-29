@@ -240,7 +240,7 @@ class _BaseMetaclass(type):
                 for field in _esfields:
                     _esdata[field] = dct[field].search(getattr(self, field))
 
-                elasticsearch.create(self.table, self.id, _esdata)
+                elasticsearch.update(self.table, self.id, _esdata)
 
             dct['_escreate'] = _escreate
 
