@@ -22,12 +22,12 @@ def send(to_email, subject, content):
         if to_email[0].endswith('@gmail.com'):
             sg = sendgrid.SendGridAPIClient(apikey=get_secret('sendgrid_key'))
             content = Content('text/plain', content)
-            mail = Mail(Email(*from_email), subject, Email(to_email[1]), content)
+            mail = Mail(Email(*from_email), subject, Email(to_email[0]), content)
             sg.client.mail.send.post(request_body=mail.get())
         else:
             conn = SMTP('127.0.0.1', 25)
             mail = Envelope(
-                to_addr=to_email[1],
+                to_addr=to_email[0],
                 from_addr=from_email,
                 subject=subject,
                 text_body=content
