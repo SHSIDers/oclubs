@@ -69,8 +69,13 @@ def personalsubmitinfo():
     if request.form['name']:
         current_user.nickname = request.form['name']
     current_user.email = request.form['email']
+
     phone = request.form['phone']
-    current_user.phone = None if phone == 'None' else phone
+    try:
+        phone = int(phone)
+    except ValueError:
+        phone = None
+    current_user.phone = phone
     if 'picture' in request.form:
         pic = int(request.form['picture'])
         if -pic in range(1, 21):
