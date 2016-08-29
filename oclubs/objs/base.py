@@ -99,7 +99,7 @@ class Property(object):
                     {prop.name: prop.search(value)}
                 )
 
-            # FIXME: doesn't support multiple search_require_true
+            # multiple search_require_true support is done in _escreate
             elif prop.search_require_true:
                 if value:
                     self._escreate()
@@ -163,12 +163,15 @@ class _BaseMetaclass(type):
     def __new__(meta, name, bases, dct):
         _propsdb = {}
         _esfields = []
+        _es_require_true = []
 
         for key, value in dct.items():
             if isinstance(value, Property):
                 _propsdb[value.dbname] = key
                 if value.search:
                     _esfields.append(key)
+                if value.search_require_true:
+                    _es_require_true.append(key)
 
                 value.name = key
             if isinstance(value, ListProperty):
@@ -229,9 +232,13 @@ class _BaseMetaclass(type):
             dct['search'] = search
 
             def _escreate(self):
+                for field in _es_require_true:
+                    if not getattr(self, field):
+                        return
+
                 _esdata = {}
                 for field in _esfields:
-                    _esdata[field] = dct[field].search(self._cache[field])
+                    _esdata[field] = dct[field].search(getattr(self, field))
 
                 elasticsearch.create(self.table, self.id, _esdata)
 
