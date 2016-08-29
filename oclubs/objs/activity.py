@@ -182,3 +182,10 @@ class Activity(BaseObject):
     @classmethod
     def all_activities(cls):
         return cls.get_activities_conditions()
+
+    @classmethod
+    def thisweek_activities(cls):
+        weekday = date.today().weekday()
+        today = date.today()
+        return cls.get_activities_conditions(
+            dates=(today - timedelta(weekday + 1), today + timedelta(6 - weekday)))

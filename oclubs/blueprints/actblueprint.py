@@ -314,6 +314,20 @@ def allactivitiesinfo():
 
     return download_xlsx('All Activities\' Info.xlsx', info)
 
+@actblueprint.route('/info_download_thisweek')
+@special_access_required
+@fresh_login_required
+def thisweek_activitiesinfo():
+    '''Allow admin to download all activities' info'''
+    info = []
+    info.append(('Activity ID', 'Name', 'Club', 'Date', 'Time (Type)',
+                 'Location', 'CAS Hours'))
+    info.extend([(act.id, act.name, act.club.name,
+                  act.date.strftime('%b-%d-%y'), act.time.format_name,
+                  act.location, act.cas) for act in Activity.thisweek_activities()])
+
+    return download_xlsx('This week\'s Activities\' Info.xlsx', info)
+
 
 @actblueprint.route('/check_hongmei_schedule/download', methods=['POST'])
 @special_access_required

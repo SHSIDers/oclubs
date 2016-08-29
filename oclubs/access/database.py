@@ -43,7 +43,7 @@ def ___parse_cond(cond):
     elif op.lower() == 'range':
         # [lo, hi)
         var, (lo, hi) = conds
-        return __parse_cond('and', ('>=', var, lo), ('<', var, hi))
+        return __parse_cond(('and', ('>=', var, lo), ('<', var, hi)))
     elif op.lower() == 'in':
         var, const = conds
         const = ','.join([_encode(elemt) for elemt in const])
