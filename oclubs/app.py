@@ -356,7 +356,7 @@ def contactcreators_submit():
                   'sender_contact': sender_contact,
                   'content': content}
     contents = render_email_template('contactcreators', parameters)
-    email.send('creators@oclubs.shs.cn', 'Contact Creators', contents)
+    email.send(('creators@oclubs.shs.cn',), 'Contact Creators', contents)
     flash('The information has been successfully sent to creators.',
           'contact_creators')
     return redirect(url_for('.contactcreators'))
@@ -386,7 +386,7 @@ def contactadmin_submit():
                   str(current_user.phone),
                   'content': content}
     contents = render_email_template('contactadmin', parameters)
-    email.send('clubsadmin@oclubs.shs.cn', 'Contact Admin', contents)
+    email.send(('clubsadmin@oclubs.shs.cn',), 'Contact Admin', contents)
     flash('The information has been successfully sent to adminstrators.',
           'contact_admin')
     return redirect(url_for('.contactadmin'))
