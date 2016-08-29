@@ -83,7 +83,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-				<form action="{{ url_for('clubblueprint.clubintro_submit', club=g.club.callsign) }}" method="post">
+				<form action="{{ url_for('clubblueprint.clubintro_submit', club=g.club.callsign) }}" method="post" class="inline">
 					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 					<input type="submit" class="btn btn-primary" value="Join">
 				</form>
