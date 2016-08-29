@@ -7,7 +7,7 @@ Below is the information:
 Name: {{ act.name }}
 Club: {{ act.club.name }}
 Date: {{ act.date }}
-Time: {{ act.time }}
+Time: {{ act.time.format_name }}
 Location: {{ act.location }}
 CAS hour: {{ act.cas }}
 
