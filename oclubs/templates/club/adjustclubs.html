@@ -33,7 +33,7 @@
 					<form action="{{ url_for('.adjustclubs_submit') }}" method="post">
 						<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 						<input type="hidden" name="clubid" value="{{ club.id }}">
-						<input class="tinytext" type="submit" class="btn btn-warning" value="Adjust Excellence">
+						<input class="tinytext btn btn-warning" type="submit" value="Adjust Excellence">
 					</form>
 				</td>
 			</tr>
