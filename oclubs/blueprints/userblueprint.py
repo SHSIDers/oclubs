@@ -221,7 +221,7 @@ def disableaccounts_submit():
 @fresh_login_required
 def changepassword():
     '''Allow admin to change users' password'''
-    users = User.allusers()
+    users = User.allusers(non_teachers=True)
     return render_template('user/changepassword.html',
                            users=users)
 

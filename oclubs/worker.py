@@ -135,7 +135,7 @@ def _user_refresh(u, authority):
 
 @app.task()
 @handle_app_context
-def _create_account(authority, _type='STUDENT'):
+def _create_account(authority, _type='STUDENT', haspassword=True):
     u = User.new()
     u.studentid = ''
     u.passportname = ''
@@ -144,19 +144,15 @@ def _create_account(authority, _type='STUDENT'):
     u.grade = None
     u.currentclass = None
     _user_refresh(u, authority)
-    password = User.generate_password()
+    password = User.generate_password() if haspassword else None
     u.password = password
     u.nickname = u.passportname
     u.picture = Upload(-1)
     u.type = UserType[_type]
     u.create(True)
 
-    parameters = {'user': u, 'password': password}
-    contents = render_email_template('newuser', parameters)
-    u.email_user('Welcome to oClubs', contents)
-    u.notify_user('Welcome to oClubs!')
-
-    redis.RedisCache('tempuserpw:' + str(u.id), 3600 * 48).set(password)
+    if haspassword:
+        redis.RedisCache('tempuserpw:' + str(u.id), 3600 * 48).set(password)
 
     print 'CREATED USER ID %d' % u.id
 

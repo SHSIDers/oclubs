@@ -189,6 +189,11 @@ def login_submit():
         request.form['password']
     )
     if user is not None:
+        # Just in case a teacher somehow got a valid password...
+        if user.type == UserType.TEACHER:
+            flash('Teachers may not login.', 'login')
+            return redirect(url_for('login'))
+
         login_user(user, remember=('remember' in request.form))
 
         target = request.form.get('next')
