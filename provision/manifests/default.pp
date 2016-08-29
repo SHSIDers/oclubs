@@ -327,6 +327,15 @@ file { '/srv/oclubs/secrets.ini':
     source  => '/vagrant/provision/secrets.ini'
 }
 
+file { '/srv/oclubs/siteconfig.ini':
+    ensure  => file,
+    replace => 'no',
+    mode    => '0664',
+    owner   => 'root',
+    group   => 'pythond',
+    source  => '/vagrant/provision/siteconfig.ini'
+}
+
 service { 'iptables':
     ensure => running,
     enable => true,

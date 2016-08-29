@@ -13,6 +13,7 @@ from oclubs.access import db2
 from oclubs.access import elasticsearch
 from oclubs.access import email
 from oclubs.access import redis
+from oclubs.access import siteconfig
 from oclubs.access.delay import done as delay_done
 
 
@@ -24,6 +25,6 @@ def done(commit=True):
 
 
 __all__ = [
-    'fs', 'database', 'db2', 'elasticsearch', 'get_secret', 'email', 'redis',
-    'done'
+    'fs', 'database', 'db2', 'elasticsearch', 'get_secret', 'email',
+    'siteconfig', 'redis', 'done'
 ]
