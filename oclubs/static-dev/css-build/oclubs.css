@@ -1981,46 +1981,73 @@ thead {
   }
 }
 
+#act-club-list .white.midtext {
+  margin-top: -20px;
+}
+
+@media screen and (max-width: 800px) {
+  #act-club-list .white.midtext {
+    margin-top: -10px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  #act-club-list .white.midtext {
+    margin-top: -5px;
+  }
+}
+
+@media screen and (max-width: 525px) {
+  #act-club-list .white.midtext {
+    margin-top: 0;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  #act-club-list .white.midtext {
+    margin-top: -5px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  #act-club-list .white.midtext {
+    margin-top: -10px;
+  }
+}
+
 #act-club-list .btn.refresh {
-  margin-top: -30px;
-  margin-bottom: 10px;
+  margin-bottom: 40px;
   color: #f2f2f2;
   font-weight: 700;
-  font-size: 200%;
 }
 
 @media screen and (max-width: 800px) {
   #act-club-list .btn.refresh {
-    margin-top: -20px;
-    font-size: 160%;
+    margin-bottom: 30px;
   }
 }
 
 @media screen and (max-width: 650px) {
   #act-club-list .btn.refresh {
-    margin-top: -15px;
-    font-size: 120%;
+    margin-bottom: 25px;
   }
 }
 
 @media screen and (max-width: 525px) {
   #act-club-list .btn.refresh {
-    margin-top: -10px;
-    font-size: 100%;
+    margin-bottom: 20px;
   }
 }
 
 @media screen and (max-width: 400px) {
   #act-club-list .btn.refresh {
-    margin-top: -5px;
-    font-size: 80%;
+    margin-bottom: 15px;
   }
 }
 
 @media screen and (max-width: 350px) {
   #act-club-list .btn.refresh {
-    margin-top: 0;
-    font-size: 70%;
+    margin-bottom: 10px;
   }
 }
 
