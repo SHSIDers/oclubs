@@ -92,19 +92,19 @@ class Property(object):
                 {self.identifier: self.id}
             )
 
-            if prop.search:
+            # multiple search_require_true support is done in _escreate
+            if prop.search_require_true:
+                if value:
+                    self._escreate()
+                else:
+                    elasticsearch.delete(self.table, self.id)
+
+            if prop.search and self._es_requirement_good():
                 elasticsearch.update(
                     self.table,
                     self.id,
                     {prop.name: prop.search(value)}
                 )
-
-            # multiple search_require_true support is done in _escreate
-            elif prop.search_require_true:
-                if value:
-                    self._escreate()
-                else:
-                    elasticsearch.delete(self.table, self.id)
 
             if prop.rediscached:
                 cache = redis.RedisCache(
@@ -231,10 +231,18 @@ class _BaseMetaclass(type):
 
             dct['search'] = search
 
-            def _escreate(self):
+            # Should have es index
+            def _es_requirement_good(self):
                 for field in _es_require_true:
                     if not getattr(self, field):
-                        return
+                        return False
+                return True
+
+            dct['_es_requirement_good'] = _es_requirement_good
+
+            def _escreate(self):
+                if not self._es_requirement_good():
+                    return
 
                 _esdata = {}
                 for field in _esfields:
