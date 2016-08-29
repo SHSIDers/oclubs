@@ -34,14 +34,14 @@
 	<div class="col-lg-3 col-sm-4 col-xs-6">
 		<div class="smallblock">
 			<p class="midtext">{{ club.name }}</p>
-			<p class="minitext">CAS Hours: {{ current_user.cas_in_club(club) }}</p>
+			<p class="minitext">CAS Hours: {{ current_user.cas_in_club(club)|round(1) }}</p>
 		</div>
 	</div>
 	{% endfor %}
 </div>
 <div class="clearfix"></div>
 <div class="smallblock">
-	<p class="largetext">Total CAS Hours: {{ castotal }}</p>
+	<p class="largetext">Total CAS Hours: {{ castotal|round(1) }}</p>
 </div>
 <div class="clearfix clearfix-bordered"></div>
 
