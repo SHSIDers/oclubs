@@ -216,8 +216,7 @@ class User(BaseObject, UserMixin):
     def allusers(cls, non_teachers=False):
         conds = []
         if non_teachers:
-            conds.append(('in', 'user_type',
-                          [UserType.ADMIN, UserType.STUDENT]))
+            conds.append(('!=', 'user_type', UserType.TEACHER.value))
 
         tempdata = database.fetch_onecol(
             cls.table,
