@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 #
 
-from __future__ import absolute_import, unicode_literals
+from __future__ import absolute_import, unicode_literals, division
 
 import re
 from datetime import date
@@ -50,14 +50,23 @@ class User(BaseObject, UserMixin):
         return '%s - %s' % (self.grade, self.currentclass)
 
     def cas_in_club(self, club):
-        return database.fetch_oneentry(
+        ret = database.fetch_oneentry(
             'attendance',
             database.RawSQL('SUM(act_cas)'),
             {
                 'join': [('inner', 'activity', [('act_id', 'att_act')])],
-                'where': [('=', 'att_user', self.id)],
+                'where': [
+                    ('=', 'att_user', self.id),
+                    ('=', 'act_club', club.id)
+                ],
             }
-        ) or 0
+        )
+
+        # database.fetch_oneentry returns a Decimal object, and sum
+        # Decimal with float fails
+        if ret:
+            return int(ret) / 60
+        return 0
 
     def activities_reminder(self, types, signedup_only=False):
         from oclubs.objs import Activity
