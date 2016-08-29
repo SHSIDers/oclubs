@@ -214,6 +214,20 @@ class User(BaseObject, UserMixin):
             return
 
     @classmethod
+    def find_teacher(cls, emailaddress):
+        try:
+            return cls(database.fetch_oneentry(
+                'user',
+                'user_id',
+                {
+                    'user_email': emailaddress,
+                    'user_type': UserType.TEACHER.value
+                }
+            ))
+        except NoRow:
+            return
+
+    @classmethod
     def allusers(cls, non_teachers=False):
         conds = []
         if non_teachers:
