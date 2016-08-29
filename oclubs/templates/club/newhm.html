@@ -33,26 +33,28 @@
 			<h1>Input Information</h1>
 			<label for="date">Date:</label>
 			<div class="clearfix"></div>
-			<div class="col-sm-4">
-				<select name="year" class="form-control">
-					{% for year in years %}
-					<option value="{{ year }}">{{ year }}</option>
-					{% endfor %}
-				</select>
-			</div>
-			<div class="col-sm-4">
-				<select name="month" class="form-control">
-					{% for month in range(1,13) %}
-					<option value="{{ month }}">{{ month }}</option>
-					{% endfor %}
-				</select>
-			</div>
-			<div class="col-sm-4">
-				<select name="day" class="form-control">
-					{% for day in range(1,32) %}
-					<option value="{{ day }}">{{ day }}</option>
-					{% endfor %}
-				</select>
+			<div class="row">
+				<div class="col-sm-4">
+					<select name="year" class="form-control">
+						{% for year in years %}
+						<option value="{{ year }}">{{ year }}</option>
+						{% endfor %}
+					</select>
+				</div>
+				<div class="col-sm-4">
+					<select name="month" class="form-control">
+						{% for month in range(1,13) %}
+						<option value="{{ month }}">{{ month }}</option>
+						{% endfor %}
+					</select>
+				</div>
+				<div class="col-sm-4">
+					<select name="day" class="form-control">
+						{% for day in range(1,32) %}
+						<option value="{{ day }}">{{ day }}</option>
+						{% endfor %}
+					</select>
+				</div>
 			</div>
 			<br>
 			<label for="contents">Contents:</label>
