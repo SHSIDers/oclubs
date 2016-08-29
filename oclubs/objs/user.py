@@ -46,7 +46,8 @@ class User(BaseObject, UserMixin):
 
     @property
     def grade_and_class(self):
-        return '%d - %d' % (self.grade, self.currentclass)
+        # %d cannot accept None
+        return '%s - %s' % (self.grade, self.currentclass)
 
     def cas_in_club(self, club):
         return database.fetch_oneentry(
