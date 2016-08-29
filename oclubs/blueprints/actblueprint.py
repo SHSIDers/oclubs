@@ -206,9 +206,7 @@ def hongmei_invite_submit(activity):
 @require_future_activity
 def actstatus(activity):
     '''Check Activity Status'''
-    members_num = len(activity.signup_list())  # Jinja2 doesn't have len()
-    return render_template('activity/actstatus.html',
-                           members_num=members_num)
+    return render_template('activity/actstatus.html')
 
 
 @actblueprint.route('/<activity>/signup_status/submit', methods=['POST'])

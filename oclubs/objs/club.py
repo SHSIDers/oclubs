@@ -32,13 +32,6 @@ class Club(BaseObject):
     def is_excellent(self):
         return self in self.excellentclubs()
 
-    @property
-    def members_num(self):
-        num = 0
-        for member in self.members:
-            num += 1
-        return num
-
     # We can't use @property because fails with Club.excellentclubs = []
     @classmethod
     def excellentclubs(cls, amount=None):

@@ -20,7 +20,7 @@
 		</div>
 		<div class="col-sm-9">
 			<h1>{{ club.name }}</h1>
-			<h2>Members: {{ club.members_num }}<span class="float-right">Mode: {{ club.joinmode.format_name }}</span></h2>
+			<h2>Members: {{ club.members.__len__() }}<span class="float-right">Mode: {{ club.joinmode.format_name }}</span></h2>
 			<p>Intro: {{ club.intro }}</p>
 			<div class="clearfix"></div>
 			<div class="col-sm-6">
