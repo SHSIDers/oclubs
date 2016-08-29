@@ -18,6 +18,7 @@ from oclubs.shared import (
     special_access_required, download_xlsx, read_xlsx, Pagination, fail
 )
 from oclubs.exceptions import PasswordTooShort
+from oclubs.access import siteconfig
 
 userblueprint = Blueprint('userblueprint', __name__)
 
@@ -57,9 +58,13 @@ def personal():
                                UserType=UserType)
     else:
         years = (lambda m: map(lambda n: m + n, range(2)))(date.today().year)
+        enable_cleanup = siteconfig.get_config('enable_cleanup')
+        allow_club_creation = siteconfig.get_config('allow_club_creation')
         return render_template('user/admin.html',
                                pictures=pictures,
-                               years=years)
+                               years=years,
+                               enable_cleanup=enable_cleanup,
+                               allow_club_creation=allow_club_creation)
 
 
 @userblueprint.route('/submit_info', methods=['POST'])
