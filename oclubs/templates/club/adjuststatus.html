@@ -27,9 +27,9 @@
 					<a href="{{ url_for('.clubintro', club=club.callsign) }}">{{ club.name }}</a>
 				</td>
 				<td>{% if club.is_active %}Active{% else %}Inactive{% endif %}
-				<td><label class="btn btn-primary btn-lg" for="activeness{{ club.id }}"><input type="checkbox" name="activeness" value="{{ club.id }}" form="activeness_form" id="activeness{{ club.id }}">&nbsp;Change Activeness</label></td>
+				<td><label class="btn btn-primary btn-lg" for="activeness{{ club.id }}"><input type="checkbox" name="activeness" value="{{ club.id }}" form="activeness_form" id="activeness{{ club.id }}">&nbsp;Change</label></td>
 				<td>{% if club.joinmode == ClubJoinMode.FREE_JOIN %}Free Join{% else %}By Invitation{% endif %}</td>
-				<td><label class="btn btn-primary btn-lg" for="joinmode{{ club.id }}"><input type="checkbox" name="joinmode" value="{{ club.id }}" form="activeness_form" id="joinmode{{ club.id }}">&nbsp;Change Activeness</label></td>
+				<td><label class="btn btn-primary btn-lg" for="joinmode{{ club.id }}"><input type="checkbox" name="joinmode" value="{{ club.id }}" form="activeness_form" id="joinmode{{ club.id }}">&nbsp;Change</label></td>
 			</tr>
 			{% endfor %}
 		</tbody>
