@@ -123,7 +123,7 @@ def newleader_submit(club):
             break
     else:
         assert False, 'wtf?'
-    for member in club.members:
+    for member in club.teacher_and_members:
         parameters = {'user': member, 'club': club, 'leader_old': leader_old}
         contents = render_email_template('newleader', parameters)
         member.email_user('New Leader - ' + club.name, contents)
@@ -186,7 +186,7 @@ def changeclubinfo_submit(club):
         except UploadNotSupported:
             fail('Please upload the correct file type.', 'clubinfo')
             return redirect(url_for('.changeclubinfo', club=club.callsign))
-    for member in club.members:
+    for member in club.teacher_and_members:
         parameters = {'user': member, 'club': club}
         contents = render_email_template('changeclubinfo', parameters)
         member.email_user('Change Club Info - ' + club.name, contents)
@@ -345,7 +345,7 @@ def newact_submit(club):
         fail('Please input all information to create a new activity.',
              'newact')
     else:
-        for member in club.members:
+        for member in club.teacher_and_members:
             parameters = {'member': member, 'club': club, 'act': a}
             contents = render_email_template('newact', parameters)
             member.email_user(a.name + ' - ' + club.name, contents)

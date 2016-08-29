@@ -29,6 +29,12 @@ class Club(BaseObject):
     all_act = ListProperty('activities', 'act_club', 'act_id', 'Activity')
 
     @property
+    def teacher_and_members(self):
+        ret = set(self.members)
+        ret.add(self.teacher)
+        return ret
+
+    @property
     def is_excellent(self):
         return self in self.excellentclubs()
 
