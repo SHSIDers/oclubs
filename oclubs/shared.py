@@ -274,8 +274,8 @@ class Pagination(object):
     def has_next(self):
         return self.page < self.pages
 
-    def iter_pages(self, left_edge=2, left_current=2,
-                   right_current=5, right_edge=2):
+    def iter_pages(self, left_edge=2, left_current=3,
+                   right_current=4, right_edge=2):
         last = 0
         for num in xrange(1, self.pages + 1):
             if num <= left_edge or \
@@ -283,8 +283,13 @@ class Pagination(object):
                 num < self.page + right_current) or \
                num > self.pages - right_edge:
                 if last + 1 != num:
-                    yield None
-                yield num
+                    yield {'num': None}
+                if num == 1 or num == self.pages or abs(self.page - num) < 2:
+                    yield {'num': num, 'hide': 0}  # Do not hide in phone
+                elif abs(self.page - num) < 3:
+                    yield {'num': num, 'hide': 1}  # Hide in phone secondly
+                else:
+                    yield {'num': num, 'hide': 2}  # Hide in phone firstly
                 last = num
 
 

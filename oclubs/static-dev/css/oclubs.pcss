@@ -104,10 +104,24 @@ body {
 	}
 }
 .pagination > li > a {
-       @media screen and (max-width: 500px) {
-            padding: 5px 8.5px;
-       }
+   @media screen and (max-width: 500px) {
+        padding: 5px 8.5px;
+   }
+   @media screen and (max-width: 325px) {
+        padding: 5px 7px;
+   }
 }
+.pagination > li > a.page-hide-2 {
+	@media screen and (max-width: 725px) {
+        display: none;
+   }
+}
+.pagination > li > a.page-hide-1 {
+	@media screen and (max-width: 400px) {
+        display: none;
+   }
+}
+
 .list-group .list-group-item.selected {
 	font-weight: bold;
 	background-color: var(--lightgrey);
