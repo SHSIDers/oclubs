@@ -350,7 +350,7 @@ def newact_submit(club):
             contents = render_email_template('newact', parameters)
             member.email_user(a.name + ' - ' + club.name, contents)
             member.notify_user(club.name + ' is going to host ' + a.name +
-                               ' on ' + date.strftime('%b-%d-%y') + '.')
+                               ' on ' + actdate.strftime('%b-%d-%y') + '.')
     return redirect(url_for('.newact', club=club.callsign))
 
 
