@@ -15,13 +15,14 @@
 		<p>The shorter the better.</p>
 		<br>
 		<label for="picture" class="largetext">Picture:</label>
+		<div class="clearfix"></div>
 		<input class="hide" type="file" name="picture" id="picture" accept="image/*">
 		<label for="picture" class="upload_button">
 			<span class="glyphicon glyphicon-upload"></span>
 			<span>Choose an image...</span>
 		</label>
 		<p class="upload_content" id="upload_content"></p>
-		<br>
+		<div class="clearfix"></div>
 		<br>
 		<label for="description" class="largetext">Introduction Paragraphs:</label>
 		<textarea class="form-control" rows="10" name="description" id="description">{{ g.club.description.raw }}</textarea>
