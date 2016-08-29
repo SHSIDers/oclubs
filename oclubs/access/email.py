@@ -18,6 +18,10 @@ from_email = ('no-reply@oclubs.shs.cn', 'oClubs')
 
 @delayed_func
 def send(to_email, subject, content):
+    if not get_secret('sendgrid_key'):
+        # This is a test machine
+        return
+
     try:
         if to_email[0].endswith('@gmail.com'):
             sg = sendgrid.SendGridAPIClient(apikey=get_secret('sendgrid_key'))
