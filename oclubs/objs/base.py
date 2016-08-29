@@ -27,12 +27,13 @@ REDIS_CACHE_TIME = 3600 * 24  # 1 day
 class Property(object):
     """Descriptor class."""
     def __init__(prop, dbname, ie=None, search=False, rediscached=False,
-                 error_default=Ellipsis):
+                 search_require_true=False, error_default=Ellipsis):
         super(Property, prop).__init__()
         prop.dbname = dbname
         prop.imp, prop.exp = _get_ie(ie)
         prop.search = _get_search(search, ie)
         prop.rediscached = rediscached
+        prop.search_require_true = search_require_true
         prop.error_default = error_default
 
     def __get__(prop, self, owner=None):
@@ -97,6 +98,13 @@ class Property(object):
                     self.id,
                     {prop.name: prop.search(value)}
                 )
+
+            # FIXME: doesn't support multiple search_require_true
+            elif prop.search_require_true:
+                if value:
+                    self._escreate()
+                else:
+                    elasticsearch.delete(self.table, self.id)
 
             if prop.rediscached:
                 cache = redis.RedisCache(
@@ -193,11 +201,7 @@ class _BaseMetaclass(type):
                 self._id = database.insert_row(self.table, data)
 
             if _esfields:
-                _esdata = {}
-                for field in _esfields:
-                    _esdata[field] = dct[field].search(self._cache[field])
-
-                elasticsearch.create(self.table, self.id, _esdata)
+                self._escreate()
 
             # Reload with newest data from database
             self._dbdata = None
@@ -223,6 +227,15 @@ class _BaseMetaclass(type):
                 return ret
 
             dct['search'] = search
+
+            def _escreate(self):
+                _esdata = {}
+                for field in _esfields:
+                    _esdata[field] = dct[field].search(self._cache[field])
+
+                elasticsearch.create(self.table, self.id, _esdata)
+
+            dct['_escreate'] = _escreate
 
         return super(_BaseMetaclass, meta).__new__(meta, name, bases, dct)
 

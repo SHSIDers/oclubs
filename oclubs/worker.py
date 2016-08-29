@@ -18,7 +18,6 @@ from oclubs.app import app as flask_app
 from oclubs.enums import UserType
 from oclubs.objs import Activity, Club, User, Upload
 from oclubs.objs.base import Property
-from oclubs.shared import render_email_template
 
 app = celery.Celery(
     'oclubsbackend',
@@ -168,11 +167,17 @@ def _update_account(uid, authority):
 @app.task()
 @handle_app_context
 def rebuild_elasticsearch():
-    for cls in [Activity, Club]:
+    types = {
+        Club: {
+            'conds': [('=', 'club_inactive', False)]
+        },
+        Activity: {}
+    }
+    for cls, params in types.items():
         db_ids = database.fetch_onecol(
             cls.table,
             cls.identifier,
-            {}
+            params.get('conds', [])
         )
         db_ids = set(int(x) for x in db_ids)
         db_max = max(db_ids)
