@@ -71,7 +71,7 @@ def personalsubmitinfo():
     current_user.email = request.form['email']
     phone = request.form['phone']
     current_user.phone = None if phone == 'None' else phone
-    if request.form['picture'] is not None:
+    if 'picture' in request.form:
         pic = int(request.form['picture'])
         if -pic in range(1, 21):
             current_user.picture = Upload(pic)
