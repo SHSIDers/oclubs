@@ -1,0 +1,45 @@
+{% extends "base.html" %}{% from 'macros.html' import get_messages %}
+{% block title %}Adjust Clubs' Status{% endblock %}
+{% block content %}
+
+<!-- Below Navbar -->
+<div class="container">
+	<h1 class="title">Adjust Clubs' Status</h1>
+	{{ get_messages(['adjust_status']) }}
+	<table class="table table-hover table-bordered" id="attendancetable">
+		<thead>
+			<tr>
+				<th>Club Name</th>
+				<th>Club Type</th>
+				<th>Club Link</th>
+				<th>Current Activeness</th>
+				<th>Change Activeness</th>
+				<th>Current Join Mode</th>
+				<th>Change Join Mode</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for club in clubs %}
+			<tr class="act">
+				<td>{{ club.name }}</td>
+				<td>{{ club.type.format_name }}</td>
+				<td>
+					<a href="{{ url_for('.clubintro', club=club.callsign) }}">{{ club.name }}</a>
+				</td>
+				<td>{% if club.is_active %}Active{% else %}Inactive{% endif %}
+				<td><label class="btn btn-primary btn-lg" for="activeness{{ club.id }}"><input type="checkbox" name="activeness" value="{{ club.id }}" form="activeness_form" id="activeness{{ club.id }}">&nbsp;Change Activeness</label></td>
+				<td>{% if club.joinmode == ClubJoinMode.FREE_JOIN %}Free Join{% else %}By Invitation{% endif %}</td>
+				<td><label class="btn btn-primary btn-lg" for="joinmode{{ club.id }}"><input type="checkbox" name="joinmode" value="{{ club.id }}" form="activeness_form" id="joinmode{{ club.id }}">&nbsp;Change Activeness</label></td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<center>
+	<form action="{{ url_for('.adjust_status_submit') }}" method="post" id="activeness_form">
+		<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+		<input class="btn btn-primary btn-lg" type="submit" value="Submit the Change">
+	</form>
+	</center>
+</div>
+
+{% endblock %}

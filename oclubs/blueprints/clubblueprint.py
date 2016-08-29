@@ -433,30 +433,38 @@ def newhm_submit(club):
     return redirect(url_for('.newhm', club=club.callsign))
 
 
-@clubblueprint.route('/<club>/switch_mode/submit', methods=['POST'])
-@get_callsign(Club, 'club')
-@require_active_club
+@clubblueprint.route('/adjust_status')
 @special_access_required
 @require_not_student
-def switchmode(club):
-    '''Allow club teacher to switch club's mode'''
-    if club.joinmode == ClubJoinMode.FREE_JOIN:
-        club.joinmode = ClubJoinMode.BY_INVITATION
-    elif club.joinmode == ClubJoinMode.BY_INVITATION:
-        club.joinmode = ClubJoinMode.FREE_JOIN
-    flash(club.name + '\'s mode has been successfully changed.', 'joinmode')
-    return redirect(url_for('userblueprint.personal'))
+def adjust_status():
+    '''Allow admin to change club to active'''
+    clubs = Club.allclubs(active_only=False)
+    return render_template('club/adjuststatus.html',
+                           clubs=clubs,
+                           ClubJoinMode=ClubJoinMode)
 
 
-@clubblueprint.route('/<club>/to_active/submit', methods=['POST'])
-@get_callsign(Club, 'club')
+@clubblueprint.route('/adjust_status/submit', methods=['POST'])
 @special_access_required
 @require_not_student
-def toactive(club):
-    '''Allow club teacher to change club to active'''
-    club.is_active = True
-    flash(club.name + ' is active now.', 'is_active')
-    return redirect(url_for('userblueprint.personal'))
+def adjust_status_submit():
+    '''Input change in activeness into database'''
+    ids = request.form.getlist('activeness')
+    clubs = map(Club, ids)
+    for club in clubs:
+        if club.is_active:
+            club.is_active = False
+        else:
+            club.is_active = True
+    ids = request.form.getlist('joinmode')
+    clubs = map(Club, ids)
+    for club in clubs:
+        if club.joinmode == ClubJoinMode.FREE_JOIN:
+            club.joinmode = ClubJoinMode.BY_INVITATION
+        elif club.joinmode == ClubJoinMode.BY_INVITATION:
+            club.joinmode = ClubJoinMode.FREE_JOIN
+    flash('The change in clubs\' status has been submitted.', 'adjust_status')
+    return redirect(url_for('.adjust_status'))
 
 
 @clubblueprint.route('/<club>/register_hongmei')
