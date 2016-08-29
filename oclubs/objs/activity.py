@@ -4,12 +4,14 @@
 
 from __future__ import absolute_import, unicode_literals, division
 
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 import json
 
 from oclubs.access import database
 from oclubs.enums import ActivityTime
 from oclubs.objs.base import BaseObject, Property, ListProperty, paged_db_read
+
+ONE_DAY = timedelta(days=1)
 
 
 def int_date(dateint):
@@ -145,10 +147,10 @@ class Activity(BaseObject):
                 conds['where'].append(('>', 'act_date',
                                        date_int(start or date.today())))
             else:
-                raise NotImplementedError  # range is incompatiable
-                # conds['where'].append(('range', 'act_date',
-                #                        (date_int(start or date.today()),
-                #                         date_int(end or date.today()))))
+                start = (start or date.today()) + ONE_DAY
+                end = (start or date.today()) + ONE_DAY
+                conds['where'].append(('range', 'act_date',
+                                       (date_int(start), date_int(end))))
 
         if times:
             times = [time.value for time in times]
