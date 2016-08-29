@@ -7,6 +7,7 @@ from __future__ import absolute_import, unicode_literals
 import re
 
 from elasticsearch import Elasticsearch
+from elasticsearch.exceptions import NotFoundError
 
 from oclubs.access.delay import delayed_func
 
@@ -114,7 +115,11 @@ def search(querystr, *args, **kwargs):
     if not querystr:
         return ret
 
-    result = _search(querystr, do_suggest=True, *args, **kwargs)
+    try:
+        result = _search(querystr, do_suggest=True, *args, **kwargs)
+    except NotFoundError:
+        return ret
+
     if result['hits']['hits']:
         ret['results'] = result['hits']['hits']
         ret['count'] = _search(querystr, _count_instead=True, *args, **kwargs)
