@@ -176,7 +176,7 @@ def changeclubinfo_submit(club):
         club.intro = request.form['intro']
 
     desc = request.form['description'].strip()
-    if desc != club.description:
+    if desc != club.description and desc != '':
         club.description = FormattedText.handle(current_user, club,
                                                 request.form['description'])
     if request.files['picture'].filename != '':
@@ -467,6 +467,28 @@ def adjust_status_submit():
     return redirect(url_for('.adjust_status'))
 
 
+@clubblueprint.route('/adjust_status/all_free_join', methods=['POST'])
+@special_access_required
+@require_not_student
+def adjust_status_all_free_join():
+    '''Change all clubs' join mode to free join'''
+    for club in Club.allclubs(active_only=False):
+        club.joinmode = ClubJoinMode.FREE_JOIN
+    flash('All clubs are free to join now.', 'adjust_status')
+    return redirect(url_for('.adjust_status'))
+
+
+@clubblueprint.route('/adjust_status/all_by_invitation', methods=['POST'])
+@special_access_required
+@require_not_student
+def adjust_status_all_by_invitation():
+    '''Change all clubs' join mode to free join'''
+    for club in Club.allclubs(active_only=False):
+        club.joinmode = ClubJoinMode.BY_INVITATION
+    flash('All clubs are invite-only now.', 'adjust_status')
+    return redirect(url_for('.adjust_status'))
+
+
 @clubblueprint.route('/<club>/register_hongmei')
 @get_callsign(Club, 'club')
 @login_required
@@ -563,7 +585,6 @@ def allclubsinfo():
 
 @clubblueprint.route('/new')
 @fresh_login_required
-@require_not_student
 def newclub():
     '''Allow teacher or admin to create new club'''
     return render_template('club/newclub.html',
@@ -572,32 +593,43 @@ def newclub():
 
 @clubblueprint.route('/new/submit', methods=['POST'])
 @fresh_login_required
-@require_not_student
 def newclub_submit():
     '''Upload excel file to create new clubs'''
     clubname = request.form['clubname']
-    gradeclass = request.form['gradeclass']
-    passportname = request.form['passportname']
+    email = request.form['email']
     clubtype = int(request.form['clubtype'])
-    leader = User.find_user(gradeclass, passportname)
-    true_or_fail(leader is not None, 'Please input correct student info.',
-                 'newclub')
+    location = request.form['location']
+    intro = request.form['intro']
+    description = request.form['description'].strip()
     true_or_fail(clubname, 'Please input club name.', 'newclub')
+    true_or_fail(email, 'Please input teacher\'s email address.', 'newclub')
+    true_or_fail(location, 'Please input club\'s meeting location.', 'newclub')
+    true_or_fail(intro, 'Please input club\'s one-sentence introduction.',
+                        'newclub')
+    true_or_fail(description, 'Please input club\'s paragraph description.',
+                              'newclub')
 
     if form_is_valid():
         c = Club.new()
         c.name = clubname
-        c.teacher = current_user
-        c.leader = leader
+        teacher = User.find_teacher(email)
+        if teacher is not None:
+            c.teacher = teacher
+        else:
+            fail('There is no teacher with this email address.', 'newclub')
+            return redirect(url_for('.newclub'))
+        c.leader = current_user
         c.description = FormattedText.emptytext()
-        c.location = ''
-        c.is_active = True
-        c.intro = ''
+        c.location = location
+        c.is_active = False
+        c.intro = intro
         c.picture = Upload(-101)
         c.type = ClubType(clubtype)
         c.joinmode = ClubJoinMode.FREE_JOIN
         c.create()
-        c.add_member(leader)
+        c.add_member(current_user)
+        c.description = FormattedText.handle(current_user, c,
+                                             request.form['description'])
         flash(c.name + ' has been successfully created.', 'newclub')
     return redirect(url_for('.newclub'))
 
