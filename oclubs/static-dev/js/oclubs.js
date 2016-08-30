@@ -7,9 +7,9 @@
 						.data( 'href' );
 				} );
 
-			$( 'tr.clickable > td.clickable-cell' )
+			$( 'tr.clickable > td' )
 				.wrapInner( function() {
-					return $( '<a>' )
+					return $( '<a class="clickable-a">' )
 						.attr( 'href', $( this )
 							.parent()
 							.data( 'href' )
@@ -18,7 +18,7 @@
 
 			$( 'div.clickable' )
 				.wrap( function() {
-					return $( '<a>' )
+					return $( '<a class="clickable-a">' )
 						.attr( 'href', $( this )
 							.data( 'href' )
 						);

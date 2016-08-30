@@ -23,7 +23,7 @@
 			<tbody>
 				{% for act in acts %}
 				<tr class="clickable act" data-href="{{ url_for('actblueprint.actintro', activity=act.callsign) }}">
-					<td class="clickable-cell">{{ act.name }}</td>
+					<td>{{ act.name }}</td>
 					<td>{{ act.date }}</td>
 					<td>{{ act.location }}</td>
 				</tr>

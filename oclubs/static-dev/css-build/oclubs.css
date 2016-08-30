@@ -1293,6 +1293,10 @@ body {
   cursor: pointer;
 }
 
+a.clickable-a {
+  color: inherit;
+}
+
 tbody {
   background-color: #fff;
 }
