@@ -297,7 +297,7 @@ def notifications(page):
     )
     current_user.set_notifications_readall()
     invitations_all = current_user.get_invitation()
-    num = current_user.get_unread_notifications_num() + len(invitations_all)
+    num = current_user.get_unread_notifications_num()
     return render_template('user/notifications.html',
                            notifications=notes_all[1],
                            number=num,
