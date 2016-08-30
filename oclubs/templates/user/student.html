@@ -103,14 +103,16 @@
 		<a class="btn btn-info" href="{{ url_for('clubblueprint.clublist', club_type='all') }}">Register HongMei Activities</a>
 	</center>
 </div>
+
+{% if allow_club_creation %}
 <div class="clearfix clearfix-bordered"></div>
 <br>
-
 <center>
 	<a class="btn btn-primary downloadbtn-sm" href="{{ url_for('clubblueprint.newclub') }}">I want to create a club!</a>
 </center>
-<br>
+{% endif %}
 
+<br>
 <div class="clearfix {% if leader_club %}clearfix-bordered{% endif %}"></div>
 
 {% if leader_club %}

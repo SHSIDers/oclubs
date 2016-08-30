@@ -587,7 +587,9 @@ def allclubsinfo():
 @clubblueprint.route('/new')
 @fresh_login_required
 def newclub():
-    '''Allow teacher or admin to create new club'''
+    '''Allow student to create new club'''
+    if not siteconfig.get_config('allow_club_creation'):
+        abort(403)
     return render_template('club/newclub.html',
                            clubtype=ClubType)
 
@@ -596,6 +598,8 @@ def newclub():
 @fresh_login_required
 def newclub_submit():
     '''Upload excel file to create new clubs'''
+    if not siteconfig.get_config('allow_club_creation'):
+        abort(403)
     clubname = request.form['clubname']
     email = request.form['email']
     clubtype = int(request.form['clubtype'])

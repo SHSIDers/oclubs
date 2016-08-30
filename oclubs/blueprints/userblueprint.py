@@ -28,6 +28,7 @@ userblueprint = Blueprint('userblueprint', __name__)
 def personal():
     '''Student Personal Page'''
     pictures = [Upload(-num) for num in range(1, 21)]
+    allow_club_creation = siteconfig.get_config('allow_club_creation')
     if current_user.type == UserType.STUDENT:
         clubs = current_user.clubs
         castotal = sum(current_user.cas_in_club(club)
@@ -49,13 +50,8 @@ def personal():
                                castotal=castotal,
                                meetings=meetings,
                                activities=activities,
-                               leader_club=leader_club)
-    elif current_user.type == UserType.TEACHER:
-        myclubs = Club.get_clubs_special_access(current_user)
-        return render_template('user/teacher.html',
-                               pictures=pictures,
-                               myclubs=myclubs,
-                               UserType=UserType)
+                               leader_club=leader_club,
+                               allow_club_creation=allow_club_creation)
     else:
         years = (lambda m: map(lambda n: m + n, range(2)))(date.today().year)
         return render_template('user/admin.html',
