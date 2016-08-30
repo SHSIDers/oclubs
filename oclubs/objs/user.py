@@ -49,6 +49,10 @@ class User(BaseObject, UserMixin):
         # %d cannot accept None
         return '%s - %s' % (self.grade, self.currentclass)
 
+    @property
+    def is_disabled(self):
+        return not self._data['password']
+
     def cas_in_club(self, club):
         ret = database.fetch_oneentry(
             'attendance',

@@ -19,6 +19,7 @@
 		</thead>
 		<tbody>
 			{% for user in users %}
+			{% if not user.is_disabled %}
 			<tr class="act">
 				<td>
 					<img src="{{ user.picture.location_external }}" class="img-responsive img-thumbnail" alt="{{ user.nickname }}" table-photo>
@@ -34,6 +35,7 @@
 					</form>
 				</td>
 			</tr>
+			{% endif %}
 			{% endfor %}
 		</tbody>
 	</table>

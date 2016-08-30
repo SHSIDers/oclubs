@@ -153,7 +153,7 @@ def i_am_a_teapot(e=None):
 def load_user(user_id):
     try:
         user = User(int(user_id))
-        assert user.nickname
+        assert user.nickname and not user.is_disabled
         return user
     except Exception:
         return None
