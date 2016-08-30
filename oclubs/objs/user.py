@@ -146,11 +146,17 @@ class User(BaseObject, UserMixin):
             pass
 
     def get_unread_notifications_num(self):
-        return database.fetch_oneentry(
+        noti = database.fetch_oneentry(
             'notification',
             database.RawSQL('COUNT(*)'),
             {'notification_user': self.id, 'notification_isread': False}
         )
+        invi = database.fetch_oneentry(
+            'invitation',
+            database.RawSQL('COUNT(*)'),
+            {'invitation_user': self.id}
+        )
+        return noti + invi
 
     def get_invitation(self):
         from oclubs.objs import Club
