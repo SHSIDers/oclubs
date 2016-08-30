@@ -25,7 +25,7 @@
 	<br>
 	{% for result in results %}
 	<a href="{% if search_type == 'club' %}{{ url_for('clubblueprint.clubintro', club=result.obj.callsign) }}{% else %}{{ url_for('actblueprint.actintro', activity=result.obj.callsign) }}{% endif %}">
-	<div class="search_block clickable">
+	<div class="search_block">
 		<h1>{{ result.name }}{% if result.date %} - <span class="comment">{{ result.date }}</span>{% endif %}</h1>
 		{% if result.pic %}
 		<div class="col-xs-2">

@@ -7,6 +7,23 @@
 						.data( 'href' );
 				} );
 
+			$( 'tr.clickable > td.clickable-cell' )
+				.wrapInner( function() {
+					return $( '<a>' )
+						.attr( 'href', $( this )
+							.parent()
+							.data( 'href' )
+						);
+				} );
+
+			$( 'div.clickable' )
+				.wrap( function() {
+					return $( '<a>' )
+						.attr( 'href', $( this )
+							.data( 'href' )
+						);
+				} );
+
 			$( '#updatecheck' )
 				.click( function() {
 					var checked = $( '#leader_radio input[type=radio]:checked' );

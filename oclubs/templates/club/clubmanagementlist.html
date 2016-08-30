@@ -17,10 +17,10 @@
 		<tbody>
 			{% for club in clubs %}
 			<tr class="clickable act" data-href="{{ url_for('.club', club=club.callsign) }}">
-				<td>
+				<td class="clickable-cell">
 					<img src="{{ club.picture.location_external }}" class="img-responsive img-thumbnail table-photo" alt="{{ club.name }}">
 				</td>
-				<td>{{ club.name }}</td>
+				<td class="clickable-cell">{{ club.name }}</td>
 				<td>{{ club.leader.nickname }}</td>
 				<td>{{ club.teacher.nickname }}</td>
 			</tr>
