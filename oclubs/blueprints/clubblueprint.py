@@ -673,35 +673,3 @@ def adjustclubs_submit():
     Club.set_excellentclubs(exc_clubs)
     flash('The change has been successfully submitted', 'adjustclubs')
     return redirect(url_for('.adjustclubs'))
-
-
-@clubblueprint.route('/allow_new_club_creation', methods=['POST'])
-@special_access_required
-@fresh_login_required
-def allow_new_club_creation():
-    '''Admin function: allow new club creation'''
-    allow_club_creation = siteconfig.get_config('allow_club_creation')
-    if allow_club_creation:
-        siteconfig.set_config('allow_club_creation', False)
-        flash('Now club creation is not allowed.', 'club_creation')
-    else:
-        siteconfig.set_config('allow_club_creation', True)
-        flash('Now club creation is allowed.', 'club_creation')
-    return redirect(url_for('userblueprint.personal'))
-
-
-@clubblueprint.route('/enable_cleanup', methods=['POST'])
-@special_access_required
-@fresh_login_required
-def enable_cleanup():
-    '''Admin function: enable cleanup script'''
-    enable_cleanup = siteconfig.get_config('enable_cleanup')
-    if enable_cleanup:
-        siteconfig.set_config('enable_cleanup', False)
-        flash('Auto-cleanup of inactive clubs with no activity is off.',
-              'enable_cleanup')
-    else:
-        siteconfig.set_config('enable_cleanup', True)
-        flash('Auto-cleanup of inactive clubs with no activity is on.',
-              'enable_cleanup')
-    return redirect(url_for('userblueprint.personal'))

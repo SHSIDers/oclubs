@@ -4,22 +4,37 @@
 
 from ConfigParser import ConfigParser
 
-from oclubs.access.delay import delayed_func
+from flask import g
 
 FILENAME = '/srv/oclubs/siteconfig.ini'
 
 
+def done(commit=True):
+    if g.get('siteconfigParser', None):
+        if commit:
+            if g.get('siteconfigHasWrites', False):
+                with open(FILENAME, 'w') as configfile:
+                    g.siteconfigParser.write(configfile)
+        g.siteconfigParser = None
+        del g.siteconfigParser
+        g.siteconfigHasWrites = None
+        del g.siteconfigHasWrites
+
+
+def _get_parser():
+    if g.get('siteconfigParser', None):
+        return g.siteconfigParser
+
+    g.siteconfigParser = ConfigParser()
+    g.siteconfigParser.read(FILENAME)
+    return g.siteconfigParser
+
+
 def get_config(name):
-    config = ConfigParser()
-    config.read(FILENAME)
-    return config.getboolean('siteconfig', name)
+    return _get_parser().getboolean('siteconfig', name)
 
 
-@delayed_func
 def set_config(name, value):
-    config = ConfigParser()
-    config.read(FILENAME)
-    config.set('siteconfig', name, value)
-
-    with open(FILENAME, 'w') as configfile:
-        config.write(configfile)
+    # ConfigParser stores bool in memory, and getboolean expects string
+    _get_parser().set('siteconfig', name, str(int(value)))
+    g.siteconfigHasWrites = True

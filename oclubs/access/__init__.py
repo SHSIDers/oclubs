@@ -21,6 +21,7 @@ def done(commit=True):
     database.done(commit)
     redis.done(commit)
     fs.done(commit)
+    siteconfig.done(commit)
     delay_done(commit)
 
 

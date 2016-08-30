@@ -1,0 +1,27 @@
+{% extends "base.html" %}{% from 'macros.html' import get_messages %}
+{% block title %}Change Club Info{% endblock %}
+{% block content %}
+
+<!-- Below Navbar -->
+<div class="container">
+	<h1 class="title">Adjust Site Configuration</h1>
+	<h2 class="title_next">Please do this with caution</h2>
+
+	{{ get_messages(['siteconfig']) }}
+	{% for key, value in types.items() %}
+	<p class="largetext white">{{ value.name }}:</p>
+	<p class="smalltext white">{{ value.desc }}</p>
+	{% with current = siteconfig.get_config(key) %}
+	<p class="midtext white">Current Status: {{ value.bool[not current] }}</p>
+	<form class="form-group white" action="{{ url_for('.edit_siteconfig_sumbit') }}" method="post">
+		<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+		<input name="config_type" type="hidden" value="{{ key }}">
+		<input type="submit" class="btn btn-primary btn-lg" value="Change">
+	</form>
+	{% endwith %}
+	{% endfor %}
+</div>
+
+<div class="clearfix"></div>
+
+{% endblock %}

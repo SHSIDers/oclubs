@@ -67,10 +67,7 @@
 	<a class="btn btn-warning" href="{{ url_for('.download_new_passwords') }}">Download New Accounts' Passwords</a>
 </div>
 <div class="admin_button">
-	<button class="btn btn-warning" data-toggle="modal" data-target="#enable_cleanup">Enable Auto-Cleanup of Inactive Clubs</button>
-</div>
-<div class="admin_button">
-	<button class="btn btn-warning" data-toggle="modal" data-target="#allow_new_club">Allow New Club Creation</button>
+	<a class="btn btn-warning" href="{{ url_for('.edit_siteconfig') }}">Adjust Site Configuration</a>
 </div>
 
 <div id="confirm_refresh" class="modal fade" role="dialog">
@@ -156,52 +153,6 @@
 		</div>
 	</div>
 </div>
-
-<div id="enable_cleanup" class="modal fade" role="dialog">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Enable Auto-Cleanup of Inactive Clubs</h4>
-			</div>
-			<div class="modal-body">
-				<p>Current Cleanup Status: {% if enable_cleanup %}Enabled{% else %}Disabled{% endif %}
-				<p>If cleanup status is enabled, then inactive clubs with no activities will be removed from the database. If cleanup status is disabled, then there will be no auto-cleanup.</p>
-				<p>We recommend turning on auto-cleanup after the beginning of the semester.</p>
-			</div>
-			<div class="modal-footer">
-				<button class="btn btn-success float-left" data-dismiss="modal">Cancel</button>
-				<form action="{{ url_for('clubblueprint.enable_cleanup') }}" method="post">
-					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-					<input type="submit" class="btn btn-danger" value="Change Status">
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div id="allow_new_club" class="modal fade" role="dialog">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Club Creation</h4>
-			</div>
-			<div class="modal-body">
-				<p>Current Club Creation Status: {% if allow_club_creation %}Allowed{% else %}Not Allowed{% endif %}
-				<p>If club creation is allowed, any student can create an inactive club, which can be set to active by admin. If club creation is not allowed, no student can create new club.</p>
-			</div>
-			<div class="modal-footer">
-				<button class="btn btn-success float-left" data-dismiss="modal">Cancel</button>
-				<form action="{{ url_for('clubblueprint.allow_new_club_creation') }}" method="post">
-					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-					<input type="submit" class="btn btn-danger" value="Change Status">
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
-
 
 <div class="modal fade" id="act_download" role="dialog">
 	<div class="modal-dialog">

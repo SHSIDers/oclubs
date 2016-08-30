@@ -58,13 +58,9 @@ def personal():
                                UserType=UserType)
     else:
         years = (lambda m: map(lambda n: m + n, range(2)))(date.today().year)
-        enable_cleanup = siteconfig.get_config('enable_cleanup')
-        allow_club_creation = siteconfig.get_config('allow_club_creation')
         return render_template('user/admin.html',
                                pictures=pictures,
-                               years=years,
-                               enable_cleanup=enable_cleanup,
-                               allow_club_creation=allow_club_creation)
+                               years=years)
 
 
 @userblueprint.route('/submit_info', methods=['POST'])
@@ -328,3 +324,51 @@ def invitation_reply():
         flash('You have declined the invitation of %s.' % club.name, 'reply')
     current_user.delete_invitation(club)
     return redirect(url_for('.notifications'))
+
+
+@userblueprint.route('/siteconfig')
+@special_access_required
+@fresh_login_required
+def edit_siteconfig():
+    types = {
+        'allow_club_creation': {
+            'name': 'Allow Student to Create Club Proposals',
+            'desc': 'When this is allowed, students may propose clubs, '
+                    'with themselves as leader, but they may not create '
+                    'activities for the club before they are approved '
+                    '(set to active). When this is not allowed, no one may '
+                    'create new clubs.',
+            'bool': ('Allowed', 'Not Allowed')
+        },
+        'enable_cleanup': {
+            'name': 'Enable Auto-Cleanup',
+            'desc': 'When this is enabled, an auto cleanup script will run '
+                    'weekly to delete old activities, inactive clubs with no '
+                    'activities left, disabled accounts without being a '
+                    'leader of any club, etc. Allowing Club Creation implies '
+                    'this disabled.',
+            'bool': ('Enabled', 'Disabled')
+        }
+    }
+    return render_template('user/siteconfig.html',
+                           siteconfig=siteconfig,
+                           types=types)
+
+
+@userblueprint.route('/siteconfig', methods=['POST'])
+@special_access_required
+@fresh_login_required
+def edit_siteconfig_sumbit():
+    '''Admin function: allow new club creation'''
+    config_type = request.form['config_type']
+
+    current = not siteconfig.get_config(config_type)
+    siteconfig.set_config(config_type, current)
+
+    # Check dependencies
+    if siteconfig.get_config('allow_club_creation'):
+        siteconfig.set_config('enable_cleanup', False)
+
+    flash('Site configuration has been updated, please check the changes.',
+          'siteconfig')
+    return redirect(url_for('.edit_siteconfig'))
