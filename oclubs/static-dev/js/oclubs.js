@@ -3,7 +3,7 @@
 		.ready( function() {
 			$( '.clickable' )
 				.click( function() {
-					window.document.location = $( this )
+					window.location = $( this )
 						.data( 'href' );
 				} );
 
@@ -126,7 +126,7 @@
 
 			$( '.large_container select.mobileselect' )
 				.change( function() {
-					window.document.location = this.value;
+					window.location = this.value;
 				} );
 		} );
 } )( jQuery );
