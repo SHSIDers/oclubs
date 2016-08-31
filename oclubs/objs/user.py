@@ -263,7 +263,7 @@ class User(BaseObject, UserMixin):
     def get_new_passwords(cls):
         return [(
             cls(int(key.split(':')[-1])),
-            redis.RedisCache(key).detach().get()
+            redis.RedisCache(key, 0).detach().get()
         ) for key in redis.r.keys('tempuserpw:*')]
 
     @staticmethod
