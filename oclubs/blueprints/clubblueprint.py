@@ -138,8 +138,8 @@ def newleader_submit(club):
 @require_membership
 def memberinfo(club):
     '''Check Members' Info'''
-    has_access = (current_user.id == club.leader.id or
-                  current_user.id == club.teacher.id or
+    has_access = (current_user == club.leader or
+                  current_user == club.teacher or
                   current_user.type == UserType.ADMIN)
     return render_template('club/memberinfo.html',
                            has_access=has_access)
@@ -577,7 +577,7 @@ def allclubsinfo():
     info.append(('Club ID', 'Name', 'Leader', 'Teacher', 'Introduction',
                  'Location', 'Is Active or Not', 'Type'))
     info.extend([(club.id, club.name, club.leader.passportname,
-                  club.teacher.passportname, club.intro, club.location,
+                  club.teacher.email, club.intro, club.location,
                   str(club.is_active), club.type.format_name)
                  for club in Club.allclubs()])
 

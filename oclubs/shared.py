@@ -103,10 +103,10 @@ def special_access_required(func):
                 abort(403)  # Admin-only page
 
             if current_user.type == UserType.TEACHER:
-                if current_user.id != club.teacher.id:
+                if current_user != club.teacher:
                     abort(403)
             else:
-                if current_user.id != club.leader.id:
+                if current_user != club.leader:
                     abort(403)
         return func(*args, **kwargs)
 

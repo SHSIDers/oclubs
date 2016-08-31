@@ -9,8 +9,6 @@ Club Name: {{ club.name }}
 
 Club Leader: {{ club.leader.nickname }}
 
-Club Teacher: {{ club.teacher.nickname }}
-
 Club Intro: {{ club.intro }}
 
 

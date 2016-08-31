@@ -244,7 +244,22 @@ class User(BaseObject, UserMixin):
                 }
             ))
         except NoRow:
-            return
+            # Dynamically create a new teacher
+            from oclubs.objs import Upload
+
+            ret = cls.new()
+            ret.studentid = emailaddress
+            ret.passportname = 'Teacher'
+            ret.password = None
+            ret.nickname = 'Teacher'
+            ret.email = emailaddress
+            ret.phone = None
+            ret.picture = Upload(-101)
+            ret.type = UserType.TEACHER
+            ret.grade = None
+            ret.currentclass = None
+
+            return ret.create()
 
     @classmethod
     def allusers(cls, non_teachers=False):

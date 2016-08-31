@@ -120,41 +120,6 @@ def allusersinfo():
     return download_xlsx('All Users\' Info.xlsx', info)
 
 
-@userblueprint.route('/new_teachers')
-@special_access_required
-@fresh_login_required
-def newteachers():
-    '''Allow admin to create new user or clubs'''
-    return render_template('user/newteachers.html')
-
-
-@userblueprint.route('/new_teachers/submit', methods=['POST'])
-@special_access_required
-@fresh_login_required
-def newteachers_submit():
-    '''Create new teacher accounts with xlsx'''
-    if request.files['excel'].filename == '':
-        fail('Please upload an excel file.', 'newteachers')
-        return redirect(url_for('.newteachers'))
-    try:
-        contents = read_xlsx(request.files['excel'], 'Teachers',
-                             ['ID', 'Official Name', 'Email Address'])
-    except KeyError:
-        fail('Please change sheet name to "Teachers"', 'newteachers')
-        return redirect(url_for('.newteachers'))
-    except ValueError:
-        fail('Please input in the correct order.', 'newteachers')
-        return redirect(url_for('.newteachers'))
-
-    from oclubs.worker import handle_teacher_xlsx
-    for each in contents:
-        handle_teacher_xlsx.delay(*each)
-
-    flash('New teacher accounts have been successfully created. '
-          'Their passwords have been sent to their accounts.', 'newteachers')
-    return redirect(url_for('.newteachers'))
-
-
 @userblueprint.route('/refresh_users/submit', methods=['POST'])
 @special_access_required
 @fresh_login_required
@@ -256,7 +221,7 @@ def forgotpw():
 @fresh_login_required
 def changeuserinfo():
     '''Allow admin to change users' information'''
-    users = User.allusers()
+    users = User.allusers(non_teachers=True)
     return render_template('user/changeuserinfo.html',
                            users=users)
 

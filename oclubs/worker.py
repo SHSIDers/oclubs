@@ -95,20 +95,20 @@ def refresh_user():
                 assert False  # This is an impossibility
 
 
-@app.task()
-@handle_app_context
-def handle_teacher_xlsx(tid, offname, emailadd):
-    authority = {
-        'UNIONID': tid,
-        'NAMEEN': offname,
-        'EMAILADDRESS': emailadd
-    }
-
-    u = User.find_user(tid, offname)
-    if u:
-        _update_account.delay(u.id, authority)
-    else:
-        _create_account.delay(authority, _type='TEACHER')
+# @app.task()
+# @handle_app_context
+# def handle_teacher_xlsx(tid, offname, emailadd):
+#     authority = {
+#         'UNIONID': tid,
+#         'NAMEEN': offname,
+#         'EMAILADDRESS': emailadd
+#     }
+#
+#     u = User.find_user(tid, offname)
+#     if u:
+#         _update_account.delay(u.id, authority)
+#     else:
+#         _create_account.delay(authority, _type='TEACHER')
 
 
 @app.task()
