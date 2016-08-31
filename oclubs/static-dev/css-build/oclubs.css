@@ -2918,6 +2918,10 @@ thead {
   padding: 5%;
 }
 
+#a-shsid {
+  z-index: 100;
+}
+
 @media screen and (max-width: 992px) {
   .col-md-10 > center > img {
     max-width: 60%;
