@@ -1974,14 +1974,17 @@ thead {
 	}
 }
 
-/*#stuclubmeeting:after {
+#stuclubmeeting::after {
+	/* required to guarantee that the vertical border between
+	#stuclubmeeting and #stuactlist always extends to the very bottom */
 	@media screen and (min-width: 992px) {
 		content: "";
 		position: absolute;
-		bottom: 0; top: 0; left: 0; right: -4px;
+		bottom: 0; top: 0; left: 100%; right: -4px;
 		border-right:4px solid var(--white);
 	}
-} FIXME: Breaks clickable */
+} 
+
 #stuactlist {
 	border-color: var(--white);
 	border-left-style: solid;
