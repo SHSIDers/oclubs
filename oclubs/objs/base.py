@@ -277,7 +277,9 @@ class BaseObject(object):
 
     @property
     def callsign(self):
-        return str(self.id) + '_' + self.name.replace(' ', '_')
+        return str(self.id) + '_' + (self.name
+                                     .replace(' ', '_')
+                                     .replace('/', '-'))
 
     @classmethod
     def new(cls):
