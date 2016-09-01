@@ -187,6 +187,12 @@ def changeclubinfo_submit(club):
         except UploadNotSupported:
             fail('Please upload the correct file type.', 'clubinfo')
             return redirect(url_for('.changeclubinfo', club=club.callsign))
+    teacher_email = request.form['email']
+    if teacher_email != club.teacher.studentid:
+        club.teacher = User.find_teacher(teacher_email)
+    location = request.form['location']
+    if location != club.location and location != '':
+        club.location = location
     for member in club.teacher_and_members:
         parameters = {'user': member, 'club': club}
         contents = render_email_template('changeclubinfo', parameters)
@@ -635,7 +641,7 @@ def newclub_submit():
         c.add_member(current_user)
         c.description = FormattedText.handle(current_user, c,
                                              request.form['description'])
-        flash('Your request for creating %s has been successfully submitted.' % c.name, 'newclub')
+        flash('Your request for creating %s has been successfully submitted. Please wait for the administrator\'s approval.' % c.name, 'newclub')
     return redirect(url_for('.newclub'))
 
 
