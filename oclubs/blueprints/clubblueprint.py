@@ -641,7 +641,7 @@ def newclub_submit():
         c.add_member(current_user)
         c.description = FormattedText.handle(current_user, c,
                                              request.form['description'])
-        flash('Your request for creating %s has been successfully submitted. Please wait for the administrator\'s approval.' % c.name, 'newclub')
+        flash('Your request for creating %s has been successfully submitted. Please wait for Mr.Ma\'s approval.' % c.name, 'newclub')
     return redirect(url_for('.newclub'))
 
 
