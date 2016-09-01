@@ -181,7 +181,7 @@ def is_safe_url(target):
 
 
 def is_login_related(target):
-    return target in (url_for('login'), url_for('userblueprint.forgotpw'))
+    return target in map(url_for, ['login', 'userblueprint.forgotpw'])
 
 
 @app.route('/login/submit', methods=['POST'])
