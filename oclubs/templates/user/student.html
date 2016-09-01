@@ -8,6 +8,9 @@
 	<div class="col-lg-3 col-sm-4 col-xs-6">
 		<a class="smallblock" href="{{ url_for('clubblueprint.clubintro', club=club.callsign) }}"><img src="{{ club.picture.location_external }}" class="img-responsive" alt="">
 			<p class="midtext">{{ club.name }}</p>
+			{% if not club.is_active %}
+			<p class="minitext">(Inactive)</p>
+			{% endif %}
 		</a>
 	</div>
 	{% endfor %}
