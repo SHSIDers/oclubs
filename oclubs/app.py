@@ -180,6 +180,10 @@ def is_safe_url(target):
             ref_url.netloc == test_url.netloc)
 
 
+def is_login_related(target):
+    return url_for('login') == target or url_for('userblueprint.forgotpw') == target
+
+
 @app.route('/login/submit', methods=['POST'])
 def login_submit():
     '''API to login'''
@@ -196,7 +200,7 @@ def login_submit():
         login_user(user, remember=('remember' in request.form))
 
         target = request.form.get('next')
-        if not target or not is_safe_url(target):
+        if not target or not is_safe_url(target) or is_login_related(target):
             return redirect(url_for('userblueprint.personal'))
         return redirect(target)
     else:
