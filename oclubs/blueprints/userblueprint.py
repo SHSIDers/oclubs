@@ -77,6 +77,11 @@ def personalsubmitinfo():
         pic = int(request.form['picture'])
         if -pic in range(1, 21):
             current_user.picture = Upload(pic)
+    receive_email = request.form['receive_email']
+    if receive_email == 'yes':
+        current_user.set_preference('receive_email', True)
+    else:
+        current_user.set_preference('receive_email', False)
     flash('Your information has been successfully changed.', 'status_info')
     return redirect(url_for('.personal'))
 
