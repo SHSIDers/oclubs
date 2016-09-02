@@ -51,12 +51,15 @@
 					<label for="name">Nick Name:</label>
 					<input class="form-control" id="name" type="text" name="name" value="{{ current_user.nickname }}">
 					<br>
+
 					<label for="email">Email:</label>
 					<input class="form-control" id="email" type="email" name="email" value="{{ current_user.email }}">
 					<br>
+
 					<label for="phone">Phone Number:</label>
 					<input class="form-control" id="phone" type="text" name="phone" value="{{ current_user.phone }}">
 					<br>
+
 					<label for="picture">Profile Picture:</label>
 					<div class="clearfix"></div>
 					{% for pic in pictures %}
@@ -66,6 +69,13 @@
 					</label>
 					{% endfor %}
 					<div class="clearfix"></div>
+					<br>
+
+					<label>Do you want us to send notifications to your email address?</label>
+					<div class="clearfix"></div>
+					<label for="yes"><input type="radio" value="yes" id="yes" name="receive_email">&nbsp;Yes</label>
+					<div class="clearfix"></div>
+					<label for="no"><input type="radio" value="no" id="no" name="receive_email">&nbsp;No</label>
 				</form>
 			</div>
 			<div class="modal-footer">
