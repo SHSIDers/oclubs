@@ -144,3 +144,13 @@ CREATE TABLE IF NOT EXISTS invitation (
 );
 
 CREATE INDEX IF NOT EXISTS invitation_user ON invitation (invitation_user);
+
+
+CREATE TABLE IF NOT EXISTS preferences (
+	pref_user int NOT NULL, # Foreign key to user.user_id
+	pref_type varchar(255) NOT NULL,
+	pref_value varchar(255) NOT NULL,
+	PRIMARY KEY (pref_user, pref_type)
+);
+
+CREATE INDEX IF NOT EXISTS pref_user ON user (pref_user);
