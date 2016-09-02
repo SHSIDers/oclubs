@@ -36,7 +36,7 @@
 		{% if current_user == g.club.leader and g.club.is_active %}
 		<br>
 		<center>
-		<a class="btn btn-success btn-lg" href="{{ url_for('.club', club=g.club.callsign) }}">Manage {{ club.name }}</a>
+		<a class="btn btn-success btn-lg" href="{{ url_for('.club', club=g.club.callsign) }}">Manage {{ g.club.name }}</a>
 		</center>
 		{% endif %}
 
