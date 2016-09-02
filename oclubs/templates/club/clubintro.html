@@ -33,7 +33,7 @@
 		<p class="text-right white">Written by: {{ g.club.leader.nickname }}</p>
 		<center><img src="{{ g.club.picture.location_external }}" class="img-thumbnail" alt="Club Picture"></center>
 
-		{% if current_user is g.club.leader and club.is_active %}
+		{% if current_user == g.club.leader and club.is_active %}
 		<br>
 		<center>
 		<a class="btn btn-success btn-lg" href="{{ url_for('.club', club=g.club.callsign) }}">Manage {{ club.name }}</a>
