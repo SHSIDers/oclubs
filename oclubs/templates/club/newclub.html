@@ -29,8 +29,11 @@
 		<input type="text" class="form-control" name="location" id="location">
 		<br>
 		<label class="largetext" for="intro">Club One-Sentence Introduction:</label>
-		<input type="text" class="form-control" name="intro" id="intro">
-		<p class="smailltext">Please keep this short and precise.</p>
+		<div id="introdiv" class="form-group has-feedback">
+			<input type="text" class="form-control" name="intro" id="intro">
+			<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+			<p class="smalltext">Text limit:&nbsp;<span id="introcount">0</span>/100</p>
+		</div>
 		<br>
 		<label for="description" class="largetext">Club Paragragh Description:</label>
 		<textarea class="form-control" rows="10" name="description" id="description"></textarea>

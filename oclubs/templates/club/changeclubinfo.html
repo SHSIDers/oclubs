@@ -10,8 +10,11 @@
 		<h2 class="title_next">{{ g.club.name }}</h2>
 		{{ get_messages(['clubinfo']) }}
 		<label class="largetext" for="intro">One sentence Intro:</label>
-		<input type="text" class="form-control" name="intro" id="intro" value="{{ g.club.intro }}">
-		<p class="smailltext">Please keep this short and precise.</p>
+		<div id="introdiv" class="form-group has-feedback">
+			<input type="text" class="form-control" name="intro" id="intro" value="{{ g.club.intro }}">
+			<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+			<p class="smalltext">Text limit:&nbsp;<span id="introcount">{{ count }}</span>/100</p>
+		</div>
 		<br>
 		<label for="picture" class="largetext">Picture:</label>
 		<div class="clearfix"></div>
