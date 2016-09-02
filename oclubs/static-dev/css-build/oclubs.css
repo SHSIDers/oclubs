@@ -188,7 +188,7 @@ body {
   display: inline-block;
   float: left;
   margin-bottom: 15px;
-  padding: 15px;
+  padding: 12.5px;
   width: 100%;
   height: 120px;
   border: 1px solid #e2e2e2;
@@ -199,7 +199,7 @@ body {
 }
 
 .smallblock p {
-  margin-bottom: 5px;
+  margin-bottom: 2px;
 }
 
 .smallblock .minitext {
@@ -2100,7 +2100,7 @@ thead {
   margin: 1.25em 0;
   color: #f2f2f2;
   font-size: 150%;
-  line-height: 1.2;
+  line-height: 1.5;
 }
 
 .large_container #intropage .selection_bar {
