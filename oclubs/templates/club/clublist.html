@@ -36,7 +36,7 @@
 			{% for club in clubs %}
 			<div class="col-lg-3 col-sm-4 col-xs-6">
 				<a class="smallblock" href="{{ url_for('clubblueprint.clubintro', club=club.callsign) }}">
-					<img src="{{ club.picture.location_external }}" class="img-responsive" alt="{{ current_user.nickname }}">
+					<img src="{{ club.picture.location_external }}" class="img-responsive" alt="{{ club.name }}">
 					<p class="smalltext">{{ club.name }}</p>
 					<p class="minitext">{{ club.intro }}</p>
 				</a>
