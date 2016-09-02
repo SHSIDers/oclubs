@@ -15,7 +15,7 @@
 		<br>
 		<label class="largetext" for="email">Club Teacher's Email Address:</label>
 		<input type="email" class="form-control" name="email" id="email">
-		<p class="smailltext">Your club teacher's email address, not yours.</p>
+		<p class="smalltext">Your club teacher's email address, not yours.</p>
 		<br>
 		<label class="largetext" for="clubtype">Club Type:</label>
 		<br>
@@ -29,11 +29,8 @@
 		<input type="text" class="form-control" name="location" id="location">
 		<br>
 		<label class="largetext" for="intro">Club One-Sentence Introduction:</label>
-		<div id="introdiv" class="form-group has-feedback">
-			<input type="text" class="form-control" name="intro" id="intro">
-			<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-			<p class="smalltext">Text limit:&nbsp;<span id="introcount">0</span>/100</p>
-		</div>
+		<input type="text" class="form-control" name="intro" id="intro" maxlength="80">
+		<p>Please keep this as short and precise as possible.</p>
 		<br>
 		<label for="description" class="largetext">Club Paragragh Description:</label>
 		<textarea class="form-control" rows="10" name="description" id="description"></textarea>

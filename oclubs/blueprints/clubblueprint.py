@@ -164,7 +164,7 @@ def memberinfo_download(club):
 @special_access_required
 def changeclubinfo(club):
     '''Change Club's Info'''
-    return render_template('club/changeclubinfo.html', count=len(club.intro))
+    return render_template('club/changeclubinfo.html')
 
 
 @clubblueprint.route('/<club>/change_info/submit', methods=['POST'])
@@ -174,8 +174,8 @@ def changeclubinfo(club):
 def changeclubinfo_submit(club):
     '''Change club's info'''
     intro = request.form['intro']
-    if len(intro) > 100:
-        fail('One sentence intro should not be more than 100 characters.', 'clubinfo')
+    if len(intro) > 80:  # Just in case someone changed the html or the intro is written before the restriction
+        fail('Your one sentence intro is too long.', 'clubinfo')
         return redirect(url_for('.changeclubinfo', club=club.callsign))
     elif request.form['intro'] != '':
         club.intro = request.form['intro']
@@ -621,11 +621,11 @@ def newclub_submit():
     true_or_fail(location, 'Please input club\'s meeting location.', 'newclub')
     true_or_fail(intro, 'Please input club\'s one-sentence introduction.',
                         'newclub')
-    true_or_fail(len(intro) <= 100,
-                 'One sentence intro should not be more than 100 characters.', 'newclub')
+    # Just in case someone changed the html or the intro is written before the restriction
+    true_or_fail(len(intro) <= 80, 'Your one sentence intro is too long.', 'newclub')  
+
     true_or_fail(description, 'Please input club\'s paragraph description.',
                               'newclub')
-
     if form_is_valid():
         c = Club.new()
         c.name = clubname

@@ -145,28 +145,5 @@
 				.change( function() {
 					window.location = this.value;
 				} );
-			$( '#intro' )
-				.bind('input', function() {
-					var num = $( this )
-								.val()
-								.length;
-					$( '#introcount' )
-							.html(num);
-					if ( num > 100 ){
-						$( '#introdiv' )
-							.removeClass( 'has-success' )
-							.addClass( 'has-error' );
-						$( '.form-control-feedback')
-							.removeClass( 'glyphicon-ok' )
-							.addClass( 'glyphicon-remove' );
-					} else {
-						$( '#introdiv' )
-							.removeClass( 'has-error' )
-							.addClass( 'has-success' );
-						$( '.form-control-feedback')
-							.removeClass( 'glyphicon-remove' )
-							.addClass( 'glyphicon-ok' );
-					}
-				} );
 		} );
 } )( jQuery );
