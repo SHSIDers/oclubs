@@ -181,7 +181,7 @@ def is_safe_url(target):
 
 
 def redirect_to_personal(target):
-    return target in map(url_for, ['login', 'userblueprint.forgotpw','homepage'])
+    return target in map(url_for, ['login', 'userblueprint.forgotpw', 'homepage'])
 
 
 @app.route('/login/submit', methods=['POST'])
