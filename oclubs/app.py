@@ -330,6 +330,7 @@ def homepage():
                            pic_acts=pic_acts)
 
 
+
 @app.route('/blockpic.css')
 def gen_blockpic_css():
     css = "#blockpic-img%d{background-image:url(%s)}"
@@ -398,6 +399,12 @@ def contactadmin_submit():
     flash('The information has been successfully sent to adminstrators.',
           'contact_admin')
     return redirect(url_for('.contactadmin'))
+
+
+@app.route('/FAQ')
+def faq():
+    '''FAQ'''
+    return render_template('static/faq.html')
 
 
 if __name__ == '__main__':
