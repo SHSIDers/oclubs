@@ -44,6 +44,10 @@ class User(BaseObject, UserMixin):
 
     GRADECLASSREGEX = re.compile(r'^\s*(\d+)\s*[-_/\\]\s*(\d+)\s*$')
 
+    PREFERENCES = {
+        'receive_email': (bool, True),
+    }
+
     @property
     def grade_and_class(self):
         # %d cannot accept None
@@ -113,6 +117,26 @@ class User(BaseObject, UserMixin):
                 'notification_date': date_int(date.today())
             }
         )
+
+    def get_preference(self, name):
+        typ, default = self.PREFERENCES[name]
+
+        try:
+            ret = database.fetch_oneentry(
+                'preferences',
+                'pref_value',
+                {'pref_user': self.id, 'pref_type': name}
+            )
+        except NoRow:
+            return default
+        else:
+            return typ(ret)
+
+    def set_preference(self, name, value):
+        update = {'pref_value': value}
+        insert = {'pref_user': self.id, 'pref_type': name}
+        insert.update(update)
+        database.insert_or_update_row('preferences', insert, update)
 
     @paged_db_read
     def get_notifications(self, pager):
