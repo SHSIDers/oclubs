@@ -71,11 +71,7 @@
 					<div class="clearfix"></div>
 					<br>
 
-					<label>Do you want us to send notifications to your email address?</label>
-					<div class="clearfix"></div>
-					<label for="yes"><input type="radio" value="yes" id="yes" name="receive_email">&nbsp;Yes</label>
-					<div class="clearfix"></div>
-					<label for="no"><input type="radio" value="no" id="no" name="receive_email">&nbsp;No</label>
+					<label for="receive_email"><input type="checkbox" id="receive_email" name="receive_email" {% if receive_email %} checked="checked" {% endif %}>&nbsp;Do you want us to send notifications to your email address?</label>
 				</form>
 			</div>
 			<div class="modal-footer">

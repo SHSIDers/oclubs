@@ -29,6 +29,8 @@ def personal():
     '''Student Personal Page'''
     pictures = [Upload(-num) for num in range(1, 21)]
     allow_club_creation = siteconfig.get_config('allow_club_creation')
+    receive_email = current_user.get_preference('receive_email')
+    print receive_email
     if current_user.type == UserType.STUDENT:
         clubs = current_user.clubs
         castotal = sum(current_user.cas_in_club(club)
@@ -51,12 +53,14 @@ def personal():
                                meetings=meetings,
                                activities=activities,
                                leader_club=leader_club,
-                               allow_club_creation=allow_club_creation)
+                               allow_club_creation=allow_club_creation,
+                               receive_email=receive_email)
     else:
         years = (lambda m: map(lambda n: m + n, range(2)))(date.today().year)
         return render_template('user/admin.html',
                                pictures=pictures,
-                               years=years)
+                               years=years,
+                               receive_email=receive_email)
 
 
 @userblueprint.route('/submit_info', methods=['POST'])
@@ -77,11 +81,12 @@ def personalsubmitinfo():
         pic = int(request.form['picture'])
         if -pic in range(1, 21):
             current_user.picture = Upload(pic)
-    receive_email = request.form['receive_email']
-    if receive_email == 'yes':
+    if 'receive_email' in request.form:
         current_user.set_preference('receive_email', True)
+        print current_user.get_preference('receive_email')
     else:
         current_user.set_preference('receive_email', False)
+        print current_user.get_preference('receive_email')
     flash('Your information has been successfully changed.', 'status_info')
     return redirect(url_for('.personal'))
 

@@ -153,4 +153,4 @@ CREATE TABLE IF NOT EXISTS preferences (
 	PRIMARY KEY (pref_user, pref_type)
 );
 
-CREATE INDEX IF NOT EXISTS pref_user ON user (pref_user);
+CREATE INDEX IF NOT EXISTS pref_user ON preferences (pref_user);
