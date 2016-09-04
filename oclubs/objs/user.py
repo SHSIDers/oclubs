@@ -103,7 +103,8 @@ class User(BaseObject, UserMixin):
             )
 
     def email_user(self, title, contents):
-        if self.email and '@' in self.email:
+        if self.email and '@' in self.email \
+          and self.get_preference('receive_email'):
             email.send((self.email, self.passportname), title, contents)
 
     def notify_user(self, contents):
