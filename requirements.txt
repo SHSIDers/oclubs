@@ -38,17 +38,17 @@ Pillow==3.3.1
 pip-tools==1.7.0
 pycparser==2.14           # via cffi
 pycrypto==2.6.1
-pyexcel-io==0.2.1         # via pyexcel-xlsx
-pyexcel-xlsx==0.2.1
+pyexcel-io==0.2.2         # via pyexcel-xlsx
+pyexcel-xlsx==0.2.2
 pystache==0.5.4
 python-http-client==2.2.1  # via sendgrid
 python-magic==0.4.12
 pytz==2016.6.1            # via celery
 redis==2.10.5
-sendgrid==3.2.10
+sendgrid==3.4.0
 six==1.10.0               # via bcrypt, bleach, html5lib, pip-tools
 urllib3==1.16             # via elasticsearch
 uwsgi==2.0.13.1
-Werkzeug==0.11.10         # via flask
+Werkzeug==0.11.11         # via flask
 xkcdpass==1.8.1
 xlsxwriter==0.9.3
