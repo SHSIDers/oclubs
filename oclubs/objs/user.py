@@ -45,7 +45,7 @@ class User(BaseObject, UserMixin):
     GRADECLASSREGEX = re.compile(r'^\s*(\d+)\s*[-_/\\]\s*(\d+)\s*$')
 
     PREFERENCES = {
-        'receive_email': (bool, True),
+        'receive_email': (lambda x: bool(int(x)), True),
     }
 
     @property
