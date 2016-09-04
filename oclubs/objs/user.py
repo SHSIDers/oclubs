@@ -134,6 +134,11 @@ class User(BaseObject, UserMixin):
             return typ(ret)
 
     def set_preference(self, name, value):
+        # we don't set preferences when it is unnecessary,
+        # so users can keep a "default" state
+        if value == self.get_preference(name):
+            return
+
         update = {'pref_value': value}
         insert = {'pref_user': self.id, 'pref_type': name}
         insert.update(update)
