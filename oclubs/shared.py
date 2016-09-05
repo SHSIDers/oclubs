@@ -46,7 +46,7 @@ def download_xlsx(filename, info):
     worksheet = workbook.add_worksheet()
     row_num = 0
     col_num = 0
-    print info
+
     for row in info:
         for grid in row:
             worksheet.write(row_num, col_num, grid)
