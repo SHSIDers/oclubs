@@ -2080,6 +2080,7 @@ thead {
   }
 }
 
+#markdown-container,
 .large_container {
   margin-right: auto;
   margin-left: auto;
@@ -2088,6 +2089,7 @@ thead {
   width: 90%;
 }
 
+#markdown-container #intropage .jumbotron,
 .large_container #intropage .jumbotron {
   padding-right: 30px;
   padding-left: 30px;
@@ -2096,6 +2098,7 @@ thead {
   color: #f2f2f2;
 }
 
+#markdown-container #intropage .longdesc,
 .large_container #intropage .longdesc {
   margin: 1.25em 0;
   color: #f2f2f2;
@@ -2103,6 +2106,7 @@ thead {
   line-height: 1.5;
 }
 
+#markdown-container #intropage .selection_bar,
 .large_container #intropage .selection_bar {
   margin-bottom: 2%;
   width: 40%;
@@ -2111,15 +2115,20 @@ thead {
   font-size: 120%;
 }
 
+#markdown-container #intropage .intro_function,
 .large_container #intropage .intro_function {
   text-align: center;
 }
 
+#markdown-container #intropage .intro_function .col-sm-4,
+#markdown-container #intropage .intro_function .col-sm-6,
 .large_container #intropage .intro_function .col-sm-4,
 .large_container #intropage .intro_function .col-sm-6 {
   padding-bottom: .75em;
 }
 
+#markdown-container #intropage .intro_function .col-sm-4 .btn,
+#markdown-container #intropage .intro_function .col-sm-6 .btn,
 .large_container #intropage .intro_function .col-sm-4 .btn,
 .large_container #intropage .intro_function .col-sm-6 .btn {
   width: 80%;
@@ -2127,12 +2136,16 @@ thead {
 }
 
 @media screen and (max-width: 450px) {
+  #markdown-container #intropage .intro_function .col-sm-4,
+  #markdown-container #intropage .intro_function .col-sm-6,
   .large_container #intropage .intro_function .col-sm-4,
   .large_container #intropage .intro_function .col-sm-6 {
     padding-right: 0;
     padding-left: 0;
   }
 
+  #markdown-container #intropage .intro_function .col-sm-4 .btn,
+  #markdown-container #intropage .intro_function .col-sm-6 .btn,
   .large_container #intropage .intro_function .col-sm-4 .btn,
   .large_container #intropage .intro_function .col-sm-6 .btn {
     width: 100%;
@@ -2140,6 +2153,7 @@ thead {
   }
 }
 
+#markdown-container#allphotospage .jumbotron img,
 .large_container#allphotospage .jumbotron img {
   float: left;
   margin-right: 5%;
@@ -2148,11 +2162,13 @@ thead {
   width: 90%;
 }
 
+#markdown-container#allphotospage .jumbotron #photodesc,
 .large_container#allphotospage .jumbotron #photodesc {
   margin-right: 2em;
   margin-left: 2em;
 }
 
+#markdown-container select.mobileselect,
 .large_container select.mobileselect {
   display: none;
   padding: .5em;
@@ -2163,27 +2179,32 @@ thead {
 }
 
 @media screen and (max-width: 992px) {
+  #markdown-container select.mobileselect,
   .large_container select.mobileselect {
     display: inline-block;
     height: auto;
   }
 }
 
+#markdown-container #sidebar .list-group,
 .large_container #sidebar .list-group {
   margin-top: 50px;
 }
 
 @media screen and (max-width: 991px) {
+  #markdown-container #sidebar .list-group,
   .large_container #sidebar .list-group {
     display: none;
   }
 }
 
+#markdown-container #sidebar img,
 .large_container #sidebar img {
   width: 250px;
 }
 
 @media screen and (max-width: 768px) {
+  #markdown-container #sidebar img,
   .large_container #sidebar img {
     width: 30%;
   }
