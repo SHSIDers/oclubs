@@ -330,7 +330,6 @@ def homepage():
                            pic_acts=pic_acts)
 
 
-
 @app.route('/blockpic.css')
 def gen_blockpic_css():
     css = "#blockpic-img%d{background-image:url(%s)}"

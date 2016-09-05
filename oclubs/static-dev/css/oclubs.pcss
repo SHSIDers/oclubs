@@ -2219,9 +2219,6 @@ thead {
 	padding: 30px 20px;
 	background-color: #eee;
 	border-radius: 15px;
-	border-color: #66a3ff;
-	border-width: 3px;
-	border-style: solid;
 	margin-bottom: 30px;
 
 	@media screen and (max-width: 768px) {
@@ -2406,11 +2403,10 @@ thead {
 	z-index:100;
 }
 
-.markdown-block {
+.md-explain-block {
 	display: block;
 	padding: 9.5px;
 	margin: 0 0 10px;
-	font-size: 13px;
 	line-height: 1.42857143;
 	color: #333;
 	word-break: break-all;
@@ -2418,19 +2414,23 @@ thead {
 	background-color: #f5f5f5;
 	border: 1px solid #ccc;
 	border-radius: 4px;
+	& hr {
+		border-top: 1px solid var(--grey);
+	}
 }
 
 .inherit-font {
 	font-family: inherit;
 }
 
-.markdownlink {
-	color: white;
+.white-a {
+	color: var(--white);
 	text-decoration: underline;
 	&:hover, &:focus {
-		color: #ccc;
+		color: var(--grey);
 	}
 }
+
 
 @media screen and (max-width: 992px) {
 	/* FIXME: what is this? */
