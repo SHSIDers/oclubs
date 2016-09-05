@@ -174,7 +174,7 @@ def changeclubinfo(club):
 def changeclubinfo_submit(club):
     '''Change club's info'''
     intro = request.form['intro']
-    if len(intro) > 80:  # Just in case someone changed the html or the intro is written before the restriction
+    if len(intro) > 90:  # Just in case someone changed the html or the intro is written before the restriction
         fail('Your one sentence intro is too long.', 'clubinfo')
         return redirect(url_for('.changeclubinfo', club=club.callsign))
     elif request.form['intro'] != '':
@@ -622,7 +622,7 @@ def newclub_submit():
     true_or_fail(intro, 'Please input club\'s one-sentence introduction.',
                         'newclub')
     # Just in case someone changed the html or the intro is written before the restriction
-    true_or_fail(len(intro) <= 80, 'Your one sentence intro is too long.', 'newclub')  
+    true_or_fail(len(intro) <= 90, 'Your one sentence intro is too long.', 'newclub')
 
     true_or_fail(description, 'Please input club\'s paragraph description.',
                               'newclub')
