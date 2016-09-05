@@ -330,6 +330,7 @@ def homepage():
                            pic_acts=pic_acts)
 
 
+
 @app.route('/blockpic.css')
 def gen_blockpic_css():
     css = "#blockpic-img%d{background-image:url(%s)}"
@@ -411,7 +412,7 @@ def markdown():
 ## Sub-heading
 
 ### Another deeper heading
- 
+
 Paragraphs are separated
 by a blank line.
 
@@ -439,6 +440,11 @@ Numbered list:
 A [link](http://example.com).
 '''
     return render_template('static/markdown.html', raw=raw, rendered=Markup(FormattedText.format(raw)))
+
+@app.route('/faq')
+def faq():
+    '''FAQ'''
+    return render_template('static/faq.html')
 
 
 if __name__ == '__main__':

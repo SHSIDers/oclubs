@@ -105,20 +105,20 @@ body {
 }
 .pagination > li > a {
    @media screen and (max-width: 500px) {
-        padding: 5px 8.5px;
+		padding: 5px 8.5px;
    }
    @media screen and (max-width: 325px) {
-        padding: 5px 7px;
+		padding: 5px 7px;
    }
 }
 .pagination > li > a.page-hide-2 {
 	@media screen and (max-width: 725px) {
-        display: none;
+		display: none;
    }
 }
 .pagination > li > a.page-hide-1 {
 	@media screen and (max-width: 400px) {
-        display: none;
+		display: none;
    }
 }
 
@@ -346,9 +346,9 @@ body {
 	box-shadow: 0, 0, 1px, rgba(0, 0, 0, 0);
 	backface-visibility: hidden;
 	/*
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	*/
 	position: relative;
 	transition-property: color;
 	transition-duration: 0.3s;
@@ -2215,6 +2215,24 @@ thead {
 	}
 }
 
+.faq {
+	padding: 30px 20px;
+	background-color: #eee;
+	border-radius: 15px;
+	border-color: #66a3ff;
+	border-width: 3px;
+	border-style: solid;
+	margin-bottom: 30px;
+
+	@media screen and (max-width: 768px) {
+		padding: 10px;
+	}
+
+	& h2 {
+		font-weight: bold;
+	}
+}
+
 #hminfoinput > form {
 	background-color: #66a3ff;
 	padding: 5%;
@@ -2389,17 +2407,17 @@ thead {
 }
 
 .markdown-block {
-    display: block;
-    padding: 9.5px;
-    margin: 0 0 10px;
-    font-size: 13px;
-    line-height: 1.42857143;
-    color: #333;
-    word-break: break-all;
-    word-wrap: break-word;
-    background-color: #f5f5f5;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+	display: block;
+	padding: 9.5px;
+	margin: 0 0 10px;
+	font-size: 13px;
+	line-height: 1.42857143;
+	color: #333;
+	word-break: break-all;
+	word-wrap: break-word;
+	background-color: #f5f5f5;
+	border: 1px solid #ccc;
+	border-radius: 4px;
 }
 
 .inherit-font {

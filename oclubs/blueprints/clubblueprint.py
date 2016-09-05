@@ -174,7 +174,7 @@ def changeclubinfo(club):
 def changeclubinfo_submit(club):
     '''Change club's info'''
     intro = request.form['intro']
-    if len(intro) > 90:  # Just in case someone changed the html or the intro is written before the restriction
+    if len(intro) > 90:
         fail('Your one sentence intro is too long.', 'clubinfo')
         return redirect(url_for('.changeclubinfo', club=club.callsign))
     elif request.form['intro'] != '':
@@ -621,8 +621,8 @@ def newclub_submit():
     true_or_fail(location, 'Please input club\'s meeting location.', 'newclub')
     true_or_fail(intro, 'Please input club\'s one-sentence introduction.',
                         'newclub')
-    # Just in case someone changed the html or the intro is written before the restriction
-    true_or_fail(len(intro) <= 90, 'Your one sentence intro is too long.', 'newclub')
+    true_or_fail(len(intro) <= 90, 'Your one sentence intro is too long.',
+                                   'newclub')
 
     true_or_fail(description, 'Please input club\'s paragraph description.',
                               'newclub')
@@ -647,7 +647,8 @@ def newclub_submit():
         c.add_member(current_user)
         c.description = FormattedText.handle(current_user, c,
                                              request.form['description'])
-        flash('Your request for creating %s has been successfully submitted. Please wait for Mr.Ma\'s approval.' % c.name, 'newclub')
+        flash('Your request for creating %s has been successfully submitted.' +
+              'Please wait for Mr.Ma\'s approval.' % c.name, 'newclub')
     return redirect(url_for('.newclub'))
 
 
