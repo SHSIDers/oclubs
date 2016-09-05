@@ -18,7 +18,7 @@ from flask_login import (
 )
 from htmlmin.minify import html_minify
 
-from oclubs.objs import User, Club, Activity, Upload
+from oclubs.objs import User, Club, Activity, Upload, FormattedText
 from oclubs.access import done as db_done, get_secret, email
 from oclubs.blueprints import actblueprint, clubblueprint, userblueprint
 from oclubs.enums import UserType, ClubType, ActivityTime, ClubJoinMode
@@ -398,6 +398,47 @@ def contactadmin_submit():
     flash('The information has been successfully sent to adminstrators.',
           'contact_admin')
     return redirect(url_for('.contactadmin'))
+
+
+@app.route('/markdown')
+@login_required
+def markdown():
+    from flask import Markup
+
+    raw = '''
+# Heading
+
+## Sub-heading
+
+### Another deeper heading
+ 
+Paragraphs are separated
+by a blank line.
+
+Two spaces at the end of a line leave a  
+line break.
+
+Text attributes _italic_, *italic*, __bold__, **bold**, `monospace`.
+
+Horizontal rule:
+
+---
+
+Bullet list:
+
+  * apples
+  * oranges
+  * pears
+
+Numbered list:
+
+  1. apples
+  2. oranges
+  3. pears
+
+A [link](http://example.com).
+'''
+    return render_template('static/markdown.html', raw=raw, rendered=Markup(FormattedText.format(raw)))
 
 
 if __name__ == '__main__':

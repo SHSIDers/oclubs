@@ -1,0 +1,26 @@
+{% extends "base.html" %}{% from 'macros.html' import get_messages %}
+{% block title %}Markdown{% endblock %}
+{% block content %}
+
+<div class="container">
+<h2 class="title">Markdown: What is markdown?</h1>
+<h3 class="title_next">Markdown is a lightweight markup language with plain text formatting syntax.</h2>
+<h3 class="title_next">Examples:</h2>
+<div class="row">
+	<div class="col-sm-6">
+		<h3 class="white">What you write:</h3>
+		<p><pre class="inherit-font">
+			{{ raw }}
+		</pre></p>
+	</div>
+	<div class="col-sm-6">
+		<h3 class="white">What you'll see:</h3>
+		<div class="markdown-block">
+			{{ rendered }}
+		</div>
+	</div>
+</div>
+<h3 class="white largetext">For more information, please visit <a class="markdownlink" href="https://en.wikipedia.org/wiki/Markdown">Markdown - Wikipedia, the free encyclopedia(External link)</a></h3>
+</div>
+
+{% endblock %}

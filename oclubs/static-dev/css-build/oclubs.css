@@ -2922,6 +2922,34 @@ thead {
   z-index: 100;
 }
 
+.markdown-block {
+  display: block;
+  margin: 0 0 10px;
+  padding: 9.5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f5f5f5;
+  color: #333;
+  word-wrap: break-word;
+  word-break: break-all;
+  font-size: 13px;
+  line-height: 1.42857143;
+}
+
+.inherit-font {
+  font-family: inherit;
+}
+
+.markdownlink {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.markdownlink:focus,
+.markdownlink:hover {
+  color: #ccc;
+}
+
 @media screen and (max-width: 992px) {
   .col-md-10 > center > img {
     max-width: 60%;
