@@ -28,4 +28,4 @@ def _execute(sql):
 
 def allstudents():
     return _execute("SELECT * FROM cwshs.v_student_all2 WHERE "
-                    "deleted = 0 AND gradename IN ('9', '10', 11', '12')")
+                    "deleted = 0 AND gradename IN ('9', '10', '11', '12')")
