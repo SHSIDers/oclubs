@@ -2933,13 +2933,13 @@ thead {
   font-family: inherit;
 }
 
-.white-a {
+a.white-a {
   color: #f2f2f2;
   text-decoration: underline;
 }
 
-.white-a:focus,
-.white-a:hover {
+a.white-a:focus,
+a.white-a:hover {
   color: #ccc;
 }
 
