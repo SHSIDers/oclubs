@@ -648,7 +648,8 @@ def newclub_submit():
         c.add_member(current_user)
         c.description = FormattedText.handle(current_user, c,
                                              request.form['description'])
-    return redirect(url_for('.clubintro', club=c.callsign))
+        return redirect(url_for('.clubintro', club=c.callsign))
+    return redirect(url_for('.newclub'))
 
 
 @clubblueprint.route('/management_list/', defaults={'page': 1})
