@@ -648,9 +648,7 @@ def newclub_submit():
         c.add_member(current_user)
         c.description = FormattedText.handle(current_user, c,
                                              request.form['description'])
-        flash('Your request for creating %s has been successfully submitted.'
-              'Please wait for Administrator\'s approval.' % c.name, 'newclub')
-    return redirect(url_for('.newclub'))
+    return redirect(url_for('.clubintro', club=c.callsign))
 
 
 @clubblueprint.route('/management_list/', defaults={'page': 1})
