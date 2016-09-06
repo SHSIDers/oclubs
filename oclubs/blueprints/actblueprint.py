@@ -306,26 +306,27 @@ def attendance_download(activity):
 def allactivitiesinfo():
     '''Allow admin to download all activities' info'''
     info = []
-    info.append(('Activity ID', 'Name', 'Club', 'Date', 'Time (Type)',
-                 'Location', 'CAS Hours'))
-    info.extend([(act.id, act.name, act.club.name,
-                  act.date.strftime('%b-%d-%y'), act.time.format_name,
-                  act.location, act.cas) for act in Activity.all_activities()])
-
+    info.append(('Activity ID', 'Name', 'Club', 'Club Leader', 'Club Leader\'s Class',
+                 'Date', 'Time (Type)', 'Location', 'CAS Hours'))
+    info.extend([(act.id, act.name, act.club.name, act.club.leader.passportname,
+                  act.club.leader.grade_and_class, act.date.strftime('%b-%d-%y'),
+                  act.time.format_name, act.location, act.cas)
+                for act in Activity.all_activities()])
     return download_xlsx('All Activities\' Info.xlsx', info)
+
 
 @actblueprint.route('/info_download_thisweek')
 @special_access_required
 @fresh_login_required
 def thisweek_activitiesinfo():
-    '''Allow admin to download all activities' info'''
+    '''Allow admin to download this week's activities' info'''
     info = []
-    info.append(('Activity ID', 'Name', 'Club', 'Date', 'Time (Type)',
-                 'Location', 'CAS Hours'))
-    info.extend([(act.id, act.name, act.club.name,
-                  act.date.strftime('%b-%d-%y'), act.time.format_name,
-                  act.location, act.cas) for act in Activity.thisweek_activities()])
-
+    info.append(('Activity ID', 'Name', 'Club', 'Club Leader', 'Club Leader\'s Class',
+                 'Date', 'Time (Type)', 'Location', 'CAS Hours'))
+    info.extend([(act.id, act.name, act.club.name, act.club.leader.passportname,
+                  act.club.leader.grade_and_class, act.date.strftime('%b-%d-%y'),
+                  act.time.format_name, act.location, act.cas)
+                for act in Activity.thisweek_activities()])
     return download_xlsx('This week\'s Activities\' Info.xlsx', info)
 
 
