@@ -13,7 +13,7 @@ Introduction:
 
 Description:
 
-{{ club.description.formatted }}
+{{ club.description.raw }}
 
 
 Thank you for using oClubs.

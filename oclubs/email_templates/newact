@@ -19,7 +19,7 @@ CAS hour: {{ act.cas }}
 
 Description:
 
-{{ act.description.formatted }}
+{{ act.description.raw }}
 
 If you want to participate, please search {{ act.name }} on oClubs and join this activity on its introduction page.
 
