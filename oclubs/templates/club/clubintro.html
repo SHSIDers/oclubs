@@ -67,11 +67,13 @@
 					<a class="btn btn-info btn-lg" href="{{ url_for('clubblueprint.memberinfo', club=g.club.callsign) }}">Member List</a>
 				</center>
 			</div>
+			{% if g.club.activities(types=[ActivityTime.HONGMEI]) %}
 			<div class="col-sm-4">
 				<center>
 					<a class="btn btn-info btn-lg" href="{{ url_for('.registerhm', club=g.club.callsign) }}">Register HongMei Activities</a>
 				</center>
 			</div>
+			{% endif %}
 			{% endif %}
 		</div>
 	</div>
