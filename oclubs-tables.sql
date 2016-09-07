@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS signup (
 	signup_user int NOT NULL, # Foreign key to user.user_id
 	signup_consentform boolean NOT NULL,
 	signup_selection varchar(255) NOT NULL,
-	PRIMARY KEY(signup_act, signup_user)
+	PRIMARY KEY (signup_act, signup_user)
 );
 
 CREATE INDEX IF NOT EXISTS signup_act ON signup (signup_act);
@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS invitation (
 	invitation_club int NOT NULL, # Foreign key to club.club_id
 	invitation_user int NOT NULL, # Foreign key to user.user_id
 	invitation_date int NOT NULL,
-	PRIMARY KEY(invitation_club, invitation_user)
+	PRIMARY KEY (invitation_club, invitation_user)
 );
 
 CREATE INDEX IF NOT EXISTS invitation_user ON invitation (invitation_user);
