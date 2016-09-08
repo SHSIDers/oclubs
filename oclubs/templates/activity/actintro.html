@@ -24,7 +24,7 @@
 			<p>Time: {{ g.activity.date }}</p>
 			{% if g.activity.description.raw %}
 			<br>
-			<p>Description:</p>
+			<p class="midtext">Description:</p>
 			{{ g.activity.description.formatted }}
 			{% endif %}
 		</div>
@@ -43,7 +43,23 @@
 		</select>
 		{% endif %}
 		{% endif %}
-
+		{% if not g.activity.is_future %}
+			<div class="longdesc">
+			<h1 class="midtext">Post for {{ g.activity.name }}:</h1>
+			{% for pic in g.activity.pictures %}
+			<div class="col-sm-3 emptyline">
+				<img src="{{ pic.location_external }}" class="img-thumbnail" alt="{{ g.activity.name }}">
+			</div>
+			{% endfor %}
+			<div class="clearfix"></div>
+			{% if g.activity.post.raw %}
+			<p>Post:</p>
+			{{ g.activity.post.formatted }}
+			{% elif not g.activity.pictures %}
+			<p>There is no post for this activity yet.</p>
+			{% endif %}
+			</div>
+		{% endif %}
 		<center>
 		<div class="intro_function">
 			<div class="col-sm-6">
@@ -57,10 +73,6 @@
 					<input class="btn btn-info btn-lg" type="submit" value="Join">
 				</form>
 			</div>
-			{% elif not g.activity.is_future %}
-			<div class="col-sm-6">
-				<a class="btn btn-info btn-lg" href="{{ url_for('.actpost', activity=g.activity.callsign) }}">Activity Post</a>
-			</div>
 			{% endif %}
 
 			{% if has_access and g.activity.is_future %}
@@ -73,10 +85,8 @@
 			<div class="col-sm-6">
 				<a class="btn btn-info btn-lg" href="{{ url_for('.attendance', activity=g.activity.callsign) }}">Attendance</a>
 			</div>
-
-
 			<div class="col-sm-6">
-				<a class="btn btn-info btn-lg" href="{{ url_for('.changeactpost', activity=g.activity.callsign) }}">Change Activity Post</a>
+				<a class="btn btn-info btn-lg" href="{{ url_for('.changeactpost', activity=g.activity.callsign) }}">{% if g.activity.post.raw or g.activity.pictures %}Edit{% else %}Create{% endif %} Activity Post</a>
 			</div>
 			{% endif %}
 		</div>

@@ -124,14 +124,6 @@ def actintro_submit(activity):
     return redirect(url_for('.actintro', activity=activity.callsign))
 
 
-@actblueprint.route('/<activity>/post')
-@get_callsign(Activity, 'activity')
-@require_past_activity
-def actpost(activity):
-    '''Activity Post Page'''
-    return render_template('activity/actpost.html')
-
-
 @actblueprint.route('/<activity>/post/change')
 @get_callsign(Activity, 'activity')
 @special_access_required

@@ -2100,7 +2100,7 @@ thead {
 
 #markdown-container #intropage .longdesc,
 .large_container #intropage .longdesc {
-  margin: 1.25em 0;
+  margin: 1.25em 0 2em;
   color: #f2f2f2;
   font-size: 150%;
   line-height: 1.5;
