@@ -24,19 +24,8 @@ from oclubs.access import get_secret
 from oclubs.exceptions import NoRow
 from oclubs.enums import UserType
 
-
-class MemoryLine():
-    def __init__(self):
-        self.line_value = None
-
-    def write(self, value):
-        self.line_value = value
-
-
-# def _stringfy(string):
-#     if isinstance(string, unicode):
-#         return string.encode('utf-8')
-#     return string
+with open('/srv/oclubs/oclubs/example.md', 'r') as f:
+    markdownexample = f.read().strip()
 
 
 def download_xlsx(filename, info):

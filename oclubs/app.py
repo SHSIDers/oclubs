@@ -25,7 +25,7 @@ from oclubs.enums import UserType, ClubType, ActivityTime, ClubJoinMode
 from oclubs.exceptions import NoRow
 from oclubs.redissession import RedisSessionInterface
 from oclubs.shared import (
-    encrypt, Pagination, render_email_template, form_is_valid
+    encrypt, Pagination, render_email_template, form_is_valid, markdownexample
 )
 
 
@@ -405,40 +405,11 @@ def contactadmin_submit():
 def markdown():
     from flask import Markup
 
-    raw = '''
-# Heading
+    return render_template('static/markdown.html',
+                           raw=markdownexample,
+                           rendered=Markup(FormattedText.format(
+                               markdownexample)))
 
-## Sub-heading
-
-### Another deeper heading
-
-Paragraphs are separated
-by a blank line.
-
-Two spaces at the end of a line leave a  
-line break.
-
-Text attributes _italic_, *italic*, __bold__, **bold**, `monospace`.
-
-Horizontal rule:
-
----
-
-Bullet list:
-
-  * apples
-  * oranges
-  * pears
-
-Numbered list:
-
-  1. apples
-  2. oranges
-  3. pears
-
-A [link](http://example.com).
-'''
-    return render_template('static/markdown.html', raw=raw, rendered=Markup(FormattedText.format(raw)))
 
 @app.route('/faq')
 def faq():
