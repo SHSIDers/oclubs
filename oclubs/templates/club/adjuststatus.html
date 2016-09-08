@@ -15,6 +15,7 @@
 		<thead>
 			<tr>
 				<th>Club Name</th>
+				<th>Grade</th>
 				<th>Club Type</th>
 				<th>Club Link</th>
 				<th>Current Activeness</th>
@@ -27,6 +28,7 @@
 			{% for club in clubs %}
 			<tr class="act">
 				<td>{{ club.name }}</td>
+				<td>{{ club.leader.grade }}</td>
 				<td>{{ club.type.format_name }}</td>
 				<td>
 					<a href="{{ url_for('.clubintro', club=club.callsign) }}">{{ club.name }}</a>
