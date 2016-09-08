@@ -69,10 +69,6 @@ def allphotos(page):
 
 
 @actblueprint.route('/<activity>/')
-def actredirect(activity):
-    return redirect(url_for('.actintro', activity=activity))
-
-
 @actblueprint.route('/<activity>/introduction')
 @get_callsign(Activity, 'activity')
 def actintro(activity):
