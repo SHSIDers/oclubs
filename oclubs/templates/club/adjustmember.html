@@ -51,20 +51,20 @@
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 				<h4 class="modal-title">Invite Member</h4>
 			</div>
+			<form action="{{ url_for('.invitemember', club=g.club.callsign) }}" method="post" id="invite_form">
 			<div class="modal-body">
-				<form action="{{ url_for('.invitemember', club=g.club.callsign) }}" method="post" id="invite_form">
-					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-					<label for="gradeclass">Grade and class:</label>
-					<input class="form-control" id="gradeclass" type="text" name="gradeclass">
-					<br>
-					<label for="passportname">Passport Name:</label>
-					<input class="form-control" id="passportname" type="text" name="passportname">
-				</form>
+				<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+				<label for="gradeclass">Grade and class:</label>
+				<input class="form-control" id="gradeclass" type="text" name="gradeclass">
+				<br>
+				<label for="passportname">Passport Name:</label>
+				<input class="form-control" id="passportname" type="text" name="passportname">
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				<input type="submit" class="btn btn-primary" form="invite_form" value="Invite">
 			</div>
+			</form>
 		</div>
 	</div>
 </div>

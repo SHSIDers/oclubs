@@ -44,21 +44,21 @@
 		{% endif %}
 		{% endif %}
 		{% if not g.activity.is_future %}
-			<div class="longdesc">
-			<h1 class="midtext">Post for {{ g.activity.name }}:</h1>
-			{% for pic in g.activity.pictures %}
-			<div class="col-sm-3 emptyline">
-				<img src="{{ pic.location_external }}" class="img-thumbnail" alt="{{ g.activity.name }}">
-			</div>
-			{% endfor %}
-			<div class="clearfix"></div>
-			{% if g.activity.post.raw %}
-			<p>Post:</p>
-			{{ g.activity.post.formatted }}
-			{% elif not g.activity.pictures %}
-			<p>There is no post for this activity yet.</p>
-			{% endif %}
-			</div>
+		<div class="longdesc">
+		<h1 class="midtext">Post for {{ g.activity.name }}:</h1>
+		{% for pic in g.activity.pictures %}
+		<div class="col-sm-3 emptyline">
+			<img src="{{ pic.location_external }}" class="img-thumbnail" alt="{{ g.activity.name }}">
+		</div>
+		{% endfor %}
+		<div class="clearfix"></div>
+		{% if g.activity.post.raw %}
+		<p>Post:</p>
+		{{ g.activity.post.formatted }}
+		{% elif not g.activity.pictures %}
+		<p>There is no post for this activity yet.</p>
+		{% endif %}
+		</div>
 		{% endif %}
 		<center>
 		<div class="intro_function">

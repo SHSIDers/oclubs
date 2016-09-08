@@ -45,39 +45,39 @@
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 				<h4 class="modal-title">Change Basic Information</h4>
 			</div>
+			<form class="form-group" id="info_form" action="{{ url_for('.personalsubmitinfo') }}" method="post">
 			<div class="modal-body">
-				<form class="form-group" id="info_form" action="{{ url_for('.personalsubmitinfo') }}" method="post">
-					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-					<label for="name">Nick Name:</label>
-					<input class="form-control" id="name" type="text" name="name" value="{{ current_user.nickname }}">
-					<br>
+				<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+				<label for="name">Nick Name:</label>
+				<input class="form-control" id="name" type="text" name="name" value="{{ current_user.nickname }}">
+				<br>
 
-					<label for="email">Email:</label>
-					<input class="form-control" id="email" type="email" name="email" value="{{ current_user.email }}">
-					<br>
+				<label for="email">Email:</label>
+				<input class="form-control" id="email" type="email" name="email" value="{{ current_user.email }}">
+				<br>
 
-					<label for="phone">Phone Number:</label>
-					<input class="form-control" id="phone" type="text" name="phone" value="{{ current_user.phone }}">
-					<br>
+				<label for="phone">Phone Number:</label>
+				<input class="form-control" id="phone" type="text" name="phone" value="{{ current_user.phone }}">
+				<br>
 
-					<label for="picture">Profile Picture:</label>
-					<div class="clearfix"></div>
-					{% for pic in pictures %}
-					<label class="radio_block">
-						<img src="{{ pic.location_external }}" class="img-responsive" alt="{{ -pic.id }}">
-						<center><input type="radio" name="picture" {% if pic == current_user.picture %}checked="checked"{% endif %} value="{{ pic.id }}"></center>
-					</label>
-					{% endfor %}
-					<div class="clearfix"></div>
-					<br>
+				<label for="picture">Profile Picture:</label>
+				<div class="clearfix"></div>
+				{% for pic in pictures %}
+				<label class="radio_block">
+					<img src="{{ pic.location_external }}" class="img-responsive" alt="{{ -pic.id }}">
+					<center><input type="radio" name="picture" {% if pic == current_user.picture %}checked="checked"{% endif %} value="{{ pic.id }}"></center>
+				</label>
+				{% endfor %}
+				<div class="clearfix"></div>
+				<br>
 
-					<label for="receive_email"><input type="checkbox" id="receive_email" name="receive_email" {% if receive_email %} checked="checked" {% endif %}>&nbsp;Do you want us to send notifications to your email address?</label>
-				</form>
+				<label for="receive_email"><input type="checkbox" id="receive_email" name="receive_email" {% if receive_email %} checked="checked" {% endif %}>&nbsp;Do you want us to send notifications to your email address?</label>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				<input type="submit" class="btn btn-primary" form="info_form" name="change_info" value="Change Info">
 			</div>
+			</form>
 		</div>
 	</div>
 </div>
@@ -85,28 +85,28 @@
 <div class="modal fade" id="changePass">
 	<div class="modal-dialog">
 		<div class="modal-content">
+			<form class="form-group" id="pass_form" action="{{ url_for('userblueprint.personalsubmitpassword') }}" method="post">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 				<h4 class="modal-title">Change Password</h4>
 			</div>
 			<div class="modal-body">
-				<form class="form-group" id="pass_form" action="{{ url_for('userblueprint.personalsubmitpassword') }}" method="post">
-					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-					<label for="old">Old Password:</label>
-					<input class="form-control" id="old" name="old" type="password">
-					<br>
-					<label for="new">New Password:</label>
-					<input class="form-control" id="new" name="new" type="password">
-					<br>
-					<label for="again">Repeat New Password:</label>
-					<input class="form-control" id="again" name="again" type="password">
-					<div class="clearfix"></div>
-				</form>
+				<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+				<label for="old">Old Password:</label>
+				<input class="form-control" id="old" name="old" type="password">
+				<br>
+				<label for="new">New Password:</label>
+				<input class="form-control" id="new" name="new" type="password">
+				<br>
+				<label for="again">Repeat New Password:</label>
+				<input class="form-control" id="again" name="again" type="password">
+				<div class="clearfix"></div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				<input type="submit" class="btn btn-primary" form="pass_form" name="change_pass" value="Change Password">
 			</div>
+			</form>
 		</div>
 	</div>
 </div>
