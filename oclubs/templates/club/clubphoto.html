@@ -9,7 +9,7 @@
 	<div class="photoblocks row">
 	{% for upload in uploads %}
 	<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6 emptyline">
-		<div class="photo clickable" data-href="{{ url_for('actblueprint.actpost', activity=upload.activity.callsign) }}">
+		<div class="photo clickable" data-href="{{ url_for('actblueprint.actintro', activity=upload.activity.callsign) }}">
 			<img src="{{ upload.upload.location_external }}" class="img-responsive no-padding" alt="{{ upload.activity.club.name }}">
 		</div>
 	</div>
