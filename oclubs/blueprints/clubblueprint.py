@@ -349,6 +349,7 @@ def newact_submit(club):
             return redirect(url_for('.newact', club=club.callsign))
         a.date = actdate
         time = ActivityTime[request.form['act_type'].upper()]
+        is_other_act = time in [ActivityTime.UNKNOWN, ActivityTime.OTHERS]
         a.time = time
         a.location = request.form['location']
         time_type = request.form['time_type']
@@ -369,7 +370,8 @@ def newact_submit(club):
              'newact')
     else:
         for member in club.teacher_and_members:
-            parameters = {'member': member, 'club': club, 'act': a}
+            parameters = {'member': member, 'club': club, 'act': a,
+                          'is_other_act': is_other_act}
             contents = render_email_template('newact', parameters)
             member.email_user(a.name + ' - ' + club.name, contents)
             member.notify_user(club.name + ' is going to host ' + a.name +

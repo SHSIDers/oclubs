@@ -21,7 +21,7 @@ Description:
 
 {{ act.description.raw }}
 
-If you want to participate, please search {{ act.name }} on oClubs for further information. If this is a club meeting session, then you do not have to sign up for this activity to participate.
+If you want to participate, please search {{ act.name }} on oClubs for further information.{{ #is_other_act }} You may need to sign up for this activity to participate.{{ /is_other_act }}
 
 
 Thank you for using oClubs.
