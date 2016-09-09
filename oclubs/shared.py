@@ -286,8 +286,8 @@ class Pagination(object):
 
 
 def render_email_template(name, parameters):
-    with open(os.path.join(
-            '/srv/oclubs/oclubs/email_templates/', name), 'r') as textfile:
+    with open(os.path.join('/srv/oclubs/oclubs/email_templates/',
+                           name + '.mustache'), 'r') as textfile:
         data = textfile.read()
 
     return pystache.render(data, parameters)
