@@ -141,6 +141,22 @@ def memberinfo(club):
                            has_access=has_access)
 
 
+@clubblueprint.route('/<club>/member_info/notify_members', methods=['POST'])
+@get_callsign(Club, 'club')
+@require_active_club
+@special_access_required
+def memberinfo_notify_members(club):
+    '''Allow club leader to notify members'''
+    contents = request.form['contents']
+    if contents == '':
+        flash('Please input something.', 'notify_members')
+        return redirect(url_for('.memberinfo', club=club.callsign))
+    for member in club.members:
+        member.notify_user(contents)
+    flash('You have successfully notified members.', 'notify_members')
+    return redirect(url_for('.memberinfo', club=club.callsign))
+
+
 @clubblueprint.route('/<club>/member_info/download')
 @get_callsign(Club, 'club')
 @require_membership
