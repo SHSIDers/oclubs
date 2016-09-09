@@ -103,6 +103,7 @@ def special_access_required(func):
 
 
 def require_student_membership(func):
+    @login_required
     @wraps(func)
     def decorated_function(*args, **kwargs):
         if 'club' in kwargs:
@@ -121,6 +122,7 @@ def require_student_membership(func):
 
 
 def require_membership(func):
+    @login_required
     @wraps(func)
     def decorated_function(*args, **kwargs):
         if current_user.type != UserType.ADMIN:
@@ -133,6 +135,18 @@ def require_membership(func):
 
             if current_user not in [club.teacher] + club.members:
                 abort(403)
+
+        return func(*args, **kwargs)
+
+    return decorated_function
+
+
+def require_not_student(func):
+    @login_required
+    @wraps(func)
+    def decorated_function(*args, **kwargs):
+        if current_user.type == UserType.STUDENT:
+            abort(403)
 
         return func(*args, **kwargs)
 
@@ -176,17 +190,6 @@ def require_future_activity(func):
         activity = kwargs['activity']
 
         if not activity.is_future:
-            abort(403)
-
-        return func(*args, **kwargs)
-
-    return decorated_function
-
-
-def require_not_student(func):
-    @wraps(func)
-    def decorated_function(*args, **kwargs):
-        if current_user.type == UserType.STUDENT:
             abort(403)
 
         return func(*args, **kwargs)
