@@ -18,7 +18,7 @@
 <div class="clearfix"></div>
 <div class="col-xs-6">
 	<center>
-		<a class="btn btn-info student-clubbtn" href="{{ url_for('clubblueprint.clublist', club_type='all') }}">Join Clubs</a>
+		<a class="btn btn-info student-clubbtn" href="{{ url_for('clubblueprint.clublist', club_filter='all') }}">Join Clubs</a>
 	</center>
 </div>
 <div class="col-xs-6">
@@ -100,10 +100,10 @@
 		</tbody>
 	</table>
 	<center>
-		<a class="btn btn-info" href="{{ url_for('actblueprint.allactivities', club_type='all') }}">Register Individual Club Activities</a>
+		<a class="btn btn-info" href="{{ url_for('actblueprint.allactivities', club_filter='all') }}">Register Individual Club Activities</a>
 	</center>
 	<center>
-		<a class="btn btn-info" href="{{ url_for('clubblueprint.clublist', club_type='all') }}">Register HongMei Activities</a>
+		<a class="btn btn-info" href="{{ url_for('clubblueprint.clublist', club_filter='all') }}">Register HongMei Activities</a>
 	</center>
 </div>
 

@@ -33,6 +33,8 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = get_secret('flask_key')
 
+init_app(app)  # Must be before register_blueprint because of route()
+
 app.register_blueprint(userblueprint, url_prefix='/user')
 app.register_blueprint(clubblueprint, url_prefix='/club')
 app.register_blueprint(actblueprint, url_prefix='/activity')
@@ -47,8 +49,6 @@ app.jinja_env.globals['ClubJoinMode'] = ClubJoinMode
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-
-init_app(app)
 
 
 @app.before_request

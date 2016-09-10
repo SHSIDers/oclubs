@@ -25,25 +25,15 @@ from oclubs.access import siteconfig
 clubblueprint = Blueprint('clubblueprint', __name__)
 
 
-@clubblueprint.route('/list/<club_type>')
-def clublist(club_type):
+@clubblueprint.route('/list/<clubfilter:club_filter>')
+def clublist(club_filter):
     '''Club list by club type'''
     num = 18
-    if club_type == 'all':
-        clubs = Club.randomclubs(num)
-    elif club_type == 'excellent':
-        clubs = Club.excellentclubs()
-    else:
-        try:
-            typ = ClubType[club_type.upper()]
-        except KeyError:
-            abort(404)
-        else:
-            clubs = Club.randomclubs(num, [typ])
+    clubs = Club.randomclubs(num, **club_filter.to_kwargs())
     return render_template('club/clublist.html',
                            is_list=True,
                            clubs=clubs,
-                           club_type=club_type)
+                           club_filter=club_filter)
 
 
 @clubblueprint.route('/<club>/manage')

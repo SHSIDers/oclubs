@@ -7,11 +7,11 @@ from __future__ import absolute_import, unicode_literals, division
 from datetime import date
 
 from flask import (
-    Blueprint, render_template, url_for, abort, request, redirect, flash
+    Blueprint, render_template, url_for, request, redirect, flash
 )
 from flask_login import current_user, login_required, fresh_login_required
 
-from oclubs.enums import UserType, ClubType, ActivityTime
+from oclubs.enums import UserType, ActivityTime
 from oclubs.shared import (
     get_callsign, special_access_required, Pagination, render_email_template,
     download_xlsx, partition, require_student_membership,
@@ -24,27 +24,20 @@ from oclubs.exceptions import UploadNotSupported, NoRow
 actblueprint = Blueprint('actblueprint', __name__)
 
 
-@actblueprint.route('/all/<club_type>/', defaults={'page': 1})
-@actblueprint.route('/all/<club_type>/<int:page>')
-def allactivities(club_type, page):
+@actblueprint.route('/all/<clubfilter:club_filter>/', defaults={'page': 1})
+@actblueprint.route('/all/<clubfilter:club_filter>/<int:page>')
+def allactivities(club_filter, page):
     '''All Activities'''
     act_num = 20
-    if club_type == 'all':
-        count, acts = Activity.get_activities_conditions(
-            limit=((page-1)*act_num, act_num))
-    else:
-        try:
-            count, acts = Activity.get_activities_conditions(
-                club_types=[ClubType[club_type.upper()]],
-                limit=((page-1)*act_num, act_num))
-        except KeyError:
-            abort(404)
+    count, acts = Activity.get_activities_conditions(
+        limit=((page-1)*act_num, act_num),
+        **club_filter.to_kwargs())
     pagination = Pagination(page, act_num, count)
     return render_template('activity/allact.html',
                            is_allact=True,
                            acts=acts,
-                           club_type=club_type,
-                           pagination=pagination)
+                           pagination=pagination,
+                           club_filter=club_filter)
 
 
 @actblueprint.route('/photos/', defaults={'page': 1})

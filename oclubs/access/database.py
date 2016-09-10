@@ -46,6 +46,8 @@ def ___parse_cond(cond):
         return __parse_cond(('and', ('>=', var, lo), ('<', var, hi)))
     elif op.lower() == 'in':
         var, const = conds
+        if not const:
+            return _encode(False)
         const = ','.join([_encode(elemt) for elemt in const])
         return '%s IN (%s)' % (_encode_name(var), const)
 

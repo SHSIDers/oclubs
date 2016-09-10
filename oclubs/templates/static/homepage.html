@@ -34,7 +34,7 @@
 							<div class="clearfix"></div>
 						</a>
 						{% endfor %}
-						<a href="{{ url_for('clubblueprint.clublist', club_type='excellent') }}" class="list-group-item">
+						<a href="{{ url_for('clubblueprint.clublist', club_filter='excellent') }}" class="list-group-item">
 							<h3 class="text-center">More</h3>
 						</a>
 					</div>
@@ -51,7 +51,7 @@
 						<h1 class="title_next">Clubs in SHSID</h1>
 					</div>
 					<div id="a-shsid" class="col-xs-2">
-						<a href="{{ url_for('clubblueprint.clublist', club_type='all') }}"><h1><span class="glyphicon glyphicon-list float-right"></span></h1></a>
+						<a href="{{ url_for('clubblueprint.clublist', club_filter='all') }}"><h1><span class="glyphicon glyphicon-list float-right"></span></h1></a>
 					</div>
 				</div>
 				<div class="col-sm-9">

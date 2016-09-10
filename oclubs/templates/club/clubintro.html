@@ -1,23 +1,17 @@
-{% extends "base.html" %}{% from 'macros.html' import get_messages %}
+{% extends "base.html" %}{% from 'macros.html' import get_messages, desktop_sidebar %}
 {% block title %}Club Intro{% endblock %}
 {% block content %}
 
 <!-- Below Navbar -->
 <div class="large_container">
 	<!-- Side Menu -->
-	<div id="sidebar" class="col-md-2">
-		<div class="list-group">
-			<li class="list-group-item active">Club Types</li>
-			{% for typ in [('all', 'All')] + ClubType|list %}
-			<a href="{{ url_for('.clublist', club_type=typ[0].lower()) }}" class="list-group-item {% if g.club.type.name==typ[0] %}selected{% endif %}">{{ typ[1] }}</a>
-			{% endfor %}
-		</div>
-		<div class="list-group">
-			<li class="list-group-item active">This Club's</li>
-			<a href="{{ url_for('.clubactivities', club=g.club.callsign) }}" class="list-group-item">Activities</a>
-			<a href="{{ url_for('.clubphoto', club=g.club.callsign) }}" class="list-group-item">Photos</a>
-		</div>
+	{% call desktop_sidebar('.clublist', ClubFilter.from_club(g.club)) %}
+	<div class="list-group">
+		<li class="list-group-item active">This Club's</li>
+		<a href="{{ url_for('.clubactivities', club=g.club.callsign) }}" class="list-group-item">Activities</a>
+		<a href="{{ url_for('.clubphoto', club=g.club.callsign) }}" class="list-group-item">Photos</a>
 	</div>
+	{% endcall %}
 	<!-- Main Content -->
 	<div class="col-md-10 main-content" id="intropage">
 		<div class="jumbotron">
@@ -40,7 +34,7 @@
 		</center>
 		{% endif %}
 
-		<div class="longdesc">{{g.club.description.formatted}}</div>
+		<div class="longdesc">{{ g.club.description.formatted }}</div>
 
 		<div class="intro_function">
 			{{ get_messages(['join']) }}
@@ -67,7 +61,7 @@
 					<a class="btn btn-info btn-lg" href="{{ url_for('clubblueprint.memberinfo', club=g.club.callsign) }}">Member List</a>
 				</center>
 			</div>
-			{% if g.club.activities(types=[ActivityTime.HONGMEI]) %}
+			{% if g.club.activities([ActivityTime.HONGMEI]) %}
 			<div class="col-sm-4">
 				<center>
 					<a class="btn btn-info btn-lg" href="{{ url_for('.registerhm', club=g.club.callsign) }}">Register HongMei Activities</a>

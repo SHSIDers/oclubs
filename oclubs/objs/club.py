@@ -5,7 +5,6 @@
 from __future__ import absolute_import, unicode_literals
 
 from datetime import date
-import random
 
 from oclubs.access import database, redis
 from oclubs.enums import ClubType, UserType, ClubJoinMode
@@ -38,49 +37,63 @@ class Club(BaseObject):
     def is_excellent(self):
         return self in self.excellentclubs()
 
+    @staticmethod
+    def _excellentclubs():
+        return redis.RedisList('excellentclubs', -1)
+
     # We can't use @property because fails with Club.excellentclubs = []
+    # @deprecated
     @classmethod
     def excellentclubs(cls, amount=None):
-        ret = [cls(item) for item in redis.RedisList('excellentclubs', -1)]
-        if amount:
-            amount = min(len(ret), amount)
-            return random.sample(ret, amount)
-        return ret
-
-    @staticmethod
-    def set_excellentclubs(newval):
-        newval = [item.id for item in newval]
-        lst = redis.RedisList('excellentclubs', -1)
-        lst[:] = newval
+        ret = cls.allclubs(excellent_only=True,
+                           random_order=bool(amount), limit=amount)
+        try:
+            return ret[1]
+        except IndexError:
+            return ret
 
     @classmethod
-    def randomclubs(cls, amount, types=None, active_only=True):
-        where = []
-        if types:
-            types = [_type.value for _type in types]
-            where.append(('in', 'club_type', types))
-        if active_only:
-            where.append(('=', 'club_inactive', False))
-        tempdata = database.fetch_onecol(
-            cls.table,
-            cls.identifier,
-            {
-                'where': where,
-                'order': [(database.RawSQL('RAND()'), True)],
-                'limit': amount
-            }
-        )
-        return [cls(item) for item in tempdata]
+    def set_excellentclubs(cls, newval):
+        newval = [item.id for item in newval]
+        lst = cls._excellentclubs()
+        lst[:] = newval
+
+    # @deprecated
+    @classmethod
+    def randomclubs(cls, amount, *args, **kwargs):
+        ret = cls.allclubs(random_order=True, limit=amount,
+                           *args, **kwargs)
+        try:
+            return ret[1]
+        except IndexError:
+            return ret
 
     @classmethod
     @paged_db_read
-    def allclubs(cls, types=None, active_only=True, pager=None):
-        where = []
-        if types:
-            types = [_type.value for _type in types]
-            where.append(('in', 'club_type', types))
+    def allclubs(cls, club_types=None, excellent_only=False, grade_limit=(),
+                 active_only=True, additional_conds=(), random_order=False,
+                 pager=None):
+        conds = {}
+        if additional_conds:
+            conds.update(additional_conds)
+
+        conds['where'] = conds.get('where', [])
+
+        if club_types:
+            types = [club_type.value for club_type in club_types]
+            conds['where'].append(('in', 'club_type', types))
+        if excellent_only:
+            conds['where'].append(('in', 'club_id', cls._excellentclubs()))
+        if grade_limit:
+            conds['join'] = conds.get('join', [])
+            conds['join'].append(
+                ('inner', 'user', [('user_id', 'club_leader')]))
+            conds['where'].append(('in', 'user_grade', grade_limit))
         if active_only:
-            where.append(('=', 'club_inactive', False))
+            conds['where'].append(('=', 'club_inactive', False))
+        if random_order:
+            conds['order'] = conds.get('order', [])
+            conds['order'].append((database.RawSQL('RAND()'), True))
 
         pager_fetch, pager_return = pager
 
@@ -88,17 +101,15 @@ class Club(BaseObject):
             database.fetch_onecol,
             cls.table,
             cls.identifier,
-            {
-                'where': where,
-            }
+            conds
         )
         return pager_return([cls(item) for item in tempdata])
 
-    def activities(self, types=(), dates=(True, True), limit=None):
+    def activities(self, times=(), dates=(True, True), limit=None):
         from oclubs.objs import Activity
 
         return Activity.get_activities_conditions(
-            types,
+            times,
             {
                 'where': [('=', 'act_club', self.id)],
             },

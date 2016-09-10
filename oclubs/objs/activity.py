@@ -131,6 +131,7 @@ class Activity(BaseObject):
     @paged_db_read
     def get_activities_conditions(cls, times=(), additional_conds=None,
                                   dates=(True, True), club_types=(),
+                                  excellent_only=False, grade_limit=(),
                                   require_photos=False, order_by_time=True,
                                   pager=None):
         conds = {}
@@ -160,11 +161,18 @@ class Activity(BaseObject):
             times = [time.value for time in times]
             conds['where'].append(('in', 'act_time', times))
 
-        if club_types:
-            club_types = [club_type.value for club_type in club_types]
+        if club_types or excellent_only or grade_limit:
             conds['join'] = conds.get('join', [])
             conds['join'].append(('inner', 'club', [('club_id', 'act_club')]))
+        if club_types:
+            club_types = [club_type.value for club_type in club_types]
             conds['where'].append(('in', 'club_type', club_types))
+        if excellent_only:
+            conds['where'].append(('in', 'club_id', cls._excellentclubs()))
+        if grade_limit:
+            conds['join'].append(
+                ('inner', 'user', [('user_id', 'club_leader')]))
+            conds['where'].append(('in', 'user_grade', grade_limit))
 
         if require_photos:
             conds['join'] = conds.get('join', [])
