@@ -43,6 +43,10 @@ class Activity(BaseObject):
     def is_future(self):
         return self.date > date.today()
 
+    @property
+    def one_line_selections(self):
+        return ';'.join(self.selections)
+
     def signup(self, user, **kwargs):
         data = {
             'signup_consentform': ('consentform', False),
