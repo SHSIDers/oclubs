@@ -6,7 +6,6 @@ from __future__ import absolute_import, unicode_literals, division
 
 
 import traceback
-from uuid import uuid4
 from urlparse import urlparse, urljoin
 
 from flask import (
@@ -25,7 +24,8 @@ from oclubs.enums import UserType, ClubType, ActivityTime, ClubJoinMode
 from oclubs.exceptions import NoRow
 from oclubs.redissession import RedisSessionInterface
 from oclubs.shared import (
-    encrypt, Pagination, render_email_template, form_is_valid, markdownexample
+    encrypt, Pagination, render_email_template, form_is_valid, markdownexample,
+    init_app
 )
 
 
@@ -48,19 +48,7 @@ app.jinja_env.globals['ClubJoinMode'] = ClubJoinMode
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-
-def get_picture(picture, ext='jpg'):
-    return url_for('static', filename='images/' + picture + '.' + ext)
-
-app.jinja_env.globals['getpicture'] = get_picture
-
-
-def url_for_other_page(page):
-    args = request.view_args.copy()
-    args.update(request.args)
-    args['page'] = page
-    return url_for(request.endpoint, **args)
-app.jinja_env.globals['url_for_other_page'] = url_for_other_page
+init_app(app)
 
 
 @app.before_request
@@ -69,14 +57,6 @@ def csrf_protect():
         sessiontoken = session.get('_csrf_token', None)
         if not sessiontoken or request.form.get('_csrf_token') != sessiontoken:
             abort(418)
-
-
-def generate_csrf_token():
-    if '_csrf_token' not in session:
-        session['_csrf_token'] = str(uuid4())
-    return session['_csrf_token']
-
-app.jinja_env.globals['csrf_token'] = generate_csrf_token
 
 
 @app.after_request
@@ -403,8 +383,6 @@ def contactadmin_submit():
 @app.route('/markdown')
 @login_required
 def markdown():
-    from flask import Markup
-
     return render_template('static/markdown.html',
                            raw=markdownexample,
                            rendered=Markup(FormattedText.format(

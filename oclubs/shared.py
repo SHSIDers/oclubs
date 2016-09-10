@@ -5,15 +5,16 @@
 import os
 from functools import wraps
 from math import ceil
+from pyexcel_xlsx import get_data
 import re
 from StringIO import StringIO
 import xlsxwriter
-from pyexcel_xlsx import get_data
+from uuid import uuid4
 
 from Crypto.Cipher import AES
 from Crypto import Random
 
-from flask import abort, g, flash
+from flask import abort, g, flash, request, url_for, session
 from flask_login import current_user, login_required
 from werkzeug.datastructures import Headers
 from werkzeug.wrappers import Response
@@ -295,3 +296,27 @@ def render_email_template(name, parameters):
 
 def partition(p, l):
     return reduce(lambda x, y: x[not p(y)].append(y) or x, l, ([], []))
+
+
+# Jinja2 stuffs
+def get_picture(picture, ext='jpg'):
+    return url_for('static', filename='images/' + picture + '.' + ext)
+
+
+def url_for_other_page(page):
+    args = request.view_args.copy()
+    args.update(request.args)
+    args['page'] = page
+    return url_for(request.endpoint, **args)
+
+
+def generate_csrf_token():
+    if '_csrf_token' not in session:
+        session['_csrf_token'] = str(uuid4())
+    return session['_csrf_token']
+
+
+def init_app(app):
+    app.jinja_env.globals['getpicture'] = get_picture
+    app.jinja_env.globals['url_for_other_page'] = url_for_other_page
+    app.jinja_env.globals['csrf_token'] = generate_csrf_token
