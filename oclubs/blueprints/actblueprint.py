@@ -239,6 +239,65 @@ def actstatus_download(activity):
     return download_xlsx('Activity Status - ' + activity.name + '.xlsx', info)
 
 
+@actblueprint.route('/<activity>/change_activity_info')
+@get_callsign(Activity, 'activity')
+@special_access_required
+def changeactinfo(activity):
+    '''Allow club leaders to change activity info'''
+    years = (lambda m: map(lambda n: m + n, range(2)))(date.today().year)
+    cas = int(activity.cas)
+    return render_template('/activity/changeactinfo.html',
+                           years=years,
+                           act_types=ActivityTime,
+                           cas=cas)
+
+
+@actblueprint.route('/<activity>/change_activity_info/submit',
+                    methods=['POST'])
+@get_callsign(Activity, 'activity')
+@special_access_required
+def changeactinfo_submit(activity):
+    '''Input change in activity info into database'''
+    actname = request.form['name']
+    if actname != activity.name and actname != '':
+        activity.name = actname
+
+    desc = request.form['description'].strip()
+    if desc != activity.description and desc != '':
+        activity.description = FormattedText.handle(current_user,
+                                                    activity.club,
+                                                    request.form['description'])
+    try:
+        actdate = date(int(request.form['year']),
+                       int(request.form['month']),
+                       int(request.form['day']))
+    except ValueError:
+        fail('Invalid date.', 'actinfo')
+        return redirect(url_for('.changeactinfo', activity=activity.callsign))
+    if actdate < date.today():
+        fail('Please choose the correct date.', 'actinfo')
+        return redirect(url_for('.changeactinfo', activity=activity.callsign))
+    activity.date = actdate
+
+    time = ActivityTime[request.form['act_type'].upper()]
+    activity.time = time
+    activity.location = request.form['location']
+    time_type = request.form['time_type']
+    if time_type == 'hours':
+        activity.cas = int(request.form['cas'])
+    else:
+        activity.cas = int(request.form['cas']) / 60
+    if (time == ActivityTime.OTHERS or time == ActivityTime.UNKNOWN) and \
+            request.form['selections'] != activity.one_line_selections:
+        choices = request.form['selections'].split(';')
+        activity.selections = [choice.strip() for choice in choices]
+
+    for member in activity.signup_list:
+        member['user'].notify_user('%s\'s information has been changed.'
+                                   % activity.name)
+    return redirect(url_for('.actintro', activity=activity.callsign))
+
+
 @actblueprint.route('/<activity>/attendance')
 @get_callsign(Activity, 'activity')
 @special_access_required

@@ -81,6 +81,12 @@
 			</div>
 			{% endif %}
 
+			{% if has_access and g.activity.is_future %}
+			<div class="col-sm-6">
+				<a class="btn btn-info btn-lg" href="{{ url_for('.changeactinfo', activity=g.activity.callsign) }}">Change Activity Info</a>
+			</div>
+			{% endif %}
+
 			{% if has_access and not g.activity.is_future %}
 			<div class="col-sm-6">
 				<a class="btn btn-info btn-lg" href="{{ url_for('.attendance', activity=g.activity.callsign) }}">Attendance</a>
