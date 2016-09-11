@@ -276,6 +276,9 @@ def changeactinfo_submit(activity):
     activity.time = time
     activity.location = request.form['location']
     time_type = request.form['time_type']
+    if request.form['cas'] < 0:  # In case someone change html
+        fail('Invalid CAS hours.', 'actinfo')
+        return redirect(url_for('.changeactinfo', activity=activity.callsign))
     if time_type == 'hours':
         activity.cas = int(request.form['cas'])
     else:
@@ -285,7 +288,7 @@ def changeactinfo_submit(activity):
         choices = request.form['selections'].split(';')
         activity.selections = [choice.strip() for choice in choices]
 
-    for member in activity.signup_list:
+    for member in activity.signup_list():
         member['user'].notify_user('%s\'s information has been changed.'
                                    % activity.name)
     return redirect(url_for('.actintro', activity=activity.callsign))

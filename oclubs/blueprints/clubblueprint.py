@@ -343,6 +343,9 @@ def newact_submit(club):
         a.time = time
         a.location = request.form['location']
         time_type = request.form['time_type']
+        if request.form['cas'] < 0:  # In case someone change html
+            fail('Invalid CAS hours.', 'actinfo')
+            return redirect(url_for('.changeactinfo', activity=activity.callsign))
         if time_type == 'hours':
             a.cas = int(request.form['cas'])
         else:

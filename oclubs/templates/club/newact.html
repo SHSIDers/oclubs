@@ -4,74 +4,75 @@
 
 <!-- Below Navbar -->
 <div class="container">
-	<div class="col-sm-6">
-		<h1 class="title">New Activity</h1>
-		{{ get_messages(['newact'], br_before=True) }}
-		<div class="form-horizontal white smalltext" role="form">
-			<form class="form-group" id="newact" action="{{ url_for('.newact_submit', club=g.club.callsign) }}" method="post">
-				<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-				<label class="col-sm-2" for="name">Name:</label>
-				<div class="col-sm-10">
-					<input type="text" class="form-control" id="name" name="name">
-				</div>
-				<div class="clearfix emptyline-lg"></div>
-				<label class="col-sm-2" for="date">Date:</label>
-				<div class="col-sm-10 black no-padding">
-					<div class="col-sm-4">
-						<select name="year" class="form-control">
-							{% for year in years %}
-							<option value="{{ year }}">{{ year }}</option>
-							{% endfor %}
+	<div class="row">
+		<div class="col-sm-6">
+			<h1 class="title">New Activity</h1>
+			{{ get_messages(['newact'], br_before=True) }}
+			<div class="form-horizontal white smalltext" role="form">
+				<form class="form-group" id="newact" action="{{ url_for('.newact_submit', club=g.club.callsign) }}" method="post">
+					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+					<label class="col-sm-2" for="name">Name:</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="name" name="name">
+					</div>
+					<div class="clearfix emptyline-lg"></div>
+					<label class="col-sm-2" for="date">Date:</label>
+					<div class="col-sm-10 black no-padding">
+						<div class="col-sm-4">
+							<select name="year" class="form-control">
+								{% for year in years %}
+								<option value="{{ year }}">{{ year }}</option>
+								{% endfor %}
+							</select>
+						</div>
+						<div class="col-sm-4">
+							<select name="month" class="form-control">
+								{% for month in range(1,13) %}
+								<option value="{{ month }}">{{ month }}</option>
+								{% endfor %}
+							</select>
+						</div>
+						<div class="col-sm-4">
+							<select name="day" class="form-control">
+								{% for day in range(1,32) %}
+								<option value="{{ day }}">{{ day }}</option>
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+					<div class="clearfix emptyline-lg"></div>
+					<label class="col-sm-2" for="location">Location:</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="location" name="location">
+					</div>
+					<div class="clearfix emptyline-lg"></div>
+					<label class="col-sm-2" for="act_type">Type:</label>
+					<div class="col-sm-10">
+						<select class="form-control black" id="act_type" name="act_type" type="dropdown">
+							<option value="noon">Noon Meeting</option>
+							<option value="afterschool">Afterschool Meeting</option>
+							<option value="others">Others</option>
 						</select>
 					</div>
-					<div class="col-sm-4">
-						<select name="month" class="form-control">
-							{% for month in range(1,13) %}
-							<option value="{{ month }}">{{ month }}</option>
-							{% endfor %}
+					<div class="clearfix emptyline-lg"></div>
+					<label class="col-sm-2" for="cas">CAS:</label>
+					<div class="col-sm-5">
+						<input type="number" class="form-control" id="cas" name="cas" min="0">
+					</div>
+					<div class="col-sm-5">
+						<select class="form-control black" name="time_type">
+							<option value="hours">Hours</option>
+							<option value="minutes">Minutes</option>
 						</select>
 					</div>
-					<div class="col-sm-4">
-						<select name="day" class="form-control">
-							{% for day in range(1,32) %}
-							<option value="{{ day }}">{{ day }}</option>
-							{% endfor %}
-						</select>
-					</div>
-				</div>
-				<div class="clearfix emptyline-lg"></div>
-				<label class="col-sm-2" for="location">Location:</label>
-				<div class="col-sm-10">
-					<input type="text" class="form-control" id="location" name="location">
-				</div>
-				<div class="clearfix emptyline-lg"></div>
-				<label class="col-sm-2" for="act_type">Type:</label>
-				<div class="col-sm-10">
-					<select class="form-control black" id="act_type" name="act_type" type="dropdown">
-						<option value="noon">Noon Meeting</option>
-						<option value="afterschool">Afterschool Meeting</option>
-						<option value="others">Others</option>
-					</select>
-				</div>
-				<div class="clearfix emptyline-lg"></div>
-				<label class="col-sm-2" for="cas">CAS:</label>
-				<div class="col-sm-5">
-					<input type="number" class="form-control" id="cas" name="cas" min="0">
-				</div>
-				<div class="col-sm-5">
-					<select class="form-control black" name="time_type">
-						<option value="hours">Hours</option>
-						<option value="minutes">Minutes</option>
-					</select>
-				</div>
-			</form>
+				</form>
+			</div>
+
 		</div>
-
+		<div class="col-sm-6">
+			<img src="{{ url_for('static', filename='/images/activity.jpg') }}" class="img-responsive img-thumbnail" alt="Activity">
+		</div>
 	</div>
-	<div class="col-sm-6">
-		<img src="{{ url_for('static', filename='/images/activity.jpg') }}" class="img-responsive img-thumbnail" alt="Activity">
-	</div>
-
 	<div class="clearfix emptyline-lg"></div>
 
 	<div class="form-group white smalltext">
@@ -80,8 +81,8 @@
 		<p>You can describe the selection below here if you want to allow members to choose.</p>
 	</div>
 
-	<div class="form-group white smalltext">
-		<div class="col-sm-6">
+	<div class="form-group white smalltext row">
+		<div class="col-sm-6 row">
 			<div class="col-sm-6">
 				<label for="has_selection">Allow Selection for Members?</label>
 			</div>
@@ -91,14 +92,15 @@
 					<option value="yes">Yes</option>
 				</select>
 			</div>
-			<p>*Only activities other than noon/afternoon meetings can accept selection</p>
 		</div>
 		<div class="col-sm-6">
 			<input type="text" class="form-control" name="selections" placeholder="Choice One;Choice Two;Choice Three" form="newact">
 			<p>*Please use ";" to seperate the choices.</p>
 		</div>
+		<div class="col-sm-12">
+			<p>*Only activities other than noon/afternoon meetings can accept selection.</p>
+		</div>
 	</div>
-
 	<div class="clearfix"></div>
 
 	<center><input class="midtext padding-3 btn btn-info" type="submit" form="newact" value="Submit"></center>
