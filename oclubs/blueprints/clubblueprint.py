@@ -321,7 +321,7 @@ def newact_submit(club):
         a = Activity.new()
         a.name = request.form['name']
         if not a.name:
-            fail('Please enter the name of the new activity.')
+            fail('Please enter the name of the new activity.', 'newact')
             return redirect(url_for('.newact', club=club.callsign))
         a.club = club
         a.description = FormattedText.handle(current_user, club,
@@ -343,9 +343,9 @@ def newact_submit(club):
         a.time = time
         a.location = request.form['location']
         time_type = request.form['time_type']
-        if request.form['cas'] < 0:  # In case someone change html
+        if request.form['cas'] < 0 or not request.form['cas']:
             fail('Invalid CAS hours.', 'actinfo')
-            return redirect(url_for('.changeactinfo', activity=activity.callsign))
+            return redirect(url_for('.newact', club=club.callsign))
         if time_type == 'hours':
             a.cas = int(request.form['cas'])
         else:
