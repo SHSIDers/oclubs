@@ -2003,6 +2003,10 @@ thead {
   }
 }
 
+#act-club-list .title_next {
+  margin-right: 30px;
+}
+
 #act-club-list .white.midtext {
   margin-top: -20px;
 }
@@ -2962,6 +2966,10 @@ a.white-a {
 a.white-a:focus,
 a.white-a:hover {
   color: #ccc;
+}
+
+.bold {
+  font-weight: 700;
 }
 
 @media screen and (max-width: 992px) {
