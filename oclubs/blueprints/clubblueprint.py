@@ -343,7 +343,7 @@ def newact_submit(club):
         a.time = time
         a.location = request.form['location']
         time_type = request.form['time_type']
-        if request.form['cas'] < 0 or not request.form['cas']:
+        if int(request.form['cas']) < 0 or not request.form['cas']:
             fail('Invalid CAS hours.', 'actinfo')
             return redirect(url_for('.newact', club=club.callsign))
         if time_type == 'hours':
