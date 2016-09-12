@@ -144,6 +144,9 @@ def memberinfo_notify_members(club):
         return redirect(url_for('.memberinfo', club=club.callsign))
     for member in club.members:
         member.notify_user(contents)
+        parameters = {'member': member, 'club': club, 'notify_contents': contents}
+        contents = render_email_template('notifymembers', parameters)
+        member.email_user('Notification - ' + club.name, contents)
     flash('You have successfully notified members.', 'notify_members')
     return redirect(url_for('.memberinfo', club=club.callsign))
 
