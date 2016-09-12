@@ -347,13 +347,18 @@ def newact_submit(club):
         a.time = time
         a.location = request.form['location']
         time_type = request.form['time_type']
-        if int(request.form['cas']) < 0 or not request.form['cas']:
-            fail('Invalid CAS hours.', 'actinfo')
+        try:
+            cas = int(request.form['cas'])
+        except ValueError:
+            fail('Invalid CAS hours.', 'newact')
+            return redirect(url_for('.newact', club=club.callsign))
+        if cas < 0:
+            fail('Invalid CAS hours.', 'newact')
             return redirect(url_for('.newact', club=club.callsign))
         if time_type == 'hours':
-            a.cas = int(request.form['cas'])
+            a.cas = cas
         else:
-            a.cas = int(request.form['cas']) / 60
+            a.cas = cas / 60
         if (time == ActivityTime.OTHERS or time == ActivityTime.UNKNOWN) and \
                 request.form['has_selection'] == 'yes':
             choices = request.form['selections'].split(';')

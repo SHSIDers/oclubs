@@ -279,13 +279,18 @@ def changeactinfo_submit(activity):
     activity.time = time
     activity.location = request.form['location']
     time_type = request.form['time_type']
-    if int(request.form['cas']) < 0 or not request.form['cas']:
+    try:
+        cas = int(request.form['cas'])
+    except ValueError:
+        fail('Invalid CAS hours.', 'actinfo')
+        return redirect(url_for('.changeactinfo', activity=activity.callsign))
+    if cas < 0:
         fail('Invalid CAS hours.', 'actinfo')
         return redirect(url_for('.changeactinfo', activity=activity.callsign))
     if time_type == 'hours':
-        activity.cas = int(request.form['cas'])
+        activity.cas = cas
     else:
-        activity.cas = int(request.form['cas']) / 60
+        activity.cas = cas / 60
     if (time == ActivityTime.OTHERS or time == ActivityTime.UNKNOWN) and \
             request.form['selections'] != activity.one_line_selections:
         choices = request.form['selections'].split(';')
