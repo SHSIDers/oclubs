@@ -168,7 +168,8 @@ class Activity(BaseObject):
             club_types = [club_type.value for club_type in club_types]
             conds['where'].append(('in', 'club_type', club_types))
         if excellent_only:
-            conds['where'].append(('in', 'club_id', cls._excellentclubs()))
+            from oclubs.objs import Club
+            conds['where'].append(('in', 'club_id', Club._excellentclubs()))
         if grade_limit:
             conds['join'].append(
                 ('inner', 'user', [('user_id', 'club_leader')]))
