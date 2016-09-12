@@ -73,7 +73,7 @@ def clubintro_submit(club):
         try:
             club.add_member(current_user)
         except AlreadyExists:
-            fail('You are already in %s.' % club.name)
+            fail('You are already in %s.' % club.name, 'join')
             return redirect(url_for('.clubintro', club=club.callsign))
         parameters = {'club': club, 'current_user': current_user}
         contents = render_email_template('joinclubs', parameters)
@@ -183,7 +183,7 @@ def changeclubinfo_submit(club):
         club.intro = request.form['intro']
 
     desc = request.form['description'].strip()
-    if desc != club.description and desc != '':
+    if desc and desc != club.description.raw:
         club.description = FormattedText.handle(current_user, club,
                                                 request.form['description'])
     if request.files['picture'].filename != '':

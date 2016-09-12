@@ -253,13 +253,13 @@ def changeactinfo_submit(activity):
     '''Input change in activity info into database'''
     actname = request.form['name']
     if not actname:
-        fail('Please input the name of the activity.')
+        fail('Please input the name of the activity.', 'actinfo')
         return redirect(url_for('.changeactinfo', activity=activity.callsign))
     if actname != activity.name:
         activity.name = actname
 
     desc = request.form['description'].strip()
-    if desc != activity.description:
+    if desc != activity.description.raw:
         activity.description = FormattedText.handle(current_user,
                                                     activity.club,
                                                     request.form['description'])
