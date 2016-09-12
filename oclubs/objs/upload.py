@@ -6,12 +6,18 @@ from __future__ import absolute_import, unicode_literals
 
 import os
 
-from PIL import Image
+from PIL import Image, ExifTags
 import magic
 
 from oclubs.access import fs
 from oclubs.exceptions import UploadNotSupported
 from oclubs.objs.base import BaseObject, Property
+
+for ORIENTATION in ExifTags.TAGS.keys():
+    if ExifTags.TAGS[ORIENTATION] == 'Orientation':
+        break
+else:
+    raise RuntimeError
 
 
 class Upload(BaseObject):
@@ -65,9 +71,7 @@ class Upload(BaseObject):
                 os.makedirs(permdir, 0o755)
 
             # resize to 600, 450
-            im = Image.open(temppath)
-            im.thumbnail((600, 450))
-            im.save(permpath, optimize=True)
+            cls._thumb(temppath, permpath)
             fs.watch(permpath)
         finally:
             os.remove(temppath)
@@ -78,6 +82,27 @@ class Upload(BaseObject):
         obj._location = filename
         obj.mime = mime
         return obj.create()
+
+    @staticmethod
+    def _thumb(temppath, permpath):
+        im = Image.open(temppath)
+
+        try:
+            # HACK: Fixing EXIF orientation
+            exif = dict(im._getexif().items())
+            exif[ORIENTATION]
+        except Exception:
+            pass
+        else:
+            if exif[ORIENTATION] == 3:
+                im = im.rotate(180, expand=True)
+            elif exif[ORIENTATION] == 6:
+                im = im.rotate(270, expand=True)
+            elif exif[ORIENTATION] == 8:
+                im = im.rotate(90, expand=True)
+
+        im.thumbnail((600, 450))
+        im.save(permpath, optimize=True)
 
     @staticmethod
     def mk_relative_path(filename, is_upload=True):
