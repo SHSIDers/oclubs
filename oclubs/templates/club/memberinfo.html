@@ -6,9 +6,11 @@
 <div class="container">
 	<h1 class="title">Member Info</h1>
 	<h2 class="title_next">{{ g.club.name }}</h2>
+	{% if current_user == g.club.leader %}
 	<center>
 	<a class="btn btn-info btn-lg" href="#notifyMembers" data-toggle="modal" data-target="#notifyMembers">Notify Members</a>
 	</center>
+	{% endif %}
 	{{ get_messages(['notify_members'], br_before=True) }}
 	<br>
 	<table class="table table-hover table-bordered" id="memberinfotable">
