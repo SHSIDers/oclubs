@@ -32,7 +32,10 @@
 							.text( 'Your choice is ' + checked.val() + '.' );
 						$( '.modal .modal-footer' )
 							.html( '<button type="button" class="btn btn-default" data-dismiss="modal">Reselect</button>' +
-								'<input type="submit" class="btn btn-primary" form="leader_radio" name="change_leader" value="Confirm">' );
+								'<input type="submit" class="btn btn-primary" name="change_leader" value="Confirm">' );
+						$( '#leader' )
+							.val( checked
+								.val());
 					} else {
 						$( '.modal .modal-body p' )
 							.text( 'Please select one memeber as next club leader!' );
@@ -46,6 +49,12 @@
 					var selected = $( '.form-group select option:selected' );
 					$( '.modal .modal-body p' )
 						.text( 'Your choice is ' + selected.text() + '.' );
+					$( '#clubs' )
+						.val( $( '#_clubs' )
+							.val());
+					$( '#reason' )
+						.val( $( '#_reason' )
+							.val());
 				} );
 
 			$( '.refresh' )
@@ -135,7 +144,7 @@
 
 			$( '#emptyclose, #closebtn' )
 				.click( function() {
-					$( '#sidenav, #emptyclose' )
+					$	( '#sidenav, #emptyclose' )
 						.css( 'width', '0' );
 					$( '#floatmenu' )
 						.fadeIn();

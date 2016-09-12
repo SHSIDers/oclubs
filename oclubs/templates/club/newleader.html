@@ -16,8 +16,7 @@
 <br><br>
 
 <div class="container">
-	<form id="leader_radio" action="{{ url_for('.newleader_submit', club=g.club.callsign)}}" method="post">
-		<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+	<form id="leader_radio">
 		{% for member in g.club.members %}
 		{% if member != g.club.leader %}
 		<label class="radio_block" for="{{ member.id }}">
@@ -43,8 +42,12 @@
 			<div class="modal-body">
 				<p></p>
 			</div>
-			<div class="modal-footer">
-
+			<form action="{{ url_for('.newleader_submit', club=g.club.callsign)}}" method="post">
+				<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+				<input name="leader" id="leader" value="" type="hidden">
+				<div class="modal-footer">
+				</div>
+			</form>
 			</div>
 		</div>
 	</div>

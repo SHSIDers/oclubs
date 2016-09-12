@@ -11,19 +11,18 @@
 		<h1 class="white title_next">Quitting Club</h1>
 		{{ get_messages(['quit'], br_after=True) }}
 		{% if quitting_clubs %}
-		<form class="form-group white middle" id="quit_club" action="{{ url_for('.quitclub_submit') }}" method="post">
-			<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+		<form class="form-group white middle">
 			<p class="midtext"><i>If you really want to quit a club, then please select the club and state your reason. Your quitting request will be emailed to the club leader.</i></p>
 			<br>
 			<label for="clubs">The club:</label>
-			<select class="form-control black" id="clubs" name="clubs" type="dropdown">
+			<select class="form-control black" id="_clubs" name="_clubs" type="dropdown">
 				{% for club in quitting_clubs %}
 				<option value="{{ club.id }}">{{ club.name }}</option>
 				{% endfor %}
 			</select>
 			<br>
 			<label for="reason">Reason:</label>
-			<textarea class="form-control" rows="10" name="reason" id="reason"></textarea>
+			<textarea class="form-control" rows="10" name="_reason" id="_reason"></textarea>
 			<br>
 			<button type="button" class="btn btn-info" data-toggle="modal" data-target="#confirmation" id="updatequit">Submit</button>
 		</form>
@@ -47,8 +46,13 @@
 				<p></p>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">No!</button>
-				<input type="submit" form="quit_club" class="btn btn-primary" value="Confirm">
+				<form id='quit_club' action="{{ url_for('.quitclub_submit') }}" method="post">
+					<button type="button" class="btn btn-default" data-dismiss="modal">No!</button>
+					<input type="submit" class="btn btn-primary" value="Confirm">
+					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+					<input name="clubs" id="clubs" type="hidden" value="">
+					<input name="reason" id="reason" type="hidden" value="">
+				</form>
 			</div>
 		</div>
 	</div>
