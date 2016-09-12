@@ -13,11 +13,8 @@ from oclubs.access import fs
 from oclubs.exceptions import UploadNotSupported
 from oclubs.objs.base import BaseObject, Property
 
-for ORIENTATION in ExifTags.TAGS.keys():
-    if ExifTags.TAGS[ORIENTATION] == 'Orientation':
-        break
-else:
-    raise RuntimeError
+ORIENTATION = next((key for key, val in ExifTags.TAGS.items()
+                    if val == 'Orientation'))
 
 
 class Upload(BaseObject):
