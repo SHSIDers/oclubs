@@ -405,7 +405,7 @@ class ClubFilter(object):
                 ]
             },
             {
-                'name': 'Club Leader Grades',
+                'name': 'Grades',
                 'elements': [
                     {'url': '9-10', 'name': 'Grade 9 - 10',
                      'selected': self.conds[2] == [9, 10]},
