@@ -24,6 +24,9 @@
 			{% else %}
 			<p>Inactive</p>
 			{% endif %}
+			{% if see_email %}
+			<p>Club Teacher's Email: {{ g.club.teacher.email }}</p>
+			{% endif %}
 		</div>
 		<center><img src="{{ g.club.picture.location_external }}" class="img-thumbnail" alt="Club Picture"></center>
 

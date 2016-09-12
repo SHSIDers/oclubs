@@ -54,9 +54,10 @@ def clubintro(club):
                  club.joinmode == ClubJoinMode.FREE_JOIN and
                  current_user.type == UserType.STUDENT and
                  current_user not in club.members)
-
+    see_email = (current_user.type == UserType.ADMIN or current_user == club.leader)
     return render_template('club/clubintro.html',
-                           free_join=free_join)
+                           free_join=free_join,
+                           see_email=see_email)
 
 
 @clubblueprint.route('/<club>/introduction/submit', methods=['POST'])
