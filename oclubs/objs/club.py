@@ -47,9 +47,9 @@ class Club(BaseObject):
     def excellentclubs(cls, amount=None):
         ret = cls.allclubs(excellent_only=True,
                            random_order=bool(amount), limit=amount)
-        try:
+        if amount:
             return ret[1]
-        except IndexError:
+        else:
             return ret
 
     @classmethod
