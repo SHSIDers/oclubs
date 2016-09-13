@@ -477,13 +477,14 @@ def adjust_status(club_type):
         abort(404)
     return render_template('club/adjuststatus.html',
                            clubs=clubs,
-                           ClubJoinMode=ClubJoinMode)
+                           ClubJoinMode=ClubJoinMode,
+                           club_type=club_type)
 
 
-@clubblueprint.route('/adjust_status/submit', methods=['POST'])
+@clubblueprint.route('/adjust_status/<club_type>/submit', methods=['POST'])
 @special_access_required
 @require_not_student
-def adjust_status_submit():
+def adjust_status_submit(club_type):
     '''Input change in activeness into database'''
     ids = request.form.getlist('activeness')
     clubs = map(Club, ids)
@@ -500,7 +501,7 @@ def adjust_status_submit():
         elif club.joinmode == ClubJoinMode.BY_INVITATION:
             club.joinmode = ClubJoinMode.FREE_JOIN
     flash('The change in clubs\' status has been submitted.', 'adjust_status')
-    return redirect(url_for('.adjust_status'))
+    return redirect(url_for('.adjust_status', club_type=club_type))
 
 
 @clubblueprint.route('/adjust_status/<club_type>/all_free_join', methods=['POST'])
@@ -519,7 +520,7 @@ def adjust_status_all_free_join(club_type):
     for club in clubs:
         club.joinmode = ClubJoinMode.FREE_JOIN
     flash('All clubs are free to join now.', 'adjust_status')
-    return redirect(url_for('.adjust_status'))
+    return redirect(url_for('.adjust_status', club_type=club_type))
 
 
 @clubblueprint.route('/adjust_status/<club_type>/all_by_invitation', methods=['POST'])
@@ -538,7 +539,7 @@ def adjust_status_all_by_invitation(club_type):
     for club in clubs:
         club.joinmode = ClubJoinMode.BY_INVITATION
     flash('All clubs are invite-only now.', 'adjust_status')
-    return redirect(url_for('.adjust_status'))
+    return redirect(url_for('.adjust_status', club_type=club_type))
 
 
 @clubblueprint.route('/<club>/register_hongmei')
