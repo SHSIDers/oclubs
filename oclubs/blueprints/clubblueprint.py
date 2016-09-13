@@ -462,6 +462,7 @@ def newhm_submit(club):
     return redirect(url_for('.newhm', club=club.callsign))
 
 
+@clubblueprint.route('/adjust_status/', defaults={'club_type': 'all'})
 @clubblueprint.route('/adjust_status/<club_type>')
 @special_access_required
 @require_not_student
@@ -481,6 +482,8 @@ def adjust_status(club_type):
                            club_type=club_type)
 
 
+@clubblueprint.route('/adjust_status/submit', defaults={'club_type': 'all'},
+                     methods=['POST'])
 @clubblueprint.route('/adjust_status/<club_type>/submit', methods=['POST'])
 @special_access_required
 @require_not_student
@@ -504,6 +507,8 @@ def adjust_status_submit(club_type):
     return redirect(url_for('.adjust_status', club_type=club_type))
 
 
+@clubblueprint.route('/adjust_status/all_free_join', defaults={'club_type': 'all'},
+                     methods=['POST'])
 @clubblueprint.route('/adjust_status/<club_type>/all_free_join', methods=['POST'])
 @special_access_required
 @require_not_student
@@ -523,6 +528,8 @@ def adjust_status_all_free_join(club_type):
     return redirect(url_for('.adjust_status', club_type=club_type))
 
 
+@clubblueprint.route('/adjust_status/all_by_invitation', defaults={'club_type': 'all'},
+                     methods=['POST'])
 @clubblueprint.route('/adjust_status/<club_type>/all_by_invitation', methods=['POST'])
 @special_access_required
 @require_not_student
