@@ -42,7 +42,7 @@
 		</tbody>
 	</table>
 	<center>
-	<form action="{{ url_for('.adjust_status_submit') }}" method="post" id="activeness_form">
+	<form action="{{ url_for('.adjust_status_submit', club_type=club_type) }}" method="post" id="activeness_form">
 		<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 		<input class="btn btn-primary btn-lg" type="submit" value="Submit the Change">
 	</form>
