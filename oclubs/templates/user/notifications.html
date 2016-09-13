@@ -9,7 +9,7 @@
 	<center><p class="search_result">You have {{ number }} new notifications.</p></center>
 	<br>
 	{% for invitation in invitations %}
-	<div class="notification notification-unread">
+	<div class="notification notification-unread largetext">
 		<div class="col-sm-9">
 			<p>You are invited to {{ invitation.club.name }}. Do you wish to accept this invitation?</p>
 			<form action="{{ url_for('.invitation_reply') }}" method="post">
@@ -26,7 +26,7 @@
 	</div>
 	{% endfor %}
 	{% for note in notifications %}
-	<div class="notification {% if note.isread == True %}notification-read{% else %}notification-unread{% endif %}">
+	<div class="notification {% if note.isread == True %}notification-read{% else %}notification-unread{% endif %} largetext">
 		<div class="col-sm-9">
 			<p>{{ note.text }}</p>
 		</div>
