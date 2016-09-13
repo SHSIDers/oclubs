@@ -368,8 +368,10 @@ def contactadmin():
 def contactadmin_submit():
     '''Submit complaints'''
     content = request.form['content']
-    parameters = {'sender_name': current_user.nickname + ' (' +
-                  current_user.passportname + ')',
+    parameters = {'sender_name': '%s (%s, %s)' % (
+                      current_user.nickname,
+                      current_user.passportname,
+                      current_user.grade_and_class),
                   'sender_contact': current_user.email + ' ' +
                   str(current_user.phone),
                   'content': content}
