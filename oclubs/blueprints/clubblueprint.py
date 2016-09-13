@@ -460,12 +460,19 @@ def newhm_submit(club):
     return redirect(url_for('.newhm', club=club.callsign))
 
 
-@clubblueprint.route('/adjust_status')
+@clubblueprint.route('/adjust_status/<club_type>')
 @special_access_required
 @require_not_student
-def adjust_status():
+def adjust_status(club_type):
     '''Allow admin to change club to active'''
-    clubs = Club.allclubs(active_only=False)
+    if club_type == 'all':
+        clubs = Club.allclubs(active_only=False)
+    elif club_type == '11-12':
+        clubs = Club.allclubs(active_only=False, grade_limit=(11, 12))
+    elif club_type == '9-10':
+        clubs = Club.allclubs(active_only=False, grade_limit=(9, 10))
+    else:
+        abort(404)
     return render_template('club/adjuststatus.html',
                            clubs=clubs,
                            ClubJoinMode=ClubJoinMode)

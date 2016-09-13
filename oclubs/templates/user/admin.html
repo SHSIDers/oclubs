@@ -45,7 +45,7 @@
 	<a href="#hongmei_schedule" data-toggle="modal" data-target="#hongmei_schedule" class="btn btn-success">Check HongMei Schedule</a>
 </div>
 <div class="admin_button">
-	<a href="{{ url_for('clubblueprint.adjust_status') }}" class="btn btn-success">Adjust Clubs' Status</a>
+	<a href="#adjust_club_status" data-toggle="modal" data-target="#adjust_club_status" class="btn btn-success">Adjust Clubs' Status</a>
 </div>
 
 <div class="clearfix"></div>
@@ -164,6 +164,32 @@
 				</div>
 				<div class="col-sm-6">
 					<a class="btn btn-success large_button" href="{{ url_for('actblueprint.thisweek_activitiesinfo') }}">Download This Week's Activities</a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="adjust_club_status" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Adjust Club Status</h4>
+			</div>
+			<div class="modal-body">
+				<div class="col-sm-4">
+					<a class="btn btn-danger large_button" href="{{ url_for('clubblueprint.adjust_status', club_type='all') }}">All Clubs</a>
+				</div>
+				<div class="col-sm-4">
+					<a class="btn btn-warning large_button" href="{{ url_for('clubblueprint.adjust_status', club_type='11-12') }}">Grade 11-12</a>
+				</div>
+				<div class="col-sm-4">
+					<a class="btn btn-warning large_button" href="{{ url_for('clubblueprint.adjust_status', club_type='9-10') }}">Grade 9-10</a>
 				</div>
 				<div class="clearfix"></div>
 			</div>
