@@ -57,11 +57,11 @@
 				<h4 class="modal-title">Set all clubs' join mode to Free Join</h4>
 			</div>
 			<div class="modal-body">
-				<p>When you press "Confirm" button, all clubs' join mode will be set to Free Join mode. In this mode, every student is free to join any club.</p>
+				<p>When you press "Confirm" button, join mode of all clubs in this session will be set to Free Join mode. In this mode, every student is free to join any club.</p>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-				<form action="{{ url_for('.adjust_status_all_free_join') }}" method="post" class="inline empty-left">
+				<form action="{{ url_for('.adjust_status_all_free_join', club_type=club_type) }}" method="post" class="inline empty-left">
 					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 					<input class="btn btn-primary" type="submit" value="Confirm">
 				</form>
@@ -78,11 +78,11 @@
 				<h4 class="modal-title">Set all clubs' join mode to By Invitation</h4>
 			</div>
 			<div class="modal-body">
-				<p>When you press "Confirm" button, all clubs' join mode will be set to By Invitation mode. In this mode, club leader can invite new member, but students can not join any club by themselves.</p>
+				<p>When you press "Confirm" button, join mode of all clubs in this session will be set to By Invitation mode. In this mode, club leader can invite new member, but students can not join any club by themselves.</p>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-				<form action="{{ url_for('.adjust_status_all_by_invitation') }}" method="post" class="inline empty-left">
+				<form action="{{ url_for('.adjust_status_all_by_invitation', club_type=club_type) }}" method="post" class="inline empty-left">
 					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 					<input class="btn btn-primary" type="submit" value="Confirm">
 				</form>

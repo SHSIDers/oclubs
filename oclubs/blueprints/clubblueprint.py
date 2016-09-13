@@ -470,9 +470,9 @@ def adjust_status(club_type):
     if club_type == 'all':
         clubs = Club.allclubs(active_only=False)
     elif club_type == '11-12':
-        clubs = Club.allclubs(active_only=False, grade_limit=(11, 12))
+        clubs = Club.allclubs(active_only=False, grade_limit=[11, 12])
     elif club_type == '9-10':
-        clubs = Club.allclubs(active_only=False, grade_limit=(9, 10))
+        clubs = Club.allclubs(active_only=False, grade_limit=[9, 10])
     else:
         abort(404)
     return render_template('club/adjuststatus.html',
@@ -503,23 +503,39 @@ def adjust_status_submit():
     return redirect(url_for('.adjust_status'))
 
 
-@clubblueprint.route('/adjust_status/all_free_join', methods=['POST'])
+@clubblueprint.route('/adjust_status/<club_type>/all_free_join', methods=['POST'])
 @special_access_required
 @require_not_student
-def adjust_status_all_free_join():
+def adjust_status_all_free_join(club_type):
     '''Change all clubs' join mode to free join'''
-    for club in Club.allclubs(active_only=False):
+    if club_type == 'all':
+        clubs = Club.allclubs(active_only=False)
+    elif club_type == '11-12':
+        clubs = Club.allclubs(active_only=False, grade_limit=[11, 12])
+    elif club_type == '9-10':
+        clubs = Club.allclubs(active_only=False, grade_limit=[9, 10])
+    else:
+        abort(404)
+    for club in clubs:
         club.joinmode = ClubJoinMode.FREE_JOIN
     flash('All clubs are free to join now.', 'adjust_status')
     return redirect(url_for('.adjust_status'))
 
 
-@clubblueprint.route('/adjust_status/all_by_invitation', methods=['POST'])
+@clubblueprint.route('/adjust_status/<club_type>/all_by_invitation', methods=['POST'])
 @special_access_required
 @require_not_student
-def adjust_status_all_by_invitation():
+def adjust_status_all_by_invitation(club_type):
     '''Change all clubs' join mode to free join'''
-    for club in Club.allclubs(active_only=False):
+    if club_type == 'all':
+        clubs = Club.allclubs(active_only=False)
+    elif club_type == '11-12':
+        clubs = Club.allclubs(active_only=False, grade_limit=[11, 12])
+    elif club_type == '9-10':
+        clubs = Club.allclubs(active_only=False, grade_limit=[9, 10])
+    else:
+        abort(404)
+    for club in clubs:
         club.joinmode = ClubJoinMode.BY_INVITATION
     flash('All clubs are invite-only now.', 'adjust_status')
     return redirect(url_for('.adjust_status'))
