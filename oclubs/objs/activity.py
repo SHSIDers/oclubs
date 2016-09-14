@@ -153,7 +153,7 @@ class Activity(BaseObject):
                                        date_int(start or date.today())))
             else:
                 start = (start or date.today()) + ONE_DAY
-                end = (start or date.today()) + ONE_DAY
+                end = (end or date.today()) + ONE_DAY
                 conds['where'].append(('range', 'act_date',
                                        (date_int(start), date_int(end))))
 
