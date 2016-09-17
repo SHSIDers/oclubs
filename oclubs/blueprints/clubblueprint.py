@@ -30,7 +30,7 @@ def clublist(club_filter):
     '''Club list by club type'''
     num = 18
     clubs = Club.randomclubs(num, **club_filter.to_kwargs())
-    return render_template('club/clublist.html',
+    return render_template('club/clublist.jinja2',
                            is_list=True,
                            clubs=clubs,
                            club_filter=club_filter)
@@ -42,7 +42,7 @@ def clublist(club_filter):
 @special_access_required
 def club(club):
     '''Club Management Page'''
-    return render_template('club/clubmanage.html')
+    return render_template('club/clubmanage.jinja2')
 
 
 @clubblueprint.route('/<club>/')
@@ -57,7 +57,7 @@ def clubintro(club):
     see_email = (current_user.is_active and
                  current_user.type == UserType.ADMIN or
                  current_user == club.leader)
-    return render_template('club/clubintro.html',
+    return render_template('club/clubintro.jinja2',
                            free_join=free_join,
                            see_email=see_email)
 
@@ -94,7 +94,7 @@ def clubintro_submit(club):
 @fresh_login_required
 def newleader(club):
     '''Selecting New Club Leader'''
-    return render_template('club/newleader.html')
+    return render_template('club/newleader.jinja2')
 
 
 @clubblueprint.route('/<club>/new_leader/submit', methods=['POST'])
@@ -119,7 +119,7 @@ def newleader_submit(club):
         member.email_user('New Leader - ' + club.name, contents)
         member.notify_user(club.leader.nickname +
                            ' becomes the new leader of ' + club.name + '.')
-    return render_template('club/success.html')
+    return render_template('club/success.jinja2')
 
 
 @clubblueprint.route('/<club>/member_info')
@@ -130,7 +130,7 @@ def memberinfo(club):
     has_access = (current_user == club.leader or
                   current_user == club.teacher or
                   current_user.type == UserType.ADMIN)
-    return render_template('club/memberinfo.html',
+    return render_template('club/memberinfo.jinja2',
                            has_access=has_access)
 
 
@@ -172,7 +172,7 @@ def memberinfo_download(club):
 @special_access_required
 def changeclubinfo(club):
     '''Change Club's Info'''
-    return render_template('club/changeclubinfo.html')
+    return render_template('club/changeclubinfo.jinja2')
 
 
 @clubblueprint.route('/<club>/change_info/submit', methods=['POST'])
@@ -223,7 +223,7 @@ def changeclubinfo_submit(club):
 def adjustmember(club):
     '''Adjust Club Members'''
     invite_member = club.joinmode == ClubJoinMode.BY_INVITATION
-    return render_template('club/adjustmember.html',
+    return render_template('club/adjustmember.jinja2',
                            invite_member=invite_member)
 
 
@@ -287,7 +287,7 @@ def clubactivities(club, page):
     club_pic = []
     club_pic.extend([item['upload'] for item in club.allactphotos(limit=3)[1]])
     club_pic.extend([Upload(-101) for _ in range(3 - len(club_pic))])
-    return render_template('club/clubact.html',
+    return render_template('club/clubact.jinja2',
                            club_pic=club_pic,
                            acts=acts,
                            pagination=pagination)
@@ -301,7 +301,7 @@ def clubphoto(club, page):
     pic_num = 20
     count, uploads = club.allactphotos(limit=((page-1)*pic_num, pic_num))
     pagination = Pagination(page, pic_num, count)
-    return render_template('club/clubphoto.html',
+    return render_template('club/clubphoto.jinja2',
                            uploads=uploads,
                            pagination=pagination)
 
@@ -313,7 +313,7 @@ def clubphoto(club, page):
 def newact(club):
     '''Hosting New Activity'''
     years = (lambda m: map(lambda n: m + n, range(2)))(date.today().year)
-    return render_template('club/newact.html',
+    return render_template('club/newact.jinja2',
                            years=years)
 
 
@@ -389,7 +389,7 @@ def newact_submit(club):
 def hongmei_status(club):
     '''Check HongMei Status'''
     acts = club.activities([ActivityTime.HONGMEI], (False, True))
-    return render_template('club/hmstatus.html',
+    return render_template('club/hmstatus.jinja2',
                            acts=acts)
 
 
@@ -427,7 +427,7 @@ def newhm(club):
     '''Input HongMei Plan'''
     acts = club.activities([ActivityTime.HONGMEI], (False, True))
     years = (lambda m: map(lambda n: m + n, range(2)))(date.today().year)
-    return render_template('club/newhm.html',
+    return render_template('club/newhm.jinja2',
                            acts=acts,
                            years=years)
 
@@ -476,7 +476,7 @@ def adjust_status(club_type):
         clubs = Club.allclubs(active_only=False, grade_limit=[9, 10])
     else:
         abort(404)
-    return render_template('club/adjuststatus.html',
+    return render_template('club/adjuststatus.jinja2',
                            clubs=clubs,
                            ClubJoinMode=ClubJoinMode,
                            club_type=club_type)
@@ -564,7 +564,7 @@ def registerhm(club):
             acts.append((activity, True))
         except NoRow:
             acts.append((activity, False))
-    return render_template('club/registerhm.html',
+    return render_template('club/registerhm.jinja2',
                            acts=acts)
 
 
@@ -599,7 +599,7 @@ def quitclub():
     '''Quit Club Page'''
     quitting_clubs = filter(lambda club: current_user != club.leader,
                             current_user.clubs)
-    return render_template('club/quitclub.html',
+    return render_template('club/quitclub.jinja2',
                            quitting_clubs=quitting_clubs)
 
 
@@ -650,7 +650,7 @@ def newclub():
     '''Allow student to create new club'''
     if not siteconfig.get_config('allow_club_creation'):
         abort(403)
-    return render_template('club/newclub.html',
+    return render_template('club/newclub.jinja2',
                            clubtype=ClubType)
 
 
@@ -710,7 +710,7 @@ def clubmanagementlist(page):
     num = 20
     count, clubs = Club.allclubs(limit=((page-1)*num, num))
     pagination = Pagination(page, num, count)
-    return render_template('club/clubmanagementlist.html',
+    return render_template('club/clubmanagementlist.jinja2',
                            clubs=clubs,
                            pagination=pagination)
 
@@ -721,7 +721,7 @@ def clubmanagementlist(page):
 def adjustclubs():
     '''Allow admin to change clubs' status'''
     clubs = Club.allclubs()
-    return render_template('club/adjustclubs.html',
+    return render_template('club/adjustclubs.jinja2',
                            clubs=clubs)
 
 

@@ -1,0 +1,38 @@
+{% extends "base.jinja2" %}{% from 'macros.jinja2' import get_messages %}
+{% block title %}HongMei Invitation{% endblock %}
+{% block content %}
+
+<!-- Below Navbar -->
+<div class="container">
+	<h1 class="title">HongMei Invitation</h1>
+	<h2 class="title_next">{{ g.activity.name }}</h2>
+	<h2 class="title_next">{{ g.activity.date.strftime('%b-%d-%y') }}</h2>
+	{{ get_messages(['invite_hm']) }}
+	<div class="checkbox_block">
+		{% for member in g.activity.club.members %}
+		<label for="{{ member.id }}">
+			<div class="row">
+				<div class="col-sm-3">
+					<img src="{{ member.picture.location_external }}" class="img-responsive img-thumbnail" alt="{{ member.nickname }}">
+				</div>
+				<div class="col-sm-7 nowrap">
+					<p>{{ member.nickname }}</p>
+					<p>{{ member.passportname }}</p>
+				</div>
+				<div class="col-sm-2 float-right no-padding">
+					<input type="checkbox" name="invite" value="{{ member.id }}" id="{{ member.id }}" form="invitehm">
+				</div>
+			</div>
+		</label>
+		{% endfor %}
+	</div>
+	<br>
+	<center>
+		<form action="{{ url_for('.hongmei_invite_submit', activity=g.activity.callsign) }}" method="post" id="invitehm">
+			<input class="btn btn-info width-20 downloadbtn" type="submit" value="Submit">
+			<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+		</form>
+	</button>
+</div>
+
+{% endblock %}

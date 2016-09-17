@@ -1,0 +1,33 @@
+{% extends "base.jinja2" %}{% from 'macros.jinja2' import render_pagination %}
+{% block title %}Club Management List{% endblock %}
+{% block content %}
+
+<!-- Below Navbar -->
+<div class="container">
+	<h1 class="title">Club Management List</h1>
+	<table class="table table-hover table-bordered midtext">
+		<thead>
+			<tr>
+				<th class="width-5">Club Picture</th>
+				<th>Club Name</th>
+				<th>Club Leader</th>
+				<th>Club Teacher</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for club in clubs %}
+			<tr class="clickable act" data-href="{{ url_for('.club', club=club.callsign) }}">
+				<td>
+					<img src="{{ club.picture.location_external }}" class="img-responsive img-thumbnail table-photo" alt="{{ club.name }}">
+				</td>
+				<td>{{ club.name }}</td>
+				<td>{{ club.leader.nickname }}</td>
+				<td>{{ club.teacher.email }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<center>{{ render_pagination(pagination) }}</center>
+</div>
+
+{% endblock %}

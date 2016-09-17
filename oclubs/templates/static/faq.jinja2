@@ -1,0 +1,38 @@
+{% extends "base.jinja2" %}
+{% block title %}FAQ{% endblock %}
+{% block content %}
+
+<div class="container">
+	<center><h1 class="title">Frequently Asked Questions</h1></center>
+	<center><img src="{{ getpicture('faq', 'png') }}" class="img-responsive img-thumbnail emptyline-lg" alt="FAQ"></center>
+	<div class="white">
+		<div class="faq">
+		<h2 class="midtext">What is oClubs?</h2>
+		<ul><li>
+		<p class="smalltext emptyline">It is SHSID 9-12th grade's official online club management platform for both club leaders and club members. Each student has/will have an account. You MUST use the website to join clubs/activities (Eg. HongMei teaching), otherwise the school won't recognize your participation and you will not receive CAS hours. Leaders can easily manage members' information.</p></li></ul>
+		<h2 class="midtext">Why can't I connect with 4G or connect at home?</h2>
+		<ul><li>
+		<p class="smalltext emptyline">Yes you MUST use the school wifi "shs" to connect to oClubs. It is only open to SHSID students IN SCHOOL considering security reasons, since so much student and school information is stored on the website. You can't connect with outside internet, including 4G or any other wifi.<br>
+		Tip: Use your phone, laptop, or the library's computer with "shs" signal</p></li></ul>
+		<h2 class="midtext">How can I connect to this website if I don't have a wifi account?</h2>
+		<ul><li>
+		<p class="smalltext emptyline">
+		Steps:<br>
+		1. Connect to the wifi named "shs" in school<br>
+		2. If a popup of "account" and "password" pop out, choose cancel/close the popup.<br>
+		3. At this time, your device will be having the full signal "shs", but you cannot connect to any other website (Eg. Baidu…). <br>
+		4. However, when you input "oclubs.shs.cn" or "http://oclubs.shs.cn" in browser address bar, it can be connected. (It's because the website is in the school's inner network.)<br>
+		5. After Login (upper right) and yeahhh you can use it.</p></li></ul>
+		<h2 class="midtext">What?? Default?? Is the website experiencing any issues?</h2>
+		<ul><li>
+		<p class="smalltext">Roll down. No. It shows "Default" because no pictures are uploaded YET. Only new activity photos can be uploaded and seen. So create your activity and and upload the photo for your activity. Your activity's photo will then be shown on the homepage.</p></li></ul>
+		<h2 class="midtext">What if a club has two (or more) leaders?</h2>
+		<ul><li>
+		<p class="smalltext">Only one person can create the club and he/she will be the leader. Only one leader can be stored on the website and do online management. Club leaders will have some additional club management pages. 
+		However, you can tell your grade's club administrator that your club has more than one leader. The school will document it after approval.</p></li></ul>
+		</div>
+	</div>
+	<center><p class="largetext white">Have more questions? Contact creators or administrators below!</p></center>
+</div>
+
+{% endblock %}

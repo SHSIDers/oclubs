@@ -45,7 +45,7 @@ def personal():
         activities.extend([act for act in acts_obj])
         leader_club = filter(lambda club_obj: current_user == club_obj.leader,
                              clubs)
-        return render_template('user/student.html',
+        return render_template('user/student.jinja2',
                                pictures=pictures,
                                clubs=clubs,
                                castotal=castotal,
@@ -56,7 +56,7 @@ def personal():
                                receive_email=receive_email)
     else:
         years = (lambda m: map(lambda n: m + n, range(2)))(date.today().year)
-        return render_template('user/admin.html',
+        return render_template('user/admin.jinja2',
                                pictures=pictures,
                                years=years,
                                receive_email=receive_email)
@@ -171,7 +171,7 @@ def download_new_passwords():
 def disableaccounts():
     '''Allow admin to disable any account'''
     users = User.allusers()
-    return render_template('user/disableaccounts.html',
+    return render_template('user/disableaccounts.jinja2',
                            users=users)
 
 
@@ -193,7 +193,7 @@ def disableaccounts_submit():
 def changepassword():
     '''Allow admin to change users' password'''
     users = User.allusers(non_teachers=True)
-    return render_template('user/changepassword.html',
+    return render_template('user/changepassword.jinja2',
                            users=users)
 
 
@@ -220,7 +220,7 @@ def changepassword_submit():
 @userblueprint.route('/forgot_password')
 def forgotpw():
     '''Page for retrieving password'''
-    return render_template('user/forgotpassword.html')
+    return render_template('user/forgotpassword.jinja2')
 
 
 @userblueprint.route('/change_info')
@@ -229,7 +229,7 @@ def forgotpw():
 def changeuserinfo():
     '''Allow admin to change users' information'''
     users = User.allusers(non_teachers=True)
-    return render_template('user/changeuserinfo.html',
+    return render_template('user/changeuserinfo.jinja2',
                            users=users)
 
 
@@ -270,7 +270,7 @@ def notifications(page):
     current_user.set_notifications_readall()
     invitations_all = current_user.get_invitation()
     num = current_user.get_unread_notifications_num()
-    return render_template('user/notifications.html',
+    return render_template('user/notifications.jinja2',
                            notifications=notes_all[1],
                            number=num,
                            pagination=Pagination(page, note_num, notes_all[0]),
@@ -318,7 +318,7 @@ def edit_siteconfig():
             'bool': ('Enabled', 'Disabled')
         }
     }
-    return render_template('user/siteconfig.html',
+    return render_template('user/siteconfig.jinja2',
                            siteconfig=siteconfig,
                            types=types)
 

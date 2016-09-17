@@ -1,0 +1,45 @@
+{% extends "base.jinja2" %}{% from 'macros.jinja2' import render_pagination %}
+{% block title %}All Photos{% endblock %}
+{% block content %}
+
+<!-- Below Navbar -->
+<div class="large_container" id="allphotospage">
+	<h1 class="text-center title">All Photos</h1>
+	{% if act_recent %}
+	<div class="jumbotron">
+		<div class="col-sm-4" id="photo-image">
+			<img src="{{ act_recent.pictures[0].location_external }}" class="img-responsive img-thumbnail" alt="Image">
+		</div>
+		<div class="col-sm-8" id="photo-desc">
+			<h1 class="title no-top-margin">{{ act_recent.club.name }}</h1>
+			<h1 class="title_next">{{ act_recent.name }}</h1>
+			<h3 class="largetext">Recent Event - This is the most recent activity with photos.</h3>
+			<h3 class="largetext">Feel free to check it out.</h3>
+			<h3 class="largetext">Below are more fantastic club photos.</h3>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	<br>
+	{% endif %}
+	<div class="clearfix"></div>
+	{% if acts %}
+	<div class="photoblocks row">
+	{% for act in acts %}
+	<div class="col-lg-3 col-sm-4 col-xs-6 emptyline">
+		<div class="photo clickable" data-href="{{ url_for('.actintro', activity=act.callsign) }}">
+			<img src="{{ act.pictures[0].location_external }}" class="img-responsive" alt="{{ act.name }}">
+			<h4 class="midtext">{{ act.name }}</h4>
+			<p class="smalltext">{{ act.club.name }}</p>
+		</div>
+	</div>
+	{% endfor %}
+	</div>
+	{% else %}
+	<p class="text-center white smalltext">No club has any activity with photos yet.</p>
+	{% endif %}
+	<div class="clearfix"></div>
+	<br>
+	<center>{{ render_pagination(pagination) }}</center>
+</div>
+
+{% endblock %}

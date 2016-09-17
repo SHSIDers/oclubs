@@ -1,0 +1,37 @@
+{% extends "base.jinja2" %}{% from 'macros.jinja2' import get_messages %}
+{% block title %}Change Users' Info{% endblock %}
+{% block content %}
+
+<!-- Below Navbar -->
+<div class="large_container">
+	<h1 class="title">Change Users' Information</h1>
+	{{ get_messages(['admin_info'], br_after=True) }}
+	<table class="table table-hover table-bordered midtext" id="admin_user_table" data-csrf={{ csrf_token() }}>
+		<thead>
+			<tr>
+				<th class="width-5">Picture</th>
+				<th>Nick Name</th>
+				<th>Passport Name</th>
+				<th>Email</th>
+				<th>Phone</th>
+				<th>Grade</th>
+				<th>Class</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for user in users %}
+			<tr class="act">
+				<td>
+					<span class="hide">{{ user.id }}</span>
+					<img src="{{ user.picture.location_external }}" class="img-responsive img-thumbnail" alt="{{ user.nickname }}" table-photo>
+				</td>
+				{% for variable in ['nickname', 'passportname', 'email', 'phone', 'grade', 'currentclass']%}
+				<td class="admin_user_info" data-property-type="{{ variable }}">{% if user[variable] is none %}-{% else %}{{ user[variable] }}{% endif %}</td>
+				{% endfor %}
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+
+{% endblock %}

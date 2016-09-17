@@ -33,7 +33,7 @@ def allactivities(club_filter, page):
         limit=((page-1)*act_num, act_num),
         **club_filter.to_kwargs())
     pagination = Pagination(page, act_num, count)
-    return render_template('activity/allact.html',
+    return render_template('activity/allact.jinja2',
                            is_allact=True,
                            acts=acts,
                            pagination=pagination,
@@ -54,7 +54,7 @@ def allphotos(page):
         except IndexError:
             pass
     pagination = Pagination(page, pic_num, count)
-    return render_template('activity/photos.html',
+    return render_template('activity/photos.jinja2',
                            is_photos=True,
                            act_recent=act_recent,
                            acts=acts,
@@ -82,7 +82,7 @@ def actintro(activity):
         selection = ''
 
     is_other_act = activity.time in [ActivityTime.UNKNOWN, ActivityTime.OTHERS]
-    return render_template('activity/actintro.html',
+    return render_template('activity/actintro.jinja2',
                            is_other_act=is_other_act,
                            has_access=has_access,
                            can_join=can_join,
@@ -120,7 +120,7 @@ def actintro_submit(activity):
 @require_past_activity
 def changeactpost(activity):
     '''Page for club leader to change activity post'''
-    return render_template('activity/changeactpost.html')
+    return render_template('activity/changeactpost.jinja2')
 
 
 @actblueprint.route('/<activity>/post/change/submit', methods=['POST'])
@@ -152,7 +152,7 @@ def changeactpost_submit(activity):
 @require_future_activity
 def hongmei_invite(activity):
     '''Allow club leader to invite members to hongmei activy'''
-    return render_template('activity/invitehm.html')
+    return render_template('activity/invitehm.jinja2')
 
 
 @actblueprint.route('/<activity>/invite_hongmei/submit', methods=['POST'])
@@ -187,7 +187,7 @@ def hongmei_invite_submit(activity):
 @require_future_activity
 def actstatus(activity):
     '''Check Activity Status'''
-    return render_template('activity/actstatus.html')
+    return render_template('activity/actstatus.jinja2')
 
 
 @actblueprint.route('/<activity>/signup_status/submit', methods=['POST'])
@@ -239,7 +239,7 @@ def changeactinfo(activity):
     '''Allow club leaders to change activity info'''
     years = (lambda m: map(lambda n: m + n, range(2)))(date.today().year)
     cas = int(activity.cas)
-    return render_template('/activity/changeactinfo.html',
+    return render_template('/activity/changeactinfo.jinja2',
                            years=years,
                            act_types=ActivityTime,
                            cas=cas)
@@ -310,7 +310,7 @@ def attendance(activity):
     '''Check attendance'''
     attend, absent = partition(lambda member: member in activity.attendance,
                                activity.club.members)
-    return render_template('/activity/attendance.html',
+    return render_template('/activity/attendance.jinja2',
                            attend=attend,
                            absent=absent)
 

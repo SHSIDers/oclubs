@@ -1,0 +1,32 @@
+{% extends "base.jinja2" %}{% from 'macros.jinja2' import desktop_sidebar, mobile_selection %}
+{% block title %}Club List{% endblock %}
+{% block content %}
+
+<!-- Below Navbar -->
+<div class="large_container">
+	<!-- Side Menu -->
+	{{ desktop_sidebar('.clublist', club_filter) }}
+
+	<!-- Main Content -->
+	<div class="main-content col-md-10" id="act-club-list">
+		<h1 class="title_next inline bold">Clubs - {{ club_filter.title() }}</h1>
+		<button class="btn btn-info refresh largetext"><span class="glyphicon glyphicon-refresh"></span>&nbsp;Refresh</button>
+		<p class="white midtext">For fairness, we randomly choose 18 clubs each time you click refresh button.</p>
+
+		{{ mobile_selection('.clublist', club_filter) }}
+		<div class="clearfix"></div>
+		<div class="clubblocks row">
+			{% for club in clubs %}
+			<div class="col-lg-3 col-sm-4 col-xs-6">
+				<a class="smallblock" href="{{ url_for('clubblueprint.clubintro', club=club.callsign) }}">
+					<img src="{{ club.picture.location_external }}" class="img-responsive" alt="{{ club.name }}">
+					<p class="smalltext">{{ club.name }}</p>
+					<p class="minitext">{{ club.intro }}</p>
+				</a>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+
+{% endblock %}
