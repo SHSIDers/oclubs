@@ -111,7 +111,7 @@
 										.data( 'csrf' )
 								} )
 								.done( function( data ) {
-									if ( data.result == 'success' ) {
+									if ( data.result === 'success' ) {
 										init_view( item, new_content );
 									} else {
 										init_view( item, content );
@@ -155,4 +155,4 @@
 					window.location = this.value;
 				} );
 		} );
-} )( jQuery );
+}( jQuery ) );
