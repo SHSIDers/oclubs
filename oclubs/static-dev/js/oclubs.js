@@ -144,7 +144,7 @@
 
 			$( '#emptyclose, #closebtn' )
 				.click( function() {
-					$	( '#sidenav, #emptyclose' )
+					$( '#sidenav, #emptyclose' )
 						.css( 'width', '0' );
 					$( '#floatmenu' )
 						.fadeIn();
