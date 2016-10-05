@@ -35,7 +35,7 @@
 								'<input type="submit" class="btn btn-primary" name="change_leader" value="Confirm">' );
 						$( '#leader' )
 							.val( checked
-								.val());
+								.val() );
 					} else {
 						$( '.modal .modal-body p' )
 							.text( 'Please select one memeber as next club leader!' );
@@ -51,10 +51,10 @@
 						.text( 'Your choice is ' + selected.text() + '.' );
 					$( '#clubs' )
 						.val( $( '#_clubs' )
-							.val());
+							.val() );
 					$( '#reason' )
 						.val( $( '#_reason' )
-							.val());
+							.val() );
 				} );
 
 			$( '.refresh' )
@@ -72,7 +72,8 @@
 				} );
 
 			if ( /\/user\/change_info/.test( window.location.href ) ) {
-				var init_view = function( item, content ) {
+				var initView, initEdit;
+				initView = function( item, content ) {
 					item.empty()
 						.append( $( '<div class="col-sm-8 content"><p></p></div>' ) )
 						.append( $( '<div class="col-sm-4 edit"><a class="clickable">Edit</a></div>' ) );
@@ -80,10 +81,10 @@
 						.text( content );
 					item.find( 'a' )
 						.click( function() {
-							init_edit( item, content );
+							initEdit( item, content );
 						} );
 				};
-				var init_edit = function( item, content ) {
+				initEdit = function( item, content ) {
 					item.empty()
 						.append( $( '<div class="col-sm-8 content"><input type="text" class="input_content" name="content"></div>' ) )
 						.append( $( '<div class="col-sm-4 edit"><a class="clickable">Edit</a></div>' ) );
@@ -96,7 +97,7 @@
 						.append( $( '<button class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>' ) );
 					item.find( '.edit .btn-success' )
 						.click( function() {
-							var new_content = $( item )
+							var newContent = $( item )
 								.find( '.input_content' )
 								.val();
 							$.post( '/user/change_user_info/submit', {
@@ -105,29 +106,29 @@
 									.find( '.userid' )
 									.text(),
 								type: item.data( 'property-type' ),
-								content: new_content,
+								content: newContent,
 								_csrf_token: $( item )
 									.closest( 'table' )
 									.data( 'csrf' )
 							} )
 								.done( function( data ) {
 									if ( data.result === 'success' ) {
-										init_view( item, new_content );
+										initView( item, newContent );
 									} else {
-										init_view( item, content );
+										initView( item, content );
 										alert( data.result );
 									}
 								} );
 						} );
 					item.find( '.edit .btn-danger' )
 						.click( function() {
-							init_view( item, content );
+							initView( item, content );
 						} );
 				};
 				$( '#admin_user_table td.admin_user_info' )
 					.each( function() {
 						var item = $( this );
-						init_view( item, item.text() );
+						initView( item, item.text() );
 					} );
 			}
 
