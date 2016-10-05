@@ -883,7 +883,7 @@ body {
   margin-right: auto;
   margin-left: auto;
   padding-top: 10px;
-  width: 150px;
+  min-width: 75px;
   height: 100px;
 }
 
