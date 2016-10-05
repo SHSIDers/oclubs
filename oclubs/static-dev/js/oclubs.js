@@ -79,7 +79,7 @@
 					item.find( 'p' )
 						.text( content );
 					item.find( 'a' )
-						.click( function( argument ) {
+						.click( function() {
 							init_edit( item, content );
 						} );
 				};
@@ -95,21 +95,21 @@
 						.append( $( '<button class="btn btn-success"><span class="glyphicon glyphicon-ok"></span></button>' ) )
 						.append( $( '<button class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>' ) );
 					item.find( '.edit .btn-success' )
-						.click( function( argument ) {
-							new_content = $( item )
+						.click( function() {
+							var new_content = $( item )
 								.find( '.input_content' )
 								.val();
 							$.post( '/user/change_user_info/submit', {
-									userid: $( item )
-										.closest( 'tr' )
-										.find( '.userid' )
-										.text(),
-									type: item.data( 'property-type' ),
-									content: new_content,
-									_csrf_token: $( item )
-										.closest( 'table' )
-										.data( 'csrf' )
-								} )
+								userid: $( item )
+									.closest( 'tr' )
+									.find( '.userid' )
+									.text(),
+								type: item.data( 'property-type' ),
+								content: new_content,
+								_csrf_token: $( item )
+									.closest( 'table' )
+									.data( 'csrf' )
+							} )
 								.done( function( data ) {
 									if ( data.result === 'success' ) {
 										init_view( item, new_content );
@@ -120,7 +120,7 @@
 								} );
 						} );
 					item.find( '.edit .btn-danger' )
-						.click( function( argument ) {
+						.click( function() {
 							init_view( item, content );
 						} );
 				};
