@@ -2971,6 +2971,24 @@ a.white-a:hover {
   font-weight: 700;
 }
 
+@media screen and (min-width: 1200px) {
+  .clear-lg {
+    clear: both;
+  }
+}
+
+@media screen and (max-width: 1200px) and (min-width: 768px) {
+  .clear-sm {
+    clear: both;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .clear-xs {
+    clear: both;
+  }
+}
+
 @media screen and (max-width: 992px) {
   .col-md-10 > center > img {
     max-width: 60%;
