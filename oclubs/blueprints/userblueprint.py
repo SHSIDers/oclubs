@@ -15,10 +15,11 @@ from flask_login import current_user, login_required, fresh_login_required
 from oclubs.objs import User, Club, Upload
 from oclubs.enums import UserType, ActivityTime
 from oclubs.shared import (
-    special_access_required, download_xlsx, read_xlsx, Pagination, fail
+    special_access_required, download_xlsx, render_email_template, Pagination,
+    fail
 )
 from oclubs.exceptions import PasswordTooShort
-from oclubs.access import siteconfig
+from oclubs.access import siteconfig, email
 
 userblueprint = Blueprint('userblueprint', __name__)
 
@@ -212,6 +213,14 @@ def changepassword_submit():
     except PasswordTooShort:
         fail('Password must be at least six digits.', 'password')
         return redirect(url_for('.changepassword'))
+
+    parameters = {'target_name': '%s (%s, %s)' % (
+                      user.nickname,
+                      user.passportname,
+                      user.grade_and_class),
+                  'performer_name': current_user.studentid}
+    email.send(('clubsadmin@oclubs.shs.cn',), 'Admin changed password',
+               render_email_template('adminchangepassword', parameters))
     flash(user.nickname + '\'s password has been successfully set to ' +
           password + '.', 'password')
     return redirect(url_for('.changepassword'))
