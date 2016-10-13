@@ -21,7 +21,8 @@ service { 'redis':
 $redis_password = 'rhupwegPadroc)QuaysDigdobGotachOpbaljiebGadMyn1Drojryt'
 
 exec { 'redis-set-pw':
-    command => "/bin/sed -ie 's/# requirepass foobared/requirepass ${redis_password}/' /etc/redis.conf",
+    command => "/bin/sed -i -e 's/# requirepass foobared/requirepass ${redis_password}/' /etc/redis.conf",
+    unless  => "/bin/grep '${redis_password}' /etc/redis.conf",
     notify  => Service['redis'],
     require => Package['redis'],
 }
@@ -38,10 +39,11 @@ service { 'nginx':
 }
 
 file { '/var/nginx':
-    ensure => directory,
-    owner  => 'nginx',
-    group  => 'nginx',
-    before => Service['nginx'],
+    ensure  => directory,
+    owner   => 'nginx',
+    group   => 'nginx',
+    before  => Service['nginx'],
+    require => Package['nginx'],
 }
 
 file { '/etc/nginx/conf.d/default.conf':
@@ -90,13 +92,14 @@ service { 'mysql':
 $mysql_password = 'TacOrnibVeeHoFrej2RindofDic5faquavrymebZaidEytCojPhuanEr'
 
 exec { 'db-set-root-pw':
-    command => "/usr/bin/mysqladmin -u root password ${mysql_password}",
-    unless  => "/usr/bin/mysqladmin -u root -p${mysql_password} status",
+    command => "/usr/bin/mysqladmin -u root password '${mysql_password}'",
+    unless  => "/usr/bin/mysqladmin -u root -p'${mysql_password}' status",
     require => Service['mysql'],
 }
 
 exec { 'sql-import':
-    command => "/usr/bin/mysql -u root -p${mysql_password} < /vagrant/oclubs-tables.sql",
+    command => "/usr/bin/mysql -u root -p'${mysql_password}' < /vagrant/oclubs-tables.sql",
+    unless  => "/usr/bin/mysql -u root -p'${mysql_password}' oclubs < /dev/null",
     require => Exec['db-set-root-pw'],
 }
 
@@ -115,7 +118,10 @@ yumrepo { 'Elasticsearch':
 
 package { 'elasticsearch':
     ensure  => present,
-    require => Yumrepo['Elasticsearch'],
+    require => [
+        Package['java-1.8.0-openjdk'],
+        Yumrepo['Elasticsearch'],
+    ],
 }
 
 # exec { 'install-elasticsearch':
@@ -149,6 +155,12 @@ file { '/etc/selinux/config':
     owner  => 'root',
     group  => 'root',
     source => '/vagrant/provision/selinux',
+    notify => Exec['selinux-set-permissive'],
+}
+
+exec { 'selinux-set-permissive':
+    command     => '/usr/sbin/setenforce 0',
+    refreshonly => true,
 }
 
 package { 'git':
@@ -234,6 +246,7 @@ package { [
 exec { 'pip-install-requirements':
     command => '/srv/oclubs/pyenv/versions/python-pyenv/bin/pip-sync /vagrant/requirements.txt',
     tries   => 5,
+    timeout => 1800,
     require => [
         Package['MariaDB-devel'],
         Exec['pyenv-install-python'],
