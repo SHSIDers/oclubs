@@ -24,7 +24,7 @@ Vagrant.configure("2") do |config|
       owner: "root", group: "root"
   end
 
-  config.vm.provision :shell, inline: "which puppet > /dev/null || ( yum install -y puppet && yum install -y epel-release )"
+  config.vm.provision :shell, inline: "which puppet > /dev/null || ( yum install -y epel-release; yum install -y puppet )"
   config.vm.provision :puppet do |puppet|
     puppet.manifests_path = "provision/manifests"
 

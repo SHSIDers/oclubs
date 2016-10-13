@@ -126,8 +126,9 @@ Vagrant + VirtualBox is the current way to virtualize the server for local testi
   * Use a fast downloader such as XunLei or axel.
   * Download it to anywhere, but preferably not within oclubs root directory.
 3. Go to command line,
-  1. `cd` to wherever that .box file is downloaded, then run `vagrant box add centos/6 <filename.box>` with `<filename.box>` as the downloaded filename.
-  2. `cd` to oclubs root directory, then `vagrant up`. Puppet and vagrant will then configure the VM. In case of failed configuration, run `vagrant provision`
+  1. Run `vagrant plugin install vagrant-vbguest`. This plugin is required to install VirtualBox Guest Additions for shared folders, which puppet configuration still uses.
+  2. `cd` to wherever that .box file is downloaded, then run `vagrant box add centos/6 <filename.box>` with `<filename.box>` as the downloaded filename.
+  3. `cd` to oclubs root directory, then `vagrant up`. Puppet and vagrant will then configure the VM. In case of failed configuration, run `vagrant provision`
 4. An oclubs clone should be viewable in browser at http://127.0.0.1:8080/
 
 For Windows, files are shared between VM and host with SMB; please refer to https://www.vagrantup.com/docs/synced-folders/smb.html.
