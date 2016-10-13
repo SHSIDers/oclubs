@@ -65,6 +65,7 @@ Centos 6 on 64-bit system
 * **uWSGI & Flask**: Serves dynamic webpages
 * **Celery**: Backend worker
 
+
 * **Elasticsearch**: Current search engine, runs on Java
 * **IBM DB2** (External): Current SHSID authoritative database
 * **MariaDB 10**: MySQL replacement, current main relational database storage
@@ -72,6 +73,7 @@ Centos 6 on 64-bit system
 * **Postfix**: Current main SMTP server for email-delivery
 * **Redis**: Current fast key-value storage with native expiry support, for eg. cache & temporary data storage
 * **SendGrid** (External): Current email relay for difficult-to-deliver situations (such as to Gmail)
+
 
 * **iptables**: Firewall
 
@@ -85,7 +87,7 @@ Many softwares are required for development, testing, and deployment of this sit
 
 Of course. You may use whatever you like. If you're having trouble making choices:
 
-* For an old-school coder, which I don't expect especially for students, Vim & Emacs might suit you well.
+* For an old-school coder, which I don't expect for students, Vim & Emacs might suit you well.
 * For newcomers, I recommend Sublime Text or Atom.
 
 #### Git command line interface
@@ -104,7 +106,9 @@ For build & minification. How to setup:
   2. `npm install -g gulp-cli`, on some installs, you many need to `sudo`
   3. `npm install`
 
-For builds, just run (in a command line interface with oclubs roor directory as current working directory): `gulp`, and Gulp will watch all target files and do what it's meant to do.
+For builds, just run (in a command line interface with oclubs root directory as current working directory): `gulp`, and Gulp will watch all target files and do what it's meant to do.
+
+(**TL;DR:** just keep `gulp` running if you intend to change the static CSS/JS/Images)
 
 ### Testing
 
@@ -114,7 +118,26 @@ Having more than one browser is recommended.
 
 #### Vagrant
 
-This section is TODO...
+Vagrant + VirtualBox is the current way to virtualize the server for local testing. How to setup:
+
+1. Install Vagrant & VirtualBox
+2. Grab the latest CentOS 6 box file from https://atlas.hashicorp.com/centos/boxes/6
+  * You may wish to inject [vagrant-box-download-helper.js by everyx](https://github.com/everyx/vagrant-box-download-helper-everyx.user.js/blob/master/vagrant-box-download-helper%40everyx.user.js) to get the download links.
+  * Use a fast downloader such as XunLei or axel.
+  * Download it to anywhere, but preferably not within oclubs root directory.
+3. Go to command line,
+  1. `cd` to wherever that .box file is downloaded, then run `vagrant box add centos/6 <filename.box>` with `<filename.box>` as the downloaded filename.
+  2. `cd` to oclubs root directory, then `vagrant up`. Puppet and vagrant will then configure the VM. In case of failed configuration, run `vagrant provision`
+4. An oclubs clone should be viewable in browser at http://127.0.0.1:8080/
+
+For Windows, files are shared between VM and host with SMB; please refer to https://www.vagrantup.com/docs/synced-folders/smb.html.
+
+For Mac/Linux, files are shared via [rsync](https://www.vagrantup.com/docs/synced-folders/rsync.html). So to keep them synchronized, keep a window of `vagrant rsync-auto` open.
+
+To access the VM's shell, run `vagrant ssh`.
+* You may need to do `sudo service uwsgi reload` within the shell for each time the python scripts are changed.
+* Commands within the shell are basically similar to that of the actual server, so don't `sudo rm -rf --no-preserve-root /` unless you know what you're doing. (Yeah it deletes the whole filesystem.)
+
 
 ### Deployment
 
