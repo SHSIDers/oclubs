@@ -113,20 +113,20 @@ yumrepo { 'Elasticsearch':
     gpgkey   => 'http://packages.elastic.co/GPG-KEY-elasticsearch',
 }
 
-# package { 'elasticsearch':
-#     ensure  => present,
-#     require => Yumrepo['Elasticsearch'],
-# }
-
-exec { 'install-elasticsearch':
-    command => '/usr/bin/yum -y localinstall /vagrant/elasticsearch-2.3.4.rpm',
-    creates => '/etc/elasticsearch/',
-    timeout => 1800,
-    require => [
-        Package['java-1.8.0-openjdk'],
-        Yumrepo['Elasticsearch'],
-    ],
+package { 'elasticsearch':
+    ensure  => present,
+    require => Yumrepo['Elasticsearch'],
 }
+
+# exec { 'install-elasticsearch':
+#     command => '/usr/bin/yum -y localinstall /vagrant/elasticsearch-2.3.4.rpm',
+#     creates => '/etc/elasticsearch/',
+#     timeout => 1800,
+#     require => [
+#         Package['java-1.8.0-openjdk'],
+#         Yumrepo['Elasticsearch'],
+#     ],
+# }
 
 file { '/etc/elasticsearch/elasticsearch.yml':
     ensure  => file,
@@ -134,7 +134,7 @@ file { '/etc/elasticsearch/elasticsearch.yml':
     owner   => 'root',
     group   => 'elasticsearch',
     source  => '/vagrant/provision/elasticsearch.yml',
-    require => Exec['install-elasticsearch'],
+    require => Package['elasticsearch'],
     notify  => Service['elasticsearch'],
 }
 
