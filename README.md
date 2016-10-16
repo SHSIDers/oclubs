@@ -4,6 +4,8 @@
 
 This website is hosted in SHSID internal network at http://oclubs.shs.cn/.
 
+The IP address of this website is 192.168.8.201.
+
 ## File Hierarchy
 
 * `/`: Root directory, at `/srv/oclubs/repo`
@@ -88,7 +90,7 @@ Many softwares are required for development, testing, and deployment of this sit
 Of course. You may use whatever you like. If you're having trouble making choices:
 
 * For an old-school coder, which I don't expect for students, Vim & Emacs might suit you well.
-* For newcomers, I recommend Sublime Text or Atom.
+* For newcomers, I recommend Sublime Text 3 or Atom.
 
 #### Git command line interface
 
@@ -115,6 +117,13 @@ For builds, just run (in a command line interface with oclubs root directory as 
 #### A supported web browser with developer tools
 
 Having more than one browser is recommended.
+
+Common browsers include:
+1. Chrome
+2. Firefox
+3. Safari
+4. Edge
+5. Internet Explorer (older versions do not support bootstrap)
 
 #### Vagrant
 
