@@ -634,11 +634,11 @@ def allclubsinfo():
     '''Allow admin to download all clubs' info'''
     info = []
     info.append(('Club ID', 'Name', 'Leader', 'Leader\'s Class', 'Teacher',
-                 'Introduction', 'Location', 'Is Active or Not', 'Type'))
+                 'Introduction', 'Location', 'Is Active or Not', 'Type', 'Description'))
     info.extend([(club.id, club.name, club.leader.passportname,
                   club.leader.grade_and_class,
                   club.teacher.email, club.intro, club.location,
-                  str(club.is_active), club.type.format_name)
+                  str(club.is_active), club.type.format_name, club.description.raw)
                  for club in Club.allclubs()])
 
     return download_xlsx('All Clubs\' Info.xlsx', info)
