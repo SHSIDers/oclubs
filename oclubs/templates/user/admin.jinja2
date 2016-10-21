@@ -116,37 +116,37 @@
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 				<h4 class="modal-title">Check HongMei Schedule</h4>
 			</div>
-			<div class="modal-body">
-				<div class="col-sm-4">
-					<select name="year" class="form-control" form="download_schedule">
-						{% for year in years %}
-						<option value="{{ year }}">{{ year }}</option>
-						{% endfor %}
-					</select>
+			<form action="{{ url_for('actblueprint.checkhongmeischedule_download') }}" target="_blank" id="download_schedule" method="post">
+				<div class="modal-body">
+					<div class="col-sm-4">
+						<select name="year" class="form-control">
+							{% for year in years %}
+							<option value="{{ year }}">{{ year }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="col-sm-4">
+						<select name="month" class="form-control">
+							{% for month in range(1,13) %}
+							<option value="{{ month }}">{{ month }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="col-sm-4">
+						<select name="day" class="form-control">
+							{% for day in range(1,32) %}
+							<option value="{{ day }}">{{ day }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="clearfix"></div>
 				</div>
-				<div class="col-sm-4">
-					<select name="month" class="form-control" form="download_schedule">
-						{% for month in range(1,13) %}
-						<option value="{{ month }}">{{ month }}</option>
-						{% endfor %}
-					</select>
-				</div>
-				<div class="col-sm-4">
-					<select name="day" class="form-control" form="download_schedule">
-						{% for day in range(1,32) %}
-						<option value="{{ day }}">{{ day }}</option>
-						{% endfor %}
-					</select>
-				</div>
-				<div class="clearfix"></div>
-			</div>
-			<div class="modal-footer">
-				<button class="btn btn-default float-left" data-dismiss="modal">Close</button>
-				<form action="{{ url_for('actblueprint.checkhongmeischedule_download') }}" target="_blank" id="download_schedule" method="post">
+				<div class="modal-footer">
+					<button class="btn btn-default float-left" data-dismiss="modal">Close</button>
 					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 					<input type="submit" class="btn btn-success" value="Download">
-				</form>
-			</div>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>

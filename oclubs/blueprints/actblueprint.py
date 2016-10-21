@@ -408,5 +408,5 @@ def checkhongmeischedule_download():
                              ')')
                             for member in act.signup_list())
         info.append((act.club.name, members))
-    return download_xlsx('HongMei\'s Schedule on' +
+    return download_xlsx('HongMei\'s Schedule on ' +
                          actdate.strftime('%b-%d-%Y') + '.xlsx', info)

@@ -4,12 +4,12 @@
 
 <!-- Below Navbar -->
 <div class="container">
-	<div class="row">
-		<div class="col-sm-6">
-			<h1 class="title">New Activity</h1>
-			{{ get_messages(['newact'], br_before=True) }}
-			<div class="form-horizontal white smalltext" role="form">
-				<form class="form-group" id="newact" action="{{ url_for('.newact_submit', club=g.club.callsign) }}" method="post">
+	<form class="form-group" id="newact" action="{{ url_for('.newact_submit', club=g.club.callsign) }}" method="post">
+		<div class="row">
+			<div class="col-sm-6">
+				<h1 class="title">New Activity</h1>
+				{{ get_messages(['newact'], br_before=True) }}
+				<div class="form-horizontal white smalltext" role="form">
 					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 					<label class="col-sm-2" for="name">Name:</label>
 					<div class="col-sm-10">
@@ -65,46 +65,45 @@
 							<option value="minutes">Minutes</option>
 						</select>
 					</div>
-				</form>
-			</div>
+				</div>
 
-		</div>
-		<div class="col-sm-6">
-			<img src="{{ url_for('static', filename='/images/activity.jpg') }}" class="img-responsive img-thumbnail" alt="Activity">
-		</div>
-	</div>
-	<div class="clearfix emptyline-lg"></div>
-
-	<div class="form-group white smalltext">
-		<label for="description">Description: <span>(optional)</span></label>
-		<textarea class="form-control" rows="10" id="description" form="newact" name="description"></textarea>
-		<p>You can describe the selection below here if you want to allow members to choose.</p>
-	</div>
-
-	<div class="form-group white smalltext row">
-		<div class="col-sm-6 row">
-			<div class="col-sm-6">
-				<label for="has_selection">Allow Selection for Members?</label>
 			</div>
 			<div class="col-sm-6">
-				<select class="form-control" id="has_selection" name="has_selection" form="newact">
-					<option value="no">No</option>
-					<option value="yes">Yes</option>
-				</select>
+				<img src="{{ url_for('static', filename='/images/activity.jpg') }}" class="img-responsive img-thumbnail" alt="Activity">
 			</div>
 		</div>
-		<div class="col-sm-6">
-			<input type="text" class="form-control" name="selections" placeholder="Choice One;Choice Two;Choice Three" form="newact">
-			<p>*Please use ";" to seperate the choices.</p>
+		<div class="clearfix emptyline-lg"></div>
+
+		<div class="form-group white smalltext">
+			<label for="description">Description: <span>(optional)</span></label>
+			<textarea class="form-control" rows="10" id="description" name="description"></textarea>
+			<p>You can describe the selection below here if you want to allow members to choose.</p>
+		</div>
+
+		<div class="form-group white smalltext row">
+			<div class="col-sm-6 row">
+				<div class="col-sm-6">
+					<label for="has_selection">Allow Selection for Members?</label>
+				</div>
+				<div class="col-sm-6">
+					<select class="form-control" id="has_selection" name="has_selection">
+						<option value="no">No</option>
+						<option value="yes">Yes</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" name="selections" placeholder="Choice One;Choice Two;Choice Three">
+				<p>*Please use ";" to seperate the choices.</p>
+			</div>
+			<div class="clearfix"></div>
+			<div class="col-sm-12">
+				<p>*Only activities other than noon/afternoon meetings can accept selection.</p>
+			</div>
 		</div>
 		<div class="clearfix"></div>
-		<div class="col-sm-12">
-			<p>*Only activities other than noon/afternoon meetings can accept selection.</p>
-		</div>
-	</div>
-	<div class="clearfix"></div>
-
-	<center><input class="midtext padding-3 btn btn-info" type="submit" form="newact" value="Submit"></center>
+		<center><input class="midtext padding-3 btn btn-info" type="submit" value="Submit"></center>
+	</form>
 </div>
 
 {% endblock %}

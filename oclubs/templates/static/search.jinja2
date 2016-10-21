@@ -6,14 +6,16 @@
 <div class="container">
 	<h1 class="title text-center">Search Results</h1>
 	<div class="search_bar clearfix">
-		<form action="{{ url_for('search') }}" id="search_form" method="get" class="inline-block">
-			<input type="text" name="keywords" placeholder="Search" value="{{ keywords }}">
-			<span class="glyphicon glyphicon-search"><input type="submit" value=""></span>
+		<form action="{{ url_for('search') }}" id="search_form" method="get">
+			<div class="search_area inline-block">
+				<input type="text" name="keywords" placeholder="Search" value="{{ keywords }}">
+				<span class="glyphicon glyphicon-search"><input type="submit" value=""></span>
+			</div>
+			<select name="search_type">
+				<option value="club"{% if search_type == 'club' %} selected="selected"{% endif %}>Club</option>
+				<option value="activity"{% if search_type == 'activity' %} selected="selected"{% endif %}>Activity</option>
+			</select>
 		</form>
-		<select name="search_type" form="search_form">
-			<option value="club"{% if search_type == 'club' %} selected="selected"{% endif %}>Club</option>
-			<option value="activity"{% if search_type == 'activity' %} selected="selected"{% endif %}>Activity</option>
-		</select>
 	</div>
 	<br>
 	<center>

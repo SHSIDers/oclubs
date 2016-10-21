@@ -11,38 +11,38 @@
 	<a class="btn btn-primary btn-lg" href="#all_by_invitation" data-toggle="modal" data-target="#all_by_invitation">Set all clubs' join mode to By Invitation</a>
 	</center>
 	<br>
-	<table class="table table-hover table-bordered" id="attendancetable">
-		<thead>
-			<tr>
-				<th>Club Name</th>
-				<th>Grade</th>
-				<th>Club Type</th>
-				<th>Club Link</th>
-				<th>Current Activeness</th>
-				<th>Change Activeness</th>
-				<th>Current Join Mode</th>
-				<th>Change Join Mode</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for club in clubs %}
-			<tr class="act">
-				<td>{{ club.name }}</td>
-				<td>{{ club.leader.grade }}</td>
-				<td>{{ club.type.format_name }}</td>
-				<td>
-					<a href="{{ url_for('.clubintro', club=club.callsign) }}">{{ club.name }}</a>
-				</td>
-				<td>{% if club.is_active %}Active{% else %}Inactive{% endif %}
-				<td><label class="btn btn-primary btn-lg" for="activeness{{ club.id }}"><input type="checkbox" name="activeness" value="{{ club.id }}" form="activeness_form" id="activeness{{ club.id }}">&nbsp;Change</label></td>
-				<td>{% if club.joinmode == ClubJoinMode.FREE_JOIN %}Free Join{% else %}By Invitation{% endif %}</td>
-				<td><label class="btn btn-primary btn-lg" for="joinmode{{ club.id }}"><input type="checkbox" name="joinmode" value="{{ club.id }}" form="activeness_form" id="joinmode{{ club.id }}">&nbsp;Change</label></td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-	<center>
 	<form action="{{ url_for('.adjust_status_submit', club_type=club_type) }}" method="post" id="activeness_form">
+		<table class="table table-hover table-bordered" id="attendancetable">
+			<thead>
+				<tr>
+					<th>Club Name</th>
+					<th>Grade</th>
+					<th>Club Type</th>
+					<th>Club Link</th>
+					<th>Current Activeness</th>
+					<th>Change Activeness</th>
+					<th>Current Join Mode</th>
+					<th>Change Join Mode</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for club in clubs %}
+				<tr class="act">
+					<td>{{ club.name }}</td>
+					<td>{{ club.leader.grade }}</td>
+					<td>{{ club.type.format_name }}</td>
+					<td>
+						<a href="{{ url_for('.clubintro', club=club.callsign) }}">{{ club.name }}</a>
+					</td>
+					<td>{% if club.is_active %}Active{% else %}Inactive{% endif %}
+					<td><label class="btn btn-primary btn-lg" for="activeness{{ club.id }}"><input type="checkbox" name="activeness" value="{{ club.id }}" form="activeness_form" id="activeness{{ club.id }}">&nbsp;Change</label></td>
+					<td>{% if club.joinmode == ClubJoinMode.FREE_JOIN %}Free Join{% else %}By Invitation{% endif %}</td>
+					<td><label class="btn btn-primary btn-lg" for="joinmode{{ club.id }}"><input type="checkbox" name="joinmode" value="{{ club.id }}" form="activeness_form" id="joinmode{{ club.id }}">&nbsp;Change</label></td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<center>
 		<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 		<input class="btn btn-primary btn-lg" type="submit" value="Submit the Change">
 	</form>

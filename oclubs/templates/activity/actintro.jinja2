@@ -9,6 +9,9 @@
 
 	<!-- Main Content -->
 	<div class="main-content col-md-10" id="intropage">
+		{% if is_other_act and g.activity.is_future and can_join %}
+		<form action="{{ url_for('.actintro_submit', activity=g.activity.callsign) }}" method="post" id="join_form">
+		{% endif %}
 		<div class="jumbotron">
 			<h1 class="title">{{ g.activity.name }}</h1>
 			<p>{{ g.activity.club.name }}</p>
@@ -29,7 +32,7 @@
 		<p class="white midtext">{{ selection }}</p>
 		{% else %}
 		<p class="white midtext">Selection:</p>
-		<select name="selection" form="join_form" class="selection_bar white">
+		<select name="selection" class="selection_bar white">
 			{% for choice in g.activity.selections %}
 			<option class="black" value="{{ choice }}">{{ choice }}</option>
 			{% endfor %}
@@ -61,10 +64,8 @@
 
 			{% if is_other_act and g.activity.is_future and can_join %}
 			<div class="col-sm-6">
-				<form action="{{ url_for('.actintro_submit', activity=g.activity.callsign) }}" method="post" id="join_form">
-					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-					<input class="btn btn-info btn-lg" type="submit" value="Join">
-				</form>
+				<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+				<input class="btn btn-info btn-lg" type="submit" value="Join">
 			</div>
 			{% endif %}
 
@@ -90,6 +91,9 @@
 			{% endif %}
 		</div>
 		</center>
+		{% if is_other_act and g.activity.is_future and can_join %}
+		</form>
+		{% endif %}
 	</div>
 </div>
 
