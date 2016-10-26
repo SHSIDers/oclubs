@@ -18,7 +18,8 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder ".", "/vagrant", type: "virtualbox",
     owner: "root", group: "root"
 
-  config.vm.provision :shell, inline: "which puppet > /dev/null || ( yum install -y epel-release; yum install -y puppet )"
+  config.vm.provision :shell,
+    inline: "which puppet > /dev/null || ( yum install -y epel-release; yum install -y puppet )"
   config.vm.provision :puppet do |puppet|
     puppet.manifests_path = "provision/manifests"
 
