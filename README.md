@@ -140,9 +140,7 @@ Vagrant + VirtualBox is the current way to virtualize the server for local testi
   3. `cd` to oclubs root directory, then `vagrant up`. Puppet and vagrant will then configure the VM. In case of failed configuration, run `vagrant provision`
 4. An oclubs clone should be viewable in browser at http://127.0.0.1:8080/
 
-For Windows, files are shared between VM and host with SMB; please refer to https://www.vagrantup.com/docs/synced-folders/smb.html.
-
-For Mac/Linux, files are shared via [rsync](https://www.vagrantup.com/docs/synced-folders/rsync.html). So to keep them synchronized, keep a window of `vagrant rsync-auto` open.
+Files are shared between VM and host with VirtualBox Shared Folders. Everything *should work* except for `sendfile`-related accesses, which is patched in our `nginx.conf`; please refer to https://www.vagrantup.com/docs/synced-folders/virtualbox.html.
 
 To access the VM's shell, run `vagrant ssh`.
 * You may need to do `sudo service uwsgi reload` within the shell for each time the python scripts are changed.

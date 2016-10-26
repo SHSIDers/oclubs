@@ -7,7 +7,7 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 80, host: 8080
   # config.vm.network "private_network", ip: "192.168.8.201"
 
-  config.vm.provider "virtualbox" do |vb|
+  config.vm.provider :virtualbox do |vb|
     # Display the VirtualBox GUI when booting the machine
     # vb.gui = true
 
@@ -15,14 +15,8 @@ Vagrant.configure("2") do |config|
     vb.memory = "1024"
   end
 
-  if Vagrant::Util::Platform.windows? then
-    config.vm.synced_folder ".", "/vagrant", type: "smb",
-      owner: "root", group: "root"
-  else
-    config.vm.synced_folder ".", "/vagrant", type: "rsync",
-      rsync__exclude: [".git/"], rsync__chown: false,
-      owner: "root", group: "root"
-  end
+  config.vm.synced_folder ".", "/vagrant", type: "virtualbox",
+    owner: "root", group: "root"
 
   config.vm.provision :shell, inline: "which puppet > /dev/null || ( yum install -y epel-release; yum install -y puppet )"
   config.vm.provision :puppet do |puppet|
