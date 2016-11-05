@@ -31,5 +31,9 @@ Vagrant.configure("2") do |config|
       '--verbose',
       '--debug',
     ]
+
+    puppet.facter = {
+      'environment' => ENV['PUPPET_ENVIRONMENT'] || 'vagrant',
+    }
   end
 end

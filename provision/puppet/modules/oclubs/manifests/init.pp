@@ -1,32 +1,11 @@
-class oclubs () {
-    package { 'epel-release':
-        ensure => present,
+class oclubs (
+    $secrets,
+) {
+    package { 'git':
+        ensure => installed,
     }
 
-    package { 'man':
-        ensure  => present,
-    }
-
-
-    package { 'redis':
-        ensure  => present,
-        require => Package['epel-release']
-    }
-
-    service { 'redis':
-        ensure  => running,
-        enable  => true,
-        require => Package['redis'],
-    }
-
-    $redis_password = 'rhupwegPadroc)QuaysDigdobGotachOpbaljiebGadMyn1Drojryt'
-
-    exec { 'redis-set-pw':
-        command => "/bin/sed -i -e 's/# requirepass foobared/requirepass ${redis_password}/' /etc/redis.conf",
-        unless  => "/bin/grep '${redis_password}' /etc/redis.conf",
-        notify  => Service['redis'],
-        require => Package['redis'],
-    }
+    include ::redis
 
     package { 'nginx':
         ensure  => present,
@@ -63,116 +42,29 @@ class oclubs () {
         enabled  => 1,
         gpgcheck => 1,
         gpgkey   => 'https://yum.mariadb.org/RPM-GPG-KEY-MariaDB',
+        before   => Class['::mysql'],
     }
 
-    # exec { 'install-mariadb':
-    #     command => '/usr/bin/yum -y localinstall /srv/oclubs/repo/MariaDB-10.1.14-centos6-x86_64-server.rpm /srv/oclubs/repo/MariaDB-10.1.14-centos6-x86_64-client.rpm',
-    #     creates => '/usr/bin/mysql',
-    #     timeout => 1800,
-    #     require => Package['MariaDB-devel'],
-    # }
-
-    package { [
-        'MariaDB-devel',
-        'MariaDB-server',
-        'MariaDB-client',
-    ]:
-        ensure  => present,
-        require => [
-            Package['epel-release'],
-            Yumrepo['MariaDB'],
-        ],
-    }
-
-    service { 'mysql':
-        ensure  => running,
-        enable  => true,
-        require => Package['MariaDB-server'],
-    }
-
-    $mysql_password = 'TacOrnibVeeHoFrej2RindofDic5faquavrymebZaidEytCojPhuanEr'
-
-    exec { 'db-set-root-pw':
-        command => "/usr/bin/mysqladmin -u root password '${mysql_password}'",
-        unless  => "/usr/bin/mysqladmin -u root -p'${mysql_password}' status",
-        require => Service['mysql'],
-    }
+    include ::mysql::server
+    include ::mysql::client
+    include ::mysql::bindings
 
     exec { 'sql-import':
-        command => "/usr/bin/mysql -u root -p'${mysql_password}' < /srv/oclubs/repo/oclubs-tables.sql",
-        unless  => "/usr/bin/mysql -u root -p'${mysql_password}' oclubs < /dev/null",
-        require => Exec['db-set-root-pw'],
+        command => "/usr/bin/mysql -u root -p'${secrets[mysql_password]}' < /srv/oclubs/repo/oclubs-tables.sql",
+        unless  => "/usr/bin/mysql -u root -p'${secrets[mysql_password]}' oclubs < /dev/null",
+        require => Service['::mysql::server'],
     }
 
-    package { 'java-1.8.0-openjdk':
-        ensure  => present,
-        require => Package['epel-release'],
-    }
+    include ::elasticsearch
 
-    yumrepo { 'Elasticsearch':
-        baseurl  => 'http://packages.elastic.co/elasticsearch/2.x/centos',
-        descr    => 'Elasticsearch repository for 2.x packages',
-        enabled  => 1,
-        gpgcheck => 1,
-        gpgkey   => 'http://packages.elastic.co/GPG-KEY-elasticsearch',
-    }
+    elasticsearch::instance { 'node-1': }
 
-    package { 'elasticsearch':
-        ensure  => present,
-        require => [
-            Package['java-1.8.0-openjdk'],
-            Yumrepo['Elasticsearch'],
-        ],
-    }
+    include ::selinux
 
-    # exec { 'install-elasticsearch':
-    #     command => '/usr/bin/yum -y localinstall /srv/oclubs/repo/elasticsearch-2.3.4.rpm',
-    #     creates => '/etc/elasticsearch/',
-    #     timeout => 1800,
-    #     require => [
-    #         Package['java-1.8.0-openjdk'],
-    #         Yumrepo['Elasticsearch'],
-    #     ],
-    # }
-
-    file { '/etc/elasticsearch/elasticsearch.yml':
-        ensure  => file,
-        mode    => '0750',
-        owner   => 'root',
-        group   => 'elasticsearch',
-        source  => '/srv/oclubs/repo/provision/elasticsearch.yml',
-        require => Package['elasticsearch'],
-        notify  => Service['elasticsearch'],
-    }
-
-    service { 'elasticsearch':
-        ensure => running,
-        enable => true,
-    }
-
-    file { '/etc/selinux/config':
-        ensure => file,
-        mode   => '0644',
-        owner  => 'root',
-        group  => 'root',
-        source => '/srv/oclubs/repo/provision/selinux',
-        notify => Exec['selinux-set-permissive'],
-    }
-
-    exec { 'selinux-set-permissive':
-        command     => '/usr/sbin/setenforce 0',
-        refreshonly => true,
-    }
-
-    package { 'git':
-        ensure => installed,
-        before => Exec['git-clone-pyenv'],
-    }
-
-    exec { 'git-clone-pyenv':
-        command => '/usr/bin/git clone --depth=1 https://github.com/yyuu/pyenv.git /srv/oclubs/pyenv',
-        creates => '/srv/oclubs/pyenv',
-        require => File['/srv/oclubs'],
+    vcsrepo { '/srv/oclubs/pyenv':
+        source   => 'https://github.com/yyuu/pyenv.git',
+        depth    => 1,
+        provider => git,
     }
 
     file { '/home/vagrant/.bash_profile':
@@ -181,14 +73,14 @@ class oclubs () {
         owner   => 'vagrant',
         group   => 'vagrant',
         source  => '/srv/oclubs/repo/provision/vagrant_bash_profile',
-        require => Exec['git-clone-pyenv'],
+        require => Vcsrepo['/srv/oclubs/pyenv'],
     }
 
     exec { 'pyenv-init':
         command     => '/srv/oclubs/pyenv/bin/pyenv init -',
         environment => 'PYENV_ROOT=/srv/oclubs/pyenv',
         creates     => '/srv/oclubs/pyenv/versions/',
-        require     => Exec['git-clone-pyenv'],
+        require     => Vcsrepo['/srv/oclubs/pyenv'],
     }
 
     # everything needed to compile python
