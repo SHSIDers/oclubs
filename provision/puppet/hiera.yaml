@@ -1,0 +1,9 @@
+---
+:backends:
+  - yaml
+:yaml:
+  :datadir: /srv/oclubs/repo/provision/puppet/hieradata
+:hierarchy:
+  - local
+  - common
+:logger: console

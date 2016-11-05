@@ -15,20 +15,21 @@ Vagrant.configure("2") do |config|
     vb.memory = "1024"
   end
 
+  config.vm.synced_folder ".", "/vagrant", disabled: true
   config.vm.synced_folder ".", "/srv/oclubs/repo", type: "virtualbox",
     owner: "root", group: "root", create: true
 
   config.vm.provision :shell,
-    inline: "which puppet > /dev/null || ( yum install -y epel-release; yum install -y puppet )"
+    inline: "which puppet &> /dev/null || sh /srv/oclubs/repo/provision/install-puppet.sh"
   config.vm.provision :puppet do |puppet|
-    puppet.manifests_path = "provision/manifests"
+    puppet.manifests_path = 'provision/puppet/manifests'
+    puppet.manifest_file = 'site.pp'
+    puppet.hiera_config_path = 'provision/puppet/hiera.yaml'
+    puppet.module_path = 'provision/puppet/modules'
 
     puppet.options = [
       '--verbose',
       '--debug',
     ]
-
-    # Windows's Command Prompt has poor support for ANSI escape sequences.
-    # puppet.options << '--color=false' if Vagrant::Util::Platform.windows?
   end
 end
