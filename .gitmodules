@@ -1,9 +1,15 @@
+[submodule "provision/puppet/modules/datacat"]
+	path = provision/puppet/modules/datacat
+	url = https://github.com/richardc/puppet-datacat.git
 [submodule "provision/puppet/modules/elasticsearch"]
 	path = provision/puppet/modules/elasticsearch
 	url = https://github.com/elastic/puppet-elasticsearch.git
 [submodule "provision/puppet/modules/epel"]
 	path = provision/puppet/modules/epel
 	url = https://github.com/stahnma/puppet-module-epel.git
+[submodule "provision/puppet/modules/java"]
+	path = provision/puppet/modules/java
+	url = https://github.com/puppetlabs/puppetlabs-java.git
 [submodule "provision/puppet/modules/mysql"]
 	path = provision/puppet/modules/mysql
 	url = https://github.com/puppetlabs/puppetlabs-mysql.git
@@ -13,15 +19,18 @@
 [submodule "provision/puppet/modules/postfix"]
 	path = provision/puppet/modules/postfix
 	url = https://github.com/camptocamp/puppet-postfix.git
+[submodule "provision/puppet/modules/python"]
+	path = provision/puppet/modules/python
+	url = https://github.com/stankevich/puppet-python.git
 [submodule "provision/puppet/modules/redis"]
 	path = provision/puppet/modules/redis
 	url = https://github.com/arioch/puppet-redis.git
 [submodule "provision/puppet/modules/selinux"]
 	path = provision/puppet/modules/selinux
-	url = https://github.com/voxpupuli/puppet-selinux
+	url = https://github.com/voxpupuli/puppet-selinux.git
 [submodule "provision/puppet/modules/vcsrepo"]
 	path = provision/puppet/modules/vcsrepo
 	url = https://github.com/puppetlabs/puppetlabs-vcsrepo.git
 [submodule "provision/puppet/modules/stdlib"]
 	path = provision/puppet/modules/stdlib
-	url = https://github.com/puppetlabs/puppetlabs-stdlib
+	url = https://github.com/puppetlabs/puppetlabs-stdlib.git

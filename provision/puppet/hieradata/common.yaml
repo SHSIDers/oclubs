@@ -4,11 +4,7 @@ classes:
 
 redis::bind: '127.0.0.1'
 
-mysql::server::manage_config_file: false
-mysql::client::package_name: 'MariaDB-client'
-mysql::server::package_name: 'MariaDB-server'
-mysql::server::service_name: 'mysql'
-mysql::bindings::client_dev_package_name: 'MariaDB-devel'
+mysql::bindings::daemon_dev: true
 
 elasticsearch::java_install: true
 elasticsearch::java_package: 'java-1.8.0-openjdk'
@@ -17,3 +13,6 @@ elasticsearch::repo_version: '2.x'
 
 selinux::mode: 'permissive'
 selinux::type: 'targeted'
+
+python::dev: present
+python::virtualenv: present
