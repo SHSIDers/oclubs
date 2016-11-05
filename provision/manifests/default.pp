@@ -51,7 +51,7 @@ file { '/etc/nginx/conf.d/default.conf':
     mode   => '0644',
     owner  => 'root',
     group  => 'root',
-    source => '/vagrant/provision/nginx.conf',
+    source => '/srv/oclubs/repo/provision/nginx.conf',
     notify => Service['nginx']
 }
 
@@ -65,7 +65,7 @@ yumrepo { 'MariaDB':
 }
 
 # exec { 'install-mariadb':
-#     command => '/usr/bin/yum -y localinstall /vagrant/MariaDB-10.1.14-centos6-x86_64-server.rpm /vagrant/MariaDB-10.1.14-centos6-x86_64-client.rpm',
+#     command => '/usr/bin/yum -y localinstall /srv/oclubs/repo/MariaDB-10.1.14-centos6-x86_64-server.rpm /srv/oclubs/repo/MariaDB-10.1.14-centos6-x86_64-client.rpm',
 #     creates => '/usr/bin/mysql',
 #     timeout => 1800,
 #     require => Package['MariaDB-devel'],
@@ -98,7 +98,7 @@ exec { 'db-set-root-pw':
 }
 
 exec { 'sql-import':
-    command => "/usr/bin/mysql -u root -p'${mysql_password}' < /vagrant/oclubs-tables.sql",
+    command => "/usr/bin/mysql -u root -p'${mysql_password}' < /srv/oclubs/repo/oclubs-tables.sql",
     unless  => "/usr/bin/mysql -u root -p'${mysql_password}' oclubs < /dev/null",
     require => Exec['db-set-root-pw'],
 }
@@ -125,7 +125,7 @@ package { 'elasticsearch':
 }
 
 # exec { 'install-elasticsearch':
-#     command => '/usr/bin/yum -y localinstall /vagrant/elasticsearch-2.3.4.rpm',
+#     command => '/usr/bin/yum -y localinstall /srv/oclubs/repo/elasticsearch-2.3.4.rpm',
 #     creates => '/etc/elasticsearch/',
 #     timeout => 1800,
 #     require => [
@@ -139,7 +139,7 @@ file { '/etc/elasticsearch/elasticsearch.yml':
     mode    => '0750',
     owner   => 'root',
     group   => 'elasticsearch',
-    source  => '/vagrant/provision/elasticsearch.yml',
+    source  => '/srv/oclubs/repo/provision/elasticsearch.yml',
     require => Package['elasticsearch'],
     notify  => Service['elasticsearch'],
 }
@@ -154,7 +154,7 @@ file { '/etc/selinux/config':
     mode   => '0644',
     owner  => 'root',
     group  => 'root',
-    source => '/vagrant/provision/selinux',
+    source => '/srv/oclubs/repo/provision/selinux',
     notify => Exec['selinux-set-permissive'],
 }
 
@@ -179,7 +179,7 @@ file { '/home/vagrant/.bash_profile':
     mode    => '0644',
     owner   => 'vagrant',
     group   => 'vagrant',
-    source  => '/vagrant/provision/vagrant_bash_profile',
+    source  => '/srv/oclubs/repo/provision/vagrant_bash_profile',
     require => Exec['git-clone-pyenv'],
 }
 
@@ -204,7 +204,7 @@ package { [
 }
 
 exec { 'pyenv-install-python':
-    command     => '/srv/oclubs/pyenv/bin/pyenv install /vagrant/provision/python-pyenv',
+    command     => '/srv/oclubs/pyenv/bin/pyenv install /srv/oclubs/repo/provision/python-pyenv',
     environment => 'PYENV_ROOT=/srv/oclubs/pyenv',
     creates     => '/srv/oclubs/pyenv/versions/python-pyenv/',
     require     => [
@@ -219,7 +219,7 @@ file { '/root/.pip':
 
 file { '/root/.pip/pip.conf':
     ensure => file,
-    source => '/vagrant/provision/pip.conf',
+    source => '/srv/oclubs/repo/provision/pip.conf',
     before => Exec['install-pip-tools'],
 }
 
@@ -244,7 +244,7 @@ package { [
 }
 
 exec { 'pip-install-requirements':
-    command => '/srv/oclubs/pyenv/versions/python-pyenv/bin/pip-sync /vagrant/requirements.txt',
+    command => '/srv/oclubs/pyenv/versions/python-pyenv/bin/pip-sync /srv/oclubs/repo/requirements.txt',
     tries   => 5,
     timeout => 1800,
     require => [
@@ -293,7 +293,7 @@ file { '/etc/uwsgi/uwsgi.ini':
     mode    => '0644',
     owner   => 'root',
     group   => 'root',
-    source  => '/vagrant/provision/uwsgi.ini',
+    source  => '/srv/oclubs/repo/provision/uwsgi.ini',
     require => Exec['pip-install-requirements'],
     notify  => Service['uwsgi']
 }
@@ -303,7 +303,7 @@ file { '/etc/init.d/uwsgi':
     mode    => '0755',
     owner   => 'root',
     group   => 'root',
-    source  => '/vagrant/provision/uwsgi',
+    source  => '/srv/oclubs/repo/provision/uwsgi',
     require => File['/etc/uwsgi'],
     notify  => Service['uwsgi']
 }
@@ -326,7 +326,7 @@ file { '/srv/oclubs':
 
 file { '/srv/oclubs/oclubs':
     ensure => link,
-    target => '/vagrant/oclubs'
+    target => '/srv/oclubs/repo/oclubs'
 }
 
 file { '/srv/oclubs/images':
@@ -342,7 +342,7 @@ file { '/srv/oclubs/secrets.ini':
     mode    => '0640',
     owner   => 'root',
     group   => 'pythond',
-    source  => '/vagrant/provision/secrets.ini'
+    source  => '/srv/oclubs/repo/provision/secrets.ini'
 }
 
 file { '/srv/oclubs/siteconfig.ini':
@@ -351,7 +351,7 @@ file { '/srv/oclubs/siteconfig.ini':
     mode    => '0664',
     owner   => 'root',
     group   => 'pythond',
-    source  => '/vagrant/provision/siteconfig.ini'
+    source  => '/srv/oclubs/repo/provision/siteconfig.ini'
 }
 
 service { 'iptables':
@@ -364,7 +364,7 @@ file { '/etc/sysconfig/iptables':
     mode   => '0600',
     owner  => 'root',
     group  => 'root',
-    source => '/vagrant/provision/iptables',
+    source => '/srv/oclubs/repo/provision/iptables',
     notify => Service['iptables']
 }
 
@@ -399,7 +399,7 @@ file { '/etc/default/celeryd':
     mode   => '0644',
     owner  => 'root',
     group  => 'root',
-    source => '/vagrant/provision/celeryd-config',
+    source => '/srv/oclubs/repo/provision/celeryd-config',
     notify => Service['celeryd'],
 }
 
@@ -428,7 +428,7 @@ file { '/etc/default/celerybeat':
     mode   => '0644',
     owner  => 'root',
     group  => 'root',
-    source => '/vagrant/provision/celerybeat-config',
+    source => '/srv/oclubs/repo/provision/celerybeat-config',
     notify => Service['celerybeat'],
 }
 
@@ -449,7 +449,7 @@ file { '/etc/postfix/main.cf':
     mode   => '0644',
     owner  => 'root',
     group  => 'root',
-    source => '/vagrant/provision/postfix-main.cf',
+    source => '/srv/oclubs/repo/provision/postfix-main.cf',
     notify => Service['postfix'],
 }
 
@@ -464,7 +464,7 @@ file { '/home/vagrant/.my.cnf':
     mode   => '0600',
     owner  => 'vagrant',
     group  => 'vagrant',
-    source => '/vagrant/provision/my.cnf',
+    source => '/srv/oclubs/repo/provision/my.cnf',
 }
 
 file { '/usr/local/bin/pyshell':
@@ -472,5 +472,5 @@ file { '/usr/local/bin/pyshell':
     mode   => '0755',
     owner  => 'root',
     group  => 'root',
-    source => '/vagrant/provision/pyshell.sh',
+    source => '/srv/oclubs/repo/provision/pyshell.sh',
 }

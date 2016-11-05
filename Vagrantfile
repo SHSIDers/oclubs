@@ -15,8 +15,8 @@ Vagrant.configure("2") do |config|
     vb.memory = "1024"
   end
 
-  config.vm.synced_folder ".", "/vagrant", type: "virtualbox",
-    owner: "root", group: "root"
+  config.vm.synced_folder ".", "/srv/oclubs/repo", type: "virtualbox",
+    owner: "root", group: "root", create: true
 
   config.vm.provision :shell,
     inline: "which puppet > /dev/null || ( yum install -y epel-release; yum install -y puppet )"
