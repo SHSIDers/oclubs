@@ -1,0 +1,21 @@
+[submodule "provision/puppet/modules/mysql"]
+	path = provision/puppet/modules/mysql
+	url = https://github.com/puppetlabs/puppetlabs-mysql.git
+[submodule "provision/puppet/modules/postfix"]
+	path = provision/puppet/modules/postfix
+	url = https://github.com/camptocamp/puppet-postfix.git
+[submodule "provision/puppet/modules/vcsrepo"]
+	path = provision/puppet/modules/vcsrepo
+	url = https://github.com/puppetlabs/puppetlabs-vcsrepo.git
+[submodule "provision/puppet/modules/epel"]
+	path = provision/puppet/modules/epel
+	url = https://github.com/stahnma/puppet-module-epel.git
+[submodule "provision/puppet/modules/elasticsearch"]
+	path = provision/puppet/modules/elasticsearch
+	url = https://github.com/elastic/puppet-elasticsearch.git
+[submodule "provision/puppet/modules/nginx"]
+	path = provision/puppet/modules/nginx
+	url = http://github.com/voxpupuli/puppet-nginx.git
+[submodule "provision/puppet/modules/redis"]
+	path = provision/puppet/modules/redis
+	url = https://github.com/arioch/puppet-redis.git
