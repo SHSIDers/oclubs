@@ -101,8 +101,9 @@ nginx::nginx_vhosts:
           location /static/cdn/fonts/ {
             rewrite ^/static/cdn/fonts(/.*)$ $1 break;
 
+            proxy_pass http://fonts.gstatic.com;
             # proxy_pass http://fontstatic.useso.com;
-            proxy_pass http://fonts-gstatic.proxy.ustclug.org;
+            # proxy_pass http://fonts-gstatic.proxy.ustclug.org;
             # proxy_pass https://fonts.css.network;
             # proxy_pass http://sdn.geekzu.org/g-fonts; # FIXME: Bad proxy_pass, change rewrite rule
             # proxy_pass http://fonts.gmirror.org; # FIXME: Undetermined url
@@ -153,8 +154,9 @@ nginx::nginx_locations:
   #     - '^/static/cdn/cdnjs(/.*)$ $1 break'
   # '/static/cdn/fonts/':
   #   vhost: oclubs.shs.cn
+  #   proxy: 'http://fonts.gstatic.com'
   #   # proxy: 'http://fontstatic.useso.com'
-  #   proxy: 'http://fonts-gstatic.proxy.ustclug.org'
+  #   # proxy: 'http://fonts-gstatic.proxy.ustclug.org'
   #   # proxy: 'https://fonts.css.network'
   #   # proxy: 'http://sdn.geekzu.org/g-fonts' # FIXME: Bad proxy_pass, change rewrite rule
   #   # proxy: 'http://fonts.gmirror.org' # FIXME: Undetermined url
