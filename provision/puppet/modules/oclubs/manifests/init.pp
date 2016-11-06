@@ -67,6 +67,11 @@ class oclubs () {
         require => Exec['pip-install-requirements'],
     }
 
+    package { 'uwsgi-plugin-python':
+        ensure => present,
+        before => Class['::uwsgi'],
+    }
+
     include ::uwsgi
 
     file { '/srv/oclubs':

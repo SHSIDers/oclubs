@@ -35,24 +35,52 @@ uwsgi::service_provider: 'systemd'
 uwsgi::socket: '/var/run/uwsgi/uwsgi-emperor.sock'
 uwsgi::emperor_options:
   stats: '/var/run/uwsgi/stats.sock'
-  chmod-socket: 660
   uid: 'uwsgi'
-  gid: 'nginx'
+  gid: 'pythond'
   cap: 'setgid,setuid'
 uwsgi::app:
   oclubs:
     ensure: 'present'
     uid: 'uwsgi'
-    gid: 'nginx'
+    gid: 'pythond'
     application_options:
-      socket: '/var/run/uwsgi/uwsgi.sock'
       chdir: '/srv/oclubs'
       force-cwd: '/srv/oclubs'
       virtualenv: '/srv/oclubs/venv'
       module: 'oclubs.app:app'
-      socket: 'oclubs.app:app'
+      socket: '/var/run/uwsgi/uwsgi.sock'
+      chmod-socket: 666
       master: 'True'
       vaccum: 'True'
       die-on-term: 'True'
       processes: 4
       threads: 2
+      plugins: 'python'
+
+nginx::client_max_body_size: 100m
+nginx::nginx_upstreams:
+  uwsgi:
+    ensure: present
+    members:
+      - 'unix:/var/run/uwsgi/uwsgi.sock'
+nginx::nginx_vhosts:
+  'oclubs.shs.cn':
+    listen_options: default_server
+    uwsgi: uwsgi
+    add_header:
+      Content-Security-Policy: "default-src \\'self\\'"
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+nginx::nginx_locations:
+  '/static':
+    vhost: oclubs.shs.cn
+    location_alias: /srv/oclubs/oclubs/static
+  '= /favicon.ico':
+    vhost: oclubs.shs.cn
+    location_alias: /srv/oclubs/oclubs/static/favicon.ico
+  '= /robots.txt':
+    vhost: oclubs.shs.cn
+    location_alias: /srv/oclubs/oclubs/static/robots.txt
+  '/images':
+    vhost: oclubs.shs.cn
+    location_alias: /srv/oclubs/images

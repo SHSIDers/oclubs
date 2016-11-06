@@ -1,3 +1,6 @@
+[submodule "provision/puppet/modules/concat"]
+	path = provision/puppet/modules/concat
+	url = https://github.com/puppetlabs/puppetlabs-concat.git
 [submodule "provision/puppet/modules/datacat"]
 	path = provision/puppet/modules/datacat
 	url = https://github.com/richardc/puppet-datacat.git
@@ -13,6 +16,9 @@
 [submodule "provision/puppet/modules/java"]
 	path = provision/puppet/modules/java
 	url = https://github.com/puppetlabs/puppetlabs-java.git
+[submodule "provision/puppet/modules/logrotate"]
+	path = provision/puppet/modules/logrotate
+	url = https://github.com/yo61/puppet-logrotate.git
 [submodule "provision/puppet/modules/mysql"]
 	path = provision/puppet/modules/mysql
 	url = https://github.com/puppetlabs/puppetlabs-mysql.git
@@ -31,15 +37,12 @@
 [submodule "provision/puppet/modules/selinux"]
 	path = provision/puppet/modules/selinux
 	url = https://github.com/voxpupuli/puppet-selinux.git
-[submodule "provision/puppet/modules/vcsrepo"]
-	path = provision/puppet/modules/vcsrepo
-	url = https://github.com/puppetlabs/puppetlabs-vcsrepo.git
 [submodule "provision/puppet/modules/stdlib"]
 	path = provision/puppet/modules/stdlib
 	url = https://github.com/puppetlabs/puppetlabs-stdlib.git
-[submodule "provision/puppet/modules/logrotate"]
-	path = provision/puppet/modules/logrotate
-	url = https://github.com/yo61/puppet-logrotate.git
 [submodule "provision/puppet/modules/uwsgi"]
 	path = provision/puppet/modules/uwsgi
 	url = https://github.com/rvdh/puppet-uwsgi.git
+[submodule "provision/puppet/modules/vcsrepo"]
+	path = provision/puppet/modules/vcsrepo
+	url = https://github.com/puppetlabs/puppetlabs-vcsrepo.git
