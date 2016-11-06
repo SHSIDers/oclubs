@@ -58,6 +58,12 @@ uwsgi::app:
       plugins: 'python'
 
 nginx::client_max_body_size: 100m
+nginx::proxy_cache_path: '/var/nginx/cache'
+nginx::proxy_cache_inactive: 24h
+nginx::proxy_cache_keys_zone: 'STATIC:10m'
+nginx::proxy_cache_levels: '1:2'
+nginx::proxy_cache_max_size: '1g'
+nginx::proxy_set_header: []
 nginx::nginx_upstreams:
   uwsgi:
     ensure: present
@@ -71,6 +77,38 @@ nginx::nginx_vhosts:
       Content-Security-Policy: "default-src \\'self\\'"
       X-Content-Type-Options: nosniff
       X-Frame-Options: SAMEORIGIN
+
+    raw_append: |-
+      # This is manually coded until location nesting is supported
+        location /static/cdn/ {
+          proxy_cache            STATIC;
+          proxy_cache_valid      200 302  1d;
+          proxy_cache_valid      404      5m;
+          proxy_cache_use_stale  error timeout invalid_header updating
+                                 http_500 http_502 http_503 http_504;
+
+          proxy_hide_header       Set-Cookie;
+          proxy_ignore_headers    Set-Cookie;
+          proxy_set_header        Cookie "";
+
+          add_header X-Cache-Status $upstream_cache_status;
+
+          location /static/cdn/cdnjs/ {
+            rewrite ^/static/cdn/cdnjs(/.*)$ $1 break;
+            proxy_pass http://cdn.bootcss.com;
+          }
+
+          location /static/cdn/fonts/ {
+            rewrite ^/static/cdn/fonts(/.*)$ $1 break;
+
+            # proxy_pass http://fontstatic.useso.com;
+            proxy_pass http://fonts-gstatic.proxy.ustclug.org;
+            # proxy_pass https://fonts.css.network;
+            # proxy_pass http://sdn.geekzu.org/g-fonts; # FIXME: Bad proxy_pass, change rewrite rule
+            # proxy_pass http://fonts.gmirror.org; # FIXME: Undetermined url
+          }
+        }
+
 nginx::nginx_locations:
   '/static':
     vhost: oclubs.shs.cn
@@ -84,3 +122,41 @@ nginx::nginx_locations:
   '/images':
     vhost: oclubs.shs.cn
     location_alias: /srv/oclubs/images
+  # '/static/cdn/':
+  #   vhost: oclubs.shs.cn
+  #   # proxy_cache: STATIC
+  #   # proxy_cache_valid:
+  #   #   - '200 302 1d'
+  #   #   - '404 5m'
+  #   # proxy_cache_use_stale:
+  #   #   error timeout invalid_header updating
+  #   #   http_500 http_502 http_503 http_504
+  #   # proxy_hide_header:
+  #   #   - Set-Cookie
+  #   # proxy_set_header:
+  #   #   - 'Cookie ""'
+  #   location_custom_cfg:
+  #     proxy_cache: STATIC
+  #     proxy_cache_valid: '200 302 1d'
+  #     proxy_cache_valid: '404 5m'
+  #     proxy_cache_use_stale:
+  #       error timeout invalid_header updating
+  #       http_500 http_502 http_503 http_504
+  #
+  #     proxy_hide_header: Set-Cookie
+  #     proxy_ignore_headers: Set-Cookie
+  #     proxy_set_header: 'Cookie ""'
+  # '/static/cdn/cdnjs/':
+  #   vhost: oclubs.shs.cn
+  #   proxy: 'http://cdn.bootcss.com'
+  #   rewrite_rules:
+  #     - '^/static/cdn/cdnjs(/.*)$ $1 break'
+  # '/static/cdn/fonts/':
+  #   vhost: oclubs.shs.cn
+  #   # proxy: 'http://fontstatic.useso.com'
+  #   proxy: 'http://fonts-gstatic.proxy.ustclug.org'
+  #   # proxy: 'https://fonts.css.network'
+  #   # proxy: 'http://sdn.geekzu.org/g-fonts' # FIXME: Bad proxy_pass, change rewrite rule
+  #   # proxy: 'http://fonts.gmirror.org' # FIXME: Undetermined url
+  #   rewrite_rules:
+  #     - '^/static/cdn/fonts(/.*)$ $1 break'
