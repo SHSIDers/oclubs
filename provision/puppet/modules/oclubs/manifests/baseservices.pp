@@ -15,12 +15,14 @@ class oclubs::baseservices {
         require => Class['::mysql::server'],
     }
 
-    file { '/home/vagrant/.my.cnf':
-        ensure => file,
-        mode   => '0600',
-        owner  => 'vagrant',
-        group  => 'vagrant',
-        source => '/srv/oclubs/repo/provision/my.cnf',
+    if $::environment == 'vagrant' {
+        file { '/home/vagrant/.my.cnf':
+            ensure  => file,
+            mode    => '0600',
+            owner   => 'vagrant',
+            group   => 'vagrant',
+            content => template('oclubs/my.cnf.erb'),
+        }
     }
 
     include ::elasticsearch

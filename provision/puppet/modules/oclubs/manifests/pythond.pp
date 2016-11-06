@@ -1,4 +1,6 @@
 class oclubs::pythond {
+    $secrets = hiera_hash('oclubs::secrets', undef)
+
     package { 'git':
         ensure => installed,
     }
@@ -77,11 +79,10 @@ class oclubs::pythond {
 
     file { '/srv/oclubs/secrets.ini':
         ensure  => file,
-        replace => 'no',
         mode    => '0640',
         owner   => 'root',
         group   => 'pythond',
-        source  => '/srv/oclubs/repo/provision/secrets.ini'
+        content => template('oclubs/secrets.ini.erb'),
     }
 
     file { '/srv/oclubs/siteconfig.ini':
@@ -90,7 +91,7 @@ class oclubs::pythond {
         mode    => '0664',
         owner   => 'root',
         group   => 'pythond',
-        source  => '/srv/oclubs/repo/provision/siteconfig.ini'
+        source  => 'puppet:///modules/oclubs/siteconfig.ini'
     }
 
     Celery::Worker {
@@ -120,6 +121,6 @@ class oclubs::pythond {
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
-        source => '/srv/oclubs/repo/provision/pyshell.sh',
+        source => 'puppet:///modules/oclubs/pyshell.sh',
     }
 }
