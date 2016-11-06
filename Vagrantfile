@@ -19,8 +19,7 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder ".", "/srv/oclubs/repo", type: "virtualbox",
     owner: "root", group: "root", create: true
 
-  config.vm.provision :shell,
-    inline: "which puppet &> /dev/null || ( yum install -y epel-release; yum install -y puppet )"
+  config.vm.provision :shell, path: 'provision/install_puppet.sh'
   config.vm.provision :puppet do |puppet|
     puppet.manifests_path = 'provision/puppet/manifests'
     puppet.manifest_file = 'site.pp'
@@ -36,4 +35,6 @@ Vagrant.configure("2") do |config|
       'environment' => ENV['PUPPET_ENVIRONMENT'] || 'vagrant',
     }
   end
+
+  config.vm.provision :shell, run: 'always', path: 'provision/restart_pythond.sh'
 end
