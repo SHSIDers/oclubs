@@ -1,0 +1,23 @@
+# THIS FILE IS MANAGED BY PUPPET!
+[Unit]
+Description=Celery Service
+After=network.target
+
+[Service]
+Type=forking
+User=<%= @user %>
+Group=<%= @group %>
+WorkingDirectory=<%= @working_dir %>
+RuntimeDirectory=<%= @name %>
+Restart=always
+ExecStart=/bin/sh -c '<%= @bin_path %> multi start <%= @nodes %> \
+	-A <%= @app %> --logfile="/var/log/<%= @name %>/%%n%%I.log" \
+	--pidfile="/var/run/<%= @name %>/%%n.pid" <%= @opts %>'
+ExecStop=/bin/sh -c '<%= @bin_path %> multi stopwait <%= @nodes %> \
+	--pidfile="/var/run/<%= @name %>/%%n.pid"'
+ExecReload=/bin/sh -c '<%= @bin_path %> multi restart <%= @nodes %> \
+	-A <%= @app %> --pidfile="/var/run/<%= @name %>/%%n.pid" \
+	--logfile="/var/log/<%= @name %>/%%n%%I.log" <%= @opts %>'
+
+[Install]
+WantedBy=multi-user.target

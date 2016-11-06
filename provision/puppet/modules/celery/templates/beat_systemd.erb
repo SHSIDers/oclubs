@@ -1,0 +1,19 @@
+# THIS FILE IS MANAGED BY PUPPET!
+[Unit]
+Description=Celerybeat Service
+After=network.target
+
+[Service]
+Type=simple
+User=<%= @user %>
+Group=<%= @group %>
+WorkingDirectory=<%= @working_dir %>
+RuntimeDirectory=<%= @name %>
+Restart=always
+ExecStart=/bin/sh -c '<%= @bin_path %> beat \
+	-A <%= @app %> --logfile="/var/log/<%= @name %>/beat.log" \
+	--pidfile="/var/run/<%= @name %>/beat.pid" <%= @opts %>'
+KillSignal=SIGTERM
+
+[Install]
+WantedBy=multi-user.target

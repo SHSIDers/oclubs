@@ -128,78 +128,25 @@ class oclubs () {
         action => accept,
     }
 
-    #
-    #
-    # user { 'celery':
-    #     ensure  => present,
-    #     comment => 'Celery service user',
-    #     home    => '/srv/oclubs',
-    #     shell   => '/bin/bash',
-    #     groups  => 'pythond',
-    #     require => Exec['pip-install-requirements'],
-    #     before  => Service['celeryd'],
-    # }
-    #
-    # exec { 'get-celeryd':
-    #     command => '/usr/bin/wget https://github.com/celery/celery/raw/3.1/extra/generic-init.d/celeryd -O /etc/init.d/celeryd',
-    #     creates => '/etc/init.d/celeryd'
-    # }
-    #
-    # file { '/etc/init.d/celeryd':
-    #     ensure  => file,
-    #     replace => 'no',
-    #     mode    => '0755',
-    #     owner   => 'root',
-    #     group   => 'root',
-    #     notify  => Service['celeryd'],
-    #     require => Exec['get-celeryd']
-    # }
-    #
-    # file { '/etc/default/celeryd':
-    #     ensure => file,
-    #     mode   => '0644',
-    #     owner  => 'root',
-    #     group  => 'root',
-    #     source => '/srv/oclubs/repo/provision/celeryd-config',
-    #     notify => Service['celeryd'],
-    # }
-    #
-    # service { 'celeryd':
-    #     ensure => running,
-    #     enable => true,
-    # }
-    #
-    # exec { 'get-celerybeat':
-    #     command => '/usr/bin/wget https://github.com/celery/celery/raw/3.1/extra/generic-init.d/celerybeat -O /etc/init.d/celerybeat',
-    #     creates => '/etc/init.d/celerybeat'
-    # }
-    #
-    # file { '/etc/init.d/celerybeat':
-    #     ensure  => file,
-    #     replace => 'no',
-    #     mode    => '0755',
-    #     owner   => 'root',
-    #     group   => 'root',
-    #     notify  => Service['celerybeat'],
-    #     require => Exec['get-celerybeat']
-    # }
-    #
-    # file { '/etc/default/celerybeat':
-    #     ensure => file,
-    #     mode   => '0644',
-    #     owner  => 'root',
-    #     group  => 'root',
-    #     source => '/srv/oclubs/repo/provision/celerybeat-config',
-    #     notify => Service['celerybeat'],
-    # }
-    #
-    # service { 'celerybeat':
-    #     ensure  => running,
-    #     enable  => true,
-    #     require => Service['celeryd']
-    # }
-    #
-    #
+    celery::worker { 'celeryd':
+        app         => 'oclubs.worker:app',
+        working_dir => '/srv/oclubs',
+        user        => 'celery',
+        group       => 'pythond',
+        bin_path    => '/srv/oclubs/venv/bin/celery',
+        nodes       => 2,
+        opts        => '--time-limit=300 --concurrency=4',
+    }
+
+    celery::beat { 'celerybeat':
+        app         => 'oclubs.worker:app',
+        working_dir => '/srv/oclubs',
+        user        => 'celery',
+        group       => 'pythond',
+        bin_path    => '/srv/oclubs/venv/bin/celery',
+        opts        => '--schedule=/var/run/celerybeat/celerybeat-schedule'
+    }
+
     include ::postfix
 
     file { '/home/vagrant/.my.cnf':
