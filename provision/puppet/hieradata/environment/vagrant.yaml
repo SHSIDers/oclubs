@@ -6,7 +6,3 @@ mysql::server::root_password: 'TacOrnibVeeHoFrej2RindofDic5faquavrymebZaidEytCoj
 oclubs::secrets:
     encrypt_key: '3629a05b2b6e03ba10f47ac0b4e43503'
     flask_key: 'NabnuagogTwapgoynEesJadArsebEshciacOjDurforJotadLeyb'
-    mariadb_pw: "%{hiera('mysql::server::root_password')}"
-    redis_pw: "%{hiera('redis::requirepass')}"
-    db2_conn: ''
-    sendgrid_key: ''

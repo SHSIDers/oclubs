@@ -29,6 +29,17 @@ File {
     backup => false,
 }
 
+# Purge unmanaged firewall rules
+resources { 'firewall':
+    purge => true,
+}
+
+# Firewall rule ordering
+Firewall {
+    before  => Class['::my_fw::post'],
+    require => Class['::my_fw::pre'],
+}
+
 # Assign classes to nodes via hiera
 # See hiera.yaml and hieradata/*.yaml
 hiera_include('classes')

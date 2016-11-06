@@ -7,6 +7,9 @@
 [submodule "provision/puppet/modules/epel"]
 	path = provision/puppet/modules/epel
 	url = https://github.com/stahnma/puppet-module-epel.git
+[submodule "provision/puppet/modules/firewall"]
+	path = provision/puppet/modules/firewall
+	url = https://github.com/puppetlabs/puppetlabs-firewall.git
 [submodule "provision/puppet/modules/java"]
 	path = provision/puppet/modules/java
 	url = https://github.com/puppetlabs/puppetlabs-java.git

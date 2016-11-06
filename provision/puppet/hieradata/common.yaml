@@ -2,6 +2,14 @@
 classes:
   - '::oclubs'
 
+oclubs::secrets:
+  encrypt_key: ''
+  flask_key: ''
+  mariadb_pw: "%{hiera('mysql::server::root_password')}"
+  redis_pw: "%{hiera('redis::requirepass')}"
+  db2_conn: ''
+  sendgrid_key: ''
+
 redis::bind: '127.0.0.1'
 
 mysql::bindings::daemon_dev: true

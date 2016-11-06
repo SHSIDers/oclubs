@@ -1,6 +1,6 @@
-class oclubs (
-    $secrets,
-) {
+class oclubs () {
+    $secrets = hiera_hash('oclubs::secrets', undef)
+
     package { 'git':
         ensure => installed,
     }
@@ -31,16 +31,6 @@ class oclubs (
         group  => 'root',
     }
 
-    # file { '/root/.pip':
-    #     ensure => directory,
-    # }
-    #
-    # file { '/root/.pip/pip.conf':
-    #     ensure => file,
-    #     source => '/srv/oclubs/repo/provision/pip.conf',
-    #     before => Exec['install-pip-tools'],
-    # }
-
     exec { 'upgrade-pip':
         command => '/srv/oclubs/venv/bin/pip install -U pip',
         # If we have pip-sync, this step is already done
@@ -53,20 +43,7 @@ class oclubs (
         creates => '/srv/oclubs/venv/bin/pip-sync',
         require => Exec['upgrade-pip'],
     }
-    #
-    # package { [
-    #     'python-devel',
-    #     # 'zlib-devel',
-    #     # 'openssl-devel',
-    #     'libffi-devel',
-    #     'libjpeg-turbo-devel',
-    #     'libpng-devel',
-    # ]:
-    #     ensure  => present,
-    #     require => Package['epel-release'],
-    #     before  => Exec['pip-install-requirements'],
-    # }
-    #
+
     exec { 'pip-install-requirements':
         command => '/srv/oclubs/venv/bin/pip-sync /srv/oclubs/repo/requirements.txt',
         tries   => 5,
@@ -177,19 +154,22 @@ class oclubs (
     #     source  => '/srv/oclubs/repo/provision/siteconfig.ini'
     # }
     #
-    # service { 'iptables':
-    #     ensure => running,
-    #     enable => true,
-    # }
-    #
-    # file { '/etc/sysconfig/iptables':
-    #     ensure => file,
-    #     mode   => '0600',
-    #     owner  => 'root',
-    #     group  => 'root',
-    #     source => '/srv/oclubs/repo/provision/iptables',
-    #     notify => Service['iptables']
-    # }
+
+    include ::firewall
+    include ::my_fw::pre
+    include ::my_fw::post
+
+    firewall { '100 Allow inbound SSH':
+        dport  => 22,
+        proto  => tcp,
+        action => accept,
+    }
+    firewall { '101 Allow inbound HTTP':
+        dport  => 80,
+        proto  => tcp,
+        action => accept,
+    }
+
     #
     #
     # user { 'celery':
@@ -262,26 +242,8 @@ class oclubs (
     # }
     #
     #
-    # package { 'postfix':
-    #     ensure => present,
-    #     before => Package['epel-release'],
-    # }
-    #
-    # file { '/etc/postfix/main.cf':
-    #     ensure => file,
-    #     mode   => '0644',
-    #     owner  => 'root',
-    #     group  => 'root',
-    #     source => '/srv/oclubs/repo/provision/postfix-main.cf',
-    #     notify => Service['postfix'],
-    # }
-    #
-    # service { 'postfix':
-    #     ensure => running,
-    #     enable => true,
-    # }
-    #
-    #
+    include ::postfix
+
     file { '/home/vagrant/.my.cnf':
         ensure => file,
         mode   => '0600',
@@ -289,12 +251,12 @@ class oclubs (
         group  => 'vagrant',
         source => '/srv/oclubs/repo/provision/my.cnf',
     }
-    #
-    # file { '/usr/local/bin/pyshell':
-    #     ensure => file,
-    #     mode   => '0755',
-    #     owner  => 'root',
-    #     group  => 'root',
-    #     source => '/srv/oclubs/repo/provision/pyshell.sh',
-    # }
+
+    file { '/usr/local/bin/pyshell':
+        ensure => file,
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        source => '/srv/oclubs/repo/provision/pyshell.sh',
+    }
 }
