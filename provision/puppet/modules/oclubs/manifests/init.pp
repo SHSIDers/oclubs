@@ -53,107 +53,60 @@ class oclubs () {
             Exec['install-pip-tools']
         ],
     }
-    #
-    # group { 'pythond':
-    #     ensure  => present,
-    # }
-    #
-    # user { 'uwsgi':
-    #     ensure  => present,
-    #     comment => 'uWSGI service user',
-    #     home    => '/srv/oclubs',
-    #     shell   => '/sbin/nologin',
-    #     groups  => 'pythond',
-    #     require => Exec['pip-install-requirements'],
-    # }
-    #
-    # file { '/var/run/uwsgi':
-    #     ensure  => directory,
-    #     owner   => 'uwsgi',
-    #     group   => 'nginx',
-    #     require => User['uwsgi'],
-    # }
-    #
-    # file { '/var/log/uwsgi':
-    #     ensure  => directory,
-    #     owner   => 'uwsgi',
-    #     group   => 'uwsgi',
-    #     require => User['uwsgi'],
-    # }
-    #
-    # file { '/etc/uwsgi':
-    #     ensure  => directory,
-    #     owner   => 'root',
-    #     group   => 'root',
-    #     require => Exec['pip-install-requirements'],
-    # }
-    #
-    # file { '/etc/uwsgi/uwsgi.ini':
-    #     ensure  => file,
-    #     mode    => '0644',
-    #     owner   => 'root',
-    #     group   => 'root',
-    #     source  => '/srv/oclubs/repo/provision/uwsgi.ini',
-    #     require => Exec['pip-install-requirements'],
-    #     notify  => Service['uwsgi']
-    # }
-    #
-    # file { '/etc/init.d/uwsgi':
-    #     ensure  => file,
-    #     mode    => '0755',
-    #     owner   => 'root',
-    #     group   => 'root',
-    #     source  => '/srv/oclubs/repo/provision/uwsgi',
-    #     require => File['/etc/uwsgi'],
-    #     notify  => Service['uwsgi']
-    # }
-    #
-    # service { 'uwsgi':
-    #     ensure  => running,
-    #     enable  => true,
-    #     require => [
-    #         Exec['pip-install-requirements'],
-    #         User['uwsgi'],
-    #         File['/var/run/uwsgi'],
-    #         File['/var/log/uwsgi'],
-    #         File['/etc/uwsgi/uwsgi.ini'],
-    #     ]
-    # }
-    #
-    # file { '/srv/oclubs':
-    #     ensure => directory,
-    # }
-    #
-    # file { '/srv/oclubs/oclubs':
-    #     ensure => link,
-    #     target => '/srv/oclubs/repo/oclubs'
-    # }
-    #
-    # file { '/srv/oclubs/images':
-    #     ensure => directory,
-    #     mode   => '0755',
-    #     owner  => 'uwsgi',
-    #     group  => 'nginx'
-    # }
-    #
-    # file { '/srv/oclubs/secrets.ini':
-    #     ensure  => file,
-    #     replace => 'no',
-    #     mode    => '0640',
-    #     owner   => 'root',
-    #     group   => 'pythond',
-    #     source  => '/srv/oclubs/repo/provision/secrets.ini'
-    # }
-    #
-    # file { '/srv/oclubs/siteconfig.ini':
-    #     ensure  => file,
-    #     replace => 'no',
-    #     mode    => '0664',
-    #     owner   => 'root',
-    #     group   => 'pythond',
-    #     source  => '/srv/oclubs/repo/provision/siteconfig.ini'
-    # }
-    #
+
+    group { 'pythond':
+        ensure  => present,
+    }
+
+    user { 'uwsgi':
+        ensure  => present,
+        comment => 'uWSGI service user',
+        home    => '/srv/oclubs',
+        shell   => '/sbin/nologin',
+        groups  => 'pythond',
+        require => Exec['pip-install-requirements'],
+    }
+
+    include ::uwsgi
+
+    file { '/srv/oclubs':
+        ensure => directory,
+    }
+
+    file { '/srv/oclubs/oclubs':
+        ensure => link,
+        target => '/srv/oclubs/repo/oclubs',
+        before => [
+            Class['::uwsgi'],
+            # Class['::celery'],
+        ]
+    }
+
+    file { '/srv/oclubs/images':
+        ensure => directory,
+        mode   => '0755',
+        owner  => 'uwsgi',
+        group  => 'nginx'
+    }
+
+    file { '/srv/oclubs/secrets.ini':
+        ensure  => file,
+        replace => 'no',
+        mode    => '0640',
+        owner   => 'root',
+        group   => 'pythond',
+        source  => '/srv/oclubs/repo/provision/secrets.ini'
+    }
+
+    file { '/srv/oclubs/siteconfig.ini':
+        ensure  => file,
+        replace => 'no',
+        mode    => '0664',
+        owner   => 'root',
+        group   => 'pythond',
+        source  => '/srv/oclubs/repo/provision/siteconfig.ini'
+    }
+
 
     include ::firewall
     include ::my_fw::pre

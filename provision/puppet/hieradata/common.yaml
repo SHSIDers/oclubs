@@ -24,3 +24,35 @@ selinux::type: 'targeted'
 
 python::dev: present
 python::virtualenv: present
+
+# Collision
+uwsgi::install_pip: false
+uwsgi::install_python_dev: false
+uwsgi::package_provider: 'yum'
+uwsgi::manage_service_file: false
+uwsgi::service_provider: 'systemd'
+
+uwsgi::socket: '/var/run/uwsgi/uwsgi-emperor.sock'
+uwsgi::emperor_options:
+  stats: '/var/run/uwsgi/stats.sock'
+  chmod-socket: 660
+  uid: 'uwsgi'
+  gid: 'nginx'
+  cap: 'setgid,setuid'
+uwsgi::app:
+  oclubs:
+    ensure: 'present'
+    uid: 'uwsgi'
+    gid: 'nginx'
+    application_options:
+      socket: '/var/run/uwsgi/uwsgi.sock'
+      chdir: '/srv/oclubs'
+      force-cwd: '/srv/oclubs'
+      virtualenv: '/srv/oclubs/venv'
+      module: 'oclubs.app:app'
+      socket: 'oclubs.app:app'
+      master: 'True'
+      vaccum: 'True'
+      die-on-term: 'True'
+      processes: 4
+      threads: 2
