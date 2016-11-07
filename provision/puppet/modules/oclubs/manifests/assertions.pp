@@ -1,4 +1,8 @@
 class oclubs::assertions {
+    unless $::operatingsystem == 'CentOS' and $::operatingsystemmajrelease == '7' {
+        fail('oClubs backend code is designed for CentOS 7 only')
+    }
+
     $secrets = hiera_hash('oclubs::secrets', undef)
     if empty($secrets[encrypt_key]) {
         fail('oclubs::secrets encrypt_key required')
