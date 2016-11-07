@@ -58,6 +58,7 @@ uwsgi::app:
       plugins: 'python'
 
 nginx::client_max_body_size: 100m
+nginx::worker_processes: 4
 nginx::proxy_cache_path: '/var/nginx/cache'
 nginx::proxy_cache_inactive: 24h
 nginx::proxy_cache_keys_zone: 'STATIC:10m'
