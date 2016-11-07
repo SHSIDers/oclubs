@@ -9,7 +9,7 @@ enum34
 Pillow
 markdown
 bleach
-elasticsearch
+elasticsearch>=2.0.0,<3.0.0 # We are using Elasticsearch 2.x
 pycrypto
 envelopes
 sendgrid
