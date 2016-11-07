@@ -115,12 +115,4 @@ class oclubs::pythond {
         bin_path    => '/srv/oclubs/venv/bin/celery',
         opts        => '--schedule=/var/run/celerybeat/celerybeat-schedule'
     }
-
-    file { '/usr/local/bin/pyshell':
-        ensure => file,
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/oclubs/pyshell.sh',
-    }
 }

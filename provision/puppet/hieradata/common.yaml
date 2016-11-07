@@ -10,6 +10,8 @@ oclubs::secrets:
   db2_conn: ''
   sendgrid_key: ''
 
+motd::template: 'oclubs/motd.erb'
+
 redis::bind: '127.0.0.1'
 
 mysql::bindings::daemon_dev: true

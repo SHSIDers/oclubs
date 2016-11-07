@@ -1,3 +1,6 @@
+[submodule "provision/puppet/modules/accounts"]
+	path = provision/puppet/modules/accounts
+	url = https://github.com/puppetlabs/puppetlabs-accounts.git
 [submodule "provision/puppet/modules/concat"]
 	path = provision/puppet/modules/concat
 	url = https://github.com/puppetlabs/puppetlabs-concat.git
@@ -19,6 +22,9 @@
 [submodule "provision/puppet/modules/logrotate"]
 	path = provision/puppet/modules/logrotate
 	url = https://github.com/yo61/puppet-logrotate.git
+[submodule "provision/puppet/modules/motd"]
+	path = provision/puppet/modules/motd
+	url = https://github.com/puppetlabs/puppetlabs-motd.git
 [submodule "provision/puppet/modules/mysql"]
 	path = provision/puppet/modules/mysql
 	url = https://github.com/puppetlabs/puppetlabs-mysql.git

@@ -55,4 +55,14 @@ define celery::worker(
             enable => true,
         }
     }
+
+    logrotate::rule { $name:
+        path          => "/var/log/${name}/*.log",
+        rotate_every  => 'day',
+        rotate        => 52,
+        compress      => true,
+        delaycompress => true,
+        ifempty       => false,
+        copytruncate  => true,
+    }
 }

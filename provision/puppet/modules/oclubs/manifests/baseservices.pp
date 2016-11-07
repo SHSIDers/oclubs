@@ -15,16 +15,6 @@ class oclubs::baseservices {
         require => Class['::mysql::server'],
     }
 
-    if $::environment == 'vagrant' {
-        file { '/home/vagrant/.my.cnf':
-            ensure  => file,
-            mode    => '0600',
-            owner   => 'vagrant',
-            group   => 'vagrant',
-            content => template('oclubs/my.cnf.erb'),
-        }
-    }
-
     include ::elasticsearch
     elasticsearch::instance { 'node-1': }
 
@@ -47,4 +37,6 @@ class oclubs::baseservices {
     }
 
     include ::postfix
+
+    include ::logrotate
 }
