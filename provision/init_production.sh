@@ -127,8 +127,13 @@ EOF
 install_run_puppet() {
     sh /srv/oclubs/repo/provision/install_puppet.sh
 
-    cat > /usr/sbin/run_puppet << EOF
+    cat > /usr/sbin/run_puppet << 'EOF'
 #! /bin/sh
+
+if [ $UID -ne 0 ]; then
+    exec sudo $0 "$@"
+fi
+
 FACTOR_environment=production puppet apply --verbose --debug --modulepath /srv/oclubs/repo/provision/puppet/modules:/etc/puppet/modules --hiera_config=/srv/oclubs/repo/provision/puppet/hiera.yaml --detailed-exitcodes --manifestdir /srv/oclubs/repo/provision/puppet/manifests /srv/oclubs/repo/provision/puppet/manifests/site.pp
 EOF
     chmod 755 /usr/sbin/run_puppet
