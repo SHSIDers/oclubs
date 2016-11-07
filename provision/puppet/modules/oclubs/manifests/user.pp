@@ -1,6 +1,6 @@
 class oclubs::user {
     $secrets = hiera_hash('oclubs::secrets', undef)
-    $timestamp = generate('/bin/date')
+    $timestamp = strip(generate('/bin/date'))
 
     file { '/usr/local/bin/pyshell':
         ensure => file,
