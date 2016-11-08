@@ -16,7 +16,7 @@ set_hostname() {
 
         # Set the hostname - use hostnamectl if available
         echo "${name}" > /etc/hostname
-        if command -v hostnamectl; then
+        if command -v hostnamectl &> /dev/null; then
             hostnamectl set-hostname --static "${name}"
             hostnamectl set-hostname --transient "${name}"
         else
@@ -135,15 +135,18 @@ if [ $UID -ne 0 ]; then
 fi
 
 FACTOR_environment=production puppet apply --verbose --debug --modulepath /srv/oclubs/repo/provision/puppet/modules:/etc/puppet/modules --hiera_config=/srv/oclubs/repo/provision/puppet/hiera.yaml --detailed-exitcodes --manifestdir /srv/oclubs/repo/provision/puppet/manifests /srv/oclubs/repo/provision/puppet/manifests/site.pp
+
+EXITCODE=$?
+if [ $EXITCODE -ne 0 -a $EXITCODE -ne 2 ]; then
+    echo -e '\e[1m\e[91mThe puppet run exited with an error.\e[0m\e[39m'
+fi
+exit $EXITCODE
 EOF
     chmod 755 /usr/sbin/run_puppet
     set +e
     /usr/sbin/run_puppet
     set -e
-    local EXITCODE=$?
-    if [ $EXITCODE -ne 0 -a $EXITCODE -ne 2 ]; then
-        echo -e '\e[1m\e[91mThe puppet run failed. You may have to run `$ sudo run_puppet` later.\e[0m\e[39m'
-    fi
+
 }
 
 
@@ -164,7 +167,7 @@ main() {
     echo '   b. Create accounts for other maintainers.'
     echo '   c. Upload the ssh keys.'
     echo '   d. Complete the email aliases.'
-    echo '2. When every maintainer can successfully ssh in via private key, disable password login in /etc/ssh/sshd_config.'
+    echo '2. After every maintainer can successfully ssh in via private key, disable password login in /etc/ssh/sshd_config.'
 }
 
 main
