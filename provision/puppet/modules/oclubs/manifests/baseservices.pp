@@ -1,6 +1,8 @@
 class oclubs::baseservices {
     $secrets = hiera_hash('oclubs::secrets', undef)
 
+    include ::gcc
+
     include ::redis
 
     include ::nginx
