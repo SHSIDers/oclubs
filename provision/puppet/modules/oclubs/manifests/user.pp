@@ -51,6 +51,6 @@ class oclubs::user {
 
     file { '/etc/sudoers.d/agentforward':
         ensure  => present,
-        content => 'Defaults>root env_keep+=SSH_AUTH_SOCK',
+        content => "Defaults>root env_keep+=SSH_AUTH_SOCK\n",
     }
 }
