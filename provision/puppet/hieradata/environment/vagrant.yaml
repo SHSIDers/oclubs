@@ -6,3 +6,5 @@ mysql::server::root_password: 'TacOrnibVeeHoFrej2RindofDic5faquavrymebZaidEytCoj
 oclubs::secrets:
     encrypt_key: '3629a05b2b6e03ba10f47ac0b4e43503'
     flask_key: 'NabnuagogTwapgoynEesJadArsebEshciacOjDurforJotadLeyb'
+
+nginx::sendfile: off
