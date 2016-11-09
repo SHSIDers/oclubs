@@ -56,10 +56,27 @@ init_hiera() {
         echo 'https://wiki.centos.org/TipsAndTricks/BecomingRoot for more information.'
 
         local USERNAME PASSWORD
-        echo -n 'Username: '
-        read USERNAME
 
         set +e
+        while true; do
+            echo -n 'Username: '
+            read USERNAME
+
+            if [ -z $USERNAME ]; then
+                echo 'Username cannot be empty'
+                continue
+            elif ! [[ $USERNAME =~ ^[A-Za-z0-9]+$ ]]; then
+                echo 'Alphanumeric username only'
+                continue
+            elif getent passwd $USERNAME &> /dev/null; then
+                echo "$USERNAME is already used. Is it reserved system user?"
+                continue
+            else
+                break
+            fi
+        done
+        set -e
+
         while true; do
             if PASSWORD=`openssl passwd -1`; then
                 break
