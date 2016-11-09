@@ -3,7 +3,7 @@
 set -e
 
 set_hostname() {
-    if [ $HOSTNAME != 'oclubs.shs.cn' ]; then
+    if [[ $HOSTNAME != 'oclubs.shs.cn' ]]; then
         # Translated from: https://github.com/mitchellh/vagrant/blob/master/plugins/guests/redhat/cap/change_host_name.rb
         local name=oclubs.shs.cn
         local basename=oclubs
@@ -39,7 +39,7 @@ set_hostname() {
 clone_repo() {
     which git &> /dev/null || yum install -y git
 
-    if [ ! -d /srv/oclubs/repo ]; then
+    if [[ ! -d /srv/oclubs/repo ]]; then
         mkdir -p /srv/oclubs
         git clone git@github.com:zhuyifei1999/oclubs.git /srv/oclubs/repo
         pushd /srv/oclubs/repo
@@ -50,7 +50,7 @@ clone_repo() {
 }
 
 init_hiera() {
-    if [ ! -f /srv/oclubs/repo/provision/puppet/hieradata/environment/production.yaml ]; then
+    if [[ ! -f /srv/oclubs/repo/provision/puppet/hieradata/environment/production.yaml ]]; then
         echo 'The script will create a new POXIX user for logging into the backend.'
         echo 'Please refer to https://help.ubuntu.com/community/RootSudo and'
         echo 'https://wiki.centos.org/TipsAndTricks/BecomingRoot for more information.'
@@ -62,7 +62,7 @@ init_hiera() {
             echo -n 'Username: '
             read USERNAME
 
-            if [ -z $USERNAME ]; then
+            if [[ -z $USERNAME ]]; then
                 echo 'Username cannot be empty'
                 continue
             elif ! [[ $USERNAME =~ ^[A-Za-z0-9]+$ ]]; then
@@ -147,14 +147,14 @@ install_run_puppet() {
     cat > /usr/sbin/run_puppet << 'EOF'
 #! /bin/sh
 
-if [ $UID -ne 0 ]; then
+if [[ $UID -ne 0 ]]; then
     exec sudo $0 "$@"
 fi
 
 FACTOR_environment=production puppet apply --verbose --debug --modulepath /srv/oclubs/repo/provision/puppet/modules:/etc/puppet/modules --hiera_config=/srv/oclubs/repo/provision/puppet/hiera.yaml --detailed-exitcodes --manifestdir /srv/oclubs/repo/provision/puppet/manifests /srv/oclubs/repo/provision/puppet/manifests/site.pp
 
 EXITCODE=$?
-if [ $EXITCODE -ne 0 -a $EXITCODE -ne 2 ]; then
+if [[ $EXITCODE -ne 0 && $EXITCODE -ne 2 ]]; then
     echo -e '\e[1m\e[91mThe puppet run exited with an error.\e[0m\e[39m'
 fi
 exit $EXITCODE
@@ -168,7 +168,7 @@ EOF
 
 
 main() {
-    if [ $UID -ne 0 ]; then
+    if [[ $UID -ne 0 ]]; then
         echo -e '\e[1m\e[91mYou must be root to run this setup.\e[0m\e[39m'
         exit 1
     fi
