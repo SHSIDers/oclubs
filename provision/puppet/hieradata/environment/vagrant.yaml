@@ -7,4 +7,6 @@ oclubs::secrets:
     encrypt_key: '3629a05b2b6e03ba10f47ac0b4e43503'
     flask_key: 'NabnuagogTwapgoynEesJadArsebEshciacOjDurforJotadLeyb'
 
+motd::template: 'oclubs/motd.vagrant.erb'
+
 nginx::sendfile: off
