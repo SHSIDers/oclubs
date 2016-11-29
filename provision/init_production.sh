@@ -85,9 +85,7 @@ init_hiera() {
         set -e
 
         gen_pw() {
-            local LEN
-            LEN=`shuf -i 50-60 -n 1`
-            cat /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c $LEN || true
+            cat /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c "`shuf -i 50-60 -n 1`" || true
         }
 
         local REDIS_PW MARIADB_PW ENCRYPT_KEY FLASK_KEY
