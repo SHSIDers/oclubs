@@ -341,7 +341,7 @@ def newact_submit(club):
             fail('Invalid date.', 'newact')
             return redirect(url_for('.newact', club=club.callsign))
         if actdate < date.today():
-            fail('Please choose the correct date.', 'newact')
+            fail('Please enter a date not eariler than today.', 'newact')
             return redirect(url_for('.newact', club=club.callsign))
         a.date = actdate
         time = ActivityTime[request.form['act_type'].upper()]
