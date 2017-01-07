@@ -132,8 +132,8 @@ class Activity(BaseObject):
     def get_activities_conditions(cls, times=(), additional_conds=None,
                                   dates=(True, True), club_types=(),
                                   excellent_only=False, grade_limit=(),
-                                  require_photos=False, order_by_time=True,
-                                  pager=None):
+                                  require_photos=False, require_attend=False,
+                                  order_by_time=True, pager=None):
         conds = {}
         if additional_conds:
             conds.update(additional_conds)
@@ -179,6 +179,10 @@ class Activity(BaseObject):
             conds['join'] = conds.get('join', [])
             conds['join'].append(
                 ('inner', 'act_pic', [('actpic_act', 'act_id')]))
+        if require_attend:
+            conds['join'] = conds.get('join', [])
+            conds['join'].append(
+                ('inner', 'attendance', [('att_act', 'act_id')]))
 
         if order_by_time:
             conds['order'] = conds.get('order', [])

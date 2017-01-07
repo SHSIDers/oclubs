@@ -634,12 +634,15 @@ def allclubsinfo():
     '''Allow admin to download all clubs' info'''
     info = []
     info.append(('Club ID', 'Name', 'Leader', 'Leader\'s Class', 'Teacher',
-                 'Introduction', 'Location', '# of Members', 'Is Active or Not',
-                 'Type', 'Description'))
+                 'Introduction', 'Location', '# of Members',
+                 '# of registered activities', '# of activities with attendance',
+                 'Is Active or Not', 'Type', 'Description'))
     info.extend([(club.id, club.name, club.leader.passportname,
                   club.leader.grade_and_class,
                   club.teacher.email, club.intro, club.location,
-                  len(club.members), str(club.is_active),
+                  len(club.members), len(club.activities()),
+                  len(club.activities(require_attend=True)),
+                  str(club.is_active),
                   club.type.format_name, club.description.raw)
                  for club in Club.allclubs()])
 
