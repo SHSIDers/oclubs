@@ -105,7 +105,7 @@ class Club(BaseObject):
         )
         return pager_return([cls(item) for item in tempdata])
 
-    def activities(self, times=(), dates=(True, True), limit=None):
+    def activities(self, times=(), dates=(True, True), **kwargs):
         from oclubs.objs import Activity
 
         return Activity.get_activities_conditions(
@@ -115,7 +115,7 @@ class Club(BaseObject):
             },
             dates=dates,
             order_by_time=True,
-            limit=limit
+            **kwargs
         )
 
     @paged_db_read

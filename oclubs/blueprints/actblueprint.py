@@ -358,10 +358,10 @@ def allactivitiesinfo():
     '''Allow admin to download all activities' info'''
     info = []
     info.append(('Activity ID', 'Name', 'Club', 'Club Leader', 'Club Leader\'s Class',
-                 'Date', 'Time (Type)', 'Location', 'CAS Hours'))
+                 'Date', 'Time (Type)', 'Location', 'CAS Hours', '# of attendance'))
     info.extend([(act.id, act.name, act.club.name, act.club.leader.passportname,
                   act.club.leader.grade_and_class, act.date.strftime('%b-%d-%y'),
-                  act.time.format_name, act.location, act.cas)
+                  act.time.format_name, act.location, act.cas, len(act.attendance))
                 for act in Activity.all_activities()])
     return download_xlsx('All Activities\' Info.xlsx', info)
 
