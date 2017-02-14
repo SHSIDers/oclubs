@@ -476,6 +476,7 @@ def adjust_status(club_type):
         clubs = Club.allclubs(active_only=False, grade_limit=[9, 10])
     else:
         abort(404)
+    clubs = filter(lambda c: c.reactivate, clubs)
     return render_template('club/adjuststatus.jinja2',
                            clubs=clubs,
                            ClubJoinMode=ClubJoinMode,
@@ -522,6 +523,7 @@ def adjust_status_all_free_join(club_type):
         clubs = Club.allclubs(active_only=False, grade_limit=[9, 10])
     else:
         abort(404)
+    clubs = filter(lambda c: c.reactivate, clubs)
     for club in clubs:
         club.joinmode = ClubJoinMode.FREE_JOIN
     flash('All clubs are free to join now.', 'adjust_status')
@@ -534,7 +536,7 @@ def adjust_status_all_free_join(club_type):
 @special_access_required
 @require_not_student
 def adjust_status_all_by_invitation(club_type):
-    '''Change all clubs' join mode to free join'''
+    '''Change all clubs' join mode to by invitation'''
     if club_type == 'all':
         clubs = Club.allclubs(active_only=False)
     elif club_type == '11-12':
@@ -543,6 +545,7 @@ def adjust_status_all_by_invitation(club_type):
         clubs = Club.allclubs(active_only=False, grade_limit=[9, 10])
     else:
         abort(404)
+    clubs = filter(lambda c: c.reactivate, clubs)
     for club in clubs:
         club.joinmode = ClubJoinMode.BY_INVITATION
     flash('All clubs are invite-only now.', 'adjust_status')
