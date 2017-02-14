@@ -698,6 +698,7 @@ def newclub_submit():
         c.picture = Upload(-101)
         c.type = ClubType(clubtype)
         c.joinmode = ClubJoinMode.FREE_JOIN
+        c.reactivate = True
         c.create()
         c.add_member(current_user)
         c.description = FormattedText.handle(current_user, c,

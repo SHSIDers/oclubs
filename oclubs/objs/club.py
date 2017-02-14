@@ -24,6 +24,7 @@ class Club(BaseObject):
     picture = Property('club_picture', 'Upload')
     type = Property('club_type', ClubType)
     joinmode = Property('club_joinmode', ClubJoinMode)
+    reactivate = Property('club_reactivate')
     members = ListProperty('club_member', 'cm_club', 'cm_user', 'User')
     all_act = ListProperty('activities', 'act_club', 'act_id', 'Activity')
 
