@@ -26,6 +26,7 @@
 <div class="clearfix clearfix-bordered"></div>
 
 <h2 class="title_next">Other Administrative Functions</h2>
+{{ get_messages(['notify_all']) }}
 <div class="admin_button">
 	<a href="{{ url_for('clubblueprint.adjustclubs') }}" class="btn btn-success">Adjust Excellent Clubs</a>
 </div>
@@ -46,6 +47,9 @@
 </div>
 <div class="admin_button">
 	<a href="#adjust_club_status" data-toggle="modal" data-target="#adjust_club_status" class="btn btn-success">Adjust Clubs' Status</a>
+</div>
+<div class="admin_button">
+	<a href="#notify_all" data-toggle="modal" data-target="#notify_all" class="btn btn-success">Notify Users</a>
 </div>
 
 <div class="clearfix"></div>
@@ -196,6 +200,50 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
+		</div>
+	</div>
+</div>
+
+<div id="notify_all" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form class="form-group" action="{{ url_for('.notifyall_submit') }}" id="notify_form" method="post">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Notify All</h4>
+				</div>
+				<div class="modal-body">
+					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+					<div id="grade-radiobutton">
+						<label class="radio-inline">
+							<input type="radio" name="grade" id="grade-910" value="9-10"> 9-10
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="grade" id="grade-1112" value="11-12"> 11-12
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="grade" id="grade-all" value="all"> All grades (9-12)
+						</label>
+					</div>
+					<br>
+					<div id="ntype-radiobutton">
+						<label class="radio-inline">
+							<input type="radio" name="ntype" id="ntype-all" value="all"> All club leaders, members, and teachers
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="ntype" id="ntype-leaderonly" value="leaderonly"> Only club leaders
+						</label>
+					</div>
+					<br>
+					<label for="contents">Contents:</label>
+					<textarea class="form-control" rows="10" id="contents" name="contents"></textarea>
+					<div class="clearfix"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<input type="submit" class="btn btn-primary" value="Notify">
+				</div>
+			</form>
 		</div>
 	</div>
 </div>

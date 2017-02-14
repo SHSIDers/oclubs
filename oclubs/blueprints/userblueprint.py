@@ -349,3 +349,45 @@ def edit_siteconfig_sumbit():
     flash('Site configuration has been updated, please check the changes.',
           'siteconfig')
     return redirect(url_for('.edit_siteconfig'))
+
+
+@userblueprint.route('/notify_all/submit', methods=['POST'])
+@special_access_required
+def notifyall_submit():
+    '''Allow admin to notify all club leaders and members'''
+    grade = request.form.get('grade', '')
+    ntype = request.form.get('ntype', '')
+    notify_contents = request.form['contents']
+    if not notify_contents:
+        flash('Please input something.', 'notify_all')
+        return redirect(url_for('.personal'))
+
+    if grade == '9-10':
+        grade = ['9', '10']
+    elif grade == '11-12':
+        grade = ['11', '12']
+    elif grade == 'all':
+        grade = None
+    else:
+        flash('Invalid grade selection.', 'notify_all')
+        return redirect(url_for('.personal'))
+
+    notifylist = set()
+    for club in Club.allclubs(grade_limit=grade):
+        if ntype == 'leaderonly':
+            notifylist.add(club.leader)
+        elif ntype == 'all':
+            notifylist.add(club.leader)
+            notifylist.add(club.teacher)
+            notifylist = notifylist.union(club.members)
+        else:
+            flash('Invalid grade selection.', 'notify_all')
+            return redirect(url_for('.personal'))
+
+    for user in notifylist:
+        user.notify_user(notify_contents)
+        parameters = {'user': user, 'notify_contents': notify_contents}
+        contents = render_email_template('notifyall', parameters)
+        user.email_user('Notification from admin', contents)
+    flash('You have successfully notified them.', 'notify_all')
+    return redirect(url_for('.personal'))

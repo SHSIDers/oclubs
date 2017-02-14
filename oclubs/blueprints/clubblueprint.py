@@ -141,7 +141,7 @@ def memberinfo(club):
 def memberinfo_notify_members(club):
     '''Allow club leader to notify members'''
     notify_contents = request.form['contents']
-    if notify_contents == '':
+    if not notify_contents:
         flash('Please input something.', 'notify_members')
         return redirect(url_for('.memberinfo', club=club.callsign))
     for member in club.members:
