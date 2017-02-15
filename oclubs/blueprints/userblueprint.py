@@ -4,6 +4,7 @@
 
 from __future__ import absolute_import, unicode_literals
 
+from collections import defaultdict
 from datetime import date
 
 from flask import (
@@ -33,8 +34,17 @@ def personal():
     receive_email = current_user.get_preference('receive_email')
     if current_user.type == UserType.STUDENT:
         clubs = current_user.clubs
-        castotal = sum(current_user.cas_in_club(club)
-                       for club in current_user.clubs)
+        attendances = current_user.attendance
+
+        # CAS calculation
+        # add all attended activities
+        cas = defaultdict(float)
+        for attendance in attendances:
+            cas[attendance.club] += attendance.cas
+        # And all currently appending clubs
+        for club in clubs:
+            cas[club]
+
         meetings_obj = current_user.activities_reminder(
             [ActivityTime.NOON, ActivityTime.AFTERSCHOOL])
         meetings = []
@@ -49,7 +59,7 @@ def personal():
         return render_template('user/student.jinja2',
                                pictures=pictures,
                                clubs=clubs,
-                               castotal=castotal,
+                               cas=cas,
                                meetings=meetings,
                                activities=activities,
                                leader_club=leader_club,
