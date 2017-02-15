@@ -1,10 +1,11 @@
-{% extends "user/personal.jinja2" %}
+{% extends "user/personal.jinja2" %}{% from 'macros.jinja2' import get_messages %}
 {% block personal %}
 
 <h2 class="white">Participating Clubs</h2>
 <br>
 <div class="clubblocks row">
 	{% for club in clubs %}
+	{% if club.reactivate %}
 	<div class="col-lg-3 col-sm-4 col-xs-6">
 		<a class="smallblock" href="{{ url_for('clubblueprint.clubintro', club=club.callsign) }}"><img src="{{ club.picture.location_external }}" class="img-responsive" alt="">
 			<p class="midtext">{{ club.name }}</p>
@@ -13,6 +14,7 @@
 			{% endif %}
 		</a>
 	</div>
+	{% endif %}
 	{% endfor %}
 </div>
 <div class="clearfix"></div>
@@ -121,13 +123,45 @@
 {% if leader_club %}
 <br>
 <div class="container">
+	{{ get_messages(['reactivate_submit']) }}
 	{% for club in leader_club %}
 	{% if club.is_active %}
 	<a class="btn btn-success downloadbtn-sm" href="{{ url_for('clubblueprint.club', club=club.callsign) }}">Manage {{ club.name }}</a>
+	{% elif not club.reactivate %}
+	<a class="btn btn-warning downloadbtn-sm" href="#reactivate_modal_{{ club.id }}" data-toggle="modal" data-target="#reactivate_modal_{{ club.id }}">Renew {{ club.name }}</a>
 	{% endif %}
 	{% endfor %}
 </div>
 {% endif %}
 
-
+{% for club in leader_club %}
+{% if not club.is_active and not club.reactivate %}
+<div id="reactivate_modal_{{ club.id }}" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form class="form-group" action="{{ url_for('clubblueprint.reactivate_submit', club=club.callsign) }}" id="reactivate_form_{{ club.id }}" method="post">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Renew {{ club.name }}</h4>
+				</div>
+				<div class="modal-body">
+					<label >Do you want to renew {{ club.name }}?</label>
+					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+					<div class="checkbox">
+					  <label>
+					    <input type="checkbox" id="keep_members_{{ club.id }}" name="keep_members" checked>
+						   Keep members in the club
+					  </label>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<input type="submit" class="btn btn-primary" value="Renew">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{% endif %}
+{% endfor %}
 {% endblock %}

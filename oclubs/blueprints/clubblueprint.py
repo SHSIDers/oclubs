@@ -748,3 +748,19 @@ def adjustclubs_submit():
     Club.set_excellentclubs(exc_clubs)
     flash('The change has been successfully submitted', 'adjustclubs')
     return redirect(url_for('.adjustclubs'))
+
+
+@clubblueprint.route('/<club>/reactivate', methods=['POST'])
+@get_callsign(Club, 'club')
+@special_access_required
+@fresh_login_required
+def reactivate_submit(club):
+    if 'keep_members' not in request.form:
+        for member in club.members:
+            if member != club.leader:
+                club.remove_member(member)
+
+    club.reactivate = True
+    flash('You have successfully submitted your reactivation request. '
+          'Please wait for approval.', 'reactivate_submit')
+    return redirect(url_for('userblueprint.personal'))
