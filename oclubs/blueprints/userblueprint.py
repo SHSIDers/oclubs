@@ -41,9 +41,10 @@ def personal():
         cas = defaultdict(float)
         for attendance in attendances:
             cas[attendance.club] += attendance.cas
-        # And all currently appending clubs
+        # And all currently attending clubs
         for club in clubs:
-            cas[club]
+            if club.is_active:
+                cas[club]
 
         meetings_obj = current_user.activities_reminder(
             [ActivityTime.NOON, ActivityTime.AFTERSCHOOL])
