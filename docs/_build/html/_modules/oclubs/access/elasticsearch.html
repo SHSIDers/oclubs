@@ -1,0 +1,295 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>oclubs.access.elasticsearch &#8212; oClubs 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for oclubs.access.elasticsearch</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: UTF-8 -*-</span>
+<span class="c1">#</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module to access Elasticsearch search engine.</span>
+
+<span class="sd">This module has delayed functions to create/update/delete documents on the</span>
+<span class="sd">engine, and to search within all the documents.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">unicode_literals</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">elasticsearch</span> <span class="k">import</span> <span class="n">Elasticsearch</span>
+<span class="kn">from</span> <span class="nn">elasticsearch.exceptions</span> <span class="k">import</span> <span class="n">NotFoundError</span>
+
+<span class="kn">from</span> <span class="nn">oclubs.access.delay</span> <span class="k">import</span> <span class="n">delayed_func</span>
+
+<span class="n">es</span> <span class="o">=</span> <span class="n">Elasticsearch</span><span class="p">([{</span><span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">9200</span><span class="p">}])</span>
+
+
+<span class="nd">@delayed_func</span>
+<div class="viewcode-block" id="create"><a class="viewcode-back" href="../../../api.html#oclubs.access.elasticsearch.create">[docs]</a><span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">doc_type</span><span class="p">,</span> <span class="n">doc_id</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create an Elasticsearch document.</span>
+
+<span class="sd">    :param basestring doc_type: document type</span>
+<span class="sd">    :param doc_id: document id, will be converted into basestring</span>
+<span class="sd">    :param dict data: new document data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">es</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">index</span><span class="o">=</span><span class="s1">&#39;oclubs&#39;</span><span class="p">,</span>
+        <span class="n">doc_type</span><span class="o">=</span><span class="n">doc_type</span><span class="p">,</span>
+        <span class="n">body</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="nb">id</span><span class="o">=</span><span class="n">doc_id</span>
+    <span class="p">)[</span><span class="s1">&#39;created&#39;</span><span class="p">]</span></div>
+
+
+<span class="nd">@delayed_func</span>
+<div class="viewcode-block" id="delete"><a class="viewcode-back" href="../../../api.html#oclubs.access.elasticsearch.delete">[docs]</a><span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="n">doc_type</span><span class="p">,</span> <span class="n">doc_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Delete an Elasticsearch document.</span>
+
+<span class="sd">    :param basestring doc_type: document type</span>
+<span class="sd">    :param doc_id: document id, will be converted into basestring</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">es</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span>
+        <span class="n">index</span><span class="o">=</span><span class="s1">&#39;oclubs&#39;</span><span class="p">,</span>
+        <span class="n">doc_type</span><span class="o">=</span><span class="n">doc_type</span><span class="p">,</span>
+        <span class="nb">id</span><span class="o">=</span><span class="n">doc_id</span><span class="p">,</span>
+    <span class="p">)[</span><span class="s1">&#39;found&#39;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="get"><a class="viewcode-back" href="../../../api.html#oclubs.access.elasticsearch.get">[docs]</a><span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">doc_type</span><span class="p">,</span> <span class="n">doc_id</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get an Elasticsearch document.</span>
+
+<span class="sd">    :param basestring doc_type: document type</span>
+<span class="sd">    :param doc_id: document id, will be converted into basestring</span>
+<span class="sd">    :param fields: if ``False``, returns whether the document is found as bool;</span>
+<span class="sd">        if ``True``, returns the document dict; if list of string, returns the</span>
+<span class="sd">        document dict with only the specified fields.</span>
+<span class="sd">    :rtype: dict or bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">es</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="n">index</span><span class="o">=</span><span class="s1">&#39;oclubs&#39;</span><span class="p">,</span>
+        <span class="n">doc_type</span><span class="o">=</span><span class="n">doc_type</span><span class="p">,</span>
+        <span class="nb">id</span><span class="o">=</span><span class="n">doc_id</span><span class="p">,</span>
+        <span class="n">_source</span><span class="o">=</span><span class="n">fields</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="p">[</span><span class="s1">&#39;_source&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="p">[</span><span class="s1">&#39;found&#39;</span><span class="p">]</span></div>
+
+
+<span class="nd">@delayed_func</span>
+<div class="viewcode-block" id="update"><a class="viewcode-back" href="../../../api.html#oclubs.access.elasticsearch.update">[docs]</a><span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">doc_type</span><span class="p">,</span> <span class="n">doc_id</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Update an Elasticsearch document.</span>
+
+<span class="sd">    :param basestring doc_type: document type</span>
+<span class="sd">    :param doc_id: document id, will be converted into basestring</span>
+<span class="sd">    :param dict data: new document data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">es</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+        <span class="n">index</span><span class="o">=</span><span class="s1">&#39;oclubs&#39;</span><span class="p">,</span>
+        <span class="n">doc_type</span><span class="o">=</span><span class="n">doc_type</span><span class="p">,</span>
+        <span class="nb">id</span><span class="o">=</span><span class="n">doc_id</span><span class="p">,</span>
+        <span class="n">body</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;doc&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">}</span>
+    <span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_search</span><span class="p">(</span><span class="n">querystr</span><span class="p">,</span> <span class="n">doc_type</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">do_suggest</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">_count_instead</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;query&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;simple_query_string&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;query&#39;</span><span class="p">:</span> <span class="n">querystr</span><span class="p">,</span>
+                <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="n">fields</span><span class="p">,</span>
+                <span class="s1">&#39;default_operator&#39;</span><span class="p">:</span> <span class="s1">&#39;AND&#39;</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;highlight&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;encoder&#39;</span><span class="p">:</span> <span class="s1">&#39;html&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;pre_tags&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;&lt;strong&gt;&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;post_tags&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;&lt;/strong&gt;&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;*&#39;</span><span class="p">:</span> <span class="p">{}}</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="n">size</span><span class="p">,</span>
+        <span class="s1">&#39;from&#39;</span><span class="p">:</span> <span class="n">offset</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">_count_instead</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">es</span><span class="o">.</span><span class="n">count</span><span class="p">(</span>
+            <span class="n">index</span><span class="o">=</span><span class="s1">&#39;oclubs&#39;</span><span class="p">,</span>
+            <span class="n">doc_type</span><span class="o">=</span><span class="n">doc_type</span><span class="p">,</span>
+            <span class="n">body</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;query&#39;</span><span class="p">:</span> <span class="n">body</span><span class="p">[</span><span class="s1">&#39;query&#39;</span><span class="p">]}</span>
+        <span class="p">)[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">do_suggest</span><span class="p">:</span>
+        <span class="n">suggest</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">querystr</span><span class="p">}</span>
+
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
+            <span class="n">suggest</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;term&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="s1">&#39;field&#39;</span><span class="p">:</span> <span class="n">field</span><span class="p">,</span>
+                    <span class="s1">&#39;suggest_mode&#39;</span><span class="p">:</span> <span class="s1">&#39;popular&#39;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+        <span class="n">body</span><span class="p">[</span><span class="s1">&#39;suggest&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">suggest</span>
+
+    <span class="k">return</span> <span class="n">es</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+        <span class="n">index</span><span class="o">=</span><span class="s1">&#39;oclubs&#39;</span><span class="p">,</span>
+        <span class="n">doc_type</span><span class="o">=</span><span class="n">doc_type</span><span class="p">,</span>
+        <span class="n">body</span><span class="o">=</span><span class="n">body</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="search"><a class="viewcode-back" href="../../../api.html#oclubs.access.elasticsearch.search">[docs]</a><span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">querystr</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Search for Elasticsearch documents.</span>
+
+<span class="sd">    :param basestring querystr: query string</span>
+<span class="sd">    :param basestring doc_type: document type</span>
+<span class="sd">    :param doc_id: document id, will be converted into basestring</span>
+<span class="sd">    :param fields: fields to search on</span>
+<span class="sd">    :type fields: list of basestring</span>
+<span class="sd">    :param int offset: search offset</span>
+<span class="sd">    :param int size: search size</span>
+<span class="sd">    :returns:</span>
+<span class="sd">        - &#39;instead&#39; (basestring or None): the alternative search query</span>
+<span class="sd">        - &#39;results&#39; (list of dict): list of documents</span>
+<span class="sd">        - &#39;count&#39; (int): the number of all matching documents</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;instead&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;results&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">0</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">querystr</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">_search</span><span class="p">(</span><span class="n">querystr</span><span class="p">,</span> <span class="n">do_suggest</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">NotFoundError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;hits&#39;</span><span class="p">][</span><span class="s1">&#39;hits&#39;</span><span class="p">]:</span>
+        <span class="n">ret</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;hits&#39;</span><span class="p">][</span><span class="s1">&#39;hits&#39;</span><span class="p">]</span>
+        <span class="n">ret</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_search</span><span class="p">(</span><span class="n">querystr</span><span class="p">,</span> <span class="n">_count_instead</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="n">suggest_table</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">suggestlist</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;suggest&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">worddict</span> <span class="ow">in</span> <span class="n">suggestlist</span><span class="p">:</span>
+            <span class="n">word</span> <span class="o">=</span> <span class="n">worddict</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="n">worddict</span><span class="p">[</span><span class="s1">&#39;options&#39;</span><span class="p">]:</span>
+                <span class="n">score</span><span class="p">,</span> <span class="n">newword</span> <span class="o">=</span> <span class="n">option</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">],</span> <span class="n">option</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">suggest_table</span> <span class="ow">and</span> <span class="n">score</span> <span class="o">&lt;</span> <span class="n">suggest_table</span><span class="p">[</span><span class="n">word</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="k">continue</span>
+
+                <span class="n">suggest_table</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span><span class="p">,</span> <span class="n">newword</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">suggest_table</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">newword</span><span class="p">)</span> <span class="ow">in</span> <span class="n">suggest_table</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">querystr</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\b</span><span class="si">%s</span><span class="s1">\b&#39;</span> <span class="o">%</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">word</span><span class="p">),</span> <span class="n">newword</span><span class="p">,</span> <span class="n">querystr</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">_search</span><span class="p">(</span><span class="n">querystr</span><span class="p">,</span> <span class="n">do_suggest</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;hits&#39;</span><span class="p">][</span><span class="s1">&#39;hits&#39;</span><span class="p">]:</span>
+        <span class="n">ret</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;hits&#39;</span><span class="p">][</span><span class="s1">&#39;hits&#39;</span><span class="p">]</span>
+        <span class="n">ret</span><span class="p">[</span><span class="s1">&#39;instead&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">querystr</span>
+        <span class="n">ret</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_search</span><span class="p">(</span><span class="n">querystr</span><span class="p">,</span> <span class="n">_count_instead</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ret</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  <li><a href="../access.html">oclubs.access</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, SHSIDers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

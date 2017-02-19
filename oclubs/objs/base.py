@@ -25,7 +25,24 @@ REDIS_CACHE_TIME = 3600 * 24  # 1 day
 
 
 class Property(object):
-    """Descriptor class."""
+    """
+    Represent a value in the specified column of the current table.
+
+    Selection is done by the id of the owner object match the value in the
+    identifier column in the current table.
+
+    :param basestring dbname: column name in relational database
+    :param ie: import/export method
+    :type ie: a single value of, or a tuple with two values of,
+        None, NotImplemented, basestring, a serializer module, BaseObject,
+        Enum, or callable
+    :param bool search: whether the column should be searchable
+    :param bool rediscached: whether the column should be cached on Redis
+    :param bool search_require_true: if True, the object will only be
+        searchable if this column evaluates to True
+    :param error_default: if not Ellipsis, when the importing fails,
+        import this value as a fallback; else raise the error
+    """
     def __init__(prop, dbname, ie=None, search=False, rediscached=False,
                  search_require_true=False, error_default=Ellipsis):
         super(Property, prop).__init__()
@@ -129,7 +146,21 @@ class Property(object):
 
 
 class ListProperty(object):
-    """Descriptor class."""
+    """
+    Represent a list of value in the specified column in another table.
+
+    Selection is done by the id of the owner object match the value in the
+    column specified by ``this`` in the specified table, and extraction is
+    done on the column specified by ``that``.
+
+    :param basestring table: table name
+    :param basestring this: column name to match the id with
+    :param basestring that: column name to return values with
+    :param ie: import/export method, onlt the export part matters
+    :type ie: a single value of, or a tuple with two values of,
+        None, NotImplemented, basestring, a serializer module, BaseObject,
+        Enum, or callable
+    """
     def __init__(prop, table, this, that, ie=None):
         super(ListProperty, prop).__init__()
         prop.table = table
@@ -174,11 +205,22 @@ class _BaseMetaclass(type):
                     _es_require_true.append(key)
 
                 value.name = key
+                value.__doc__ = (
+                    'Value of column ``%s`` in table ``%s``, '
+                    'with row selected by the id of the object matching '
+                    'column ``%s`` in the same table.' % (
+                        value.dbname, dct['table'], dct['identifier']))
             if isinstance(value, ListProperty):
+                value.__doc__ = (
+                    'List of values of column ``%s`` in table ``%s``, '
+                    'with rows selected by the id of the object matching '
+                    'column ``%s`` in the same table.' % (
+                        value.that, value.table, value.this))
                 value.name = key
 
         @property
         def _data(self):
+            """The data in a dict."""
             if self._dbdata is None:
                 self._dbdata = database.fetch_onerow(
                     self.table,
@@ -191,6 +233,18 @@ class _BaseMetaclass(type):
         dct['_data'] = _data
 
         def create(self, dup_key_update=False):
+            """
+            Write this temporary object into database and Elasticsearch.
+
+            Also set the id of the object to its corresponding id in
+            the database, making the object permanent.
+
+            :param bool dup_key_update: if True, when a unique key collides,
+                update the colliding row with new data; else raise the error
+            :returns: this object
+            :raises AlreadyExists: if insertion results in a unique key
+                collision and dup_key_update is False
+            """
             if self.is_real:
                 raise NotImplementedError
             data = {}
@@ -211,12 +265,28 @@ class _BaseMetaclass(type):
             self._data
 
             return self
-
         dct['create'] = create
+
+        if 'name' in dct:
+            @property
+            def callsign(self):
+                """The callsign for use in urls."""
+                return str(self.id) + '_' + (self.name
+                                             .replace(' ', '_')
+                                             .replace('/', '-'))
+            dct['callsign'] = callsign
 
         if _esfields:
             @classmethod
             def search(cls, query_string, offset=0, size=10):
+                """
+                Search for objects of this class with a query string.
+
+                :param basestring query_string: query string
+                :param int offset: search offset
+                :param int size: search size
+                :rtype: list of dict
+                """
                 ret = elasticsearch.search(query_string, cls.table, _esfields,
                                            offset=offset, size=size)
                 for item in ret['results']:
@@ -228,7 +298,6 @@ class _BaseMetaclass(type):
                             Markup(hlhtml) for hlhtml in hllist]
 
                 return ret
-
             dct['search'] = search
 
             # Should have es index
@@ -237,7 +306,6 @@ class _BaseMetaclass(type):
                     if not getattr(self, field):
                         return False
                 return True
-
             dct['_es_requirement_good'] = _es_requirement_good
 
             def _escreate(self):
@@ -249,7 +317,6 @@ class _BaseMetaclass(type):
                     _esdata[field] = dct[field].search(getattr(self, field))
 
                 elasticsearch.create(self.table, self.id, _esdata)
-
             dct['_escreate'] = _escreate
 
         return super(_BaseMetaclass, meta).__new__(meta, name, bases, dct)
@@ -267,22 +334,21 @@ class BaseObject(object):
 
     @property
     def id(self):
+        """ID of the object."""
         if not self.is_real:
             raise NotImplementedError
         return self._id
 
     @property
     def is_real(self):
+        """
+        Whether the object is temporary object (False) or permanent (True).
+        """
         return self._id > 0
-
-    @property
-    def callsign(self):
-        return str(self.id) + '_' + (self.name
-                                     .replace(' ', '_')
-                                     .replace('/', '-'))
 
     @classmethod
     def new(cls):
+        """Returns a new temporary object for creation."""
         return cls(0)
 
     def __eq__(self, other):
@@ -305,7 +371,8 @@ class BaseObject(object):
         return hash(self.id)
 
 
-def object_proxy(name):
+def _object_proxy(name):
+    """Late import to prevent import loops."""
     return lambda oid: getattr(__import__('oclubs').objs, name)(oid)
 
 
@@ -325,7 +392,7 @@ def __get_ie(ie):
     elif ie is NotImplemented:
         imp = exp = lambda val: NotImplemented
     elif isinstance(ie, basestring):
-        imp, exp = object_proxy(ie), lambda val: val.id
+        imp, exp = _object_proxy(ie), lambda val: val.id
     elif isinstance(ie, types.ModuleType):
         imp, exp = ie.loads, ie.dumps
     elif isinstance(ie, type) and issubclass(ie, BaseObject):
@@ -369,6 +436,7 @@ def __get_search(search, ie):
 
 
 def paged_db_read(func):
+    """Decorator function to have a database read with paging abilities."""
     def get_pager(limit):
         tempstorage = type(b'tempstorage', (object,), {})
 

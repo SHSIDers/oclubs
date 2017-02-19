@@ -2,6 +2,12 @@
 # -*- coding: UTF-8 -*-
 #
 
+"""
+Module to send emails.
+
+This module sends emails with either Postfix or SendGrid.
+"""
+
 from __future__ import absolute_import, unicode_literals
 
 import traceback
@@ -10,7 +16,7 @@ from envelopes import Envelope, SMTP
 import sendgrid
 from sendgrid.helpers.mail import Email, Content, Mail
 
-from oclubs.access import get_secret
+from oclubs.access.secrets import get_secret
 from oclubs.access.delay import delayed_func
 
 from_email = ('no-reply@oclubs.shs.cn', 'oClubs')
@@ -18,6 +24,13 @@ from_email = ('no-reply@oclubs.shs.cn', 'oClubs')
 
 @delayed_func
 def send(to_email, subject, content):
+    """
+    Send an email.
+
+    :param tuple to_email: email recipient address and name
+    :param basestring subject: email subject
+    :param basestring content: email content
+    """
     if not get_secret('sendgrid_key'):
         # This is a test machine
         return

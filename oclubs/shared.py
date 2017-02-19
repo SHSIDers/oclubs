@@ -22,7 +22,7 @@ from werkzeug.routing import PathConverter
 
 import pystache
 
-from oclubs.access import get_secret
+from oclubs.access.secrets import get_secret
 from oclubs.exceptions import NoRow
 from oclubs.enums import UserType, ClubType
 

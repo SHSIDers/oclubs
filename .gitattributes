@@ -3,5 +3,4 @@
 *.png binary
 *.gif binary
 *.ico binary
-/oclubs/static/fonts/* binary
-/oclubs/static/images/* binary
+/docs/_build/doctrees/*.doctree -eol

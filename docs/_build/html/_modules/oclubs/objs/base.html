@@ -1,0 +1,556 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>oclubs.objs.base &#8212; oClubs 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for oclubs.objs.base</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: UTF-8 -*-</span>
+<span class="c1">#</span>
+
+
+<span class="sd">&quot;&quot;&quot;oclubs Base Object.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">unicode_literals</span>
+
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">wraps</span>
+<span class="kn">import</span> <span class="nn">types</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="k">import</span> <span class="n">Enum</span>
+
+<span class="kn">from</span> <span class="nn">flask</span> <span class="k">import</span> <span class="n">Markup</span>
+
+<span class="kn">from</span> <span class="nn">oclubs.access</span> <span class="k">import</span> <span class="n">database</span><span class="p">,</span> <span class="n">elasticsearch</span><span class="p">,</span> <span class="n">redis</span>
+
+<span class="c1"># In this file,</span>
+<span class="c1"># cls refers to BaseObject class</span>
+<span class="c1"># meta refers to _BaseMetaclass class</span>
+<span class="c1"># prop refers to an instance of Property or ListProperty</span>
+<span class="c1"># self refers to an instance of BaseObject</span>
+
+<span class="n">REDIS_CACHE_TIME</span> <span class="o">=</span> <span class="mi">3600</span> <span class="o">*</span> <span class="mi">24</span>  <span class="c1"># 1 day</span>
+
+
+<div class="viewcode-block" id="Property"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Property">[docs]</a><span class="k">class</span> <span class="nc">Property</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represent a value in the specified column of the current table.</span>
+
+<span class="sd">    Selection is done by the id of the owner object match the value in the</span>
+<span class="sd">    identifier column in the current table.</span>
+
+<span class="sd">    :param basestring dbname: column name in relational database</span>
+<span class="sd">    :param ie: import/export method</span>
+<span class="sd">    :type ie: a single value of, or a tuple with two values of,</span>
+<span class="sd">        None, NotImplemented, basestring, a serializer module, BaseObject,</span>
+<span class="sd">        Enum, or callable</span>
+<span class="sd">    :param bool search: whether the column should be searchable</span>
+<span class="sd">    :param bool rediscached: whether the column should be cached on Redis</span>
+<span class="sd">    :param bool search_require_true: if True, the object will only be</span>
+<span class="sd">        searchable if this column evaluates to True</span>
+<span class="sd">    :param error_default: if not Ellipsis, when the importing fails,</span>
+<span class="sd">        import this value as a fallback; else raise the error</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">dbname</span><span class="p">,</span> <span class="n">ie</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">search</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">rediscached</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">search_require_true</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">error_default</span><span class="o">=</span><span class="bp">Ellipsis</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Property</span><span class="p">,</span> <span class="n">prop</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="n">prop</span><span class="o">.</span><span class="n">dbname</span> <span class="o">=</span> <span class="n">dbname</span>
+        <span class="n">prop</span><span class="o">.</span><span class="n">imp</span><span class="p">,</span> <span class="n">prop</span><span class="o">.</span><span class="n">exp</span> <span class="o">=</span> <span class="n">_get_ie</span><span class="p">(</span><span class="n">ie</span><span class="p">)</span>
+        <span class="n">prop</span><span class="o">.</span><span class="n">search</span> <span class="o">=</span> <span class="n">_get_search</span><span class="p">(</span><span class="n">search</span><span class="p">,</span> <span class="n">ie</span><span class="p">)</span>
+        <span class="n">prop</span><span class="o">.</span><span class="n">rediscached</span> <span class="o">=</span> <span class="n">rediscached</span>
+        <span class="n">prop</span><span class="o">.</span><span class="n">search_require_true</span> <span class="o">=</span> <span class="n">search_require_true</span>
+        <span class="n">prop</span><span class="o">.</span><span class="n">error_default</span> <span class="o">=</span> <span class="n">error_default</span>
+
+    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prop</span>
+        <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">rediscached</span><span class="p">:</span>
+                <span class="n">cache</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="n">RedisCache</span><span class="p">(</span>
+                    <span class="n">prop</span><span class="o">.</span><span class="n">_get_redis_key</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">REDIS_CACHE_TIME</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">cache</span><span class="o">.</span><span class="n">new</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">prop</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+                    <span class="n">cache</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">prop</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">imp</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">error_default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">Ellipsis</span><span class="p">:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">imp</span><span class="p">(</span><span class="n">prop</span><span class="o">.</span><span class="n">error_default</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="n">prop</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="n">prop</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="c1"># Proxies can&#39;t pass isinstance check</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">_get_current_object</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="c1"># Make strings simple</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="n">prop</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+        <span class="n">dbvalue</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_real</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dbdata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+
+            <span class="k">if</span> <span class="n">dbvalue</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dbdata</span><span class="p">[</span><span class="n">prop</span><span class="o">.</span><span class="n">name</span><span class="p">]:</span>
+                <span class="k">return</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dbdata</span><span class="p">[</span><span class="n">prop</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">dbvalue</span>
+
+            <span class="n">database</span><span class="o">.</span><span class="n">update_row</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">,</span>
+                <span class="p">{</span><span class="n">prop</span><span class="o">.</span><span class="n">dbname</span><span class="p">:</span> <span class="n">dbvalue</span><span class="p">},</span>
+                <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">identifier</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
+            <span class="p">)</span>
+
+            <span class="c1"># multiple search_require_true support is done in _escreate</span>
+            <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">search_require_true</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_escreate</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">elasticsearch</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">search</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_es_requirement_good</span><span class="p">():</span>
+                <span class="n">elasticsearch</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                    <span class="p">{</span><span class="n">prop</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">prop</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">value</span><span class="p">)}</span>
+                <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">rediscached</span><span class="p">:</span>
+                <span class="n">cache</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="n">RedisCache</span><span class="p">(</span>
+                    <span class="n">prop</span><span class="o">.</span><span class="n">_get_redis_key</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">REDIS_CACHE_TIME</span><span class="p">)</span>
+                <span class="n">cache</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">dbvalue</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dbdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dbdata</span> <span class="ow">or</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dbdata</span><span class="p">[</span><span class="n">prop</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">dbvalue</span>
+
+    <span class="k">def</span> <span class="nf">__delete__</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">:</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="n">prop</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_real</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dbdata</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dbdata</span><span class="p">:</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dbdata</span><span class="p">[</span><span class="n">prop</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_get_redis_key</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;:&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;cache&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="n">prop</span><span class="o">.</span><span class="n">name</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="ListProperty"><a class="viewcode-back" href="../../../api.html#oclubs.objs.ListProperty">[docs]</a><span class="k">class</span> <span class="nc">ListProperty</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represent a list of value in the specified column in another table.</span>
+
+<span class="sd">    Selection is done by the id of the owner object match the value in the</span>
+<span class="sd">    column specified by ``this`` in the specified table, and extraction is</span>
+<span class="sd">    done on the column specified by ``that``.</span>
+
+<span class="sd">    :param basestring table: table name</span>
+<span class="sd">    :param basestring this: column name to match the id with</span>
+<span class="sd">    :param basestring that: column name to return values with</span>
+<span class="sd">    :param ie: import/export method, onlt the export part matters</span>
+<span class="sd">    :type ie: a single value of, or a tuple with two values of,</span>
+<span class="sd">        None, NotImplemented, basestring, a serializer module, BaseObject,</span>
+<span class="sd">        Enum, or callable</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">this</span><span class="p">,</span> <span class="n">that</span><span class="p">,</span> <span class="n">ie</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ListProperty</span><span class="p">,</span> <span class="n">prop</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="n">prop</span><span class="o">.</span><span class="n">table</span> <span class="o">=</span> <span class="n">table</span>
+        <span class="n">prop</span><span class="o">.</span><span class="n">this</span> <span class="o">=</span> <span class="n">this</span>
+        <span class="n">prop</span><span class="o">.</span><span class="n">that</span> <span class="o">=</span> <span class="n">that</span>
+        <span class="n">prop</span><span class="o">.</span><span class="n">imp</span><span class="p">,</span> <span class="n">prop</span><span class="o">.</span><span class="n">exp</span> <span class="o">=</span> <span class="n">_get_ie</span><span class="p">(</span><span class="n">ie</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prop</span>
+        <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">:</span>
+            <span class="n">tempdata</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">fetch_onecol</span><span class="p">(</span>
+                <span class="n">prop</span><span class="o">.</span><span class="n">table</span><span class="p">,</span>
+                <span class="n">prop</span><span class="o">.</span><span class="n">that</span><span class="p">,</span>
+                <span class="p">{</span><span class="n">prop</span><span class="o">.</span><span class="n">this</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="n">prop</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> \
+                <span class="p">[</span><span class="n">prop</span><span class="o">.</span><span class="n">imp</span><span class="p">(</span><span class="n">member</span><span class="p">)</span> <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">tempdata</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="n">prop</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;ListProperty is not writable.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__delete__</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">:</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="n">prop</span><span class="o">.</span><span class="n">name</span><span class="p">]</span></div>
+
+
+<span class="k">class</span> <span class="nc">_BaseMetaclass</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">dct</span><span class="p">):</span>
+        <span class="n">_propsdb</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">_esfields</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">_es_require_true</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">dct</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Property</span><span class="p">):</span>
+                <span class="n">_propsdb</span><span class="p">[</span><span class="n">value</span><span class="o">.</span><span class="n">dbname</span><span class="p">]</span> <span class="o">=</span> <span class="n">key</span>
+                <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">search</span><span class="p">:</span>
+                    <span class="n">_esfields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">search_require_true</span><span class="p">:</span>
+                    <span class="n">_es_require_true</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+                <span class="n">value</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">key</span>
+                <span class="n">value</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="s1">&#39;Value of column ``</span><span class="si">%s</span><span class="s1">`` in table ``</span><span class="si">%s</span><span class="s1">``, &#39;</span>
+                    <span class="s1">&#39;with row selected by the id of the object matching &#39;</span>
+                    <span class="s1">&#39;column ``</span><span class="si">%s</span><span class="s1">`` in the same table.&#39;</span> <span class="o">%</span> <span class="p">(</span>
+                        <span class="n">value</span><span class="o">.</span><span class="n">dbname</span><span class="p">,</span> <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;table&#39;</span><span class="p">],</span> <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;identifier&#39;</span><span class="p">]))</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">ListProperty</span><span class="p">):</span>
+                <span class="n">value</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="s1">&#39;List of values of column ``</span><span class="si">%s</span><span class="s1">`` in table ``</span><span class="si">%s</span><span class="s1">``, &#39;</span>
+                    <span class="s1">&#39;with rows selected by the id of the object matching &#39;</span>
+                    <span class="s1">&#39;column ``</span><span class="si">%s</span><span class="s1">`` in the same table.&#39;</span> <span class="o">%</span> <span class="p">(</span>
+                        <span class="n">value</span><span class="o">.</span><span class="n">that</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">table</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">this</span><span class="p">))</span>
+                <span class="n">value</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">key</span>
+
+        <span class="nd">@property</span>
+        <span class="k">def</span> <span class="nf">_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;The data in a dict.&quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dbdata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_dbdata</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">fetch_onerow</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">,</span>
+                    <span class="n">_propsdb</span><span class="p">,</span>
+                    <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">identifier</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
+                <span class="p">)</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dbdata</span>
+
+        <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;_data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_data</span>
+
+        <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dup_key_update</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Write this temporary object into database and Elasticsearch.</span>
+
+<span class="sd">            Also set the id of the object to its corresponding id in</span>
+<span class="sd">            the database, making the object permanent.</span>
+
+<span class="sd">            :param bool dup_key_update: if True, when a unique key collides,</span>
+<span class="sd">                update the colliding row with new data; else raise the error</span>
+<span class="sd">            :returns: this object</span>
+<span class="sd">            :raises AlreadyExists: if insertion results in a unique key</span>
+<span class="sd">                collision and dup_key_update is False</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_real</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">_propsdb</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dbdata</span><span class="p">[</span><span class="n">value</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">dup_key_update</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">insert_or_update_row</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span>
+                                                         <span class="n">data</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">insert_row</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">_esfields</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_escreate</span><span class="p">()</span>
+
+            <span class="c1"># Reload with newest data from database</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dbdata</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+
+            <span class="k">return</span> <span class="bp">self</span>
+        <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;create&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">create</span>
+
+        <span class="k">if</span> <span class="s1">&#39;name&#39;</span> <span class="ow">in</span> <span class="n">dct</span><span class="p">:</span>
+            <span class="nd">@property</span>
+            <span class="k">def</span> <span class="nf">callsign</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="sd">&quot;&quot;&quot;The callsign for use in urls.&quot;&quot;&quot;</span>
+                <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+                                             <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
+                                             <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">))</span>
+            <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;callsign&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">callsign</span>
+
+        <span class="k">if</span> <span class="n">_esfields</span><span class="p">:</span>
+            <span class="nd">@classmethod</span>
+            <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">query_string</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+                <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                Search for objects of this class with a query string.</span>
+
+<span class="sd">                :param basestring query_string: query string</span>
+<span class="sd">                :param int offset: search offset</span>
+<span class="sd">                :param int size: search size</span>
+<span class="sd">                :rtype: list of dict</span>
+<span class="sd">                &quot;&quot;&quot;</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="n">elasticsearch</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query_string</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="p">,</span> <span class="n">_esfields</span><span class="p">,</span>
+                                           <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">ret</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">]:</span>
+                    <span class="n">item</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;_id&#39;</span><span class="p">])</span>
+
+                    <span class="n">item</span><span class="p">[</span><span class="s1">&#39;highlight&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;highlight&#39;</span><span class="p">,</span> <span class="p">{})</span>
+                    <span class="k">for</span> <span class="n">hlfield</span><span class="p">,</span> <span class="n">hllist</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;highlight&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="n">item</span><span class="p">[</span><span class="s1">&#39;highlight&#39;</span><span class="p">][</span><span class="n">hlfield</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                            <span class="n">Markup</span><span class="p">(</span><span class="n">hlhtml</span><span class="p">)</span> <span class="k">for</span> <span class="n">hlhtml</span> <span class="ow">in</span> <span class="n">hllist</span><span class="p">]</span>
+
+                <span class="k">return</span> <span class="n">ret</span>
+            <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;search&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">search</span>
+
+            <span class="c1"># Should have es index</span>
+            <span class="k">def</span> <span class="nf">_es_requirement_good</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">_es_require_true</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+                        <span class="k">return</span> <span class="kc">False</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;_es_requirement_good&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_es_requirement_good</span>
+
+            <span class="k">def</span> <span class="nf">_escreate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_es_requirement_good</span><span class="p">():</span>
+                    <span class="k">return</span>
+
+                <span class="n">_esdata</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">_esfields</span><span class="p">:</span>
+                    <span class="n">_esdata</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="n">field</span><span class="p">]</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">))</span>
+
+                <span class="n">elasticsearch</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">_esdata</span><span class="p">)</span>
+            <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;_escreate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_escreate</span>
+
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">_BaseMetaclass</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">dct</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">oid</span><span class="p">):</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">oid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dbdata</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+
+<div class="viewcode-block" id="BaseObject"><a class="viewcode-back" href="../../../api.html#oclubs.objs.BaseObject">[docs]</a><span class="k">class</span> <span class="nc">BaseObject</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">_BaseMetaclass</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;ID of the object.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_real</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_real</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Whether the object is temporary object (False) or permanent (True).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="BaseObject.new"><a class="viewcode-back" href="../../../api.html#oclubs.objs.BaseObject.new">[docs]</a>    <span class="k">def</span> <span class="nf">new</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a new temporary object for creation.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">BaseObject</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">id</span>
+        <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">BaseObject</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">id</span>
+        <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_object_proxy</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Late import to prevent import loops.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">oid</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;oclubs&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">objs</span><span class="p">,</span> <span class="n">name</span><span class="p">)(</span><span class="n">oid</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_get_ie</span><span class="p">(</span><span class="n">ie</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ie</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">ie</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">imp</span><span class="p">,</span> <span class="n">exp</span> <span class="o">=</span> <span class="n">__get_ie</span><span class="p">(</span><span class="n">ie</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">0</span><span class="p">],</span> <span class="n">__get_ie</span><span class="p">(</span><span class="n">ie</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">imp</span><span class="p">,</span> <span class="n">exp</span> <span class="o">=</span> <span class="n">__get_ie</span><span class="p">(</span><span class="n">ie</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">imp</span><span class="p">(</span><span class="n">val</span><span class="p">),</span>
+            <span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">exp</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">__get_ie</span><span class="p">(</span><span class="n">ie</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">ie</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">imp</span> <span class="o">=</span> <span class="n">exp</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="n">val</span>
+    <span class="k">elif</span> <span class="n">ie</span> <span class="ow">is</span> <span class="bp">NotImplemented</span><span class="p">:</span>
+        <span class="n">imp</span> <span class="o">=</span> <span class="n">exp</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="bp">NotImplemented</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ie</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+        <span class="n">imp</span><span class="p">,</span> <span class="n">exp</span> <span class="o">=</span> <span class="n">_object_proxy</span><span class="p">(</span><span class="n">ie</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">id</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ie</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">ModuleType</span><span class="p">):</span>
+        <span class="n">imp</span><span class="p">,</span> <span class="n">exp</span> <span class="o">=</span> <span class="n">ie</span><span class="o">.</span><span class="n">loads</span><span class="p">,</span> <span class="n">ie</span><span class="o">.</span><span class="n">dumps</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ie</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">ie</span><span class="p">,</span> <span class="n">BaseObject</span><span class="p">):</span>
+        <span class="n">imp</span><span class="p">,</span> <span class="n">exp</span> <span class="o">=</span> <span class="n">ie</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">id</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ie</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">ie</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+        <span class="n">imp</span><span class="p">,</span> <span class="n">exp</span> <span class="o">=</span> <span class="n">ie</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">value</span>
+    <span class="k">elif</span> <span class="n">callable</span><span class="p">(</span><span class="n">ie</span><span class="p">):</span>
+        <span class="n">imp</span> <span class="o">=</span> <span class="n">exp</span> <span class="o">=</span> <span class="n">ie</span>
+
+    <span class="k">return</span> <span class="n">imp</span><span class="p">,</span> <span class="n">exp</span>
+
+
+<span class="k">def</span> <span class="nf">_get_search</span><span class="p">(</span><span class="n">search</span><span class="p">,</span> <span class="n">ie</span><span class="p">):</span>
+    <span class="n">search</span> <span class="o">=</span> <span class="n">__get_search</span><span class="p">(</span><span class="n">search</span><span class="p">,</span> <span class="n">ie</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">search</span><span class="p">:</span>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">search</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">__get_search</span><span class="p">(</span><span class="n">search</span><span class="p">,</span> <span class="n">ie</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">search</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">search</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ie</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">ie</span> <span class="o">=</span> <span class="n">ie</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">__get_search</span><span class="p">(</span><span class="n">ie</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">search</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="n">val</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">search</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">search</span> <span class="o">==</span> <span class="s1">&#39;User&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">passportname</span>
+        <span class="k">elif</span> <span class="n">search</span> <span class="o">==</span> <span class="s1">&#39;FormattedText&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">raw</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">name</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">search</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">search</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">format_name</span>
+    <span class="k">elif</span> <span class="n">callable</span><span class="p">(</span><span class="n">search</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">search</span>
+
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="paged_db_read"><a class="viewcode-back" href="../../../api.html#oclubs.objs.paged_db_read">[docs]</a><span class="k">def</span> <span class="nf">paged_db_read</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Decorator function to have a database read with paging abilities.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">get_pager</span><span class="p">(</span><span class="n">limit</span><span class="p">):</span>
+        <span class="n">tempstorage</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;tempstorage&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nb">object</span><span class="p">,),</span> <span class="p">{})</span>
+
+        <span class="k">def</span> <span class="nf">pager_fetch</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">f</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">conds</span> <span class="o">=</span> <span class="n">args</span>
+            <span class="n">conds</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">expand_cond</span><span class="p">(</span><span class="n">conds</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">limit</span><span class="p">:</span>
+                <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;limit&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">limit</span>
+
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">conds</span><span class="p">,</span> <span class="n">_calc_found</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+            <span class="n">tempstorage</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">fetch_info</span><span class="p">(</span>
+                <span class="n">database</span><span class="o">.</span><span class="n">RawSQL</span><span class="p">(</span><span class="s1">&#39;FOUND_ROWS()&#39;</span><span class="p">))</span>
+
+            <span class="k">return</span> <span class="n">ret</span>
+
+        <span class="k">def</span> <span class="nf">pager_return</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">limit</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">tempstorage</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="n">data</span>
+
+            <span class="k">return</span> <span class="n">data</span>
+
+        <span class="k">return</span> <span class="n">pager_fetch</span><span class="p">,</span> <span class="n">pager_return</span>
+
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">decorated_function</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">pager</span><span class="o">=</span><span class="n">get_pager</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;limit&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
+                    <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">decorated_function</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, SHSIDers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

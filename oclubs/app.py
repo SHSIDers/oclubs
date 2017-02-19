@@ -18,7 +18,8 @@ from flask_login import (
 from htmlmin.minify import html_minify
 
 from oclubs.objs import User, Club, Activity, Upload, FormattedText
-from oclubs.access import done as db_done, get_secret, email
+from oclubs.access import done as db_done, email
+from oclubs.access.secrets import get_secret
 from oclubs.blueprints import actblueprint, clubblueprint, userblueprint
 from oclubs.enums import UserType, ClubType, ActivityTime, ClubJoinMode
 from oclubs.exceptions import NoRow
