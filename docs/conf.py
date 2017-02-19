@@ -159,6 +159,6 @@ texinfo_documents = [
 ]
 
 
-# intersphinx_mapping = {'python': ('https://docs.python.org/2', None)}
+intersphinx_mapping = {'python': ('https://docs.python.org/2', None)}
 
 autodoc_default_flags = ['members', 'undoc-members', 'show-inheritance']

@@ -56,7 +56,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>commit</strong> (<em>bool</em>) &#8211; If true, save the data; else discard it.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>commit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If true, save the data; else discard it.</td>
 </tr>
 </tbody>
 </table>
@@ -70,13 +70,13 @@ returns data from the execution.</p>
 <dl class="class">
 <dt id="oclubs.access.database.RawSQL">
 <em class="property">class </em><code class="descclassname">oclubs.access.database.</code><code class="descname">RawSQL</code><span class="sig-paren">(</span><em>sql</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oclubs/access/database.html#RawSQL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oclubs.access.database.RawSQL" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Class to signal a raw SQL part of a query. - DANGEROUS!</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sql</strong> (<em>basestring</em>) &#8211; the raw SQL to use</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sql</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; the raw SQL to use</td>
 </tr>
 </tbody>
 </table>
@@ -91,21 +91,21 @@ returns data from the execution.</p>
 <dl class="function">
 <dt id="oclubs.access.database.delete_rows">
 <code class="descclassname">oclubs.access.database.</code><code class="descname">delete_rows</code><span class="sig-paren">(</span><em>table</em>, <em>conds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oclubs/access/database.html#delete_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oclubs.access.database.delete_rows" title="Permalink to this definition">¶</a></dt>
-<dd><p>Execute an <code class="docutils literal"><span class="pre">DELETE</span></code> on a table.</p>
+<dd><p>Execute a <code class="docutils literal"><span class="pre">DELETE</span></code> on a table.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>table</strong> (<em>basestring</em>) &#8211; table name</li>
-<li><strong>conds</strong> (<em>list</em><em> or </em><em>dict</em>) &#8211; conditions</li>
+<li><strong>table</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; table name</li>
+<li><strong>conds</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; conditions</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">number of rows deleted</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">int or long</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)">int</a> or <a class="reference external" href="https://docs.python.org/2/library/functions.html#long" title="(in Python v2.7)">long</a></p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#oclubs.exceptions.NoRow" title="oclubs.exceptions.NoRow"><strong>NoRow</strong></a> &#8211; if no row was deleted</p>
@@ -123,9 +123,9 @@ returns data from the execution.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cond</strong> (<em>list</em><em> or </em><em>dict</em>) &#8211; the input SQL matching condition</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cond</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; the input SQL matching condition</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></td>
 </tr>
 </tbody>
 </table>
@@ -139,7 +139,7 @@ returns data from the execution.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>info</strong> (<em>basestring</em>) &#8211; the information to select</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>info</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; the information to select</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the selected information</td>
 </tr>
@@ -156,10 +156,10 @@ returns data from the execution.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>table</strong> (<em>basestring</em>) &#8211; table name</li>
-<li><strong>coldict</strong> (<em>dict</em>) &#8211; column specification, with keys as the column name and
+<li><strong>table</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; table name</li>
+<li><strong>coldict</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; column specification, with keys as the column name and
 values as the corresponding keys of the returned dic</li>
-<li><strong>conds</strong> (<em>list</em><em> or </em><em>dict</em>) &#8211; conditions</li>
+<li><strong>conds</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; conditions</li>
 </ul>
 </td>
 </tr>
@@ -182,16 +182,16 @@ values as the corresponding keys of the returned dic</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>table</strong> (<em>basestring</em>) &#8211; table name</li>
-<li><strong>col</strong> (<em>basestring</em>) &#8211; column name</li>
-<li><strong>conds</strong> (<em>list</em><em> or </em><em>dict</em>) &#8211; conditions</li>
+<li><strong>table</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; table name</li>
+<li><strong>col</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; column name</li>
+<li><strong>conds</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; conditions</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the selected column</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a></p>
 </td>
 </tr>
 </tbody>
@@ -207,9 +207,9 @@ values as the corresponding keys of the returned dic</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>table</strong> (<em>basestring</em>) &#8211; table name</li>
-<li><strong>col</strong> (<em>basestring</em>) &#8211; column name</li>
-<li><strong>conds</strong> (<em>list</em><em> or </em><em>dict</em>) &#8211; conditions</li>
+<li><strong>table</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; table name</li>
+<li><strong>col</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; column name</li>
+<li><strong>conds</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; conditions</li>
 </ul>
 </td>
 </tr>
@@ -232,17 +232,17 @@ values as the corresponding keys of the returned dic</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>table</strong> (<em>basestring</em>) &#8211; table name</li>
-<li><strong>coldict</strong> (<em>dict</em>) &#8211; column specification, with keys as the column name and
+<li><strong>table</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; table name</li>
+<li><strong>coldict</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; column specification, with keys as the column name and
 values as the corresponding keys of the returned dict</li>
-<li><strong>conds</strong> (<em>list</em><em> or </em><em>dict</em>) &#8211; conditions</li>
+<li><strong>conds</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; conditions</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the selected row, with keys specified in coldict</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">dict</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#oclubs.exceptions.NoRow" title="oclubs.exceptions.NoRow"><strong>NoRow</strong></a> &#8211; if no row was selected</p>
@@ -261,10 +261,10 @@ values as the corresponding keys of the returned dict</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>table</strong> (<em>basestring</em>) &#8211; table name</li>
-<li><strong>coldict</strong> (<em>dict</em>) &#8211; inserted data, with keys as the column name and
+<li><strong>table</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; table name</li>
+<li><strong>coldict</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; inserted data, with keys as the column name and
 values as the corresponding values</li>
-<li><strong>update</strong> (<em>dict</em>) &#8211; updated data, with keys as the column name and
+<li><strong>update</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; updated data, with keys as the column name and
 values as the corresponding values</li>
 </ul>
 </td>
@@ -272,7 +272,7 @@ values as the corresponding values</li>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the id of the inserted row</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">int or long</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)">int</a> or <a class="reference external" href="https://docs.python.org/2/library/functions.html#long" title="(in Python v2.7)">long</a></p>
 </td>
 </tr>
 </tbody>
@@ -288,8 +288,8 @@ values as the corresponding values</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>table</strong> (<em>basestring</em>) &#8211; table name</li>
-<li><strong>insert</strong> (<em>dict</em>) &#8211; inserted data, with keys as the column name and
+<li><strong>table</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; table name</li>
+<li><strong>insert</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; inserted data, with keys as the column name and
 values as the corresponding values</li>
 </ul>
 </td>
@@ -297,7 +297,7 @@ values as the corresponding values</li>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the id of the inserted row</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">int or long</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)">int</a> or <a class="reference external" href="https://docs.python.org/2/library/functions.html#long" title="(in Python v2.7)">long</a></p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#oclubs.exceptions.AlreadyExists" title="oclubs.exceptions.AlreadyExists"><strong>AlreadyExists</strong></a> &#8211; if the row already exists and insertion would
@@ -317,17 +317,17 @@ result in duplicate keys</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>table</strong> (<em>basestring</em>) &#8211; table name</li>
-<li><strong>update</strong> (<em>dict</em>) &#8211; updated data, with keys as the column name and
+<li><strong>table</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; table name</li>
+<li><strong>update</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; updated data, with keys as the column name and
 values as the corresponding values</li>
-<li><strong>conds</strong> (<em>list</em><em> or </em><em>dict</em>) &#8211; conditions</li>
+<li><strong>conds</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; conditions</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">number of rows updated</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">int or long</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)">int</a> or <a class="reference external" href="https://docs.python.org/2/library/functions.html#long" title="(in Python v2.7)">long</a></p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#oclubs.exceptions.NoRow" title="oclubs.exceptions.NoRow"><strong>NoRow</strong></a> &#8211; if no row was updated</p>
@@ -373,9 +373,9 @@ engine, and to search within all the documents.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>doc_type</strong> (<em>basestring</em>) &#8211; document type</li>
+<li><strong>doc_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; document type</li>
 <li><strong>doc_id</strong> &#8211; document id, will be converted into basestring</li>
-<li><strong>data</strong> (<em>dict</em>) &#8211; new document data</li>
+<li><strong>data</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; new document data</li>
 </ul>
 </td>
 </tr>
@@ -392,7 +392,7 @@ engine, and to search within all the documents.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>doc_type</strong> (<em>basestring</em>) &#8211; document type</li>
+<li><strong>doc_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; document type</li>
 <li><strong>doc_id</strong> &#8211; document id, will be converted into basestring</li>
 </ul>
 </td>
@@ -410,7 +410,7 @@ engine, and to search within all the documents.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>doc_type</strong> (<em>basestring</em>) &#8211; document type</li>
+<li><strong>doc_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; document type</li>
 <li><strong>doc_id</strong> &#8211; document id, will be converted into basestring</li>
 <li><strong>fields</strong> &#8211; if <code class="docutils literal"><span class="pre">False</span></code>, returns whether the document is found as bool;
 if <code class="docutils literal"><span class="pre">True</span></code>, returns the document dict; if list of string, returns the
@@ -418,7 +418,7 @@ document dict with only the specified fields.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict or bool</p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a> or <a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)">bool</a></p>
 </td>
 </tr>
 </tbody>
@@ -434,12 +434,12 @@ document dict with only the specified fields.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>querystr</strong> (<em>basestring</em>) &#8211; query string</li>
-<li><strong>doc_type</strong> (<em>basestring</em>) &#8211; document type</li>
+<li><strong>querystr</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; query string</li>
+<li><strong>doc_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; document type</li>
 <li><strong>doc_id</strong> &#8211; document id, will be converted into basestring</li>
 <li><strong>fields</strong> (<em>list of basestring</em>) &#8211; fields to search on</li>
-<li><strong>offset</strong> (<em>int</em>) &#8211; search offset</li>
-<li><strong>size</strong> (<em>int</em>) &#8211; search size</li>
+<li><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; search offset</li>
+<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; search size</li>
 </ul>
 </td>
 </tr>
@@ -451,7 +451,7 @@ document dict with only the specified fields.</li>
 </p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></p>
 </td>
 </tr>
 </tbody>
@@ -467,9 +467,9 @@ document dict with only the specified fields.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>doc_type</strong> (<em>basestring</em>) &#8211; document type</li>
+<li><strong>doc_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; document type</li>
 <li><strong>doc_id</strong> &#8211; document id, will be converted into basestring</li>
-<li><strong>data</strong> (<em>dict</em>) &#8211; new document data</li>
+<li><strong>data</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; new document data</li>
 </ul>
 </td>
 </tr>
@@ -491,9 +491,9 @@ document dict with only the specified fields.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>to_email</strong> (<em>tuple</em>) &#8211; email recipient address and name</li>
-<li><strong>subject</strong> (<em>basestring</em>) &#8211; email subject</li>
-<li><strong>content</strong> (<em>basestring</em>) &#8211; email content</li>
+<li><strong>to_email</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; email recipient address and name</li>
+<li><strong>subject</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; email subject</li>
+<li><strong>content</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; email content</li>
 </ul>
 </td>
 </tr>
@@ -513,7 +513,7 @@ document dict with only the specified fields.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>str</em>) &#8211; path to the file to watch</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; path to the file to watch</td>
 </tr>
 </tbody>
 </table>
@@ -528,7 +528,7 @@ serialization is done with JSON.</p>
 <dl class="class">
 <dt id="oclubs.access.redis.ImmutableMixin">
 <em class="property">class </em><code class="descclassname">oclubs.access.redis.</code><code class="descname">ImmutableMixin</code><span class="sig-paren">(</span><em>value=u''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oclubs/access/redis.html#ImmutableMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oclubs.access.redis.ImmutableMixin" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Mixin to work with immutable types on redis.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -567,29 +567,29 @@ serialization is done with JSON.</p>
 <dl class="class">
 <dt id="oclubs.access.redis.RedisDict">
 <em class="property">class </em><code class="descclassname">oclubs.access.redis.</code><code class="descname">RedisDict</code><a class="reference internal" href="_modules/oclubs/access/redis.html#RedisDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oclubs.access.redis.RedisDict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#oclubs.access.redis.RedisStuff" title="oclubs.access.redis.RedisStuff"><code class="xref py py-class docutils literal"><span class="pre">oclubs.access.redis.RedisStuff</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">dict</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#oclubs.access.redis.RedisStuff" title="oclubs.access.redis.RedisStuff"><code class="xref py py-class docutils literal"><span class="pre">oclubs.access.redis.RedisStuff</span></code></a>, <a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">dict</span></code></a></p>
 <p>A dict on Redis.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="oclubs.access.redis.RedisList">
 <em class="property">class </em><code class="descclassname">oclubs.access.redis.</code><code class="descname">RedisList</code><a class="reference internal" href="_modules/oclubs/access/redis.html#RedisList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oclubs.access.redis.RedisList" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#oclubs.access.redis.RedisStuff" title="oclubs.access.redis.RedisStuff"><code class="xref py py-class docutils literal"><span class="pre">oclubs.access.redis.RedisStuff</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">list</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#oclubs.access.redis.RedisStuff" title="oclubs.access.redis.RedisStuff"><code class="xref py py-class docutils literal"><span class="pre">oclubs.access.redis.RedisStuff</span></code></a>, <a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">list</span></code></a></p>
 <p>A list on Redis.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="oclubs.access.redis.RedisStuff">
 <em class="property">class </em><code class="descclassname">oclubs.access.redis.</code><code class="descname">RedisStuff</code><a class="reference internal" href="_modules/oclubs/access/redis.html#RedisStuff"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oclubs.access.redis.RedisStuff" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Superclass of all redis stuffs.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>key</strong> (<em>basestring</em>) &#8211; redis key</li>
-<li><strong>timeout</strong> (<em>int</em>) &#8211; timeyt in seconds for the key, negative values
+<li><strong>key</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; redis key</li>
+<li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; timeyt in seconds for the key, negative values
 are forever.</li>
 </ul>
 </td>
@@ -610,11 +610,11 @@ are forever.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<em>basestring</em>) &#8211; redis key</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; redis key</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the value associated with the key</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">basestring</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)">basestring</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><strong>KeyError</strong> &#8211; if key is not found</td>
 </tr>
@@ -646,7 +646,7 @@ are forever.</li>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">serialized object</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">basestring</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)">basestring</a></td>
 </tr>
 </tbody>
 </table>
@@ -660,7 +660,7 @@ are forever.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<em>basestring</em>) &#8211; data to unserialize</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; data to unserialize</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">unserialized data</td>
 </tr>
@@ -682,11 +682,11 @@ are forever.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<em>basestring</em>) &#8211; name of the secret</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; name of the secret</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">value of the secret</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">basestring</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)">basestring</a></td>
 </tr>
 </tbody>
 </table>
@@ -704,11 +704,11 @@ are forever.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<em>basestring</em>) &#8211; name of site configuration</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; name of site configuration</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">value of site configuration</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
 </tr>
 </tbody>
 </table>
@@ -723,8 +723,8 @@ are forever.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<em>basestring</em>) &#8211; name of site configuration</li>
-<li><strong>value</strong> (<em>bool</em>) &#8211; new value of site configuration</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; name of site configuration</li>
+<li><strong>value</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; new value of site configuration</li>
 </ul>
 </td>
 </tr>
@@ -795,7 +795,7 @@ the database, making the object permanent.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dup_key_update</strong> (<em>bool</em>) &#8211; if True, when a unique key collides,
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dup_key_update</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; if True, when a unique key collides,
 update the colliding row with new data; else raise the error</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this object</td>
@@ -882,9 +882,9 @@ collision and dup_key_update is False</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>query_string</strong> (<em>basestring</em>) &#8211; query string</li>
-<li><strong>offset</strong> (<em>int</em>) &#8211; search offset</li>
-<li><strong>size</strong> (<em>int</em>) &#8211; search size</li>
+<li><strong>query_string</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; query string</li>
+<li><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; search offset</li>
+<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; search size</li>
 </ul>
 </td>
 </tr>
@@ -985,7 +985,7 @@ the database, making the object permanent.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dup_key_update</strong> (<em>bool</em>) &#8211; if True, when a unique key collides,
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dup_key_update</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; if True, when a unique key collides,
 update the colliding row with new data; else raise the error</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this object</td>
@@ -1096,9 +1096,9 @@ collision and dup_key_update is False</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>query_string</strong> (<em>basestring</em>) &#8211; query string</li>
-<li><strong>offset</strong> (<em>int</em>) &#8211; search offset</li>
-<li><strong>size</strong> (<em>int</em>) &#8211; search size</li>
+<li><strong>query_string</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; query string</li>
+<li><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; search offset</li>
+<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; search size</li>
 </ul>
 </td>
 </tr>
@@ -1163,7 +1163,7 @@ the database, making the object permanent.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dup_key_update</strong> (<em>bool</em>) &#8211; if True, when a unique key collides,
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dup_key_update</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; if True, when a unique key collides,
 update the colliding row with new data; else raise the error</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this object</td>
@@ -1243,7 +1243,7 @@ the database, making the object permanent.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dup_key_update</strong> (<em>bool</em>) &#8211; if True, when a unique key collides,
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dup_key_update</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; if True, when a unique key collides,
 update the colliding row with new data; else raise the error</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this object</td>
@@ -1365,7 +1365,7 @@ the database, making the object permanent.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dup_key_update</strong> (<em>bool</em>) &#8211; if True, when a unique key collides,
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dup_key_update</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; if True, when a unique key collides,
 update the colliding row with new data; else raise the error</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this object</td>
@@ -1584,7 +1584,7 @@ the database, making the object permanent.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dup_key_update</strong> (<em>bool</em>) &#8211; if True, when a unique key collides,
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dup_key_update</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; if True, when a unique key collides,
 update the colliding row with new data; else raise the error</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this object</td>
@@ -1671,9 +1671,9 @@ collision and dup_key_update is False</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>query_string</strong> (<em>basestring</em>) &#8211; query string</li>
-<li><strong>offset</strong> (<em>int</em>) &#8211; search offset</li>
-<li><strong>size</strong> (<em>int</em>) &#8211; search size</li>
+<li><strong>query_string</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; query string</li>
+<li><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; search offset</li>
+<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; search size</li>
 </ul>
 </td>
 </tr>
@@ -1787,7 +1787,7 @@ the database, making the object permanent.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dup_key_update</strong> (<em>bool</em>) &#8211; if True, when a unique key collides,
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dup_key_update</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; if True, when a unique key collides,
 update the colliding row with new data; else raise the error</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this object</td>
@@ -1898,9 +1898,9 @@ collision and dup_key_update is False</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>query_string</strong> (<em>basestring</em>) &#8211; query string</li>
-<li><strong>offset</strong> (<em>int</em>) &#8211; search offset</li>
-<li><strong>size</strong> (<em>int</em>) &#8211; search size</li>
+<li><strong>query_string</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; query string</li>
+<li><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; search offset</li>
+<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; search size</li>
 </ul>
 </td>
 </tr>
@@ -1999,7 +1999,7 @@ the database, making the object permanent.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dup_key_update</strong> (<em>bool</em>) &#8211; if True, when a unique key collides,
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dup_key_update</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; if True, when a unique key collides,
 update the colliding row with new data; else raise the error</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this object</td>
@@ -2181,7 +2181,7 @@ the database, making the object permanent.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dup_key_update</strong> (<em>bool</em>) &#8211; if True, when a unique key collides,
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dup_key_update</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; if True, when a unique key collides,
 update the colliding row with new data; else raise the error</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this object</td>
@@ -2264,7 +2264,7 @@ the database, making the object permanent.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dup_key_update</strong> (<em>bool</em>) &#8211; if True, when a unique key collides,
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dup_key_update</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; if True, when a unique key collides,
 update the colliding row with new data; else raise the error</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this object</td>
@@ -2342,7 +2342,7 @@ collision and dup_key_update is False</td>
 <dl class="class">
 <dt id="oclubs.objs.base.BaseObject">
 <em class="property">class </em><code class="descclassname">oclubs.objs.base.</code><code class="descname">BaseObject</code><a class="reference internal" href="_modules/oclubs/objs/base.html#BaseObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oclubs.objs.base.BaseObject" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <dl class="method">
 <dt id="oclubs.objs.base.BaseObject.create">
 <code class="descname">create</code><span class="sig-paren">(</span><em>dup_key_update=False</em><span class="sig-paren">)</span><a class="headerlink" href="#oclubs.objs.base.BaseObject.create" title="Permalink to this definition">¶</a></dt>
@@ -2353,7 +2353,7 @@ the database, making the object permanent.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dup_key_update</strong> (<em>bool</em>) &#8211; if True, when a unique key collides,
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dup_key_update</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; if True, when a unique key collides,
 update the colliding row with new data; else raise the error</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this object</td>
@@ -2388,7 +2388,7 @@ collision and dup_key_update is False</td>
 <dl class="class">
 <dt id="oclubs.objs.base.ListProperty">
 <em class="property">class </em><code class="descclassname">oclubs.objs.base.</code><code class="descname">ListProperty</code><span class="sig-paren">(</span><em>prop</em>, <em>table</em>, <em>this</em>, <em>that</em>, <em>ie=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oclubs/objs/base.html#ListProperty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oclubs.objs.base.ListProperty" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Represent a list of value in the specified column in another table.</p>
 <p>Selection is done by the id of the owner object match the value in the
 column specified by <code class="docutils literal"><span class="pre">this</span></code> in the specified table, and extraction is
@@ -2398,12 +2398,12 @@ done on the column specified by <code class="docutils literal"><span class="pre"
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>table</strong> (<em>basestring</em>) &#8211; table name</li>
-<li><strong>this</strong> (<em>basestring</em>) &#8211; column name to match the id with</li>
-<li><strong>that</strong> (<em>basestring</em>) &#8211; column name to return values with</li>
+<li><strong>table</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; table name</li>
+<li><strong>this</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; column name to match the id with</li>
+<li><strong>that</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; column name to return values with</li>
 <li><strong>ie</strong> (<em>a single value of</em><em>, or </em><em>a tuple with two values of</em><em>,
-</em><em>None</em><em>, </em><em>NotImplemented</em><em>, </em><em>basestring</em><em>, </em><em>a serializer module</em><em>, </em><a class="reference internal" href="#oclubs.objs.base.BaseObject" title="oclubs.objs.base.BaseObject"><em>BaseObject</em></a><em>,
-</em><em>Enum</em><em>, or </em><em>callable</em>) &#8211; import/export method, onlt the export part matters</li>
+</em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a><em>, </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#NotImplemented" title="(in Python v2.7)"><em>NotImplemented</em></a><em>, </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a><em>, </em><em>a serializer module</em><em>, </em><a class="reference internal" href="#oclubs.objs.base.BaseObject" title="oclubs.objs.base.BaseObject"><em>BaseObject</em></a><em>,
+</em><em>Enum</em><em>, or </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#callable" title="(in Python v2.7)"><em>callable</em></a>) &#8211; import/export method, onlt the export part matters</li>
 </ul>
 </td>
 </tr>
@@ -2414,7 +2414,7 @@ done on the column specified by <code class="docutils literal"><span class="pre"
 <dl class="class">
 <dt id="oclubs.objs.base.Property">
 <em class="property">class </em><code class="descclassname">oclubs.objs.base.</code><code class="descname">Property</code><span class="sig-paren">(</span><em>prop</em>, <em>dbname</em>, <em>ie=None</em>, <em>search=False</em>, <em>rediscached=False</em>, <em>search_require_true=False</em>, <em>error_default=Ellipsis</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oclubs/objs/base.html#Property"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oclubs.objs.base.Property" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Represent a value in the specified column of the current table.</p>
 <p>Selection is done by the id of the owner object match the value in the
 identifier column in the current table.</p>
@@ -2423,13 +2423,13 @@ identifier column in the current table.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>dbname</strong> (<em>basestring</em>) &#8211; column name in relational database</li>
+<li><strong>dbname</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) &#8211; column name in relational database</li>
 <li><strong>ie</strong> (<em>a single value of</em><em>, or </em><em>a tuple with two values of</em><em>,
-</em><em>None</em><em>, </em><em>NotImplemented</em><em>, </em><em>basestring</em><em>, </em><em>a serializer module</em><em>, </em><a class="reference internal" href="#oclubs.objs.base.BaseObject" title="oclubs.objs.base.BaseObject"><em>BaseObject</em></a><em>,
-</em><em>Enum</em><em>, or </em><em>callable</em>) &#8211; import/export method</li>
-<li><strong>search</strong> (<em>bool</em>) &#8211; whether the column should be searchable</li>
-<li><strong>rediscached</strong> (<em>bool</em>) &#8211; whether the column should be cached on Redis</li>
-<li><strong>search_require_true</strong> (<em>bool</em>) &#8211; if True, the object will only be
+</em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a><em>, </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#NotImplemented" title="(in Python v2.7)"><em>NotImplemented</em></a><em>, </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a><em>, </em><em>a serializer module</em><em>, </em><a class="reference internal" href="#oclubs.objs.base.BaseObject" title="oclubs.objs.base.BaseObject"><em>BaseObject</em></a><em>,
+</em><em>Enum</em><em>, or </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#callable" title="(in Python v2.7)"><em>callable</em></a>) &#8211; import/export method</li>
+<li><strong>search</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; whether the column should be searchable</li>
+<li><strong>rediscached</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; whether the column should be cached on Redis</li>
+<li><strong>search_require_true</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; if True, the object will only be
 searchable if this column evaluates to True</li>
 <li><strong>error_default</strong> &#8211; if not Ellipsis, when the importing fails,
 import this value as a fallback; else raise the error</li>
@@ -2456,28 +2456,28 @@ import this value as a fallback; else raise the error</li>
 <dl class="exception">
 <dt id="oclubs.exceptions.AlreadyExists">
 <em class="property">exception </em><code class="descclassname">oclubs.exceptions.</code><code class="descname">AlreadyExists</code><a class="reference internal" href="_modules/oclubs/exceptions.html#AlreadyExists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oclubs.exceptions.AlreadyExists" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.Exception" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></a></p>
 <p>Exception occuring when a row exists already when inserting.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="oclubs.exceptions.NoRow">
 <em class="property">exception </em><code class="descclassname">oclubs.exceptions.</code><code class="descname">NoRow</code><a class="reference internal" href="_modules/oclubs/exceptions.html#NoRow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oclubs.exceptions.NoRow" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.Exception" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></a></p>
 <p>Exception occuring when no row is found from the database.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="oclubs.exceptions.PasswordTooShort">
 <em class="property">exception </em><code class="descclassname">oclubs.exceptions.</code><code class="descname">PasswordTooShort</code><a class="reference internal" href="_modules/oclubs/exceptions.html#PasswordTooShort"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oclubs.exceptions.PasswordTooShort" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.Exception" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></a></p>
 <p>Exception occuring someone sets a password that&#8217;s too short.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="oclubs.exceptions.UploadNotSupported">
 <em class="property">exception </em><code class="descclassname">oclubs.exceptions.</code><code class="descname">UploadNotSupported</code><a class="reference internal" href="_modules/oclubs/exceptions.html#UploadNotSupported"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oclubs.exceptions.UploadNotSupported" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.Exception" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></a></p>
 <p>Exception occuring when an uploaded file is not supported.</p>
 </dd></dl>
 

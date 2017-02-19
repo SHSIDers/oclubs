@@ -3,4 +3,5 @@
 *.png binary
 *.gif binary
 *.ico binary
+*.pickle binary
 /docs/_build/doctrees/*.doctree -eol
