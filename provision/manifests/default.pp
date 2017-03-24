@@ -171,6 +171,7 @@ package { 'git':
 exec { 'git-clone-pyenv':
     command => '/usr/bin/git clone --depth=1 https://github.com/yyuu/pyenv.git /srv/oclubs/pyenv',
     creates => '/srv/oclubs/pyenv',
+    timeout => 600,
     require => File['/srv/oclubs'],
 }
 
