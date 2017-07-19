@@ -1,0 +1,276 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>oclubs.objs.club &#8212; oClubs 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for oclubs.objs.club</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: UTF-8 -*-</span>
+<span class="c1">#</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">unicode_literals</span>
+
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">date</span>
+
+<span class="kn">from</span> <span class="nn">oclubs.access</span> <span class="k">import</span> <span class="n">database</span><span class="p">,</span> <span class="n">redis</span>
+<span class="kn">from</span> <span class="nn">oclubs.enums</span> <span class="k">import</span> <span class="n">ClubType</span><span class="p">,</span> <span class="n">UserType</span><span class="p">,</span> <span class="n">ClubJoinMode</span>
+<span class="kn">from</span> <span class="nn">oclubs.objs.base</span> <span class="k">import</span> <span class="n">BaseObject</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">ListProperty</span><span class="p">,</span> <span class="n">paged_db_read</span>
+
+
+<div class="viewcode-block" id="Club"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Club">[docs]</a><span class="k">class</span> <span class="nc">Club</span><span class="p">(</span><span class="n">BaseObject</span><span class="p">):</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="s1">&#39;club&#39;</span>
+    <span class="n">identifier</span> <span class="o">=</span> <span class="s1">&#39;club_id&#39;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s1">&#39;club_name&#39;</span><span class="p">,</span> <span class="n">search</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">teacher</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s1">&#39;club_teacher&#39;</span><span class="p">,</span> <span class="s1">&#39;User&#39;</span><span class="p">)</span>
+    <span class="n">leader</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s1">&#39;club_leader&#39;</span><span class="p">,</span> <span class="s1">&#39;User&#39;</span><span class="p">)</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s1">&#39;club_desc&#39;</span><span class="p">,</span> <span class="s1">&#39;FormattedText&#39;</span><span class="p">,</span> <span class="n">search</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">location</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s1">&#39;club_location&#39;</span><span class="p">)</span>
+    <span class="n">is_active</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s1">&#39;club_inactive&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="ow">not</span> <span class="n">v</span><span class="p">,</span> <span class="n">search_require_true</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">intro</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s1">&#39;club_intro&#39;</span><span class="p">,</span> <span class="n">search</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">picture</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s1">&#39;club_picture&#39;</span><span class="p">,</span> <span class="s1">&#39;Upload&#39;</span><span class="p">)</span>
+    <span class="nb">type</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s1">&#39;club_type&#39;</span><span class="p">,</span> <span class="n">ClubType</span><span class="p">)</span>
+    <span class="n">joinmode</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s1">&#39;club_joinmode&#39;</span><span class="p">,</span> <span class="n">ClubJoinMode</span><span class="p">)</span>
+    <span class="n">reactivate</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s1">&#39;club_reactivate&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="n">members</span> <span class="o">=</span> <span class="n">ListProperty</span><span class="p">(</span><span class="s1">&#39;club_member&#39;</span><span class="p">,</span> <span class="s1">&#39;cm_club&#39;</span><span class="p">,</span> <span class="s1">&#39;cm_user&#39;</span><span class="p">,</span> <span class="s1">&#39;User&#39;</span><span class="p">)</span>
+    <span class="n">all_act</span> <span class="o">=</span> <span class="n">ListProperty</span><span class="p">(</span><span class="s1">&#39;activities&#39;</span><span class="p">,</span> <span class="s1">&#39;act_club&#39;</span><span class="p">,</span> <span class="s1">&#39;act_id&#39;</span><span class="p">,</span> <span class="s1">&#39;Activity&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">teacher_and_members</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">members</span><span class="p">)</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">teacher</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_excellent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">excellentclubs</span><span class="p">()</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_excellentclubs</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">redis</span><span class="o">.</span><span class="n">RedisList</span><span class="p">(</span><span class="s1">&#39;excellentclubs&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># We can&#39;t use @property because fails with Club.excellentclubs = []</span>
+    <span class="c1"># @deprecated</span>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Club.excellentclubs"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Club.excellentclubs">[docs]</a>    <span class="k">def</span> <span class="nf">excellentclubs</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">amount</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">allclubs</span><span class="p">(</span><span class="n">excellent_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                           <span class="n">random_order</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">amount</span><span class="p">),</span> <span class="n">limit</span><span class="o">=</span><span class="n">amount</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">amount</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ret</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ret</span></div>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Club.set_excellentclubs"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Club.set_excellentclubs">[docs]</a>    <span class="k">def</span> <span class="nf">set_excellentclubs</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">newval</span><span class="p">):</span>
+        <span class="n">newval</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">newval</span><span class="p">]</span>
+        <span class="n">lst</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_excellentclubs</span><span class="p">()</span>
+        <span class="n">lst</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">newval</span></div>
+
+    <span class="c1"># @deprecated</span>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Club.randomclubs"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Club.randomclubs">[docs]</a>    <span class="k">def</span> <span class="nf">randomclubs</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">amount</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">allclubs</span><span class="p">(</span><span class="n">random_order</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">amount</span><span class="p">,</span>
+                           <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ret</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ret</span></div>
+
+    <span class="nd">@classmethod</span>
+    <span class="nd">@paged_db_read</span>
+<div class="viewcode-block" id="Club.allclubs"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Club.allclubs">[docs]</a>    <span class="k">def</span> <span class="nf">allclubs</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">club_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">excellent_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">grade_limit</span><span class="o">=</span><span class="p">(),</span>
+                 <span class="n">active_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">additional_conds</span><span class="o">=</span><span class="p">(),</span> <span class="n">random_order</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">pager</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">conds</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">additional_conds</span><span class="p">:</span>
+            <span class="n">conds</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">additional_conds</span><span class="p">)</span>
+
+        <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;where&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">conds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;where&#39;</span><span class="p">,</span> <span class="p">[])</span>
+
+        <span class="k">if</span> <span class="n">club_types</span><span class="p">:</span>
+            <span class="n">types</span> <span class="o">=</span> <span class="p">[</span><span class="n">club_type</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">club_type</span> <span class="ow">in</span> <span class="n">club_types</span><span class="p">]</span>
+            <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;where&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="s1">&#39;club_type&#39;</span><span class="p">,</span> <span class="n">types</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">excellent_only</span><span class="p">:</span>
+            <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;where&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="s1">&#39;club_id&#39;</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_excellentclubs</span><span class="p">()))</span>
+        <span class="k">if</span> <span class="n">grade_limit</span><span class="p">:</span>
+            <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;join&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">conds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;join&#39;</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;join&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">(</span><span class="s1">&#39;inner&#39;</span><span class="p">,</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="p">[(</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;club_leader&#39;</span><span class="p">)]))</span>
+            <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;where&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="s1">&#39;user_grade&#39;</span><span class="p">,</span> <span class="n">grade_limit</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">active_only</span><span class="p">:</span>
+            <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;where&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;club_inactive&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+            <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;where&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;club_reactivate&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">random_order</span><span class="p">:</span>
+            <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;order&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">conds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;order&#39;</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;order&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">database</span><span class="o">.</span><span class="n">RawSQL</span><span class="p">(</span><span class="s1">&#39;RAND()&#39;</span><span class="p">),</span> <span class="kc">True</span><span class="p">))</span>
+
+        <span class="n">pager_fetch</span><span class="p">,</span> <span class="n">pager_return</span> <span class="o">=</span> <span class="n">pager</span>
+
+        <span class="n">tempdata</span> <span class="o">=</span> <span class="n">pager_fetch</span><span class="p">(</span>
+            <span class="n">database</span><span class="o">.</span><span class="n">fetch_onecol</span><span class="p">,</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="p">,</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">identifier</span><span class="p">,</span>
+            <span class="n">conds</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">pager_return</span><span class="p">([</span><span class="bp">cls</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">tempdata</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="Club.activities"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Club.activities">[docs]</a>    <span class="k">def</span> <span class="nf">activities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="p">(),</span> <span class="n">dates</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">oclubs.objs</span> <span class="k">import</span> <span class="n">Activity</span>
+
+        <span class="k">return</span> <span class="n">Activity</span><span class="o">.</span><span class="n">get_activities_conditions</span><span class="p">(</span>
+            <span class="n">times</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s1">&#39;where&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;act_club&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)],</span>
+            <span class="p">},</span>
+            <span class="n">dates</span><span class="o">=</span><span class="n">dates</span><span class="p">,</span>
+            <span class="n">order_by_time</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span></div>
+
+    <span class="nd">@paged_db_read</span>
+<div class="viewcode-block" id="Club.allactphotos"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Club.allactphotos">[docs]</a>    <span class="k">def</span> <span class="nf">allactphotos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pager</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">oclubs.objs</span> <span class="k">import</span> <span class="n">Activity</span><span class="p">,</span> <span class="n">Upload</span>
+
+        <span class="n">pager_fetch</span><span class="p">,</span> <span class="n">pager_return</span> <span class="o">=</span> <span class="n">pager</span>
+        <span class="n">tempdata</span> <span class="o">=</span> <span class="n">pager_fetch</span><span class="p">(</span>
+            <span class="n">database</span><span class="o">.</span><span class="n">fetch_multirow</span><span class="p">,</span>
+            <span class="s1">&#39;act_pic&#39;</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s1">&#39;actpic_upload&#39;</span><span class="p">:</span> <span class="s1">&#39;upload&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;act_id&#39;</span><span class="p">:</span> <span class="s1">&#39;activity&#39;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s1">&#39;join&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;inner&#39;</span><span class="p">,</span> <span class="s1">&#39;activity&#39;</span><span class="p">,</span> <span class="p">[(</span><span class="s1">&#39;actpic_act&#39;</span><span class="p">,</span> <span class="s1">&#39;act_id&#39;</span><span class="p">)])],</span>
+                <span class="s1">&#39;where&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;act_club&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)],</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">tempdata</span><span class="p">:</span>
+            <span class="n">item</span><span class="p">[</span><span class="s1">&#39;upload&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Upload</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;upload&#39;</span><span class="p">])</span>
+            <span class="n">item</span><span class="p">[</span><span class="s1">&#39;activity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Activity</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;activity&#39;</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">pager_return</span><span class="p">(</span><span class="n">tempdata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Club.add_member"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Club.add_member">[docs]</a>    <span class="k">def</span> <span class="nf">add_member</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="n">database</span><span class="o">.</span><span class="n">insert_row</span><span class="p">(</span><span class="s1">&#39;club_member&#39;</span><span class="p">,</span>
+                            <span class="p">{</span><span class="s1">&#39;cm_club&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s1">&#39;cm_user&#39;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">})</span>
+        <span class="n">user</span><span class="o">.</span><span class="n">delete_invitation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">members</span></div>
+
+<div class="viewcode-block" id="Club.remove_member"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Club.remove_member">[docs]</a>    <span class="k">def</span> <span class="nf">remove_member</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="n">database</span><span class="o">.</span><span class="n">delete_rows</span><span class="p">(</span><span class="s1">&#39;club_member&#39;</span><span class="p">,</span>
+                             <span class="p">{</span><span class="s1">&#39;cm_club&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s1">&#39;cm_user&#39;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">})</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">members</span></div>
+
+<div class="viewcode-block" id="Club.send_invitation"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Club.send_invitation">[docs]</a>    <span class="k">def</span> <span class="nf">send_invitation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">oclubs.objs.activity</span> <span class="k">import</span> <span class="n">date_int</span>
+        <span class="kn">from</span> <span class="nn">oclubs.exceptions</span> <span class="k">import</span> <span class="n">AlreadyExists</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">database</span><span class="o">.</span><span class="n">insert_row</span><span class="p">(</span>
+                <span class="s1">&#39;invitation&#39;</span><span class="p">,</span>
+                <span class="p">{</span><span class="s1">&#39;invitation_club&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                 <span class="s1">&#39;invitation_user&#39;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                 <span class="s1">&#39;invitation_date&#39;</span><span class="p">:</span> <span class="n">date_int</span><span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">())}</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="n">AlreadyExists</span><span class="p">:</span>
+            <span class="k">pass</span></div>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Club.get_clubs_special_access"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Club.get_clubs_special_access">[docs]</a>    <span class="k">def</span> <span class="nf">get_clubs_special_access</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">UserType</span><span class="o">.</span><span class="n">STUDENT</span><span class="p">:</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">fetch_onecol</span><span class="p">(</span>
+                <span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="p">,</span>
+                <span class="bp">cls</span><span class="o">.</span><span class="n">identifier</span><span class="p">,</span>
+                <span class="p">{</span><span class="s1">&#39;club_leader&#39;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">},</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">user</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">UserType</span><span class="o">.</span><span class="n">TEACHER</span><span class="p">:</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">fetch_onecol</span><span class="p">(</span>
+                <span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="p">,</span>
+                <span class="bp">cls</span><span class="o">.</span><span class="n">identifier</span><span class="p">,</span>
+                <span class="p">{</span><span class="s1">&#39;club_teacher&#39;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">},</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># ADMIN</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">return</span> <span class="nb">map</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">ret</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, SHSIDers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

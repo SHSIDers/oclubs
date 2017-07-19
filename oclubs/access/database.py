@@ -2,27 +2,41 @@
 # -*- coding: UTF-8 -*-
 #
 
+"""
+Module to access main relational database, which is currently MariaDB.
+
+This module compiles SQL statements with security in mind, executes them, and
+returns data from the execution.
+"""
+
 from __future__ import absolute_import
 
 from flask import g
 import MySQLdb
 import MySQLdb.constants.CLIENT
 
-from oclubs.access import get_secret
+from oclubs.access.secrets import get_secret
 from oclubs.exceptions import NoRow, AlreadyExists
 
 
 class RawSQL(object):
-    """Class to signal a raw SQL part of a query. - DANGEROUS!"""
+    """
+    Class to signal a raw SQL part of a query. - DANGEROUS!
+
+    :param sql: the raw SQL to use
+    :type sql: basestring
+    """
     def __init__(self, sql):
         self._sql = _strify(sql)
 
     @property
     def sql(self):
+        """The raw SQL passed in."""
         return self._sql
 
 
 def _parse_cond(conds):
+    """Create a SQL condition from condition dict."""
     return ' AND '.join([__parse_cond(one_cond) for one_cond in conds])
 
 
@@ -53,6 +67,13 @@ def ___parse_cond(cond):
 
 
 def expand_cond(cond):
+    """
+    Change the input SQL condition into a dict.
+
+    :param cond: the input SQL matching condition
+    :type cond: list or dict
+    :rtype: dict
+    """
     conddict = {
         'join': [],  # list of tuple (type, table, [(var1, var2), ...])
         'where': [],  # list of tuple (type, var, const)
@@ -73,6 +94,7 @@ def expand_cond(cond):
 
 
 def _parse_comp_cond(cond, forcelimit=None):
+    """Create a full SQL condition."""
     conddict = expand_cond(cond)
 
     if forcelimit:
@@ -212,8 +234,7 @@ def _execute(sql, write=False, ret='fetch'):
         cur.close()
 
 
-def done(commit=True):
-    """Exported function for flask."""
+def _done(commit=True):
     if g.get('dbconnection', None):
         try:
             if g.get('dbtransaction', False):
@@ -230,10 +251,29 @@ def done(commit=True):
 
 
 def fetch_info(info):
+    """
+    Execute a simple ``SELECT`` without a table.
+
+    :param info: the information to select
+    :type info: basestring
+    :returns: the selected information
+    """
     return _execute("SELECT %s;" % _encode_name(info))[0][0]
 
 
 def fetch_onerow(table, coldict, conds, **kwargs):
+    """
+    Execute a ``SELECT`` on a table, returning the value for a row.
+
+    :param basestring table: table name
+    :param dict coldict: column specification, with keys as the column name and
+        values as the corresponding keys of the returned dict
+    :param conds: conditions
+    :type conds: list or dict
+    :returns: the selected row, with keys specified in coldict
+    :rtype: dict
+    :raises NoRow: if no row was selected
+    """
     cols = coldict.keys()
     st = _encode_name(cols)
     conds = _parse_comp_cond(conds, forcelimit=1)
@@ -247,6 +287,16 @@ def fetch_onerow(table, coldict, conds, **kwargs):
 
 
 def fetch_oneentry(table, col, conds, **kwargs):
+    """
+    Execute a ``SELECT`` on a table, returning the value for an entry.
+
+    :param basestring table: table name
+    :param basestring col: column name
+    :param conds: conditions
+    :type conds: list or dict
+    :returns: the selected entry
+    :raises NoRow: if no row was selected
+    """
     conds = _parse_comp_cond(conds, forcelimit=1)
 
     rows = _execute("SELECT %s %s FROM %s %s;"
@@ -259,6 +309,16 @@ def fetch_oneentry(table, col, conds, **kwargs):
 
 
 def fetch_onecol(table, col, conds, **kwargs):
+    """
+    Execute a ``SELECT`` on a table, returning the values for a column.
+
+    :param basestring table: table name
+    :param basestring col: column name
+    :param conds: conditions
+    :type conds: list or dict
+    :returns: the selected column
+    :rtype: list
+    """
     conds = _parse_comp_cond(conds)
 
     rows = _execute("SELECT %s %s FROM %s %s;"
@@ -269,6 +329,17 @@ def fetch_onecol(table, col, conds, **kwargs):
 
 
 def fetch_multirow(table, coldict, conds, **kwargs):
+    """
+    Execute a ``SELECT`` on a table, returning the value for rows.
+
+    :param basestring table: table name
+    :param dict coldict: column specification, with keys as the column name and
+        values as the corresponding keys of the returned dic
+    :param conds: conditions
+    :type conds: list or dict
+    :returns: the selected rows
+    :rtype: list of dict
+    """
     cols = coldict.keys()
     st = _encode_name(cols)
     conds = _parse_comp_cond(conds)
@@ -280,6 +351,17 @@ def fetch_multirow(table, coldict, conds, **kwargs):
 
 
 def insert_row(table, insert):
+    """
+    Execute an ``INSERT`` on a table.
+
+    :param basestring table: table name
+    :param dict insert: inserted data, with keys as the column name and
+        values as the corresponding values
+    :returns: the id of the inserted row
+    :rtype: int or long
+    :raises AlreadyExists: if the row already exists and insertion would
+        result in duplicate keys
+    """
     try:
         keys = _encode_name(insert.keys())
         values = ','.join([_encode(value) for value in insert.values()])
@@ -294,6 +376,17 @@ def insert_row(table, insert):
 
 
 def insert_or_update_row(table, insert, update):
+    """
+    Execute an ``INSERT`` on a table, with ``ON DUPLICATE KEY UPDATE``.
+
+    :param basestring table: table name
+    :param dict coldict: inserted data, with keys as the column name and
+        values as the corresponding values
+    :param dict update: updated data, with keys as the column name and
+        values as the corresponding values
+    :returns: the id of the inserted row
+    :rtype: int or long
+    """
     if update:
         keys = _encode_name(insert.keys())
         values = ','.join([_encode(value) for value in insert.values()])
@@ -310,10 +403,22 @@ def insert_or_update_row(table, insert, update):
         try:
             return insert_row(table, insert)
         except AlreadyExists:
-            return 0
+            return 0  # FIXME: Wrong id?
 
 
 def update_row(table, update, conds):
+    """
+    Execute an ``UPDATE`` on a table.
+
+    :param basestring table: table name
+    :param dict update: updated data, with keys as the column name and
+        values as the corresponding values
+    :param conds: conditions
+    :type conds: list or dict
+    :returns: number of rows updated
+    :rtype: int or long
+    :raises NoRow: if no row was updated
+    """
     conds = _parse_comp_cond(conds)
     update = ["%s=%s" % (_encode_name(key), _encode(val))
               for key, val in update.items()]
@@ -330,6 +435,16 @@ def update_row(table, update, conds):
 
 
 def delete_rows(table, conds):
+    """
+    Execute a ``DELETE`` on a table.
+
+    :param basestring table: table name
+    :param conds: conditions
+    :type conds: list or dict
+    :returns: number of rows deleted
+    :rtype: int or long
+    :raises NoRow: if no row was deleted
+    """
     conds = _parse_comp_cond(conds)
 
     rows = _execute("DELETE FROM %s %s;" % (_encode_name(table), conds),

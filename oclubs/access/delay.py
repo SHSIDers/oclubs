@@ -9,7 +9,7 @@ from functools import wraps
 from flask import g
 
 
-def done(commit=True):
+def _done(commit=True):
     if g.get('delayedFunc', None):
         if commit:
             for func, args, kwargs in g.delayedFunc:

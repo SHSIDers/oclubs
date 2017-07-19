@@ -41,6 +41,7 @@ class User(BaseObject, UserMixin):
     grade = Property('user_grade')
     currentclass = Property('user_class')
     clubs = ListProperty('club_member', 'cm_user', 'cm_club', 'Club')
+    attendance = ListProperty('attendance', 'att_user', 'att_act', 'Activity')
 
     GRADECLASSREGEX = re.compile(r'^\s*(\d+)\s*[-_/\\]\s*(\d+)\s*$')
 
@@ -56,25 +57,6 @@ class User(BaseObject, UserMixin):
     @property
     def is_disabled(self):
         return not self._data['password']
-
-    def cas_in_club(self, club):
-        ret = database.fetch_oneentry(
-            'attendance',
-            database.RawSQL('SUM(act_cas)'),
-            {
-                'join': [('inner', 'activity', [('act_id', 'att_act')])],
-                'where': [
-                    ('=', 'att_user', self.id),
-                    ('=', 'act_club', club.id)
-                ],
-            }
-        )
-
-        # database.fetch_oneentry returns a Decimal object, and sum
-        # Decimal with float fails
-        if ret:
-            return int(ret) / 60
-        return 0
 
     def activities_reminder(self, types, signedup_only=False):
         from oclubs.objs import Activity

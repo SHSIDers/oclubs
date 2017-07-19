@@ -2,6 +2,13 @@
 # -*- coding: UTF-8 -*-
 #
 
+"""
+Module to access Elasticsearch search engine.
+
+This module has delayed functions to create/update/delete documents on the
+engine, and to search within all the documents.
+"""
+
 from __future__ import absolute_import, unicode_literals
 
 import re
@@ -16,6 +23,13 @@ es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
 
 @delayed_func
 def create(doc_type, doc_id, data):
+    """
+    Create an Elasticsearch document.
+
+    :param basestring doc_type: document type
+    :param doc_id: document id, will be converted into basestring
+    :param dict data: new document data
+    """
     return es.create(
         index='oclubs',
         doc_type=doc_type,
@@ -26,6 +40,12 @@ def create(doc_type, doc_id, data):
 
 @delayed_func
 def delete(doc_type, doc_id):
+    """
+    Delete an Elasticsearch document.
+
+    :param basestring doc_type: document type
+    :param doc_id: document id, will be converted into basestring
+    """
     return es.delete(
         index='oclubs',
         doc_type=doc_type,
@@ -34,6 +54,16 @@ def delete(doc_type, doc_id):
 
 
 def get(doc_type, doc_id, fields=True):
+    """
+    Get an Elasticsearch document.
+
+    :param basestring doc_type: document type
+    :param doc_id: document id, will be converted into basestring
+    :param fields: if ``False``, returns whether the document is found as bool;
+        if ``True``, returns the document dict; if list of string, returns the
+        document dict with only the specified fields.
+    :rtype: dict or bool
+    """
     ret = es.get(
         index='oclubs',
         doc_type=doc_type,
@@ -49,6 +79,13 @@ def get(doc_type, doc_id, fields=True):
 
 @delayed_func
 def update(doc_type, doc_id, data):
+    """
+    Update an Elasticsearch document.
+
+    :param basestring doc_type: document type
+    :param doc_id: document id, will be converted into basestring
+    :param dict data: new document data
+    """
     return es.update(
         index='oclubs',
         doc_type=doc_type,
@@ -106,6 +143,22 @@ def _search(querystr, doc_type, fields, offset=0, size=10,
 
 
 def search(querystr, *args, **kwargs):
+    """
+    Search for Elasticsearch documents.
+
+    :param basestring querystr: query string
+    :param basestring doc_type: document type
+    :param doc_id: document id, will be converted into basestring
+    :param fields: fields to search on
+    :type fields: list of basestring
+    :param int offset: search offset
+    :param int size: search size
+    :returns:
+        - 'instead' (basestring or None): the alternative search query
+        - 'results' (list of dict): list of documents
+        - 'count' (int): the number of all matching documents
+    :rtype: dict
+    """
     ret = {
         'instead': None,
         'results': [],

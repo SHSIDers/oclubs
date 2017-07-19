@@ -141,7 +141,7 @@ def memberinfo(club):
 def memberinfo_notify_members(club):
     '''Allow club leader to notify members'''
     notify_contents = request.form['contents']
-    if notify_contents == '':
+    if not notify_contents:
         flash('Please input something.', 'notify_members')
         return redirect(url_for('.memberinfo', club=club.callsign))
     for member in club.members:
@@ -476,6 +476,7 @@ def adjust_status(club_type):
         clubs = Club.allclubs(active_only=False, grade_limit=[9, 10])
     else:
         abort(404)
+    clubs = filter(lambda c: c.reactivate, clubs)
     return render_template('club/adjuststatus.jinja2',
                            clubs=clubs,
                            ClubJoinMode=ClubJoinMode,
@@ -522,6 +523,7 @@ def adjust_status_all_free_join(club_type):
         clubs = Club.allclubs(active_only=False, grade_limit=[9, 10])
     else:
         abort(404)
+    clubs = filter(lambda c: c.reactivate, clubs)
     for club in clubs:
         club.joinmode = ClubJoinMode.FREE_JOIN
     flash('All clubs are free to join now.', 'adjust_status')
@@ -534,7 +536,7 @@ def adjust_status_all_free_join(club_type):
 @special_access_required
 @require_not_student
 def adjust_status_all_by_invitation(club_type):
-    '''Change all clubs' join mode to free join'''
+    '''Change all clubs' join mode to by invitation'''
     if club_type == 'all':
         clubs = Club.allclubs(active_only=False)
     elif club_type == '11-12':
@@ -543,6 +545,7 @@ def adjust_status_all_by_invitation(club_type):
         clubs = Club.allclubs(active_only=False, grade_limit=[9, 10])
     else:
         abort(404)
+    clubs = filter(lambda c: c.reactivate, clubs)
     for club in clubs:
         club.joinmode = ClubJoinMode.BY_INVITATION
     flash('All clubs are invite-only now.', 'adjust_status')
@@ -698,6 +701,7 @@ def newclub_submit():
         c.picture = Upload(-101)
         c.type = ClubType(clubtype)
         c.joinmode = ClubJoinMode.FREE_JOIN
+        c.reactivate = True
         c.create()
         c.add_member(current_user)
         c.description = FormattedText.handle(current_user, c,
@@ -744,3 +748,19 @@ def adjustclubs_submit():
     Club.set_excellentclubs(exc_clubs)
     flash('The change has been successfully submitted', 'adjustclubs')
     return redirect(url_for('.adjustclubs'))
+
+
+@clubblueprint.route('/<club>/reactivate', methods=['POST'])
+@get_callsign(Club, 'club')
+@special_access_required
+@fresh_login_required
+def reactivate_submit(club):
+    if 'keep_members' not in request.form:
+        for member in club.members:
+            if member != club.leader:
+                club.remove_member(member)
+
+    club.reactivate = True
+    flash('You have successfully submitted your reactivation request. '
+          'Please wait for approval.', 'reactivate_submit')
+    return redirect(url_for('userblueprint.personal'))

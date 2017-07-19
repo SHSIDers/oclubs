@@ -1,0 +1,295 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>oclubs.objs.activity &#8212; oClubs 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for oclubs.objs.activity</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: UTF-8 -*-</span>
+<span class="c1">#</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">unicode_literals</span><span class="p">,</span> <span class="n">division</span>
+
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">oclubs.access</span> <span class="k">import</span> <span class="n">database</span>
+<span class="kn">from</span> <span class="nn">oclubs.enums</span> <span class="k">import</span> <span class="n">ActivityTime</span>
+<span class="kn">from</span> <span class="nn">oclubs.objs.base</span> <span class="k">import</span> <span class="n">BaseObject</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">ListProperty</span><span class="p">,</span> <span class="n">paged_db_read</span>
+
+<span class="n">ONE_DAY</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="int_date"><a class="viewcode-back" href="../../../api.html#oclubs.objs.int_date">[docs]</a><span class="k">def</span> <span class="nf">int_date</span><span class="p">(</span><span class="n">dateint</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">dateint</span><span class="p">),</span> <span class="n">Activity</span><span class="o">.</span><span class="n">date_fmtstr</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="date_int"><a class="viewcode-back" href="../../../api.html#oclubs.objs.date_int">[docs]</a><span class="k">def</span> <span class="nf">date_int</span><span class="p">(</span><span class="n">dateobj</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">dateobj</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">Activity</span><span class="o">.</span><span class="n">date_fmtstr</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Activity"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Activity">[docs]</a><span class="k">class</span> <span class="nc">Activity</span><span class="p">(</span><span class="n">BaseObject</span><span class="p">):</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="s1">&#39;activity&#39;</span>
+    <span class="n">identifier</span> <span class="o">=</span> <span class="s1">&#39;act_id&#39;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s1">&#39;act_name&#39;</span><span class="p">,</span> <span class="n">search</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">club</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s1">&#39;act_club&#39;</span><span class="p">,</span> <span class="s1">&#39;Club&#39;</span><span class="p">)</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s1">&#39;act_desc&#39;</span><span class="p">,</span> <span class="s1">&#39;FormattedText&#39;</span><span class="p">,</span> <span class="n">search</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s1">&#39;act_date&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">int_date</span><span class="p">,</span> <span class="n">date_int</span><span class="p">))</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s1">&#39;act_time&#39;</span><span class="p">,</span> <span class="n">ActivityTime</span><span class="p">)</span>
+    <span class="n">location</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s1">&#39;act_location&#39;</span><span class="p">)</span>
+    <span class="n">cas</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s1">&#39;act_cas&#39;</span><span class="p">,</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="n">val</span><span class="o">/</span><span class="mi">60</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="n">val</span><span class="o">*</span><span class="mi">60</span><span class="p">))</span>
+    <span class="n">post</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s1">&#39;act_post&#39;</span><span class="p">,</span> <span class="s1">&#39;FormattedText&#39;</span><span class="p">,</span> <span class="n">search</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">selections</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s1">&#39;act_selections&#39;</span><span class="p">,</span> <span class="n">json</span><span class="p">,</span> <span class="n">error_default</span><span class="o">=</span><span class="s1">&#39;[]&#39;</span><span class="p">)</span>
+    <span class="n">attendance</span> <span class="o">=</span> <span class="n">ListProperty</span><span class="p">(</span><span class="s1">&#39;attendance&#39;</span><span class="p">,</span> <span class="s1">&#39;att_act&#39;</span><span class="p">,</span> <span class="s1">&#39;att_user&#39;</span><span class="p">,</span> <span class="s1">&#39;User&#39;</span><span class="p">)</span>
+    <span class="n">pictures</span> <span class="o">=</span> <span class="n">ListProperty</span><span class="p">(</span><span class="s1">&#39;act_pic&#39;</span><span class="p">,</span> <span class="s1">&#39;actpic_act&#39;</span><span class="p">,</span> <span class="s1">&#39;actpic_upload&#39;</span><span class="p">,</span> <span class="s1">&#39;Upload&#39;</span><span class="p">)</span>
+
+    <span class="n">date_fmtstr</span> <span class="o">=</span> <span class="s1">&#39;%Y%m</span><span class="si">%d</span><span class="s1">&#39;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_future</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">date</span> <span class="o">&gt;</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">one_line_selections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selections</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Activity.signup"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Activity.signup">[docs]</a>    <span class="k">def</span> <span class="nf">signup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;signup_consentform&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;consentform&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+            <span class="s1">&#39;signup_selection&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;selection&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="n">insert</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;signup_act&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s1">&#39;signup_user&#39;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
+        <span class="n">update</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">dbkey</span><span class="p">,</span> <span class="p">(</span><span class="n">kwkey</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">kwkey</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="n">insert</span><span class="p">[</span><span class="n">dbkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">kwkey</span><span class="p">]</span>
+                <span class="n">update</span><span class="p">[</span><span class="n">dbkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">kwkey</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">insert</span><span class="p">[</span><span class="n">dbkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">default</span>
+
+        <span class="n">database</span><span class="o">.</span><span class="n">insert_or_update_row</span><span class="p">(</span><span class="s1">&#39;signup&#39;</span><span class="p">,</span> <span class="n">insert</span><span class="p">,</span> <span class="n">update</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Activity.signup_undo"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Activity.signup_undo">[docs]</a>    <span class="k">def</span> <span class="nf">signup_undo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="n">database</span><span class="o">.</span><span class="n">delete_rows</span><span class="p">(</span>
+            <span class="s1">&#39;signup&#39;</span><span class="p">,</span>
+            <span class="p">{</span><span class="s1">&#39;signup_act&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s1">&#39;signup_user&#39;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Activity.signup_list"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Activity.signup_list">[docs]</a>    <span class="k">def</span> <span class="nf">signup_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">oclubs.objs</span> <span class="k">import</span> <span class="n">User</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">fetch_multirow</span><span class="p">(</span>
+            <span class="s1">&#39;signup&#39;</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s1">&#39;signup_user&#39;</span><span class="p">:</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;signup_consentform&#39;</span><span class="p">:</span> <span class="s1">&#39;consentform&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;signup_selection&#39;</span><span class="p">:</span> <span class="s1">&#39;selection&#39;</span>
+            <span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;signup_act&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">ret</span><span class="p">:</span>
+            <span class="n">item</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="Activity.signup_user_status"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Activity.signup_user_status">[docs]</a>    <span class="k">def</span> <span class="nf">signup_user_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">database</span><span class="o">.</span><span class="n">fetch_onerow</span><span class="p">(</span>
+            <span class="s1">&#39;signup&#39;</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s1">&#39;signup_consentform&#39;</span><span class="p">:</span> <span class="s1">&#39;consentform&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;signup_selection&#39;</span><span class="p">:</span> <span class="s1">&#39;selection&#39;</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s1">&#39;signup_act&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="s1">&#39;signup_user&#39;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span>
+            <span class="p">}</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Activity.attend"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Activity.attend">[docs]</a>    <span class="k">def</span> <span class="nf">attend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="n">database</span><span class="o">.</span><span class="n">insert_row</span><span class="p">(</span>
+            <span class="s1">&#39;attendance&#39;</span><span class="p">,</span>
+            <span class="p">{</span><span class="s1">&#39;att_act&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s1">&#39;att_user&#39;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
+        <span class="p">)</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">attendance</span></div>
+
+<div class="viewcode-block" id="Activity.attend_undo"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Activity.attend_undo">[docs]</a>    <span class="k">def</span> <span class="nf">attend_undo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="n">database</span><span class="o">.</span><span class="n">delete_rows</span><span class="p">(</span>
+            <span class="s1">&#39;attendance&#39;</span><span class="p">,</span>
+            <span class="p">{</span><span class="s1">&#39;att_act&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s1">&#39;att_user&#39;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
+        <span class="p">)</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">attendance</span></div>
+
+<div class="viewcode-block" id="Activity.add_picture"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Activity.add_picture">[docs]</a>    <span class="k">def</span> <span class="nf">add_picture</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">upload</span><span class="p">):</span>
+        <span class="n">database</span><span class="o">.</span><span class="n">insert_row</span><span class="p">(</span><span class="s1">&#39;act_pic&#39;</span><span class="p">,</span>
+                            <span class="p">{</span><span class="s1">&#39;actpic_act&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                             <span class="s1">&#39;actpic_upload&#39;</span><span class="p">:</span> <span class="n">upload</span><span class="o">.</span><span class="n">id</span><span class="p">})</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">pictures</span></div>
+
+<div class="viewcode-block" id="Activity.remove_picture"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Activity.remove_picture">[docs]</a>    <span class="k">def</span> <span class="nf">remove_picture</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">upload</span><span class="p">):</span>
+        <span class="n">database</span><span class="o">.</span><span class="n">delete_rows</span><span class="p">(</span><span class="s1">&#39;act_pic&#39;</span><span class="p">,</span>
+                             <span class="p">{</span><span class="s1">&#39;actpic_act&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                              <span class="s1">&#39;actpic_upload&#39;</span><span class="p">:</span> <span class="n">upload</span><span class="o">.</span><span class="n">id</span><span class="p">})</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">pictures</span></div>
+
+    <span class="nd">@classmethod</span>
+    <span class="nd">@paged_db_read</span>
+<div class="viewcode-block" id="Activity.get_activities_conditions"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Activity.get_activities_conditions">[docs]</a>    <span class="k">def</span> <span class="nf">get_activities_conditions</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="p">(),</span> <span class="n">additional_conds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                  <span class="n">dates</span><span class="o">=</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span> <span class="n">club_types</span><span class="o">=</span><span class="p">(),</span>
+                                  <span class="n">excellent_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">grade_limit</span><span class="o">=</span><span class="p">(),</span>
+                                  <span class="n">require_photos</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">require_attend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                  <span class="n">order_by_time</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pager</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">conds</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">additional_conds</span><span class="p">:</span>
+            <span class="n">conds</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">additional_conds</span><span class="p">)</span>
+
+        <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;where&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">conds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;where&#39;</span><span class="p">,</span> <span class="p">[])</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">date</span><span class="p">):</span>
+            <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;where&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;act_date&#39;</span><span class="p">,</span> <span class="n">date_int</span><span class="p">(</span><span class="n">dates</span><span class="p">)))</span>
+        <span class="k">elif</span> <span class="n">dates</span> <span class="o">!=</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
+            <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">dates</span>
+
+            <span class="k">if</span> <span class="n">start</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;where&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;&lt;=&#39;</span><span class="p">,</span> <span class="s1">&#39;act_date&#39;</span><span class="p">,</span>
+                                       <span class="n">date_int</span><span class="p">(</span><span class="n">end</span> <span class="ow">or</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">())))</span>
+            <span class="k">elif</span> <span class="n">end</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;where&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;act_date&#39;</span><span class="p">,</span>
+                                       <span class="n">date_int</span><span class="p">(</span><span class="n">start</span> <span class="ow">or</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">())))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">start</span> <span class="o">=</span> <span class="p">(</span><span class="n">start</span> <span class="ow">or</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">())</span> <span class="o">+</span> <span class="n">ONE_DAY</span>
+                <span class="n">end</span> <span class="o">=</span> <span class="p">(</span><span class="n">end</span> <span class="ow">or</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">())</span> <span class="o">+</span> <span class="n">ONE_DAY</span>
+                <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;where&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;range&#39;</span><span class="p">,</span> <span class="s1">&#39;act_date&#39;</span><span class="p">,</span>
+                                       <span class="p">(</span><span class="n">date_int</span><span class="p">(</span><span class="n">start</span><span class="p">),</span> <span class="n">date_int</span><span class="p">(</span><span class="n">end</span><span class="p">))))</span>
+
+        <span class="k">if</span> <span class="n">times</span><span class="p">:</span>
+            <span class="n">times</span> <span class="o">=</span> <span class="p">[</span><span class="n">time</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">times</span><span class="p">]</span>
+            <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;where&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="s1">&#39;act_time&#39;</span><span class="p">,</span> <span class="n">times</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">club_types</span> <span class="ow">or</span> <span class="n">excellent_only</span> <span class="ow">or</span> <span class="n">grade_limit</span><span class="p">:</span>
+            <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;join&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">conds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;join&#39;</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;join&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;inner&#39;</span><span class="p">,</span> <span class="s1">&#39;club&#39;</span><span class="p">,</span> <span class="p">[(</span><span class="s1">&#39;club_id&#39;</span><span class="p">,</span> <span class="s1">&#39;act_club&#39;</span><span class="p">)]))</span>
+        <span class="k">if</span> <span class="n">club_types</span><span class="p">:</span>
+            <span class="n">club_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">club_type</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">club_type</span> <span class="ow">in</span> <span class="n">club_types</span><span class="p">]</span>
+            <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;where&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="s1">&#39;club_type&#39;</span><span class="p">,</span> <span class="n">club_types</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">excellent_only</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">oclubs.objs</span> <span class="k">import</span> <span class="n">Club</span>
+            <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;where&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="s1">&#39;club_id&#39;</span><span class="p">,</span> <span class="n">Club</span><span class="o">.</span><span class="n">_excellentclubs</span><span class="p">()))</span>
+        <span class="k">if</span> <span class="n">grade_limit</span><span class="p">:</span>
+            <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;join&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">(</span><span class="s1">&#39;inner&#39;</span><span class="p">,</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="p">[(</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;club_leader&#39;</span><span class="p">)]))</span>
+            <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;where&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="s1">&#39;user_grade&#39;</span><span class="p">,</span> <span class="n">grade_limit</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">require_photos</span><span class="p">:</span>
+            <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;join&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">conds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;join&#39;</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;join&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">(</span><span class="s1">&#39;inner&#39;</span><span class="p">,</span> <span class="s1">&#39;act_pic&#39;</span><span class="p">,</span> <span class="p">[(</span><span class="s1">&#39;actpic_act&#39;</span><span class="p">,</span> <span class="s1">&#39;act_id&#39;</span><span class="p">)]))</span>
+        <span class="k">if</span> <span class="n">require_attend</span><span class="p">:</span>
+            <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;join&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">conds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;join&#39;</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;join&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">(</span><span class="s1">&#39;inner&#39;</span><span class="p">,</span> <span class="s1">&#39;attendance&#39;</span><span class="p">,</span> <span class="p">[(</span><span class="s1">&#39;att_act&#39;</span><span class="p">,</span> <span class="s1">&#39;act_id&#39;</span><span class="p">)]))</span>
+
+        <span class="k">if</span> <span class="n">order_by_time</span><span class="p">:</span>
+            <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;order&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">conds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;order&#39;</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="n">conds</span><span class="p">[</span><span class="s1">&#39;order&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;act_date&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+
+        <span class="n">pager_fetch</span><span class="p">,</span> <span class="n">pager_return</span> <span class="o">=</span> <span class="n">pager</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">pager_fetch</span><span class="p">(</span><span class="n">database</span><span class="o">.</span><span class="n">fetch_onecol</span><span class="p">,</span> <span class="s1">&#39;activity&#39;</span><span class="p">,</span> <span class="s1">&#39;act_id&#39;</span><span class="p">,</span> <span class="n">conds</span><span class="p">,</span>
+                          <span class="n">distinct</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">[</span><span class="bp">cls</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">ret</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">pager_return</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span></div>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Activity.all_activities"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Activity.all_activities">[docs]</a>    <span class="k">def</span> <span class="nf">all_activities</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_activities_conditions</span><span class="p">()</span></div>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Activity.thisweek_activities"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Activity.thisweek_activities">[docs]</a>    <span class="k">def</span> <span class="nf">thisweek_activities</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="n">weekday</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">weekday</span><span class="p">()</span>
+        <span class="n">today</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_activities_conditions</span><span class="p">(</span>
+            <span class="n">dates</span><span class="o">=</span><span class="p">(</span><span class="n">today</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">weekday</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">today</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="mi">6</span> <span class="o">-</span> <span class="n">weekday</span><span class="p">)))</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, SHSIDers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

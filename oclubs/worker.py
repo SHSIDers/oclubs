@@ -180,7 +180,10 @@ def rebuild_elasticsearch():
             params.get('conds', [])
         )
         db_ids = set(int(x) for x in db_ids)
-        db_max = max(db_ids)
+        if db_ids:
+            db_max = max(db_ids)
+        else:
+            db_max = 0
 
         try:
             es_ids = scan(

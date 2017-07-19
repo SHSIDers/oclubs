@@ -1,0 +1,205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>oclubs.objs.upload &#8212; oClubs 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for oclubs.objs.upload</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: UTF-8 -*-</span>
+<span class="c1">#</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">unicode_literals</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ExifTags</span>
+<span class="kn">import</span> <span class="nn">magic</span>
+
+<span class="kn">from</span> <span class="nn">oclubs.access</span> <span class="k">import</span> <span class="n">fs</span>
+<span class="kn">from</span> <span class="nn">oclubs.exceptions</span> <span class="k">import</span> <span class="n">UploadNotSupported</span>
+<span class="kn">from</span> <span class="nn">oclubs.objs.base</span> <span class="k">import</span> <span class="n">BaseObject</span><span class="p">,</span> <span class="n">Property</span>
+
+<span class="n">ORIENTATION</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">ExifTags</span><span class="o">.</span><span class="n">TAGS</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="s1">&#39;Orientation&#39;</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Upload"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Upload">[docs]</a><span class="k">class</span> <span class="nc">Upload</span><span class="p">(</span><span class="n">BaseObject</span><span class="p">):</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="s1">&#39;upload&#39;</span>
+    <span class="n">identifier</span> <span class="o">=</span> <span class="s1">&#39;upload_id&#39;</span>
+    <span class="n">club</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s1">&#39;upload_club&#39;</span><span class="p">,</span> <span class="s1">&#39;Club&#39;</span><span class="p">)</span>
+    <span class="n">uploader</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s1">&#39;upload_user&#39;</span><span class="p">,</span> <span class="s1">&#39;User&#39;</span><span class="p">)</span>
+    <span class="n">_location</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s1">&#39;upload_loc&#39;</span><span class="p">)</span>
+    <span class="n">mime</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s1">&#39;upload_mime&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Don&#39;t use mimetypes.guess_extension(mime) -- &#39;image/jpeg&#39; =&gt; &#39;.jpe&#39;</span>
+    <span class="n">_mimedict</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;image/jpeg&#39;</span><span class="p">:</span> <span class="s1">&#39;.jpg&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;image/png&#39;</span><span class="p">:</span> <span class="s1">&#39;.png&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">location_local</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_real</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mk_internal_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_location</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mk_internal_path</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">location_external</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_real</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mk_external_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_location</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mk_external_path</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Upload.handle"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Upload.handle">[docs]</a>    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">club</span><span class="p">,</span> <span class="n">file</span><span class="p">):</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;hex&#39;</span><span class="p">)</span>
+        <span class="n">temppath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;/tmp&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">temppath</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Don&#39;t use mimetypes.guess_type(temppath) -- Faked extensions</span>
+            <span class="n">mime</span> <span class="o">=</span> <span class="n">magic</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">temppath</span><span class="p">,</span> <span class="n">mime</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">mime</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_mimedict</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">UploadNotSupported</span>
+
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span> <span class="o">+</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_mimedict</span><span class="p">[</span><span class="n">mime</span><span class="p">]</span>
+            <span class="n">permpath</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">mk_internal_path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">permdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">permpath</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">permdir</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">permdir</span><span class="p">,</span> <span class="mo">0o755</span><span class="p">)</span>
+
+            <span class="c1"># resize to 600, 450</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_thumb</span><span class="p">(</span><span class="n">temppath</span><span class="p">,</span> <span class="n">permpath</span><span class="p">)</span>
+            <span class="n">fs</span><span class="o">.</span><span class="n">watch</span><span class="p">(</span><span class="n">permpath</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">temppath</span><span class="p">)</span>
+
+        <span class="n">obj</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">club</span> <span class="o">=</span> <span class="n">club</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">uploader</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">_location</span> <span class="o">=</span> <span class="n">filename</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">mime</span> <span class="o">=</span> <span class="n">mime</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">create</span><span class="p">()</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_thumb</span><span class="p">(</span><span class="n">temppath</span><span class="p">,</span> <span class="n">permpath</span><span class="p">):</span>
+        <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">temppath</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># HACK: Fixing EXIF orientation</span>
+            <span class="n">exif</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">im</span><span class="o">.</span><span class="n">_getexif</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+            <span class="n">exif</span><span class="p">[</span><span class="n">ORIENTATION</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">exif</span><span class="p">[</span><span class="n">ORIENTATION</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">im</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="mi">180</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">exif</span><span class="p">[</span><span class="n">ORIENTATION</span><span class="p">]</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+                <span class="n">im</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="mi">270</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">exif</span><span class="p">[</span><span class="n">ORIENTATION</span><span class="p">]</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
+                <span class="n">im</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">im</span><span class="o">.</span><span class="n">thumbnail</span><span class="p">((</span><span class="mi">600</span><span class="p">,</span> <span class="mi">450</span><span class="p">))</span>
+        <span class="n">im</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">permpath</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Upload.mk_relative_path"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Upload.mk_relative_path">[docs]</a>    <span class="k">def</span> <span class="nf">mk_relative_path</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">is_upload</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">is_upload</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;images&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">filename</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;static/images/icons&#39;</span><span class="p">,</span> <span class="s1">&#39;icon</span><span class="si">%d</span><span class="s1">.jpg&#39;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Upload.mk_internal_path"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Upload.mk_internal_path">[docs]</a>    <span class="k">def</span> <span class="nf">mk_internal_path</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">is_upload</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;/srv/oclubs&#39;</span><span class="p">,</span>
+                            <span class="n">Upload</span><span class="o">.</span><span class="n">mk_relative_path</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">is_upload</span><span class="p">))</span></div>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Upload.mk_external_path"><a class="viewcode-back" href="../../../api.html#oclubs.objs.Upload.mk_external_path">[docs]</a>    <span class="k">def</span> <span class="nf">mk_external_path</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">is_upload</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">Upload</span><span class="o">.</span><span class="n">mk_relative_path</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">is_upload</span><span class="p">))</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, SHSIDers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

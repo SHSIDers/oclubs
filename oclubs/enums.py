@@ -2,20 +2,25 @@
 # -*- coding: UTF-8 -*-
 #
 
+"""oClubs enums."""
+
 from enum import Enum
 
 
 class UserType(Enum):
+    """Enum regarding the type of a user."""
     STUDENT = 1
     TEACHER = 2
     ADMIN = 3
 
     @property
     def format_name(self):
+        """Formats the value of the enum for display."""
         return ['', 'Student', 'Teacher', 'Admin'][self.value]
 
 
 class ClubType(Enum):
+    """Enum regarding the type of a club."""
     ACADEMICS = 1
     SPORTS = 2
     ARTS = 3
@@ -26,11 +31,13 @@ class ClubType(Enum):
 
     @property
     def format_name(self):
+        """Formats the value of the enum for display."""
         return ['', 'Academics', 'Sports', 'Arts', 'Services',
                 'Entertainment', 'Others', 'School Teams'][self.value]
 
 
 class ActivityTime(Enum):
+    """Enum regarding the time of an activity."""
     UNKNOWN = 0
     NOON = 1
     AFTERSCHOOL = 2
@@ -39,16 +46,19 @@ class ActivityTime(Enum):
 
     @property
     def format_name(self):
+        """Formats the value of the enum for display."""
         return ['Unknown', 'Noon', 'Afterschool', 'HongMei',
                 'Others'][self.value]
 
 
 class ClubJoinMode(Enum):
+    """Enum regarding the join mode of a club."""
     FREE_JOIN = 1
     BY_INVITATION = 2
 
     @property
     def format_name(self):
+        """Formats the value of the enum for display."""
         return ['', 'Free Join', 'By Invitation'][self.value]
 
 __all__ = ['UserType', 'ClubType', 'ActivityTime', 'ClubJoinMode']

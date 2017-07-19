@@ -2,11 +2,17 @@
 # -*- coding: UTF-8 -*-
 #
 
+"""
+Module to access SHSID authortative database, which is currently IBM DB2.
+
+Only accessing student data is implemented.
+"""
+
 from __future__ import absolute_import
 
 from ibm_db import close, connect, exec_immediate, fetch_assoc
 
-from oclubs.access import get_secret
+from oclubs.access.secrets import get_secret
 
 
 def _results(command):
@@ -27,5 +33,11 @@ def _execute(sql):
 
 
 def allstudents():
+    """
+    Get information on all students in grade 9 - 12.
+
+    :returns: student information, with each student a dict in the list
+    :rtype: list of dict
+    """
     return _execute("SELECT * FROM cwshs.v_student_all2 WHERE "
                     "deleted = 0 AND gradename IN ('9', '10', '11', '12')")

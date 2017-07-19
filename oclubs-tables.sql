@@ -29,7 +29,8 @@ CREATE TABLE club (
 	club_location varchar(255) NOT NULL,
 	club_inactive boolean NOT NULL,
 	club_type tinyint NOT NULL, # 1 = academics, 2 = sports, 3 = arts, 4 = services, 5 = entertainment, 6 = others, 7 = school teams
-	club_joinmode tinyint NOT NULL # 1 = free join, 2 = by invitation
+	club_joinmode tinyint NOT NULL, # 1 = free join, 2 = by invitation,
+	club_reactivate boolean NOT NULL
 );
 
 CREATE INDEX club_name ON club (club_name);
