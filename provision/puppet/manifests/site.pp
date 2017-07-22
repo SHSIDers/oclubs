@@ -36,8 +36,8 @@ resources { 'firewall':
 
 # Firewall rule ordering
 Firewall {
-    before  => Class['::my_fw::post'],
-    require => Class['::my_fw::pre'],
+    before  => Class['::fw_base::post'],
+    require => Class['::fw_base::pre'],
 }
 
 # Assign classes to nodes via hiera

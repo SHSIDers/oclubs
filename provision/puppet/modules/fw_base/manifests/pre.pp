@@ -1,5 +1,5 @@
 # Source: https://forge.puppet.com/puppetlabs/firewall#setup
-class my_fw::pre {
+class fw_base::pre {
   Firewall {
     require => undef,
   }

@@ -24,8 +24,8 @@ class oclubs::baseservices {
 
 
     include ::firewall
-    include ::my_fw::pre
-    include ::my_fw::post
+    include ::fw_base::pre
+    include ::fw_base::post
 
     firewall { '100 Allow inbound SSH':
         dport  => 22,
