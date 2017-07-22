@@ -183,6 +183,7 @@ main() {
     echo '   c. Upload the ssh keys.'
     echo '   d. Complete the email aliases.'
     echo '2. After every maintainer can successfully ssh in via private key, disable password login in /etc/ssh/sshd_config.'
+    echo '3. If necessary, create admin accounts via `$ new_user --type ADMIN`, and refresh student database.'
 }
 
 main

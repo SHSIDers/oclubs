@@ -43,7 +43,7 @@ class User(BaseObject, UserMixin):
     clubs = ListProperty('club_member', 'cm_user', 'cm_club', 'Club')
     attendance = ListProperty('attendance', 'att_user', 'att_act', 'Activity')
 
-    GRADECLASSREGEX = re.compile(r'^\s*(\d+)\s*[-_/\\]\s*(\d+)\s*$')
+    GRADECLASSREGEX = re.compile(r'^\s*(\d+)(?:\s*[-_/\\]\s*|\s+)(\d+)\s*$')
 
     PREFERENCES = {
         'receive_email': (lambda x: bool(int(x)), True),
@@ -224,12 +224,19 @@ class User(BaseObject, UserMixin):
                 return
 
     @classmethod
-    def find_user(cls, gradeclass, passportname):
+    def extract_gradeclass(cls, gradeclass):
         reobj = cls.GRADECLASSREGEX.match(gradeclass)
         if not reobj:
-            return
+            raise ValueError
 
-        grade, currentclass = reobj.group(1), reobj.group(2)
+        return int(reobj.group(1)), int(reobj.group(2))
+
+    @classmethod
+    def find_user(cls, gradeclass, passportname):
+        try:
+            grade, currentclass = cls.extract_gradeclass(gradeclass)
+        except ValueError:
+            return
 
         try:
             return cls(database.fetch_oneentry(

@@ -10,6 +10,14 @@ class oclubs::user {
         source => 'puppet:///modules/oclubs/pyshell.sh',
     }
 
+    file { '/usr/local/bin/new_user':
+        ensure => file,
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/oclubs/new_user.py',
+    }
+
     if $::environment == 'vagrant' {
         file { '/home/vagrant/.my.cnf':
             ensure  => file,
