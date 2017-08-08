@@ -44,7 +44,7 @@ clone_repo() {
         git clone https://github.com/SHSIDers/oclubs.git /srv/oclubs/repo
         pushd /srv/oclubs/repo
         git checkout centos7 || true # FIXME: remove this line when merged into master
-        git submodule update --init --recursive --remote
+        git submodule update --init --recursive
         popd
     fi
 }
