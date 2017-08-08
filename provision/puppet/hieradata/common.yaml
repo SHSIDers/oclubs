@@ -100,7 +100,7 @@ nginx::nginx_vhosts:
 
           location /static/cdn/cdnjs/ {
             rewrite ^/static/cdn/cdnjs(/.*)$ $1 break;
-            proxy_pass http://cdn.bootcss.com;
+            proxy_pass http://cdnjs.cloudflare.com;
           }
 
           location /static/cdn/fonts/ {
