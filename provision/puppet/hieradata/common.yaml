@@ -99,7 +99,7 @@ nginx::nginx_vhosts:
           add_header X-Cache-Status $upstream_cache_status;
 
           location /static/cdn/cdnjs/ {
-            rewrite ^/static/cdn/cdnjs(/.*)$ $1 break;
+            rewrite ^/static/cdn/cdnjs(/.*)$ /ajax/libs$1 break;
             proxy_pass http://cdnjs.cloudflare.com;
           }
 
