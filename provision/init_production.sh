@@ -41,7 +41,7 @@ clone_repo() {
 
     if [[ ! -d /srv/oclubs/repo ]]; then
         mkdir -p /srv/oclubs
-        git clone git@github.com:zhuyifei1999/oclubs.git /srv/oclubs/repo
+        git clone https://github.com/SHSIDers/oclubs.git /srv/oclubs/repo
         pushd /srv/oclubs/repo
         git checkout centos7 || true # FIXME: remove this line when merged into master
         git submodule update --init --recursive --remote
