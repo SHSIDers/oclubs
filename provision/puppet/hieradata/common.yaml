@@ -10,6 +10,8 @@ oclubs::secrets:
   db2_conn: ''
   sendgrid_key: ''
 
+httpredir-nginx-cfg: ''
+
 motd::template: 'oclubs/motd.erb'
 
 redis::bind: '127.0.0.1'
@@ -83,37 +85,39 @@ nginx::nginx_vhosts:
       X-Content-Type-Options: nosniff
       X-Frame-Options: SAMEORIGIN
 
-    raw_append: |-
-      # This is manually coded until location nesting is supported
-        location /static/cdn/ {
-          proxy_cache            STATIC;
-          proxy_cache_valid      200 302  1d;
-          proxy_cache_valid      404      5m;
-          proxy_cache_use_stale  error timeout invalid_header updating
-                                 http_500 http_502 http_503 http_504;
+    raw_append:
+      - |-
+        # This is manually coded until location nesting is supported
+          location /static/cdn/ {
+            proxy_cache            STATIC;
+            proxy_cache_valid      200 302  1d;
+            proxy_cache_valid      404      5m;
+            proxy_cache_use_stale  error timeout invalid_header updating
+                                   http_500 http_502 http_503 http_504;
 
-          proxy_hide_header       Set-Cookie;
-          proxy_ignore_headers    Set-Cookie;
-          proxy_set_header        Cookie "";
+            proxy_hide_header       Set-Cookie;
+            proxy_ignore_headers    Set-Cookie;
+            proxy_set_header        Cookie "";
 
-          add_header X-Cache-Status $upstream_cache_status;
+            add_header X-Cache-Status $upstream_cache_status;
 
-          location /static/cdn/cdnjs/ {
-            rewrite ^/static/cdn/cdnjs(/.*)$ /ajax/libs$1 break;
-            proxy_pass http://cdnjs.cloudflare.com;
+            location /static/cdn/cdnjs/ {
+              rewrite ^/static/cdn/cdnjs(/.*)$ /ajax/libs$1 break;
+              proxy_pass http://cdnjs.cloudflare.com;
+            }
+
+            location /static/cdn/fonts/ {
+              rewrite ^/static/cdn/fonts(/.*)$ $1 break;
+
+              proxy_pass http://fonts.gstatic.com;
+              # proxy_pass http://fontstatic.useso.com;
+              # proxy_pass http://fonts-gstatic.proxy.ustclug.org;
+              # proxy_pass https://fonts.css.network;
+              # proxy_pass http://sdn.geekzu.org/g-fonts; # FIXME: Bad proxy_pass, change rewrite rule
+              # proxy_pass http://fonts.gmirror.org; # FIXME: Undetermined url
+            }
           }
-
-          location /static/cdn/fonts/ {
-            rewrite ^/static/cdn/fonts(/.*)$ $1 break;
-
-            proxy_pass http://fonts.gstatic.com;
-            # proxy_pass http://fontstatic.useso.com;
-            # proxy_pass http://fonts-gstatic.proxy.ustclug.org;
-            # proxy_pass https://fonts.css.network;
-            # proxy_pass http://sdn.geekzu.org/g-fonts; # FIXME: Bad proxy_pass, change rewrite rule
-            # proxy_pass http://fonts.gmirror.org; # FIXME: Undetermined url
-          }
-        }
+      - "%{hiera('httpredir-nginx-cfg')}"
 
 nginx::nginx_locations:
   '/static':

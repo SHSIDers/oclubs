@@ -139,6 +139,10 @@ EOF
     fi
 }
 
+install_ssl_certs() {
+    bash /srv/oclubs/repo/provision/prod_letsencrypt.sh || true
+}
+
 install_run_puppet() {
     sh /srv/oclubs/repo/provision/install_puppet.sh
 
@@ -174,6 +178,7 @@ main() {
     echo -e '\e[1mSetting hostname to oclubs.shs.cn...\e[0m'; set_hostname; echo
     echo -e '\e[1mCloning oclubs repository...\e[0m'; clone_repo; echo
     echo -e '\e[1mInitializing hieradata...\e[0m'; init_hiera; echo
+    echo -e '\e[1mInstalling SSL certs...\e[0m'; install_ssl_certs; echo
     echo -e '\e[1mRunning puppet...\e[0m'; install_run_puppet; echo
 
     echo 'The initializing script has completed. There are still things to work on manually before the setup is complete:'
