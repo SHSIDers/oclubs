@@ -19,9 +19,15 @@
 [submodule "provision/puppet/modules/gcc"]
 	path = provision/puppet/modules/gcc
 	url = https://github.com/puppetlabs/puppetlabs-gcc.git
+[submodule "provision/puppet/modules/inifile"]
+	path = provision/puppet/modules/inifile
+	url = https://github.com/puppetlabs/puppetlabs-inifile.git
 [submodule "provision/puppet/modules/java"]
 	path = provision/puppet/modules/java
 	url = https://github.com/puppetlabs/puppetlabs-java.git
+[submodule "provision/puppet/modules/letsencrypt"]
+	path = provision/puppet/modules/letsencrypt
+	url = https://github.com/voxpupuli/puppet-letsencrypt.git
 [submodule "provision/puppet/modules/logrotate"]
 	path = provision/puppet/modules/logrotate
 	url = https://github.com/yo61/puppet-logrotate.git
