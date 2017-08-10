@@ -41,20 +41,4 @@ class oclubs::baseservices {
     include ::postfix
 
     include ::logrotate
-
-    include ::letsencrypt
-    if $::environment == 'production' {
-        letsencrypt::certonly { 'oclubs.shs.cn':
-            plugin               => 'nginx',
-            manage_cron          => true,
-            cron_success_command => '/bin/systemctl reload nginx.service',
-            suppress_cron_output => true,
-        }
-
-        firewall { '102 Allow inbound HTTPS':
-            dport  => 443,
-            proto  => tcp,
-            action => accept,
-        }
-    }
 }
