@@ -34,6 +34,7 @@ systemctl start nginx || true
 if which certbot &> /dev/null; then
     cat > /etc/cron.daily/certbot << EOF
 #! /bin/bash
-certbot renew || true &> /dev/null
+certbot renew &> /dev/null || true
 EOF
+    chmod a+x /etc/cron.daily/certbot
 fi
