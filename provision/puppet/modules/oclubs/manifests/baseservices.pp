@@ -41,4 +41,12 @@ class oclubs::baseservices {
     include ::postfix
 
     include ::logrotate
+
+    if $::environment == 'production' {
+        firewall { '102 Allow inbound HTTPS':
+            dport  => 443,
+            proto  => tcp,
+            action => accept,
+        }
+    }
 }
