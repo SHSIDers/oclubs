@@ -31,6 +31,8 @@ EOF
 fi
 systemctl start nginx || true
 
+sed -i 's/authenticator = standalone/authenticator = nginx/' /etc/letsencrypt/renewal/oclubs.shs.cn.conf
+
 if which certbot &> /dev/null; then
     cat > /etc/cron.daily/certbot << EOF
 #! /bin/bash
