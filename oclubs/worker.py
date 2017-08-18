@@ -12,7 +12,7 @@ from celery.schedules import crontab
 from elasticsearch.helpers import scan
 from elasticsearch.exceptions import NotFoundError
 
-from oclubs.access import done, database, db2, elasticsearch, redis
+from oclubs.access import done, database, elasticsearch, redis
 from oclubs.access.redis import r_url_celery
 from oclubs.app import app as flask_app
 from oclubs.enums import UserType
@@ -63,10 +63,7 @@ def handle_app_context(func):
 
 @app.task()
 @handle_app_context
-def refresh_user():
-    authority = db2.allstudents()
-    authority = {data['UNIONID'].strip(): data for data in authority}
-
+def refresh_user(authority):
     ours = database.fetch_multirow(
         'user',
         {
@@ -93,22 +90,6 @@ def refresh_user():
                 _disable_account.delay(ours[sid])
             else:
                 assert False  # This is an impossibility
-
-
-# @app.task()
-# @handle_app_context
-# def handle_teacher_xlsx(tid, offname, emailadd):
-#     authority = {
-#         'UNIONID': tid,
-#         'NAMEEN': offname,
-#         'EMAILADDRESS': emailadd
-#     }
-#
-#     u = User.find_user(tid, offname)
-#     if u:
-#         _update_account.delay(u.id, authority)
-#     else:
-#         _create_account.delay(authority, _type='TEACHER')
 
 
 @app.task()

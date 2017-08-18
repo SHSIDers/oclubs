@@ -17,7 +17,7 @@ from oclubs.objs import User, Club, Upload
 from oclubs.enums import UserType, ActivityTime
 from oclubs.shared import (
     special_access_required, download_xlsx, render_email_template, Pagination,
-    fail
+    fail, read_xlsx
 )
 from oclubs.exceptions import PasswordTooShort
 from oclubs.access import siteconfig, email
@@ -139,16 +139,50 @@ def allusersinfo():
     return download_xlsx('All Users\' Info.xlsx', info)
 
 
+@userblueprint.route('/refresh_users')
+@special_access_required
+@fresh_login_required
+def refreshusers():
+    return render_template('user/refreshuser.jinja2')
+
+
 @userblueprint.route('/refresh_users/submit', methods=['POST'])
 @special_access_required
 @fresh_login_required
 def refreshusers_submit():
     '''Upload excel file to create new users'''
+    if request.files['excel'].filename == '':
+        fail('Please upload an excel file.', 'refresh_users')
+        return redirect(url_for('.refreshusers'))
+    try:
+        contents = read_xlsx(request.files['excel'], 'Students',
+                             ['studentid', 'passportname', 'grade', 'class'])
+    except KeyError:
+        fail('Please change sheet name to "Teachers"', 'refresh_users')
+        return redirect(url_for('.refreshusers'))
+    except ValueError:
+        fail('Please input in the correct order.', 'refresh_users')
+        return redirect(url_for('.refreshusers'))
+
+    authority = {}
+    for student in contents:
+        studentid, passportname, grade, curclass = student
+        if studentid in authority:
+            fail('Duplicate Student ID "%s"' % studentid, 'refresh_users')
+            return redirect(url_for('.refreshusers'))
+        authority[studentid] = {
+            'UNIONID': studentid,
+            'NAMEEN': passportname,
+            'GRADENAME': grade,
+            'STUCLASSNAME': curclass,
+        }
+
     from oclubs.worker import refresh_user
-    refresh_user.delay()
+    refresh_user.delay(authority)
+
     flash('Student accounts\' information has been successfully '
           'scheduled to refresh.', 'refresh_users')
-    return redirect(url_for('.personal'))
+    return redirect(url_for('.refreshusers'))
 
 
 @userblueprint.route('/rebuild_elastic_search/submit', methods=['POST'])
