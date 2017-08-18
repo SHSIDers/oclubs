@@ -168,10 +168,9 @@ def rebuildsearch_submit():
 def download_new_passwords():
     '''Allow admin to download new accounts' passwords'''
     result = []
-    result.append(['Passport Name', 'Login Name', 'Class', 'Password'])
+    result.append(['Passport Name', 'Class', 'Password'])
     users = User.get_new_passwords()
     result.extend([(user.passportname,
-                    user.studentid,
                     user.grade_and_class,
                     password) for user, password in users])
     return download_xlsx('New Accounts\' Passwords.xlsx', result)
