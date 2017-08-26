@@ -158,7 +158,7 @@ def refreshusers_submit():
         contents = read_xlsx(request.files['excel'], 'Students',
                              ['studentid', 'passportname', 'grade', 'class'])
     except KeyError:
-        fail('Please change sheet name to "Teachers"', 'refresh_users')
+        fail('Please change sheet name to "Students"', 'refresh_users')
         return redirect(url_for('.refreshusers'))
     except ValueError:
         fail('Please input in the correct order.', 'refresh_users')
@@ -202,9 +202,10 @@ def rebuildsearch_submit():
 def download_new_passwords():
     '''Allow admin to download new accounts' passwords'''
     result = []
-    result.append(['Passport Name', 'Class', 'Password'])
+    result.append(['Student ID', 'Passport Name', 'Class', 'Password'])
     users = User.get_new_passwords()
-    result.extend([(user.passportname,
+    result.extend([(user.studentid,
+                    user.passportname,
                     user.grade_and_class,
                     password) for user, password in users])
     return download_xlsx('New Accounts\' Passwords.xlsx', result)
