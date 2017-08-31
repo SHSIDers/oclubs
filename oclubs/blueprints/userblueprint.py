@@ -204,7 +204,7 @@ def download_new_passwords():
     result = []
     result.append(['Student ID', 'Passport Name', 'Class', 'Password'])
     users = User.get_new_passwords()
-    result.extend([(user.studentid,
+    result.extend([(user.user_login_name,
                     user.passportname,
                     user.grade_and_class,
                     password) for user, password in users])

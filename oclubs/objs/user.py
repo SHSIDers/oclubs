@@ -193,7 +193,7 @@ class User(BaseObject, UserMixin):
             pass
 
     @classmethod
-    def attempt_login(cls, studentid, password):
+    def attempt_login(cls, username, password):
         def emptypw():
             # to gave some delay, verify empty password and discard the results
             _crypt.verify(
@@ -205,22 +205,27 @@ class User(BaseObject, UserMixin):
             emptypw()
             return
 
-        try:
-            data = database.fetch_onerow(
-                'user',
-                {'user_id': 'id', 'user_password': 'password'},
-                {'user_login_name': studentid}
-            )
-        except NoRow:
+        data = database.fetch_multirow(
+            'user',
+            {'user_id': 'id', 'user_password': 'password'},
+            {'user_passport_name': username}
+        )
+
+        if not data:
             emptypw()
             return
+
         else:
-            if not data['password']:
-                emptypw()
-                return
-            elif _crypt.verify(password, data['password']):
-                return cls(data['id'])
+            for d in data:
+                if not d['password']:
+                    emptypw()
+                    continue
+                elif _crypt.verify(password, d['password']):
+                    return cls(d['id'])
+                else:
+                    continue
             else:
+                emptypw()
                 return
 
     @classmethod

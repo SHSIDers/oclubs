@@ -16,7 +16,7 @@ CREATE TABLE user (
 );
 
 CREATE UNIQUE INDEX user_login_name ON user (user_login_name);
-
+CREATE INDEX user_passport_name ON user (user_passport_name);
 
 CREATE TABLE club (
 	club_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
