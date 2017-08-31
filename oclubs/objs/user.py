@@ -43,7 +43,8 @@ class User(BaseObject, UserMixin):
     clubs = ListProperty('club_member', 'cm_user', 'cm_club', 'Club')
     attendance = ListProperty('attendance', 'att_user', 'att_act', 'Activity')
 
-    GRADECLASSREGEX = re.compile(r'^\s*(\d+)(?:\s*[-_/\\]\s*|\s+)(\d+)\s*$')
+    GRADECLASSREGEX = re.compile(
+        r'^\s*(\d+)(?:\s*[(-_/\\]\s*|\s+)(\d+)\s*(?:\)\s*)$')
 
     PREFERENCES = {
         'receive_email': (lambda x: bool(int(x)), True),
