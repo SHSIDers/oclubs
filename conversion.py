@@ -1,21 +1,38 @@
 #! /usr/local/bin/pyshell
 # -*- coding: UTF-8 -*-
 
+
 from oclubs.shared import read_xlsx
+from oclubs.access import database
+from oclubs.objs import User
 
-with open('/srv/oclubs/oclubs/example.md', 'r') as f:
+if False:
+    # to trick flake8 into thinking things are defined
+    done = (lambda: None)
 
-    contents = read_xlsx(f, 'Students', ['studentid', 'passportname', 'grade', 'class'])
 
-    authority = {}
+with open('/SampleData.xlsx', 'r') as f:
+
+    contents = read_xlsx(f, 'Students', ['oldid', 'newid', 'passportname', 'gradeclass'])
+
+    i = 2
+
     for student in contents:
-        studentid, passportname, grade, curclass = student
-        authority[studentid] = {
-            'UNIONID': studentid,
-            'NAMEEN': passportname,
-            'GRADENAME': grade,
-            'STUCLASSNAME': curclass,
-        }
+        oldid, newid, passportname, gradeclass = student
+        grade, curclass = User.extract_gradeclass(gradeclass)
+        print i, grade, curclass
+        i += 1
 
-    from oclubs.worker import refresh_user
-    refresh_user.delay(authority)
+        try:
+            data = database.fetch_oneentry(
+                'user', 'user_id', {'user_login_name': oldid}
+            )
+        except:
+            continue
+
+        u = User(data)
+        u.studentid = newid
+        u.passportname = passportname
+        u.nickname = passportname
+
+done()
