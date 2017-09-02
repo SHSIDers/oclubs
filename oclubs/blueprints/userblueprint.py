@@ -104,7 +104,7 @@ def personalsubmitinfo():
 @login_required
 def personalsubmitpassword():
     '''Change user's password in database'''
-    user_login = User.attempt_login(current_user.studentid,
+    user_login = User.attempt_login(current_user.passportname,
                                     request.form['old'])
     if user_login is None:
         fail('You have entered wrong old password. Please enter again.',
@@ -130,9 +130,9 @@ def personalsubmitpassword():
 def allusersinfo():
     '''Allow admin to download all users' info'''
     info = []
-    info.append(('ID', 'Class', 'Nick Name', 'Passport Name', 'Email',
+    info.append(('Student ID', 'Class', 'Nick Name', 'Passport Name/Username', 'Email',
                  'Phone'))
-    info.extend([(user.id, user.grade_and_class, user.nickname,
+    info.extend([(user.studentid, user.grade_and_class, user.nickname,
                   user.passportname, user.email, str(user.phone))
                  for user in User.allusers()])
 
@@ -156,7 +156,7 @@ def refreshusers_submit():
         return redirect(url_for('.refreshusers'))
     try:
         contents = read_xlsx(request.files['excel'], 'Students',
-                             ['studentid', 'passportname', 'grade', 'class'])
+                             ['studentid', 'passportname', 'class'])
     except KeyError:
         fail('Please change sheet name to "Students"', 'refresh_users')
         return redirect(url_for('.refreshusers'))
@@ -166,7 +166,9 @@ def refreshusers_submit():
 
     authority = {}
     for student in contents:
-        studentid, passportname, grade, curclass = student
+        studentid, passportname, gradeclass = student
+        studentid = str(studentid)
+        grade, curclass = User.extract_gradeclass(gradeclass)
         if studentid in authority:
             fail('Duplicate Student ID "%s"' % studentid, 'refresh_users')
             return redirect(url_for('.refreshusers'))
@@ -202,9 +204,9 @@ def rebuildsearch_submit():
 def download_new_passwords():
     '''Allow admin to download new accounts' passwords'''
     result = []
-    result.append(['Student ID', 'Passport Name', 'Class', 'Password'])
+    result.append(['Student ID', 'Passport Name/Username', 'Class', 'Password'])
     users = User.get_new_passwords()
-    result.extend([(user.user_login_name,
+    result.extend([(user.studentid,
                     user.passportname,
                     user.grade_and_class,
                     password) for user, password in users])
