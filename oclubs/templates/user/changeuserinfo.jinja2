@@ -20,6 +20,7 @@
 		</thead>
 		<tbody>
 			{% for user in users %}
+			{% if not user.is_disabled %}
 			<tr class="act">
 				<td>
 					<span class="hide">{{ user.id }}</span>
@@ -29,6 +30,7 @@
 				<td class="admin_user_info" data-property-type="{{ variable }}">{% if user[variable] is none %}-{% else %}{{ user[variable] }}{% endif %}</td>
 				{% endfor %}
 			</tr>
+			{% endif %}
 			{% endfor %}
 		</tbody>
 	</table>

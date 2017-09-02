@@ -10,23 +10,22 @@
 		<form action="{{ url_for('.refreshusers_submit') }}" method="post" enctype="multipart/form-data">
 			<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 			<p>Please upload a xlsx file with a sheet named "Students".</p>
-			<p>Required information in xlsx(in exact order): Student ID (login name), Passport Name, Grade, Class</p>
+			<p>Required information in xlsx(in exact order): Student ID, Passport Name, Class</p>
+			<p>Accounts in the database that are not in the excel file will be disabled, while accounts in the excel that are not in the database will be created. The rest are updated.</p>
 			<p>Below is an example in excel file.</p>
 			<table class="table table-hover table-bordered">
 				<thead>
 					<tr>
 						<th>Student ID</th>
 						<th>Passport Name</th>
-						<th>Grade</th>
 						<th>Class</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr class="act">
-						<td>T123123123</td>
-						<td>Example Example</td>
-						<td>12</td>
-						<td>1</td>
+						<td>123123</td>
+						<td>Example</td>
+						<td>9(1)</td>
 					</tr>
 				</tbody>
 			</table>

@@ -13,6 +13,7 @@
 		<br><br>
 	</div>
 	<div class="col-md-9 personal_info">
+		{% if current_user.nickname == current_user.passportname and current_user.type == UserType.STUDENT %} <h5><font color="black"> Please change your nickname for display </font></h5> {% endif %}
 		<h2 class="no-top-margin">Nick Name: {{ current_user.nickname }}</h2>
 		<h2>Email Address: {{ current_user.email }}</h2>
 		<h2>Phone Number: {{ current_user.phone }}</h2>
