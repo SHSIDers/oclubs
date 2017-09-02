@@ -11,7 +11,7 @@ if False:
     done = (lambda: None)
 
 
-with open('~/SHSID2017.xlsx', 'r') as f:
+with open('/SHSID2017.xlsx', 'r') as f:
 
     contents = read_xlsx(f, 'Students', ['oldid', 'newid', 'passportname', 'gradeclass'])
 
