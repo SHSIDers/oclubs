@@ -1,0 +1,115 @@
+{% extends "base.html.j2" %}{% from 'macros.html.j2' import get_messages %}
+{% block title %}{{ current_user.nickname }}{% endblock %}
+{% block content %}
+
+<!-- Below Navbar -->
+<div class="container">
+	<h2 class="title_next personal-name">{{ current_user.passportname }}&nbsp;&nbsp;&nbsp; {% if activities %}<span class="comment nowrap">Class {{ current_user.grade_and_class }}</span>{% endif %}<a href="{{ url_for('logout') }}" id="logoutlink"><span class="glyphicon glyphicon-log-out"></span>&nbsp;Logout</a></h2>
+	<div class="clearfix clearfix-bordered"></div>
+	{{ get_messages(['status_info', 'status_pw'], br_before=True) }}
+	<br>
+	<div class="col-xs-3" id="profilepic">
+		<img src="{{ current_user.picture.location_external }}" class="img-responsive img-thumbnail" alt="Profile Picture">
+		<br><br>
+	</div>
+	<div class="col-md-9 personal_info">
+		{% if current_user.nickname == current_user.passportname and current_user.type == UserType.STUDENT %} <h5><font color="black"> Please change your nickname for display </font></h5> {% endif %}
+		<h2 class="no-top-margin">Nick Name: {{ current_user.nickname }}</h2>
+		<h2>Email Address: {{ current_user.email }}</h2>
+		<h2>Phone Number: {{ current_user.phone }}</h2>
+		<div class="clearfix"></div>
+		<center>
+			<div class="row">
+				<div class="col-sm-4">
+					<a class="btn btn-info" href="#changeInfo" data-toggle="modal" data-target="#changeInfo">Edit Basic Information</a>
+				</div>
+				<div class="col-sm-4">
+					<a class="btn btn-info" href="#changePass" data-toggle="modal" data-target="#changePass">Change Password</a>
+				</div>
+				{% with unread_notifications_num = current_user.get_unread_notifications_num() %}
+				<div class="col-sm-4">
+					<a class="btn {% if unread_notifications_num %}btn-primary{% else %}btn-info{% endif %}" href="{{ url_for('.notifications') }}">Notifications{% if unread_notifications_num %} <span class="badge">{{ unread_notifications_num }}</span>{% endif %}</a>
+				</div>
+				{% endwith %}
+			</div>
+		</center>
+	</div>
+	<div class="clearfix clearfix-bordered"></div>
+
+	{% block personal %}{% endblock %}
+</div>
+
+<div class="modal fade" id="changeInfo">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Change Basic Information</h4>
+			</div>
+			<form class="form-group" id="info_form" action="{{ url_for('.personalsubmitinfo') }}" method="post">
+				<div class="modal-body">
+					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+					<label for="name">Nick Name:</label>
+					<input class="form-control" id="name" type="text" name="name" value="{{ current_user.nickname }}">
+					<br>
+
+					<label for="email">Email:</label>
+					<input class="form-control" id="email" type="email" name="email" value="{{ current_user.email }}">
+					<br>
+
+					<label for="phone">Phone Number:</label>
+					<input class="form-control" id="phone" type="text" name="phone" value="{{ current_user.phone }}">
+					<br>
+
+					<label for="picture">Profile Picture:</label>
+					<div class="clearfix"></div>
+					{% for pic in pictures %}
+					<label class="radio_block">
+						<img src="{{ pic.location_external }}" class="img-responsive" alt="{{ -pic.id }}">
+						<center><input type="radio" name="picture" {% if pic == current_user.picture %}checked="checked"{% endif %} value="{{ pic.id }}"></center>
+					</label>
+					{% endfor %}
+					<div class="clearfix"></div>
+					<br>
+
+					<label for="receive_email"><input type="checkbox" id="receive_email" name="receive_email" {% if receive_email %} checked="checked" {% endif %}>&nbsp;Do you want us to send notifications to your email address?</label>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<input type="submit" class="btn btn-primary" name="change_info" value="Change Info">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="changePass">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form class="form-group" id="pass_form" action="{{ url_for('userblueprint.personalsubmitpassword') }}" method="post">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Change Password</h4>
+				</div>
+				<div class="modal-body">
+					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+					<label for="old">Old Password:</label>
+					<input class="form-control" id="old" name="old" type="password">
+					<br>
+					<label for="new">New Password:</label>
+					<input class="form-control" id="new" name="new" type="password">
+					<br>
+					<label for="again">Repeat New Password:</label>
+					<input class="form-control" id="again" name="again" type="password">
+					<div class="clearfix"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<input type="submit" class="btn btn-primary" name="change_pass" value="Change Password">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

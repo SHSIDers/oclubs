@@ -1,0 +1,229 @@
+{% extends "user/personal.html.j2" %}{% from 'macros.html.j2' import get_messages %}
+{% block personal %}
+
+<h2 class="title_next">Download</h2>
+<div class="col-sm-3 admin_function">
+	<h2 class="text-center">Download All Clubs' Info</h2>
+	<center>
+		<a class="btn btn-success smalltext" href="{{ url_for('clubblueprint.allclubsinfo') }}" target="_blank">Download</a>
+	</center>
+</div>
+<div class="col-sm-3 admin_function">
+	<h2 class="text-center">Download All Activities' Info</h2>
+	<center>
+		<a class="btn btn-success smalltext" data-toggle="modal" data-target="#act_download">Download</a>
+	</center>
+</div>
+<div class="col-sm-3 admin_function">
+	<h2 class="text-center">Download All Users' Info</h2>
+	<center>
+		<a class="btn btn-success smalltext" href="{{ url_for('.allusersinfo') }}" target="_blank">Download</a>
+	</center>
+</div>
+
+<div class="clearfix"></div>
+<br>
+<div class="clearfix clearfix-bordered"></div>
+
+<h2 class="title_next">Other Administrative Functions</h2>
+{{ get_messages(['notify_all']) }}
+<div class="admin_button">
+	<a href="{{ url_for('clubblueprint.adjustclubs') }}" class="btn btn-success">Adjust Excellent Clubs</a>
+</div>
+<div class="admin_button">
+	<a href="{{ url_for('clubblueprint.clubmanagementlist') }}" class="btn btn-success">Access to Clubs' Management</a>
+</div>
+<div class="admin_button">
+	<a href="{{ url_for('.changepassword') }}" class="btn btn-success">Change Accounts' Password</a>
+</div>
+<div class="admin_button">
+	<a href="{{ url_for('.changeuserinfo') }}" class="btn btn-success">Change Users' Info</a>
+</div>
+<div class="admin_button">
+	<a href="{{ url_for('.disableaccounts') }}" class="btn btn-success">Disable Accounts</a>
+</div>
+<div class="admin_button">
+	<a href="#hongmei_schedule" data-toggle="modal" data-target="#hongmei_schedule" class="btn btn-success">Check HongMei Schedule</a>
+</div>
+<div class="admin_button">
+	<a href="#adjust_club_status" data-toggle="modal" data-target="#adjust_club_status" class="btn btn-success">Adjust Clubs' Status</a>
+</div>
+<div class="admin_button">
+	<a href="#notify_all" data-toggle="modal" data-target="#notify_all" class="btn btn-success">Notify Users</a>
+</div>
+
+<div class="clearfix"></div>
+<br>
+<div class="clearfix clearfix-bordered"></div>
+
+<h2 class="title_next">Please be careful with following operation</h2>
+{{ get_messages(['rebuild_search', 'club_creation', 'enable_cleanup']) }}
+<div class="admin_button">
+	<a class="btn btn-warning" href="{{ url_for('.refreshusers') }}">Refresh Student Accounts</a>
+</div>
+<div class="admin_button">
+	<button class="btn btn-warning" data-toggle="modal" data-target="#fix_search">Auto-fix Search Engine</button>
+</div>
+<div class="admin_button">
+	<a class="btn btn-warning" href="{{ url_for('.download_new_passwords') }}">Download New Accounts' Passwords</a>
+</div>
+<div class="admin_button">
+	<a class="btn btn-warning" href="{{ url_for('.edit_siteconfig') }}">Adjust Site Configuration</a>
+</div>
+<div id="fix_search" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Confirmation</h4>
+			</div>
+			<div class="modal-body">
+				<p>When search engine is desynchronized with the database, you can use this operation to auto-fix the problem.</p>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-success float-left" data-dismiss="modal">Cancel</button>
+				<form action="{{ url_for('.rebuildsearch_submit') }}" method="post">
+					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+					<input type="submit" class="btn btn-danger" value="Fix">
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="hongmei_schedule" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Check HongMei Schedule</h4>
+			</div>
+			<form action="{{ url_for('actblueprint.checkhongmeischedule_download') }}" target="_blank" id="download_schedule" method="post">
+				<div class="modal-body">
+					<div class="col-sm-4">
+						<select name="year" class="form-control">
+							{% for year in years %}
+							<option value="{{ year }}">{{ year }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="col-sm-4">
+						<select name="month" class="form-control">
+							{% for month in range(1,13) %}
+							<option value="{{ month }}">{{ month }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="col-sm-4">
+						<select name="day" class="form-control">
+							{% for day in range(1,32) %}
+							<option value="{{ day }}">{{ day }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-default float-left" data-dismiss="modal">Close</button>
+					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+					<input type="submit" class="btn btn-success" value="Download">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="act_download" role="dialog">
+	<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Select whether to download all activities or only this week's.</h4>
+				</div>
+			<div class="modal-body">
+				<div class="col-sm-6">
+					<a class="btn btn-primary large_button" href="{{ url_for('actblueprint.allactivitiesinfo') }}">Download All Activities</a>
+				</div>
+				<div class="col-sm-6">
+					<a class="btn btn-success large_button" href="{{ url_for('actblueprint.thisweek_activitiesinfo') }}">Download This Week's Activities</a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="adjust_club_status" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Adjust Club Status</h4>
+			</div>
+			<div class="modal-body">
+				<div class="col-sm-4">
+					<a class="btn btn-danger large_button" href="{{ url_for('clubblueprint.adjust_status', club_type='all') }}">All Clubs</a>
+				</div>
+				<div class="col-sm-4">
+					<a class="btn btn-warning large_button" href="{{ url_for('clubblueprint.adjust_status', club_type='11-12') }}">Grade 11-12</a>
+				</div>
+				<div class="col-sm-4">
+					<a class="btn btn-warning large_button" href="{{ url_for('clubblueprint.adjust_status', club_type='9-10') }}">Grade 9-10</a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="notify_all" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form class="form-group" action="{{ url_for('.notifyall_submit') }}" id="notify_form" method="post">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Notify All</h4>
+				</div>
+				<div class="modal-body">
+					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+					<div id="grade-radiobutton">
+						<label class="radio-inline">
+							<input type="radio" name="grade" id="grade-910" value="9-10"> 9-10
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="grade" id="grade-1112" value="11-12"> 11-12
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="grade" id="grade-all" value="all"> All grades (9-12)
+						</label>
+					</div>
+					<br>
+					<div id="ntype-radiobutton">
+						<label class="radio-inline">
+							<input type="radio" name="ntype" id="ntype-all" value="all"> All club leaders, members, and teachers
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="ntype" id="ntype-leaderonly" value="leaderonly"> Only club leaders
+						</label>
+					</div>
+					<br>
+					<label for="contents">Contents:</label>
+					<textarea class="form-control" rows="10" id="contents" name="contents"></textarea>
+					<div class="clearfix"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<input type="submit" class="btn btn-primary" value="Notify">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

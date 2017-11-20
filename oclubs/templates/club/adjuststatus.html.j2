@@ -1,0 +1,94 @@
+{% extends "base.html.j2" %}{% from 'macros.html.j2' import get_messages %}
+{% block title %}Adjust Clubs' Status{% endblock %}
+{% block content %}
+
+<!-- Below Navbar -->
+<div class="container">
+	<h1 class="title">Adjust Clubs' Status</h1>
+	{{ get_messages(['adjust_status']) }}
+	<center>
+	<a class="btn btn-primary btn-lg" href="#all_free_join" data-toggle="modal" data-target="#all_free_join">Set all clubs' join mode to Free Join</a>
+	<a class="btn btn-primary btn-lg" href="#all_by_invitation" data-toggle="modal" data-target="#all_by_invitation">Set all clubs' join mode to By Invitation</a>
+	</center>
+	<br>
+	<form action="{{ url_for('.adjust_status_submit', club_type=club_type) }}" method="post" id="activeness_form">
+		<table class="table table-hover table-bordered" id="attendancetable">
+			<thead>
+				<tr>
+					<th>Club Name</th>
+					<th>Grade</th>
+					<th>Club Type</th>
+					<th>Club Link</th>
+					<th>Current Activeness</th>
+					<th>Change Activeness</th>
+					<th>Current Join Mode</th>
+					<th>Change Join Mode</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for club in clubs %}
+				<tr class="act">
+					<td>{{ club.name }}</td>
+					<td>{{ club.leader.grade }}</td>
+					<td>{{ club.type.format_name }}</td>
+					<td>
+						<a href="{{ url_for('.clubintro', club=club.callsign) }}">{{ club.name }}</a>
+					</td>
+					<td>{% if club.is_active %}Active{% else %}Inactive{% endif %}
+					<td><label class="btn btn-primary btn-lg" for="activeness{{ club.id }}"><input type="checkbox" name="activeness" value="{{ club.id }}" form="activeness_form" id="activeness{{ club.id }}">&nbsp;Change</label></td>
+					<td>{% if club.joinmode == ClubJoinMode.FREE_JOIN %}Free Join{% else %}By Invitation{% endif %}</td>
+					<td><label class="btn btn-primary btn-lg" for="joinmode{{ club.id }}"><input type="checkbox" name="joinmode" value="{{ club.id }}" form="activeness_form" id="joinmode{{ club.id }}">&nbsp;Change</label></td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<center>
+		<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+		<input class="btn btn-primary btn-lg" type="submit" value="Submit the Change">
+	</form>
+	</center>
+</div>
+
+<div class="modal fade" id="all_free_join">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Set all clubs' join mode to Free Join</h4>
+			</div>
+			<div class="modal-body">
+				<p>When you press "Confirm" button, join mode of all clubs in this session will be set to Free Join mode. In this mode, every student is free to join any club.</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				<form action="{{ url_for('.adjust_status_all_free_join', club_type=club_type) }}" method="post" class="inline empty-left">
+					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+					<input class="btn btn-primary" type="submit" value="Confirm">
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="all_by_invitation">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Set all clubs' join mode to By Invitation</h4>
+			</div>
+			<div class="modal-body">
+				<p>When you press "Confirm" button, join mode of all clubs in this session will be set to By Invitation mode. In this mode, club leader can invite new member, but students can not join any club by themselves.</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				<form action="{{ url_for('.adjust_status_all_by_invitation', club_type=club_type) }}" method="post" class="inline empty-left">
+					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+					<input class="btn btn-primary" type="submit" value="Confirm">
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

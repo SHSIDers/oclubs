@@ -1,0 +1,109 @@
+{% extends "base.html.j2" %}
+{% block title %}Here you come{% endblock %}
+{% block additionalcssjs %}<link href="{{ blockpiccss }}" rel="stylesheet" type="text/css" media="all">{% endblock %}
+{% block content %}
+<div class="container">
+	{% for pic in top_pic %}
+	<div class="col-xs-{{ pic.size }} blockpic clickable" data-href="{{ pic.link }}">
+		<div class="img" id="blockpic-{{ pic.id }}" alt=""></div>
+		<div class="mask">
+			<h2>{{ pic.actname }}</h2>
+			<p>{{ pic.content }}</p>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+
+<br><br>
+
+<div class="container">
+	<div class="hp-container row">
+		<br>
+		<div class="col-sm-4">
+			<div class="panel no-border">
+				<div class="panel-heading">
+					<h2 class="title_next">Excellent Clubs</h2>
+				</div>
+				<div class="panel-body">
+					<div class="list-group" id="hpexlist">
+						{% for club in ex_clubs %}
+						<a href="{{ url_for('clubblueprint.clubintro', club=club.callsign) }}" class="list-group-item">
+							<img src="{{ club.picture.location_external }}" class="img-responsive img-thumbnail hp-excclub-pic" alt="Excellent Club">
+							<h3>{{ club.name }}</h3>
+							<p>{{ club.intro }}</p>
+							<div class="clearfix"></div>
+						</a>
+						{% endfor %}
+						<a href="{{ url_for('clubblueprint.clublist', club_filter='excellent') }}" class="list-group-item">
+							<h3 class="text-center">More</h3>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-8">
+			<div class="homepage_block">
+				<div class="col-xs-3">
+					<img id='shsidtimes' src="static/images/cover.jpg" class="img-responsive img-thumbnail" alt="SHSID|Times Cover">
+				</div>
+				<div class="col-xs-9">
+					<div class="col-xs-10 no-padding">
+						<h1 class="title_next">Clubs in SHSID</h1>
+					</div>
+					<div id="a-shsid" class="col-xs-2">
+						<a href="{{ url_for('clubblueprint.clublist', club_filter='all') }}"><h1><span class="glyphicon glyphicon-list float-right"></span></h1></a>
+					</div>
+				</div>
+				<div class="col-sm-9">
+					<h3 class="no-top-margin">Student-led, creative, and surprising</h3>
+				</div>
+				<div class="col-sm-9">
+				<p>In SHSID, many of students participate in club activities. In academics, sports, and many other fields, students can always find what they are interested and join these clubs. All clubs are led by students, and yet they often give out surprising achievements. Let's explore the world of clubs on this website, oClubs!</p>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<br>
+			<div class="homepage_block">
+				<h1 class="text-center title_next">Club Photos</h1>
+				{% for pic in pic_acts %}
+				<div class="col-xs-4">
+					<a href="{{ pic.link }}"><img src="{{ pic.picture.location_external }}" class="img-responsive img-thumbnail homepage_clubphotos" alt="{{ pic.actname }}"></a>
+				</div>
+				{% endfor %}
+				<div class="clearfix"></div>
+				<br>
+				<a id="homepage_allclubphotos" class="btn btn-block btn-primary" href="{{ url_for('actblueprint.allphotos') }}">All Club Photos</a>
+			</div>
+		</div>
+		<br>
+	</div>
+	<div class="clearfix"></div>
+	<br>
+
+	<div id="homepage_functions" class="row">
+		<br>
+		<div class="col-xs-3 homepage_function">
+			<h1><span class="glyphicon glyphicon-cd"></span></h1>
+			<h2>Club Members</h2>
+			<h4>Online application</h4>
+		</div>
+		<div class="col-xs-3 homepage_function">
+			<h1><span class="glyphicon glyphicon-apple"></span></h1>
+			<h2>Club Leaders</h2>
+			<h4>Online management</h4>
+		</div>
+		<div class="col-xs-3 homepage_function">
+			<h1><span class="glyphicon glyphicon-globe"></span></h1>
+			<h2>Club Teachers</h2>
+			<h4>Online operation</h4>
+		</div>
+		<div class="col-xs-3 homepage_function clickable" data-href="{{ url_for('about') }}">
+			<h1><center><img src="static/images/more.jpg" class="img-responsive img-circle" alt="More"></center></h1>
+			<h2 class="hp-lrnmr">Learn More</h2>
+			<h4>oClubs's functions</h4>
+		</div>
+		<br>
+	</div>
+</div>
+
+{% endblock %}

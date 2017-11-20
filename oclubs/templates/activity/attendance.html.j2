@@ -1,0 +1,53 @@
+{% extends "base.html.j2" %}{% from 'macros.html.j2' import get_messages %}
+{% block title %}Attendance{% endblock %}
+{% block content %}
+
+<!-- Below Navbar -->
+<div class="container">
+	<h1 class="title">Attendance for {{ g.activity.name }}</h1>
+	<h2 class="title_next">{{ g.activity.club.name }}</h2>
+	{{ get_messages(['attendance']) }}
+	<form action="{{ url_for('.attendance_submit', activity=g.activity.callsign) }}" method="post" id="attendance_form">
+		<table class="table table-hover table-bordered" id="attendancetable">
+			<thead>
+				<tr>
+					<th class="width-10">Picture</th>
+					<th>Nick Name</th>
+					<th>Class</th>
+					<th>Current Attendance</th>
+					<th>Change Attendance</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for member in attend %}
+				<tr class="act">
+					<td><img src="{{ member.picture.location_external }}" class="img-responsive width-70" alt="{{ member.nickname }}"></td>
+					<td>{{ member.nickname }}</td>
+					<td>{{ member.grade_and_class }}</td>
+					<td><span class="glyphicon glyphicon-check"></span></td>
+					<td><label class="btn btn-primary btn-lg" for="{{ member.id }}"><input type="checkbox" name="attendance" value="{{ member.id }}" id="{{ member.id }}">&nbsp;Change Attendance</label></td>
+				</tr>
+				{% endfor %}
+				{% for member in absent %}
+				<tr class="act">
+					<td><img src="{{ member.picture.location_external }}" class="img-responsive width-70" alt="{{ member.nickname }}"></td>
+					<td>{{ member.nickname }}</td>
+					<td>{{ member.grade_and_class }}</td>
+					<td><span class="glyphicon glyphicon-unchecked"></span></td>
+					<td><label class="btn btn-primary btn-lg" for="{{ member.id }}"><input type="checkbox" name="attendance" value="{{ member.id }}" id="{{ member.id }}">&nbsp;Change Attendance</label></td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<center>
+		<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+		<input class="btn btn-primary downloadbtn" type="submit" value="Submit the Attendance">
+	</form>
+	</center>
+	<br>
+	<center>
+		<a class="btn btn-success downloadbtn" href="{{ url_for('.attendance_download', activity=g.activity.callsign) }}" target="_blank">Download as Excel Document</a>
+	</center>
+</div>
+
+{% endblock %}

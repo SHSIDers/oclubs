@@ -88,7 +88,7 @@ def access_teardown(exception):
 @app.route('/404')  # debugger
 def page_not_found(e=None):
     '''Wrong url'''
-    return render_template('static/error.jinja2',
+    return render_template('static/error.html.j2',
                            error_type=404
                            ), 404
 
@@ -97,7 +97,7 @@ def page_not_found(e=None):
 @app.route('/403')  # debugger
 def forbidden(e=None):
     '''No access'''
-    return render_template('static/error.jinja2',
+    return render_template('static/error.html.j2',
                            error_type=403
                            ), 403
 
@@ -106,7 +106,7 @@ def forbidden(e=None):
 @app.route('/401')  # debugger
 def unauthorized(e=None):
     '''Not logged in'''
-    return render_template('static/error.jinja2',
+    return render_template('static/error.html.j2',
                            error_type=401
                            ), 401
 
@@ -116,7 +116,7 @@ def unauthorized(e=None):
 def internal_server_error(e=None):
     '''Internal server error'''
     flash(encrypt(traceback.format_exc()), '500')
-    return render_template('static/error.jinja2',
+    return render_template('static/error.html.j2',
                            error_type=500
                            ), 500
 
@@ -125,7 +125,7 @@ def internal_server_error(e=None):
 @app.route('/418')
 def i_am_a_teapot(e=None):
     '''csrf violation'''
-    return render_template('static/error.jinja2',
+    return render_template('static/error.html.j2',
                            error_type=418
                            ), 418
 
@@ -151,7 +151,7 @@ def refresh_login():
 @app.route('/login')
 def login():
     '''Login page'''
-    return render_template('user/login.jinja2')
+    return render_template('user/login.html.j2')
 
 
 def is_safe_url(target):
@@ -237,7 +237,7 @@ def search():
 
     pagination = Pagination(page, 10, search_result['count'])
 
-    return render_template('static/search.jinja2',
+    return render_template('static/search.html.j2',
                            search_result=search_result,
                            results=results,
                            keywords=keywords,
@@ -303,7 +303,7 @@ def homepage():
 
     ex_clubs = Club.excellentclubs(3)
     pic_acts = top_pic[0:3]
-    return render_template('static/homepage.jinja2',
+    return render_template('static/homepage.html.j2',
                            is_home=True,
                            top_pic=top_pic,
                            blockpiccss=blockpiccss,
@@ -325,14 +325,14 @@ def gen_blockpic_css():
 @app.route('/about')
 def about():
     '''About This Website'''
-    return render_template('static/about.jinja2',
+    return render_template('static/about.html.j2',
                            is_about=True)
 
 
 @app.route('/contact_creators')
 def contactcreators():
     '''Advice Page'''
-    return render_template('static/contactcreators.jinja2')
+    return render_template('static/contactcreators.html.j2')
 
 
 @app.route('/contact_creators/submit', methods=['POST'])
@@ -354,14 +354,14 @@ def contactcreators_submit():
 @app.route('/creators')
 def creators():
     '''Introduction Page about Us'''
-    return render_template('static/creators.jinja2')
+    return render_template('static/creators.html.j2')
 
 
 @app.route('/contact_admin')
 @login_required
 def contactadmin():
     '''Complaints Page'''
-    return render_template('static/contactadmin.jinja2')
+    return render_template('static/contactadmin.html.j2')
 
 
 @app.route('/contact_admin/submit', methods=['POST'])
@@ -386,7 +386,7 @@ def contactadmin_submit():
 @app.route('/markdown')
 @login_required
 def markdown():
-    return render_template('static/markdown.jinja2',
+    return render_template('static/markdown.html.j2',
                            raw=markdownexample,
                            rendered=Markup(FormattedText.format(
                                markdownexample)))
@@ -395,7 +395,7 @@ def markdown():
 @app.route('/faq')
 def faq():
     '''FAQ'''
-    return render_template('static/faq.jinja2')
+    return render_template('static/faq.html.j2')
 
 
 if __name__ == '__main__':

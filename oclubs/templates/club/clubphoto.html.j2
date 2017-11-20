@@ -1,0 +1,26 @@
+{% extends "base.html.j2" %}{% from 'macros.html.j2' import render_pagination %}
+{% block title %}{{ g.club.name }}{% endblock %}
+{% block content %}
+
+<!-- Below Navbar -->
+<div class="large_container">
+	<h1 class="text-center title">Photos of {{ g.club.name }}</h1>
+	{% if uploads %}
+	<div class="photoblocks row">
+	{% for upload in uploads %}
+	<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6 emptyline">
+		<div class="photo clickable" data-href="{{ url_for('actblueprint.actintro', activity=upload.activity.callsign) }}">
+			<img src="{{ upload.upload.location_external }}" class="img-responsive no-padding" alt="{{ upload.activity.club.name }}">
+		</div>
+	</div>
+	{% endfor %}
+	</div>
+	{% else %}
+	<p class="text-center white midtext">{{ g.club.name }} does not have any activity with photos yet.</p>
+	{% endif %}
+	<br>
+	<div class="clearfix"></div>
+	<center>{{ render_pagination(pagination) }}</center>
+</div>
+
+{% endblock %}

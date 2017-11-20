@@ -1,0 +1,47 @@
+{% extends "base.html.j2" %}{% from 'macros.html.j2' import get_messages %}
+{% block title %}New teachers{% endblock %}
+{% block content %}
+
+<div class="container">
+	<div class="admin_function">
+		<h2 class="title_next">Refresh Users</h2>
+		<br>
+		{{ get_messages(['refresh_users'], br_after=True) }}
+		<form action="{{ url_for('.refreshusers_submit') }}" method="post" enctype="multipart/form-data">
+			<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+			<p>Please upload a xlsx file with a sheet named "Students".</p>
+			<p>Required information in xlsx(in exact order): Student ID, Passport Name, Class</p>
+			<p>Accounts in the database that are not in the excel file will be disabled, while accounts in the excel that are not in the database will be created. The rest are updated.</p>
+			<p>Please download new student accounts' passwords 5-10 minutes after submitting the excel file.</p>
+			<p>Below is an example in excel file.</p>
+			<table class="table table-hover table-bordered">
+				<thead>
+					<tr>
+						<th>Student ID</th>
+						<th>Passport Name</th>
+						<th>Class</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="act">
+						<td>123123</td>
+						<td>Example</td>
+						<td>9(1)</td>
+					</tr>
+				</tbody>
+			</table>
+			<p>Student accounts that have already been created will not be created again.</p>
+			<input class="hide" type="file" name="excel" id="excel" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, .csv, application/vnd.ms-excel">
+			<label for="excel" class="upload_button">
+				<span class="glyphicon glyphicon-upload"></span>
+				<span>Choose an excel file...</span>
+			</label>
+			<p class="upload_content" id="upload_content"></p>
+			<div class="clearfix"></div>
+			<br>
+			<input type="submit" class="btn btn-primary btn-lg" value="Submit">
+		</form>
+	</div>
+</div>
+
+{% endblock %}

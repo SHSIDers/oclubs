@@ -1,0 +1,167 @@
+{% extends "user/personal.html.j2" %}{% from 'macros.html.j2' import get_messages %}
+{% block personal %}
+
+<h2 class="white">Participating Clubs</h2>
+<br>
+<div class="clubblocks row">
+	{% for club in clubs %}
+	{% if club.reactivate %}
+	<div class="col-lg-3 col-sm-4 col-xs-6">
+		<a class="smallblock" href="{{ url_for('clubblueprint.clubintro', club=club.callsign) }}"><img src="{{ club.picture.location_external }}" class="img-responsive" alt="">
+			<p class="midtext">{{ club.name }}</p>
+			{% if not club.is_active %}
+			<p class="minitext">(Inactive)</p>
+			{% endif %}
+		</a>
+	</div>
+	{% endif %}
+	{% endfor %}
+</div>
+<div class="clearfix"></div>
+<div class="col-xs-6">
+	<center>
+		<a class="btn btn-info student-clubbtn" href="{{ url_for('clubblueprint.clublist', club_filter='all') }}">Join Clubs</a>
+	</center>
+</div>
+<div class="col-xs-6">
+	<center>
+		<a class="btn btn-info student-clubbtn" href="{{ url_for('clubblueprint.quitclub') }}">Quit Clubs</a>
+	</center>
+</div>
+<div class="clearfix"></div>
+<br>
+<div class="clearfix clearfix-bordered"></div>
+
+<h2 class="white">CAS</h2>
+<br>
+<div class="clubblocks row">
+	{% for club, numcas in cas.items() %}
+	<div class="col-lg-3 col-sm-4 col-xs-6">
+		<div class="smallblock">
+			<p class="midtext">{{ club.name }}</p>
+			<p class="minitext">CAS Hours: {{ numcas|round(1) }}</p>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+<div class="clearfix"></div>
+<div class="smallblock">
+	<p class="largetext">Total CAS Hours: {{ cas.values()|sum|round(1) }}</p>
+</div>
+<div class="clearfix clearfix-bordered"></div>
+
+<div class="col-md-6" id="stuclubmeeting">
+	<h2 class="white">Club Meetings</h2>
+	<table class="table table-hover table-bordered">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Club</th>
+				<th>Date</th>
+				<th>Time</th>
+				<th>Location</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for meeting in meetings %}
+			<tr class="clickable act" data-href="{{ url_for('actblueprint.actintro', activity=meeting.callsign) }}">
+				<td>{{ meeting.name }}</td>
+				<td>{{ meeting.club.name }}</td>
+				<td>{{ meeting.date }}</td>
+				<td>{{ meeting.time.format_name }}</td>
+				<td>{{ meeting.location }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<p class="white">You don't have to sign up for club meetings.</p>
+	<p class="white emptyline">Check activities page to see more.</p>
+</div>
+<div class="col-md-6" id="stuactlist">
+	<h2 class="white">Activities</h2>
+	<table class="table table-hover table-bordered">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Club</th>
+				<th>Date</th>
+				<th>Time</th>
+				<th>Location</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for act in activities %}
+			<tr class="clickable act" data-href="{{ url_for('actblueprint.actintro', activity=act.callsign) }}">
+				<td>{{ act.name }}</td>
+				<td>{{ act.club.name }}</td>
+				<td>{{ act.date }}</td>
+				<td>{{ act.time.format_name }}</td>
+				<td>{{ act.location }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<center>
+		<a class="btn btn-info" href="{{ url_for('actblueprint.allactivities', club_filter='all') }}">Register Individual Club Activities</a>
+	</center>
+	<center>
+		<a class="btn btn-info" href="{{ url_for('clubblueprint.clublist', club_filter='all') }}">Register HongMei Activities</a>
+	</center>
+</div>
+
+{% if allow_club_creation %}
+<div class="clearfix clearfix-bordered"></div>
+<br>
+<center>
+	<a class="btn btn-primary downloadbtn-sm" href="{{ url_for('clubblueprint.newclub') }}">I want to create a club!</a>
+</center>
+{% endif %}
+
+<br>
+<div class="clearfix {% if leader_club %}clearfix-bordered{% endif %}"></div>
+
+{% if leader_club %}
+<br>
+<div class="container">
+	{{ get_messages(['reactivate_submit']) }}
+	{% for club in leader_club %}
+	{% if club.is_active %}
+	<a class="btn btn-success downloadbtn-sm" href="{{ url_for('clubblueprint.club', club=club.callsign) }}">Manage {{ club.name }}</a>
+	{% elif not club.reactivate %}
+	<a class="btn btn-warning downloadbtn-sm" href="#reactivate_modal_{{ club.id }}" data-toggle="modal" data-target="#reactivate_modal_{{ club.id }}">Renew {{ club.name }}</a>
+	{% endif %}
+	{% endfor %}
+</div>
+{% endif %}
+
+{% for club in leader_club %}
+{% if not club.is_active and not club.reactivate %}
+<div id="reactivate_modal_{{ club.id }}" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form class="form-group" action="{{ url_for('clubblueprint.reactivate_submit', club=club.callsign) }}" id="reactivate_form_{{ club.id }}" method="post">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Renew {{ club.name }}</h4>
+				</div>
+				<div class="modal-body">
+					<label >Do you want to renew {{ club.name }}?</label>
+					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+					<div class="checkbox">
+					  <label>
+					    <input type="checkbox" id="keep_members_{{ club.id }}" name="keep_members" checked>
+						   Keep members in the club
+					  </label>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<input type="submit" class="btn btn-primary" value="Renew">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{% endif %}
+{% endfor %}
+{% endblock %}
