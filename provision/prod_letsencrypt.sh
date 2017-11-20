@@ -36,7 +36,7 @@ sed -i 's/authenticator = standalone/authenticator = nginx/' /etc/letsencrypt/re
 if which certbot &> /dev/null; then
     cat > /etc/cron.daily/certbot << EOF
 #! /bin/bash
-certbot renew &> /dev/null || true
+certbot renew -q --deploy-hook '/usr/bin/systemctl reload nginx.service'
 EOF
     chmod a+x /etc/cron.daily/certbot
 fi
