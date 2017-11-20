@@ -98,6 +98,7 @@ nginx::nginx_vhosts:
             proxy_hide_header       Set-Cookie;
             proxy_ignore_headers    Set-Cookie;
             proxy_set_header        Cookie "";
+            proxy_set_header        Referer "https://oclubs.shs.cn/"
 
             add_header X-Cache-Status $upstream_cache_status;
 
