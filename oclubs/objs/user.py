@@ -86,11 +86,17 @@ class User(BaseObject, UserMixin):
             )
 
     def email_user(self, title, contents):
+        if self.is_disabled:
+            return
+
         if self.email and '@' in self.email \
-          and self.get_preference('receive_email'):
+                and self.get_preference('receive_email'):
             email.send((self.email, self.passportname), title, contents)
 
     def notify_user(self, contents):
+        if self.is_disabled:
+            return
+
         from oclubs.objs.activity import date_int
         database.insert_row(
             'notification',
