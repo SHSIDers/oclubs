@@ -7,7 +7,6 @@ oclubs::secrets:
   flask_key: ''
   mariadb_pw: "%{hiera('mysql::server::root_password')}"
   redis_pw: "%{hiera('redis::requirepass')}"
-  db2_conn: ''
   sendgrid_key: ''
 
 httpredir-nginx-cfg: ''

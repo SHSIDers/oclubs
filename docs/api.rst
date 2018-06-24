@@ -14,10 +14,6 @@ Main Relational Database
 ------------------------
 .. automodule:: oclubs.access.database
 
-SHSID Authoritative Database
-----------------------------
-.. automodule:: oclubs.access.db2
-
 Search Engine
 -------------
 .. automodule:: oclubs.access.elasticsearch

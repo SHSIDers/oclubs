@@ -9,7 +9,6 @@ from __future__ import absolute_import
 from oclubs.access import secrets
 from oclubs.access import fs
 from oclubs.access import database
-from oclubs.access import db2
 from oclubs.access import elasticsearch
 from oclubs.access import email
 from oclubs.access import redis
@@ -31,6 +30,6 @@ def done(commit=True):
 
 
 __all__ = [
-    'fs', 'database', 'db2', 'elasticsearch', 'secrets', 'email',
+    'fs', 'database', 'elasticsearch', 'secrets', 'email',
     'siteconfig', 'redis', 'done'
 ]

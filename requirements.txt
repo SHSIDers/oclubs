@@ -24,7 +24,6 @@ first==2.0.1              # via pip-tools
 flask-login==0.4.0
 flask==0.12
 html5lib==0.9999999       # via bleach, django-htmlmin
-ibm-db==2.0.7
 imagesize==0.7.1          # via sphinx
 itsdangerous==0.24        # via flask
 jdcal==1.3                # via openpyxl

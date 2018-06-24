@@ -12,7 +12,6 @@ The IP address of this website is 192.168.8.201.
   * `oclubs/`: Main oclubs code (almost everything other than configuration is here)
     * `access/`: Low level accessing of various cache/configuration/database/storage backends
       * `database.py`: Main relational database
-      * `db2.py`: SHSID authoritative database, read-only
       * `delay.py`: helper functions
       * `elasticsearch.py`: Search engine
       * `email.py`: Email handling, to Postfix and SendGrid, write-only
@@ -69,7 +68,6 @@ Centos 6 on 64-bit system
 
 
 * **Elasticsearch**: Current search engine, runs on Java
-* **IBM DB2** (External): Current SHSID authoritative database
 * **MariaDB 10**: MySQL replacement, current main relational database storage
 * **Nginx**: Current fast HTTP reverse-proxy, serves custom static files directly, and proxies & caches to some other CDN services for non-custom static files, and proxies to uwsgi for dynamic content
 * **Postfix**: Current main SMTP server for email-delivery

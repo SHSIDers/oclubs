@@ -107,7 +107,6 @@ oclubs::secrets:
     encrypt_key: '$ENCRYPT_KEY'
     flask_key: '$FLASK_KEY'
     # FIXME
-    # db2_conn: 'DATABASE=;HOSTNAME=;PORT=;PROTOCOL=TCPIP;UID=;PWD=' # Ask this from your IT teacher
     # sendgrid_key: '' # Sendgrid API key for sending emails reliably to hard-to-contact services such as Gmail
 
 oclubs::users:
