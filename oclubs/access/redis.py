@@ -11,6 +11,8 @@ serialization is done with JSON.
 
 from __future__ import absolute_import, unicode_literals
 
+from abc import ABCMeta
+
 from redis import Redis
 from flask import g
 import json
@@ -34,7 +36,7 @@ def _done(commit=True):
         del g.redisObjDict
 
 
-class _RedisMetaclass(type):
+class _RedisMetaclass(ABCMeta):
     def __call__(cls, *args, **kwargs):
         cached = g.get('redisObjDict', None)
         self = cls.__new__(cls, *args, **kwargs)
