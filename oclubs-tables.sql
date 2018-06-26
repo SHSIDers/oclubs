@@ -161,11 +161,13 @@ CREATE INDEX pref_user ON preferences (pref_user);
 
 CREATE TABLE classroom (
 	room_id NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	room_number NOT NULL,
+	room_number varchar(16) NOT NULL,
 	room_studentsToUse boolean NOT NULL, # true = available to students, false = not available to students
 	room_building tinyint, # 0 = XMT, 1 = ZXB
 	room_desc varchar(255) # optional descriptors (eg ASB only)
 );
+
+CREATE INDEX room_id ON classroom (room_id);
 
 CREATE TABLE reservation (
 	res_id NOT NULL PRIMARY KEY AUTO_INCREMENT;
@@ -177,4 +179,8 @@ CREATE TABLE reservation (
 	res_directors_approval boolean NOT NULL,
 	res_SBApp_success boolean NOT NULL # true = sucess, allowed to use smartboard, default = false, application to use still pending
 );
+
+CREATE INDEX res_id ON classroom (res_id);
+CREATE INDEX res_SBNeeded ON reservation (res_SBNeeded);
+CREATE INDEX res_SBApp_success ON reservation (res_SBApp_success);
 
