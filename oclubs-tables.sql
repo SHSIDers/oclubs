@@ -1,3 +1,5 @@
+#Troll
+
 CREATE DATABASE oclubs CHARACTER SET utf8;
 USE oclubs;
 
