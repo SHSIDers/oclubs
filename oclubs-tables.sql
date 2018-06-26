@@ -170,9 +170,9 @@ CREATE TABLE classroom (
 CREATE TABLE reservation (
 	res_id NOT NULL PRIMARY KEY AUTO_INCREMENT;
 	res_activity int NOT NULL, # Foreign key to act.act_id
-	res_classroom int NOT NULL, # Foreign key to classroom.classroom_id
+	res_classroom int NOT NULL, # Foreign key to class.room_id
 	res_SBNeeded boolean NOT NULL, # true = need smartboard, false = no need smartboard
-	res_SBAppDesc varchar(500) NOT NULL,
+	res_SBAppDesc varchar(512) NOT NULL,
 	res_instructors_approval boolean NOT NULL,
 	res_directors_approval boolean NOT NULL,
 	res_SBApp_success boolean NOT NULL # true = sucess, allowed to use smartboard, default = false, application to use still pending
