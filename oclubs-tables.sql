@@ -1,5 +1,3 @@
-#Troll
-
 CREATE DATABASE oclubs CHARACTER SET utf8;
 USE oclubs;
 
@@ -32,7 +30,9 @@ CREATE TABLE club (
 	club_inactive boolean NOT NULL,
 	club_type tinyint NOT NULL, # 1 = academics, 2 = sports, 3 = arts, 4 = services, 5 = entertainment, 6 = others, 7 = school teams
 	club_joinmode tinyint NOT NULL, # 1 = free join, 2 = by invitation,
-	club_reactivate boolean NOT NULL
+	club_reactivate boolean NOT NULL,
+	club_reservation_allowed boolean NOT NULL, # true = allowed, false = not allowed,
+	club_smartboard_allowed boolean NOT NULL # true = allowed, false = not allowed
 );
 
 CREATE INDEX club_name ON club (club_name);
@@ -61,7 +61,8 @@ CREATE TABLE activity (
 	act_location varchar(255) NOT NULL,
 	act_cas int NOT NULL, # CAS hours
 	act_post int NOT NULL, # Foreign key to text.text_id
-	act_selections varchar(255) NOT NULL # stores object in JSON
+	act_selections varchar(255), NOT NULL # stores object in JSON
+	act_reservation int, # Foreign key to reservation.reservations_id
 );
 
 CREATE INDEX act_club ON activity (act_club);
@@ -157,3 +158,23 @@ CREATE TABLE preferences (
 );
 
 CREATE INDEX pref_user ON preferences (pref_user);
+
+CREATE TABLE classroom (
+	classroom_id NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	classroom_number NOT NULL,
+	classroom_available_to_students boolean NOT NULL, # true = available to students, false = not available to students
+	building tinyint, # 0 = XMT, 1 = ZXB
+	classroom_desc varchar(255) # optional descriptors (eg ASB only)
+);
+
+CREATE TABLE reservation (
+	reservation_id NOT NULL PRIMARY KEY AUTO_INCREMENT;
+	activity int NOT NULL, # Foreign key to act.act_id
+	classroom int NOT NULL, # Foreign key to classroom.classroom_id
+	need_smartboard boolean NOT NULL, # true = need smartboard, false = no need smartboard
+	smartboard_app_desc varchar(500) NOT NULL,
+	instructors_approval boolean NOT NULL,
+	directors_approval boolean NOT NULL,
+	smartboard_app_success boolean NOT NULL # true = sucess, allowed to use smartboard, default = false, application to use still pending
+);
+
