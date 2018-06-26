@@ -1,4 +1,4 @@
-class oclubs::pythond {
+ class oclubs::pythond {
     $secrets = hiera_hash('oclubs::secrets', undef)
 
     package { 'git':
@@ -45,7 +45,7 @@ class oclubs::pythond {
     user { 'uwsgi':
         ensure  => present,
         comment => 'uWSGI service user',
-        home    => '/srv/oclubs',
+        home    => '/run/uwsgi',
         shell   => '/sbin/nologin',
         groups  => 'pythond',
         require => Exec['pip-install-requirements'],
