@@ -1,5 +1,3 @@
-#7122
-
 CREATE DATABASE oclubs CHARACTER SET utf8;
 USE oclubs;
 
@@ -162,21 +160,21 @@ CREATE TABLE preferences (
 CREATE INDEX pref_user ON preferences (pref_user);
 
 CREATE TABLE classroom (
-	classroom_id NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	classroom_number NOT NULL,
-	classroom_available_to_students boolean NOT NULL, # true = available to students, false = not available to students
-	building tinyint, # 0 = XMT, 1 = ZXB
-	classroom_desc varchar(255) # optional descriptors (eg ASB only)
+	room_id NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	room_number NOT NULL,
+	room_studentsToUse boolean NOT NULL, # true = available to students, false = not available to students
+	room_building tinyint, # 0 = XMT, 1 = ZXB
+	room_desc varchar(255) # optional descriptors (eg ASB only)
 );
 
 CREATE TABLE reservation (
-	reservation_id NOT NULL PRIMARY KEY AUTO_INCREMENT;
-	activity int NOT NULL, # Foreign key to act.act_id
-	classroom int NOT NULL, # Foreign key to classroom.classroom_id
-	need_smartboard boolean NOT NULL, # true = need smartboard, false = no need smartboard
-	smartboard_app_desc varchar(500) NOT NULL,
-	instructors_approval boolean NOT NULL,
-	directors_approval boolean NOT NULL,
-	smartboard_app_success boolean NOT NULL # true = sucess, allowed to use smartboard, default = false, application to use still pending
+	res_id NOT NULL PRIMARY KEY AUTO_INCREMENT;
+	res_activity int NOT NULL, # Foreign key to act.act_id
+	res_classroom int NOT NULL, # Foreign key to classroom.classroom_id
+	res_SBNeeded boolean NOT NULL, # true = need smartboard, false = no need smartboard
+	res_SBAppDesc varchar(500) NOT NULL,
+	res_instructors_approval boolean NOT NULL,
+	res_directors_approval boolean NOT NULL,
+	res_SBApp_success boolean NOT NULL # true = sucess, allowed to use smartboard, default = false, application to use still pending
 );
 
