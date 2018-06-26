@@ -1,4 +1,4 @@
- class oclubs::pythond {
+class oclubs::pythond {
     $secrets = hiera_hash('oclubs::secrets', undef)
 
     package { 'git':
