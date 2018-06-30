@@ -26,7 +26,6 @@ CREATE TABLE club (
 	club_intro tinytext NOT NULL,
 	club_picture int NOT NULL, # Foreign key to upload.upload_id
 	club_desc int NOT NULL, # Foreign key to text.text_id
-	club_location varchar(255) NOT NULL,
 	club_inactive boolean NOT NULL,
 	club_type tinyint NOT NULL, # 1 = academics, 2 = sports, 3 = arts, 4 = services, 5 = entertainment, 6 = others, 7 = school teams
 	club_joinmode tinyint NOT NULL, # 1 = free join, 2 = by invitation,
@@ -67,7 +66,7 @@ CREATE TABLE activity (
 
 CREATE INDEX act_club ON activity (act_club);
 CREATE INDEX act_post ON activity (act_post);
-CREATE INDEX act_date ON activity (act_date);
+CREATE INDEX act_date O\N activity (act_date);
 CREATE INDEX act_time ON activity (act_time);
 
 
@@ -172,7 +171,7 @@ CREATE INDEX room_id ON classroom (room_id);
 CREATE TABLE reservation (
 	res_id NOT NULL PRIMARY KEY AUTO_INCREMENT;
 	res_activity int NOT NULL, # Foreign key to act.act_id
-	res_classroom int NOT NULL, # Foreign key to class.room_id
+	res_classroom int NOT NULL, # Foreign key to classroom.room_id
 	res_SBNeeded boolean NOT NULL, # true = need smartboard, false = no need smartboard
 	res_SBAppDesc varchar(512) NOT NULL,
 	res_instructors_approval boolean NOT NULL,
