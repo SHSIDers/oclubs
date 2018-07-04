@@ -31,8 +31,8 @@ CREATE TABLE club (
 	club_type tinyint NOT NULL, # 1 = academics, 2 = sports, 3 = arts, 4 = services, 5 = entertainment, 6 = others, 7 = school teams
 	club_joinmode tinyint NOT NULL, # 1 = free join, 2 = by invitation,
 	club_reactivate boolean NOT NULL,
-	club_reservation_allowed boolean NOT NULL, # true = allowed, false = not allowed,
-	club_smartboard_allowed boolean NOT NULL # true = allowed, false = not allowed
+	club_reservation_allowed boolean NOT NULL DEFAULT true, # true = allowed, false = not allowed, default true
+	club_smartboard_allowed boolean NOT NULL DEFAULT true # true = allowed, false = not allowed default true
 );
 
 CREATE INDEX club_name ON club (club_name);
