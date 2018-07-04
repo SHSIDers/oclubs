@@ -1,4 +1,3 @@
-CREATE DATABASE oclubs CHARACTER SET utf8;
 USE oclubs;
 
 CREATE TABLE user (
@@ -159,9 +158,10 @@ CREATE TABLE preferences (
 CREATE INDEX pref_user ON preferences (pref_user);
 
 CREATE TABLE classroom (
-	room_id NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	room_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	room_number varchar(16) NOT NULL,
-	room_studentsToUse boolean NOT NULL, # true = available to students, false = not available to students
+	room_studentsToUseLunch boolean NOT NULL, # true = available to students, false = not available to students
+	room_studentsToUseAfternoon boolean NOT NULL, # true = available to students, false = not available to students
 	room_building tinyint, # 0 = XMT, 1 = ZXB
 	room_desc varchar(255) # optional descriptors (eg ASB only)
 );
@@ -169,7 +169,7 @@ CREATE TABLE classroom (
 CREATE INDEX room_id ON classroom (room_id);
 
 CREATE TABLE reservation (
-	res_id NOT NULL PRIMARY KEY AUTO_INCREMENT;
+	res_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT;
 	res_activity int NOT NULL, # Foreign key to act.act_id
 	res_classroom int NOT NULL, # Foreign key to classroom.room_id
 	res_SBNeeded boolean NOT NULL, # true = need smartboard, false = no need smartboard
