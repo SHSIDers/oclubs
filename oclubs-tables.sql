@@ -70,6 +70,7 @@ CREATE INDEX act_club ON activity (act_club);
 CREATE INDEX act_post ON activity (act_post);
 CREATE INDEX act_date ON activity (act_date);
 CREATE INDEX act_time ON activity (act_time);
+CREATE INDEX act_reservation ON activity (act_reservation);
 
 
 CREATE TABLE act_pic (
