@@ -1,4 +1,5 @@
 CREATE DATABASE oclubs CHARACTER SET utf8;
+
 USE oclubs;
 
 CREATE TABLE user (
@@ -26,12 +27,13 @@ CREATE TABLE club (
 	club_intro tinytext NOT NULL,
 	club_picture int NOT NULL, # Foreign key to upload.upload_id
 	club_desc int NOT NULL, # Foreign key to text.text_id
+	club_location varchar(255) NOT NULL,
 	club_inactive boolean NOT NULL,
 	club_type tinyint NOT NULL, # 1 = academics, 2 = sports, 3 = arts, 4 = services, 5 = entertainment, 6 = others, 7 = school teams
 	club_joinmode tinyint NOT NULL, # 1 = free join, 2 = by invitation,
 	club_reactivate boolean NOT NULL,
-	club_reservation_allowed boolean NOT NULL, # true = allowed, false = not allowed,
-	club_smartboard_allowed boolean NOT NULL # true = allowed, false = not allowed
+	club_reservation_allowed boolean NOT NULL DEFAULT true, # true = allowed, false = not allowed, default true
+	club_smartboard_allowed boolean NOT NULL DEFAULT true # true = allowed, false = not allowed default true
 );
 
 CREATE INDEX club_name ON club (club_name);
@@ -68,6 +70,7 @@ CREATE INDEX act_club ON activity (act_club);
 CREATE INDEX act_post ON activity (act_post);
 CREATE INDEX act_date ON activity (act_date);
 CREATE INDEX act_time ON activity (act_time);
+CREATE INDEX act_reservation ON activity (act_reservation);
 
 
 CREATE TABLE act_pic (
@@ -159,9 +162,10 @@ CREATE TABLE preferences (
 CREATE INDEX pref_user ON preferences (pref_user);
 
 CREATE TABLE classroom (
-	room_id NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	room_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	room_number varchar(16) NOT NULL,
-	room_studentsToUse boolean NOT NULL, # true = available to students, false = not available to students
+	room_studentsToUseLunch boolean NOT NULL, # true = available to students, false = not available to students
+	room_studentsToUseAfternoon boolean NOT NULL, # true = available to students, false = not available to students
 	room_building tinyint, # 0 = XMT, 1 = ZXB
 	room_desc varchar(255) # optional descriptors (eg ASB only)
 );
@@ -169,7 +173,7 @@ CREATE TABLE classroom (
 CREATE INDEX room_id ON classroom (room_id);
 
 CREATE TABLE reservation (
-	res_id NOT NULL PRIMARY KEY AUTO_INCREMENT;
+	res_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT;
 	res_activity int NOT NULL, # Foreign key to act.act_id
 	res_classroom int NOT NULL, # Foreign key to classroom.room_id
 	res_SBNeeded boolean NOT NULL, # true = need smartboard, false = no need smartboard

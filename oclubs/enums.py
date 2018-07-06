@@ -11,7 +11,11 @@ class UserType(Enum):
     """Enum regarding the type of a user."""
     STUDENT = 1
     TEACHER = 2
-    ADMIN = 3
+    ADMIN = 3 #legacy
+    CLUB_ADMIN = 4
+    CLASSROOM_ADMIN = 5
+    DIRECTOR = 6
+
 
     @property
     def format_name(self):
