@@ -65,4 +65,13 @@ class ClubJoinMode(Enum):
         """Formats the value of the enum for display."""
         return ['', 'Free Join', 'By Invitation'][self.value]
 
-__all__ = ['UserType', 'ClubType', 'ActivityTime', 'ClubJoinMode']
+class Building(Enum):
+    """Enum for buildings for classroom reservation."""
+    XMT = 1
+
+    @property
+    def format_name(self):
+        """Formats the value of the enum for display."""
+        return ['XMT'][self.value]
+
+__all__ = ['UserType', 'ClubType', 'ActivityTime', 'ClubJoinMode', 'Building']

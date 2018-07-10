@@ -11,7 +11,7 @@ CREATE TABLE user (
 	user_picture int NOT NULL, # Foreign key to upload.upload_id
 	user_email tinytext NOT NULL,
 	user_phone bigint,
-	user_type tinyint NOT NULL, # 1=student 2=teacher 3=admin
+	user_type tinyint NOT NULL, # Enum UserType
 	user_grade tinyint, # NULL for teachers
 	user_class tinyint # NULL for teachers
 );
@@ -168,7 +168,7 @@ CREATE TABLE classroom (
 	room_number varchar(16) NOT NULL,
 	room_studentsToUseLunch boolean NOT NULL, # true = available to students, false = not available to students
 	room_studentsToUseAfternoon boolean NOT NULL, # true = available to students, false = not available to students
-	room_building tinyint, # 0 = XMT, 1 = ZXB
+	room_building tinyint, # Enum Building
 	room_desc varchar(255) # optional descriptors (eg ASB only)
 );
 
