@@ -24,7 +24,7 @@ class Reservation(BaseObject):
     directors_approval = Property('res_directors_approval', bool)
     SBApp_success = Property('res_SBApp_success', bool)
 
-    def is_SBApp_success(self):
+    def update_SBApp_success(self):
         if instructors_approval and directors_approval:
             SBApp_success = true
             return true
