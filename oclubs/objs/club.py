@@ -25,6 +25,10 @@ class Club(BaseObject):
     type = Property('club_type', ClubType)
     joinmode = Property('club_joinmode', ClubJoinMode)
     reactivate = Property('club_reactivate', bool)
+    reservation_allowed = Property('club_reservation_allowed', bool)
+    smartboard_allowed = Property('club_smartboard_allowed', bool)
+    smartboard_teacherapp_bypass = Property('club_smartboard_teacherapp_bypass', bool)
+    smartboard_directorapp_bypass = Property('club_smartboard_directorapp_bypass', bool)
     members = ListProperty('club_member', 'cm_club', 'cm_user', 'User')
     all_act = ListProperty('activities', 'act_club', 'act_id', 'Activity')
 
