@@ -20,7 +20,9 @@ class UserType(Enum):
     @property
     def format_name(self):
         """Formats the value of the enum for display."""
-        return ['', 'Student', 'Teacher', 'Admin'][self.value]
+        return ['', 'Student', 'Teacher', 'Admin',
+                'Club Administrator','Classroom Reservation Administrator',
+                'Director'][self.value]
 
 
 class ClubType(Enum):
