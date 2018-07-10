@@ -74,6 +74,6 @@ class Building(Enum):
     @property
     def format_name(self):
         """Formats the value of the enum for display."""
-        return ['XMT'][self.value]
+        return ['','XMT'][self.value]
 
 __all__ = ['UserType', 'ClubType', 'ActivityTime', 'ClubJoinMode', 'Building']
