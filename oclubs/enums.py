@@ -77,6 +77,4 @@ class Building(Enum):
         """Formats the value of the enum for display."""
         return ['','XMT'][self.value]
 
-from enum import Enum
-
 __all__ = ['UserType', 'ClubType', 'ActivityTime', 'ClubJoinMode', 'Building']
