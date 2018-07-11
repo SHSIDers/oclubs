@@ -34,7 +34,7 @@ class Activity(BaseObject):
     cas = Property('act_cas', (lambda val: val/60, lambda val: val*60))
     post = Property('act_post', 'FormattedText', search=True)
     selections = Property('act_selections', json, error_default='[]')
-    reservation = Property('act_reservation','Reservation')
+    reservation = Property('act_reservation', 'Reservation')
     attendance = ListProperty('attendance', 'att_act', 'att_user', 'User')
     pictures = ListProperty('act_pic', 'actpic_act', 'actpic_upload', 'Upload')
 

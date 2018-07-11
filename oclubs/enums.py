@@ -21,7 +21,8 @@ class UserType(Enum):
     def format_name(self):
         """Formats the value of the enum for display."""
         return ['', 'Student', 'Teacher', 'Admin',
-                'Club Administrator','Classroom Reservation Administrator',
+                'Club Administrator',
+                'Classroom Reservation Administrator',
                 'Director'][self.value]
 
 
@@ -75,5 +76,7 @@ class Building(Enum):
     def format_name(self):
         """Formats the value of the enum for display."""
         return ['','XMT'][self.value]
+
+from enum import Enum
 
 __all__ = ['UserType', 'ClubType', 'ActivityTime', 'ClubJoinMode', 'Building']

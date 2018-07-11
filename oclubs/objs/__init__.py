@@ -13,4 +13,4 @@ from oclubs.objs.user import User
 from oclubs.objs.upload import Upload
 from oclubs.objs.reservation import Reservation
 
-__all__ = ['Activity', 'Club', 'FormattedText', 'Upload', 'User','Reservation']
+__all__ = ['Activity', 'Club', 'FormattedText', 'Upload', 'User', 'Reservation']
