@@ -2,16 +2,26 @@
 # -*- coding: UTF-8 -*-
 #
 
-from oclubs.objs.base import
-
 from __future__ import absolute_import, unicode_literals, division
 
 from datetime import datetime, date, timedelta
 import json
 
 from oclubs.access import database
-from oclubs.enums import ActivityTime
+from oclubs.enums import ActivityTime, Building
 from oclubs.objs.base import BaseObject, Property, ListProperty, paged_db_read
+from oclubs.objs import Activity
+
+ONE_DAY = timedelta(days=1)
+
+
+def int_date(dateint):
+    return datetime.strptime(str(dateint), Activity.date_fmtstr).date()
+
+
+def date_int(dateobj):
+    return int(dateobj.strftime(Activity.date_fmtstr))
+
 
 class Reservation(BaseObject):
     table = 'reservation'
@@ -35,13 +45,13 @@ class Reservation(BaseObject):
         insert = {}
         update = {'res_id': self.id, 'res_instructors_approval': is_approved}
         database.insert_or_update_row('reservation', insert, update)
-        is_SBApp_success(self)
+        update_SBApp_success(self)
 
     def update_directors_approval(self, is_approved):
         insert = {}
         update = {'res_id': self.id, 'res_directors_approval': is_approved}
         database.insert_or_update_row('reservation', insert, update)
-        is_SBApp_success(self)
+        update_SBApp_success(self)
 
     @classmethod
     @paged_db_read
@@ -55,8 +65,9 @@ class Reservation(BaseObject):
         if additional_conds:
             conds.update(additional_conds)
 
-        conds['join'] = conds.get('join',[])
-        conds['join'].append(('inner', 'activity', [('act_id', 'res_activity')]))
+        conds['join'] = conds.get('join', [])
+        conds['join'].append(('inner', 'activity',
+                             [('act_id', 'res_activity')]))
         conds['where'] = conds.get('where', [])
         if isinstance(dates, date):
             conds['where'].append(('=', 'act_date', date_int(dates)))
@@ -80,17 +91,21 @@ class Reservation(BaseObject):
             conds['where'].append(('in', 'act_time', times))
 
         if room_buildings:
-            room_buildings = [room_building.value for room_building in room_buildings]
+            room_buildings = [room_building.value for
+                              room_building in room_buildings]
             conds['join'] = conds.get('join', [])
-            conds['join'].append(('inner', 'classroom', [('room_id', 'res_classroom')]))
+            conds['join'].append(('inner', 'classroom',
+                                 [('room_id', 'res_classroom')]))
             conds['where'].append(('in', 'room_building', room_buildings))
 
         if SBNeeded:
             conds['where'].append(('res_SBNeeded', SBNeeded))
         if instructors_approval:
-            conds['where'].append(('res_instructors_approval', instructors_approval))
+            conds['where'].append(('res_instructors_approval',
+                                   instructors_approval))
         if directors_approval:
-            conds['where'].append(('res_directors_approval', directors_approval))
+            conds['where'].append(('res_directors_approval',
+                                   directors_approval))
         if SBApp_success:
             conds['where'].append(('res_SBApp_success', SBApp_success))
 
@@ -100,9 +115,26 @@ class Reservation(BaseObject):
 
         pager_fetch, pager_return = pager
 
-        ret = pager_fetch(database.fetch_onecol, 'reservation', 'res_id', conds,
-                        distinct=True)
+        ret = pager_fetch(database.fetch_onecol, 'reservation', 'res_id',
+                          conds, distinct=True)
 
         ret = [cls(item) for item in ret]
 
         return pager_return(ret)
+
+    @classmethod
+    def all_reservations(cls):
+        return cls.get_reservations_conditions()
+
+    @classmethod
+    def thisweek_reservations(cls):
+        weekday = date.today().weekday()
+        today = date.today()
+        return cls.get_reservations_conditions(
+            dates=(today - timedelta(weekday + 1),
+                   today + timedelta(6 - weekday)))
+
+    @classmethod
+    def today_reservations(cls):
+        today = date.today()
+        return cls.get_reservations_conditions(dates=today)
