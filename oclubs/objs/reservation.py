@@ -5,12 +5,11 @@
 from __future__ import absolute_import, unicode_literals, division
 
 from datetime import datetime, date, timedelta
-import json
 
 from oclubs.access import database
 from oclubs.enums import ActivityTime, Building
-from oclubs.objs.base import BaseObject, Property, ListProperty, paged_db_read
-from oclubs.objs import Activity
+from oclubs.objs.base import BaseObject, Property, paged_db_read
+from oclubs.objs.activity import Activity
 
 ONE_DAY = timedelta(days=1)
 
@@ -27,37 +26,48 @@ class Reservation(BaseObject):
     table = 'reservation'
     identifier = 'res_id'
     activity = Property('res_activity', 'Activity')
-    classroom = Property('res_classroom')
+    classroom = Property('res_classroom', 'Classroom')
     SBNeeded = Property('res_SBNeeded', bool)
     SBAppDesc = Property('res_SBAppDesc', bool)
     instructors_approval = Property('res_instructors_approval', bool)
     directors_approval = Property('res_directors_approval', bool)
     SBApp_success = Property('res_SBApp_success', bool)
 
-    def update_SBApp_success(self):
-        if instructors_approval and directors_approval:
-            SBApp_success = true
-            return true
+    @property
+    def classroomRoomNumber(self):
+        ret = database.fetch_oneentry(self.table,
+                                      'room_number',
+                                      {'room_id': self.classroom.id})
+        return ret.upper()
 
-        return false
+    @property
+    def classroomBuilding(self):
+        ret = database.fetch_oneentry(cls.table,
+                                      'room_building',
+                                      {'room_id': self.classroom.id})
+        return ret.formatname()
+
+    def update_SBApp_success(self):
+        if self.instructors_approval and self.directors_approval:
+            self.SBApp_success = True
+            return True
+
+        return False
 
     def update_instructors_approval(self, is_approved):
-        insert = {}
-        update = {'res_id': self.id, 'res_instructors_approval': is_approved}
-        database.insert_or_update_row('reservation', insert, update)
-        update_SBApp_success(self)
+        self.instructors_approval = is_approved
+        self.update_SBApp_success(self)
 
     def update_directors_approval(self, is_approved):
-        insert = {}
-        update = {'res_id': self.id, 'res_directors_approval': is_approved}
-        database.insert_or_update_row('reservation', insert, update)
-        update_SBApp_success(self)
+        self.directors_approval = is_approved
+        self.update_SBApp_success(self)
 
     @classmethod
     @paged_db_read
     def get_reservations_conditions(cls, times=(), additional_conds=None,
                                     dates=(True, True), room_buildings=(),
-                                    SBNeeded=None, instructors_approval=None,
+                                    room_numbers=(), SBNeeded=None,
+                                    instructors_approval=None,
                                     directors_approval=None,
                                     SBApp_success=None, order_by_time=True,
                                     pager=None):
@@ -97,17 +107,19 @@ class Reservation(BaseObject):
             conds['join'].append(('inner', 'classroom',
                                  [('room_id', 'res_classroom')]))
             conds['where'].append(('in', 'room_building', room_buildings))
+        if room_numbers:
+            conds['where'].append(('in', 'room_number', room_numbers))
 
-        if SBNeeded:
-            conds['where'].append(('res_SBNeeded', SBNeeded))
-        if instructors_approval:
-            conds['where'].append(('res_instructors_approval',
+        if SBNeeded is not None:
+            conds['where'].append(('=', 'res_SBNeeded', SBNeeded))
+        if instructors_approval is not None:
+            conds['where'].append(('=', 'res_instructors_approval',
                                    instructors_approval))
-        if directors_approval:
-            conds['where'].append(('res_directors_approval',
+        if directors_approval is not None:
+            conds['where'].append(('=', 'res_directors_approval',
                                    directors_approval))
-        if SBApp_success:
-            conds['where'].append(('res_SBApp_success', SBApp_success))
+        if SBApp_success is not None:
+            conds['where'].append(('=', 'res_SBApp_success', SBApp_success))
 
         if order_by_time:
             conds['order'] = conds.get('order', [])
@@ -121,10 +133,6 @@ class Reservation(BaseObject):
         ret = [cls(item) for item in ret]
 
         return pager_return(ret)
-
-    @classmethod
-    def all_reservations(cls):
-        return cls.get_reservations_conditions()
 
     @classmethod
     def thisweek_reservations(cls):

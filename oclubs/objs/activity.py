@@ -191,8 +191,12 @@ class Activity(BaseObject):
 
         pager_fetch, pager_return = pager
 
-        ret = pager_fetch(database.fetch_onecol, 'activity', 'act_id', conds,
+        ret = pager_fetch(database.fetch_onecol,
+                          cls.table,
+                          cls.identifier,
+                          conds,
                           distinct=True)
+
         ret = [cls(item) for item in ret]
 
         return pager_return(ret)
@@ -206,4 +210,5 @@ class Activity(BaseObject):
         weekday = date.today().weekday()
         today = date.today()
         return cls.get_activities_conditions(
-            dates=(today - timedelta(weekday + 1), today + timedelta(6 - weekday)))
+            dates=(today - timedelta(weekday + 1),
+                   today + timedelta(6 - weekday)))

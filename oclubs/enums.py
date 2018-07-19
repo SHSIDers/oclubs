@@ -11,11 +11,10 @@ class UserType(Enum):
     """Enum regarding the type of a user."""
     STUDENT = 1
     TEACHER = 2
-    ADMIN = 3 #legacy
+    ADMIN = 3  # legacy
     CLUB_ADMIN = 4
     CLASSROOM_ADMIN = 5
     DIRECTOR = 6
-
 
     @property
     def format_name(self):
@@ -68,6 +67,7 @@ class ClubJoinMode(Enum):
         """Formats the value of the enum for display."""
         return ['', 'Free Join', 'By Invitation'][self.value]
 
+
 class Building(Enum):
     """Enum for buildings for classroom reservation."""
     XMT = 1
@@ -75,6 +75,7 @@ class Building(Enum):
     @property
     def format_name(self):
         """Formats the value of the enum for display."""
-        return ['','XMT'][self.value]
+        return ['', 'XMT'][self.value]
+
 
 __all__ = ['UserType', 'ClubType', 'ActivityTime', 'ClubJoinMode', 'Building']

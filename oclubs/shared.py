@@ -24,7 +24,8 @@ import pystache
 
 from oclubs.access.secrets import get_secret
 from oclubs.exceptions import NoRow
-from oclubs.enums import UserType, ClubType
+from oclubs.objs.classroom import Classroom
+from oclubs.enums import UserType, ClubType, ActivityTime, Building
 
 with open('/srv/oclubs/oclubs/example.md', 'r') as f:
     markdownexample = f.read().strip()
@@ -452,6 +453,285 @@ class ClubFilter(object):
         )))
 
 
+class ResFilter(object):
+    DEFAULT = (None, None, None, None, None, None)
+    # /[building]/[activity time]/[room numbers]/[SBNeeded]/[InstructorsApp]
+    # /[DirectorsApp]
+
+    def __init__(self, conds=None):
+        self.conds = self.DEFAULT if conds is None else conds
+
+    @classmethod
+    def room_numbers_filter(cls, room_building, room_numbers):
+        ret = ()
+        r_numbers = Classroom.get_classroom_conditions(
+            building=room_building)
+        for room_number in room_numbers:
+            if room_number in r_numbers:
+                ret.extend(room_number)
+        return ret
+
+    @classmethod
+    def from_url(cls, url):
+        room_building, activity_time, room_numbers, SBNeeded, \
+            instructors_approval, directors_approval = cls.DEFAULT
+
+        if url and url != 'all':
+            conds = url.split('/')
+
+            if conds[0] != 'all':
+                try:
+                    room_building = Building[conds[0].upper()]
+                except KeyError:
+                    pass
+
+            if conds[1] != 'all':
+                try:
+                    activity_time = ActivityTime[conds[1].upper()]
+                except KeyError:
+                    pass
+
+            if conds[2] != 'all':
+                room_numbers = cls.room_numbers_filter(room_building,
+                                                       conds[2].split('%'))
+
+            if conds[3] != 'all':
+                SBNeeded = conds[3]
+            if conds[4] != 'all':
+                instructors_approval = conds[4]
+            if conds[5] != 'all':
+                directors_approval = conds[5]
+
+        return cls((room_building,
+                    activity_time,
+                    room_numbers,
+                    SBNeeded,
+                    instructors_approval,
+                    directors_approval))
+
+    def to_url(self):
+        return self.build_url(self.conds)
+
+    def to_kwargs(self):
+        ret = {}
+        room_building, activity_time, room_numbers, SBNeeded, \
+            instructors_approval, directors_approval = self.conds
+
+        if room_building:
+            ret['room_buildings'] = [room_building]
+        if activity_time:
+            ret['times'] = [activity_time]
+        if room_numbers:
+            ret['room_numbers'] = room_numbers
+        if SBNeeded is not None:
+            ret['SBNeeded'] = SBNeeded
+        if instructors_approval is not None:
+            ret['instructors_approval'] = instructors_approval
+        if directors_approval is not None:
+            ret['directors_approval'] = directors_approval
+
+        return ret
+
+    @classmethod
+    def build_url(cls, conds):
+        if conds == cls.DEFAULT:
+            return 'all'
+
+        room_building, activity_time, room_numbers, SBNeeded, \
+            instructors_approval, directors_approval = conds
+
+        if room_numbers:
+            newnumbers = '%'.join(cls.room_numbers_filter(room_building,
+                                                          room_numbers))
+            newnumbers = list(map(str.lower(), newnumbers))
+
+        return '/'.join(filter(None, (
+            room_building.name.lower() if room_building else 'all',
+            activity_time.name.lower() if activity_time else 'all',
+            newnumbers if room_numbers else 'all',
+            SBNeeded if SBNeeded is not None else 'all',
+            instructors_approval
+            if instructors_approval is not None
+            else 'all',
+            directors_approval
+            if directors_approval is not None
+            else 'all'
+        )))
+
+    def toggle_url(self, identifier, cond):
+        room_building, activity_time, room_numbers, SBNeeded, \
+            instructors_approval, directors_approval = self.conds
+
+        if identifier == 'room_building':
+            try:
+                newbuilding = Building[cond.upper()]
+            except KeyError:
+                pass
+            else:
+                return self.build_url((newbuilding
+                                       if newbuilding != room_building
+                                       else None,
+                                       activity_time,
+                                       room_numbers,
+                                       SBNeeded,
+                                       instructors_approval,
+                                       directors_approval))
+
+        if identifier == 'activity_time':
+            try:
+                newtime = ActivityTime[cond.upper()]
+            except KeyError:
+                pass
+            else:
+                return self.build_url((room_building,
+                                       newtime
+                                       if newtime != activity_time
+                                       else None,
+                                       room_numbers,
+                                       SBNeeded,
+                                       instructors_approval,
+                                       directors_approval))
+
+        if identifier == 'room_number':
+            if cond:
+                newnumbers = self.room_numbers_filter(cond)
+                return self.build_url((room_building,
+                                       activity_time,
+                                       newnumbers,
+                                       SBNeeded,
+                                       instructors_approval,
+                                       directors_approval))
+            else:
+                return self.build_url((room_building,
+                                       activity_time,
+                                       None,
+                                       SBNeeded,
+                                       instructors_approval,
+                                       directors_approval))
+
+        if identifier == 'SBNeeded':
+            return self.build_url((room_building,
+                                   activity_time,
+                                   room_numbers,
+                                   cond if cond != SBNeeded else None,
+                                   instructors_approval,
+                                   directors_approval))
+
+        if identifier == 'instructors_approval':
+            return self.build_url((room_building,
+                                   activity_time,
+                                   room_numbers,
+                                   SBNeeded,
+                                   cond
+                                   if cond != instructors_approval
+                                   else None,
+                                   directors_approval))
+
+        if identifier == 'directors_approval':
+            return self.build_url((room_building,
+                                   activity_time,
+                                   room_numbers,
+                                   SBNeeded,
+                                   instructors_approval,
+                                   cond
+                                   if cond != directors_approval
+                                   else None))
+
+    def enumerate(self):
+        return [
+            {
+                'name': 'Building',
+                'identifier': 'room_building',
+                'elements': [
+                    {'url': 'xmt', 'name': 'XMT',
+                     'selected': self.conds[0] == 1},
+                    {'url': 'all', 'name': 'All buildings',
+                     'selected': not self.conds[0]}
+                ]
+            },
+            {
+                'name': 'Timeslot',
+                'identifier': 'activity_time',
+                'elements': [
+                    {'url': 'afterschool', 'name': 'Afterschool',
+                     'selected': self.conds[1] ==
+                        ActivityTime.AFTERSCHOOL.value},
+                    {'url': 'noon', 'name': 'Lunch',
+                     'selected': self.conds[1] ==
+                        ActivityTime.NOON.value},
+                    {'url': 'all', 'name': 'All timeslots',
+                     'selected': not self.conds[1]}
+                ]
+            },
+            # {
+            #     'name': 'Classroom',
+            #     'identifier': 'room_number',
+            #     'elements': [
+            #         {'url': n, 'name': n,
+            #          'selected': n in self.conds[2]}
+            #         for n in Classroom.get_classroom_conditions(
+            #             building=self.conds[0]),
+            #         {'url': 'all', 'name': 'All classrooms',
+            #          'selected': self.conds[2] is None}
+            #     ]
+            # },
+            {
+                'name': 'Smartboard',
+                'identifier': 'SBNeeded',
+                'elements': [
+                    {'url': 'true', 'name': 'Needed',
+                     'selected': self.conds[3] is not None and True},
+                    {'url': 'false', 'name': 'Not needed',
+                     'selected': self.conds[3] is not None and False},
+                    {'url': 'all', 'name': 'Both',
+                     'selected': self.conds[3] is None},
+                ]
+            },
+            {
+                'name': 'Instructor',
+                'identifier': 'instructors_approval',
+                'elements': [
+                    {'url': 'true', 'name': 'Approved',
+                     'selected': self.conds[4] is not None and True},
+                    {'url': 'false', 'name': 'Not approved',
+                     'selected': self.conds[4] is not None and False},
+                    {'url': 'all', 'name': 'Both',
+                     'selected': self.conds[4] is None},
+                ]
+            },
+            {
+                'name': 'Director',
+                'identifier': 'directors_approval',
+                'elements': [
+                    {'url': 'true', 'name': 'Approved',
+                     'selected': self.conds[5] is not None and True},
+                    {'url': 'false', 'name': 'Not approved',
+                     'selected': self.conds[5] is not None and False},
+                    {'url': 'all', 'name': 'Both',
+                     'selected': self.conds[5] is None},
+                ]
+            },
+        ]
+
+    def enumerate_desktop(self):
+        ret = self.enumerate()
+
+        # for group in ret:
+        #     for elmt in group['elements']:
+        #         elmt['url'] = self.toggle_url(group['identifier'],
+        #                                       elmt['url'])
+
+        return ret
+
+    def enumerate_mobile(self):
+        ret = []
+
+        return ret
+
+    def title(self):
+        return 'Unfinished'
+
+
 # Setup stuffs
 def get_picture(picture, ext='jpg'):
     return url_for('static', filename='images/' + picture + '.' + ext)
@@ -481,10 +761,23 @@ class ClubFilterConverter(PathConverter):
             return value
 
 
+class ResFilterConverter(PathConverter):
+    def to_python(self, value):
+        return ResFilter.from_url(value)
+
+    def to_url(self, value):
+        try:
+            return value.to_url()
+        except AttributeError:
+            return value
+
+
 def init_app(app):
     app.jinja_env.globals['getpicture'] = get_picture
     app.jinja_env.globals['url_for_other_page'] = url_for_other_page
     app.jinja_env.globals['csrf_token'] = generate_csrf_token
     app.jinja_env.globals['ClubFilter'] = ClubFilter
+    app.jinja_env.globals['ResFilter'] = ResFilter
 
     app.url_map.converters['clubfilter'] = ClubFilterConverter
+    app.url_map.converters['resfilter'] = ResFilterConverter

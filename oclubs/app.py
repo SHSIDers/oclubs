@@ -20,8 +20,10 @@ from htmlmin.minify import html_minify
 from oclubs.objs import User, Club, Activity, Upload, FormattedText
 from oclubs.access import done as db_done, email
 from oclubs.access.secrets import get_secret
-from oclubs.blueprints import actblueprint, clubblueprint, userblueprint
-from oclubs.enums import UserType, ClubType, ActivityTime, ClubJoinMode
+from oclubs.blueprints import actblueprint, clubblueprint, userblueprint, \
+    resblueprint
+from oclubs.enums import UserType, ClubType, ActivityTime, ClubJoinMode, \
+    Building
 from oclubs.exceptions import NoRow
 from oclubs.redissession import RedisSessionInterface
 from oclubs.shared import (
@@ -39,6 +41,7 @@ init_app(app)  # Must be before register_blueprint because of route()
 app.register_blueprint(userblueprint, url_prefix='/user')
 app.register_blueprint(clubblueprint, url_prefix='/club')
 app.register_blueprint(actblueprint, url_prefix='/activity')
+app.register_blueprint(resblueprint, url_prefix='/reservations')
 
 app.session_interface = RedisSessionInterface()
 
@@ -46,6 +49,7 @@ app.jinja_env.globals['UserType'] = UserType
 app.jinja_env.globals['ClubType'] = ClubType
 app.jinja_env.globals['ActivityTime'] = ActivityTime
 app.jinja_env.globals['ClubJoinMode'] = ClubJoinMode
+app.jinja_env.globals['Building'] = Building
 
 
 login_manager = LoginManager()
@@ -162,7 +166,9 @@ def is_safe_url(target):
 
 
 def redirect_to_personal(target):
-    return target in map(url_for, ['login', 'userblueprint.forgotpw', 'homepage'])
+    return target in map(url_for, ['login',
+                                   'userblueprint.forgotpw',
+                                   'homepage'])
 
 
 @app.route('/login/submit', methods=['POST'])

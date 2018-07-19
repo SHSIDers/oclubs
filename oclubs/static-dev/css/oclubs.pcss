@@ -1713,6 +1713,73 @@ thead {
 	}
 }
 
+#reservation-list {
+	& .title {
+		margin-top: 0;
+		clear: right;
+		margin-right: 30px;
+		@media screen and (max-width: 768px) {
+			margin-right: 15px;
+		}
+
+	}
+	& .title_next {
+		margin-right: 30px;
+	}
+	& .white.midtext {
+		margin-top: -20px;
+		@media screen and (max-width: 800px) {
+			margin-top: -10px;
+		}
+
+		@media screen and (max-width: 650px) {
+			margin-top: -5px;
+		}
+
+		@media screen and (max-width: 525px) {
+			margin-top: 0px;
+		}
+
+		@media screen and (max-width: 400px) {
+			margin-top: -5px;
+		}
+
+		@media screen and (max-width: 350px) {
+			margin-top: -10px;
+		}
+	}
+	& .btn.refresh {
+		@apply --color-white-prop;
+
+		/* font-family: var(--serious-font); */
+		font-weight: bold;
+		margin-bottom: 40px;
+		@media screen and (max-width: 800px) {
+			margin-bottom: 30px;
+		}
+
+		@media screen and (max-width: 650px) {
+			margin-bottom: 25px;
+		}
+
+		@media screen and (max-width: 525px) {
+			margin-bottom: 20px;
+		}
+
+		@media screen and (max-width: 400px) {
+			margin-bottom: 15px;
+		}
+
+		@media screen and (max-width: 350px) {
+			margin-bottom: 10px;
+		}
+	}
+	@media screen and (max-width: 400px) {
+		padding-right: 0;
+		padding-left: 0;
+	}
+}
+
 .large_container, #markdown-container {
 	padding-right: 15px;
 	padding-left: 15px;
@@ -1870,6 +1937,24 @@ thead {
 }
 
 #actinfotable {
+	@media screen and (max-width: 800px) {
+		font-size: 90%;
+	}
+
+	@media screen and (max-width: 650px) {
+		font-size: 80%;
+	}
+
+	@media screen and (max-width: 500px) {
+		font-size: 75%;
+	}
+
+	@media screen and (max-width: 400px) {
+		font-size: 70%;
+	}
+}
+
+#resinfotable {
 	@media screen and (max-width: 800px) {
 		font-size: 90%;
 	}
