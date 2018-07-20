@@ -65,5 +65,6 @@ uwsgi==2.0.17
 vine==1.1.4               # via amqp
 webencodings==0.5.1       # via html5lib
 werkzeug==0.14.1          # via flask
+wtforms==2.2.1
 xkcdpass==1.16.5
 xlsxwriter==1.0.5

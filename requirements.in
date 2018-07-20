@@ -1,6 +1,7 @@
 uwsgi
 flask
 flask-login
+WTForms
 redis
 mysql
 passlib
