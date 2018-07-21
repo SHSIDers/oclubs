@@ -27,8 +27,7 @@ selinux::type: 'targeted'
 
 python::dev: present
 python::virtualenv: present
-
-python::provider: pip
+python::pip: absent
 
 # Collision
 uwsgi::install_pip: false

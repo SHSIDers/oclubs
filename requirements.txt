@@ -16,6 +16,7 @@ certifi==2018.4.16        # via requests
 cffi==1.11.5              # via bcrypt
 chardet==3.0.4            # via requests
 click==6.7                # via flask, pip-tools
+configobj==5.0.6
 django-htmlmin==0.10.0
 docutils==0.14            # via sphinx
 elasticsearch==2.4.1
@@ -24,6 +25,7 @@ envelopes==0.4
 et-xmlfile==1.0.1         # via openpyxl
 first==2.0.1              # via pip-tools
 flask-login==0.4.1
+flask-wtf==0.14.2
 flask==1.0.2
 html5lib==1.0.1           # via bleach, django-htmlmin
 idna==2.7                 # via requests
@@ -55,7 +57,7 @@ pytz==2018.4              # via babel, celery
 redis==2.10.6
 requests==2.19.1          # via sphinx
 sendgrid==5.4.0
-six==1.11.0               # via bcrypt, bleach, html5lib, packaging, pip-tools, sphinx
+six==1.11.0               # via bcrypt, bleach, configobj, html5lib, packaging, pip-tools, sphinx
 snowballstemmer==1.2.1    # via sphinx
 sphinx==1.7.5
 sphinxcontrib-websupport==1.1.0  # via sphinx
