@@ -6,11 +6,11 @@
 
 <!-- Below Navbar -->
 <div class="large_container">
-  {{ desktop_sidebar_res('.allreservations', res_filter) }}
+  {{ desktop_sidebar_res('.allreservations', res_filter, form, clearBtn, is_admin) }}
 
   <div class="main-content col-md-10" id="reservation-list">
     <h1 class="title_next bold">Reservations - {{ res_filter.title() }}</h1>
-    {{ mobile_selection_res('.allreservations', res_filter) }}
+    {{ mobile_selection_res('.allreservations', res_filter, is_admin) }}
     <table class="table table-hover table-bordered" id="resinfotable">
       <thead>
         <tr>

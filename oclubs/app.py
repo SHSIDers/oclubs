@@ -41,7 +41,7 @@ init_app(app)  # Must be before register_blueprint because of route()
 app.register_blueprint(userblueprint, url_prefix='/user')
 app.register_blueprint(clubblueprint, url_prefix='/club')
 app.register_blueprint(actblueprint, url_prefix='/activity')
-app.register_blueprint(resblueprint, url_prefix='/reservations')
+app.register_blueprint(resblueprint, url_prefix='/reservation')
 
 app.session_interface = RedisSessionInterface()
 
@@ -51,6 +51,7 @@ app.jinja_env.globals['ActivityTime'] = ActivityTime
 app.jinja_env.globals['ClubJoinMode'] = ClubJoinMode
 app.jinja_env.globals['Building'] = Building
 
+app.debug = True
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -132,6 +133,15 @@ def i_am_a_teapot(e=None):
     return render_template('static/error.html.j2',
                            error_type=418
                            ), 418
+
+
+@app.errorhandler(400)
+@app.route('/400')
+def bad_request(e=None):
+    '''Incorrect url request'''
+    return render_template('static/error.html.j2',
+                           error_type=400,
+                           ), 400
 
 
 @login_manager.user_loader

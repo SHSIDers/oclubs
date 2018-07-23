@@ -66,9 +66,9 @@
 </select>
 {% endmacro %}
 
-{% macro desktop_sidebar_res(endpoint, res_filter) %}
+{% macro desktop_sidebar_res(endpoint, res_filter, form, clearBtn, is_admin) %}
 <div id="sidebar" class="col-md-2">
-	{% for group in res_filter.enumerate_desktop() %}
+	{% for group in res_filter.enumerate_desktop(is_admin) %}
 	<div class="list-group">
 		<li class="list-group-item active">{{ group.name }}</li>
 		{% for elmt in group.elements %}
@@ -76,14 +76,27 @@
 		{% endfor %}
 	</div>
 	{% endfor %}
+	<div class="list-group">
+		<form action="{{ url_for(endpoint, res_filter=res_filter.to_url()) }}" method="post">
+			<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+			{{ form.classrooms_list.label }}{{ form.classrooms_list }}
+			{{ form.submit }}
+		</form>
+		<form action="{{ url_for(endpoint, res_filter=res_filter.to_url()) }}" method="post">
+			<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+			{{ clearBtn.clear }}
+		</form>
+	</div>
 	{{ caller and caller() }}
 </div>
 {% endmacro %}
 
-{% macro mobile_selection_res(endpoint, res_filter) %}
-<select class="mobileselect emptyline">
-	{% for elmt in res_filter.enumerate_mobile() %}
-	<option value="{{ url_for(endpoint, res_filter=elmt.url) }}"{% if elmt.selected %} selected="selected"{% endif %}>{{ elmt.name }}</option>
-	{% endfor %}
-</select>
+{% macro mobile_selection_res(endpoint, res_filter, is_admin) %}
+		{% for group in res_filter.enumerate_mobile(is_admin) %}
+		<select class="mobileselect emptyline" size="{{ group.elements|length }}">
+				{% for elmt in group.elements %}
+				<option value="{{ url_for(endpoint, res_filter=elmt.url) }}"{% if elmt.selected %} selected="selected"{% endif %}>{{ elmt.name }}</option>
+				{% endfor %}
+		</select>
+		{% endfor %}
 {% endmacro %}

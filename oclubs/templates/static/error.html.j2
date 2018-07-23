@@ -15,6 +15,9 @@
 {% if error_type is equalto 418 %}
 418 I'm a teapot
 {% endif %}
+{% if error_type is equalto 400 %}
+400 Bad Request
+{% endif %}
 {% endblock %}
 {% block content %}
 
@@ -51,6 +54,11 @@
 	<br><br>
 	<center><p>oClubs server is a little teapot; the resulting entity body is short and stout.</p></center>
 	<center><p>You see this page possibly because you have disabled session in your browser.</p></center>
+{% endif %}
+{% if error_type is equalto 400 %}
+	<h1 class="title text-center">400 Bad Request</h1>
+	<br><br>
+	<center><p>We couldn't understand your request.</p></center>
 {% endif %}
 </div>
 

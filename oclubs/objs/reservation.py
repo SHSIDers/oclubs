@@ -100,12 +100,12 @@ class Reservation(BaseObject):
             times = [time.value for time in times]
             conds['where'].append(('in', 'act_time', times))
 
+        conds['join'] = conds.get('join', [])
+        conds['join'].append(('inner', 'classroom',
+                             [('room_id', 'res_classroom')]))
         if room_buildings:
             room_buildings = [room_building.value for
                               room_building in room_buildings]
-            conds['join'] = conds.get('join', [])
-            conds['join'].append(('inner', 'classroom',
-                                 [('room_id', 'res_classroom')]))
             conds['where'].append(('in', 'room_building', room_buildings))
         if room_numbers:
             conds['where'].append(('in', 'room_number', room_numbers))

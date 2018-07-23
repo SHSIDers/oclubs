@@ -462,14 +462,13 @@ class ResFilter(object):
         self.conds = self.DEFAULT if conds is None else conds
 
     @classmethod
-    def room_numbers_filter(cls, room_building, room_numbers):
-        ret = ()
-        r_numbers = Classroom.get_classroom_conditions(
-            building=room_building)
-        for room_number in room_numbers:
-            if room_number in r_numbers:
-                ret.extend(room_number)
-        return ret
+    def is_conds_admin(cls, conds):
+        if len(conds) == 6:
+            return True
+        elif len(conds) == 3:
+            return False
+        else:
+            abort(400)
 
     @classmethod
     def from_url(cls, url):
@@ -478,6 +477,9 @@ class ResFilter(object):
 
         if url and url != 'all':
             conds = url.split('/')
+
+            # placed here to catch incorrect url requests
+            is_admin = cls.is_conds_admin(conds)
 
             if conds[0] != 'all':
                 try:
@@ -492,15 +494,15 @@ class ResFilter(object):
                     pass
 
             if conds[2] != 'all':
-                room_numbers = cls.room_numbers_filter(room_building,
-                                                       conds[2].split('%'))
+                room_numbers = conds[2].split('-')
 
-            if conds[3] != 'all':
-                SBNeeded = conds[3]
-            if conds[4] != 'all':
-                instructors_approval = conds[4]
-            if conds[5] != 'all':
-                directors_approval = conds[5]
+            if is_admin:
+                if conds[3] != 'all':
+                    SBNeeded = conds[3]
+                if conds[4] != 'all':
+                    instructors_approval = conds[4]
+                if conds[5] != 'all':
+                    directors_approval = conds[5]
 
         return cls((room_building,
                     activity_time,
@@ -510,7 +512,8 @@ class ResFilter(object):
                     directors_approval))
 
     def to_url(self):
-        return self.build_url(self.conds)
+        return self.build_url(self.conds,
+                              True if self.is_conds_admin(self.conds) else False)
 
     def to_kwargs(self):
         ret = {}
@@ -533,7 +536,7 @@ class ResFilter(object):
         return ret
 
     @classmethod
-    def build_url(cls, conds):
+    def build_url(cls, conds, is_admin):
         if conds == cls.DEFAULT:
             return 'all'
 
@@ -541,101 +544,75 @@ class ResFilter(object):
             instructors_approval, directors_approval = conds
 
         if room_numbers:
-            newnumbers = '%'.join(cls.room_numbers_filter(room_building,
-                                                          room_numbers))
-            newnumbers = list(map(str.lower(), newnumbers))
+            room_numbers = [room_number.upper()
+                            for room_number in room_numbers]
+            newnumbers = '-'.join(room_numbers)
 
-        return '/'.join(filter(None, (
-            room_building.name.lower() if room_building else 'all',
-            activity_time.name.lower() if activity_time else 'all',
-            newnumbers if room_numbers else 'all',
-            SBNeeded if SBNeeded is not None else 'all',
-            instructors_approval
-            if instructors_approval is not None
-            else 'all',
-            directors_approval
-            if directors_approval is not None
-            else 'all'
-        )))
+        if is_admin:
+            return '/'.join(filter(None, (
+                room_building.name.lower() if room_building else 'all',
+                activity_time.name.lower() if activity_time else 'all',
+                newnumbers if room_numbers else 'all',
+                SBNeeded if SBNeeded is not None else 'all',
+                instructors_approval
+                if instructors_approval is not None
+                else 'all',
+                directors_approval
+                if directors_approval is not None
+                else 'all'
+            )))
+        else:
+            return '/'.join(filter(None, (
+                room_building.name.lower() if room_building else 'all',
+                activity_time.name.lower() if activity_time else 'all',
+                newnumbers if room_numbers else 'all',
+            )))
 
-    def toggle_url(self, identifier, cond):
+    def toggle_url(self, identifier, cond, is_admin):
         room_building, activity_time, room_numbers, SBNeeded, \
             instructors_approval, directors_approval = self.conds
 
         if identifier == 'room_building':
-            try:
-                newbuilding = Building[cond.upper()]
-            except KeyError:
-                pass
+            if cond == 'all':
+                room_building = None
             else:
-                return self.build_url((newbuilding
-                                       if newbuilding != room_building
-                                       else None,
-                                       activity_time,
-                                       room_numbers,
-                                       SBNeeded,
-                                       instructors_approval,
-                                       directors_approval))
+                try:
+                    newbuilding = Building[cond.upper()]
+                except KeyError:
+                    pass
+                else:
+                    room_building = newbuilding \
+                        if newbuilding != room_building else None
 
         if identifier == 'activity_time':
-            try:
-                newtime = ActivityTime[cond.upper()]
-            except KeyError:
-                pass
+            if cond == 'all':
+                activity_time = None
             else:
-                return self.build_url((room_building,
-                                       newtime
-                                       if newtime != activity_time
-                                       else None,
-                                       room_numbers,
-                                       SBNeeded,
-                                       instructors_approval,
-                                       directors_approval))
-
-        if identifier == 'room_number':
-            if cond:
-                newnumbers = self.room_numbers_filter(cond)
-                return self.build_url((room_building,
-                                       activity_time,
-                                       newnumbers,
-                                       SBNeeded,
-                                       instructors_approval,
-                                       directors_approval))
-            else:
-                return self.build_url((room_building,
-                                       activity_time,
-                                       None,
-                                       SBNeeded,
-                                       instructors_approval,
-                                       directors_approval))
+                try:
+                    newtime = ActivityTime[cond.upper()]
+                except KeyError:
+                    pass
+                else:
+                    activity_time = newtime \
+                        if newtime != activity_time else None
 
         if identifier == 'SBNeeded':
-            return self.build_url((room_building,
-                                   activity_time,
-                                   room_numbers,
-                                   cond if cond != SBNeeded else None,
-                                   instructors_approval,
-                                   directors_approval))
+            SBNeeded = cond if cond != SBNeeded else None
 
         if identifier == 'instructors_approval':
-            return self.build_url((room_building,
-                                   activity_time,
-                                   room_numbers,
-                                   SBNeeded,
-                                   cond
-                                   if cond != instructors_approval
-                                   else None,
-                                   directors_approval))
+            instructors_approval = cond \
+                if cond != instructors_approval else None
 
         if identifier == 'directors_approval':
-            return self.build_url((room_building,
-                                   activity_time,
-                                   room_numbers,
-                                   SBNeeded,
-                                   instructors_approval,
-                                   cond
-                                   if cond != directors_approval
-                                   else None))
+            directors_approval = cond if cond != directors_approval else None
+
+        return self.build_url((room_building,
+                               activity_time,
+                               room_numbers,
+                               SBNeeded,
+                               instructors_approval,
+                               directors_approval),
+                              is_admin)
 
     def enumerate(self):
         return [
@@ -643,8 +620,9 @@ class ResFilter(object):
                 'name': 'Building',
                 'identifier': 'room_building',
                 'elements': [
-                    {'url': 'xmt', 'name': 'XMT',
-                     'selected': self.conds[0] == 1},
+                    {'url': 'XMT', 'name': 'XMT',
+                     'selected': self.conds[0] ==
+                        Building.XMT},
                     {'url': 'all', 'name': 'All buildings',
                      'selected': not self.conds[0]}
                 ]
@@ -653,28 +631,20 @@ class ResFilter(object):
                 'name': 'Timeslot',
                 'identifier': 'activity_time',
                 'elements': [
-                    {'url': 'afterschool', 'name': 'Afterschool',
+                    {'url': 'AFTERSCHOOL', 'name': 'Afterschool',
                      'selected': self.conds[1] ==
-                        ActivityTime.AFTERSCHOOL.value},
-                    {'url': 'noon', 'name': 'Lunch',
+                        ActivityTime.AFTERSCHOOL},
+                    {'url': 'NOON', 'name': 'Lunch',
                      'selected': self.conds[1] ==
-                        ActivityTime.NOON.value},
+                        ActivityTime.NOON},
                     {'url': 'all', 'name': 'All timeslots',
                      'selected': not self.conds[1]}
                 ]
-            },
-            # {
-            #     'name': 'Classroom',
-            #     'identifier': 'room_number',
-            #     'elements': [
-            #         {'url': n, 'name': n,
-            #          'selected': n in self.conds[2]}
-            #         for n in Classroom.get_classroom_conditions(
-            #             building=self.conds[0]),
-            #         {'url': 'all', 'name': 'All classrooms',
-            #          'selected': self.conds[2] is None}
-            #     ]
-            # },
+            }
+        ]
+
+    def enumerate_admin(self):
+        return [
             {
                 'name': 'Smartboard',
                 'identifier': 'SBNeeded',
@@ -710,26 +680,40 @@ class ResFilter(object):
                     {'url': 'all', 'name': 'Both',
                      'selected': self.conds[5] is None},
                 ]
-            },
+            }
         ]
 
-    def enumerate_desktop(self):
+    def enumerate_desktop(self, is_admin):
         ret = self.enumerate()
 
-        # for group in ret:
-        #     for elmt in group['elements']:
-        #         elmt['url'] = self.toggle_url(group['identifier'],
-        #                                       elmt['url'])
+        if is_admin:
+            ret += self.enumerate_admin()
+
+        for group in ret:
+            for elmt in group['elements']:
+                elmt['url'] = self.toggle_url(group['identifier'],
+                                              elmt['url'],
+                                              is_admin)
 
         return ret
 
-    def enumerate_mobile(self):
-        ret = []
-
-        return ret
+    def enumerate_mobile(self, is_admin):
+        return self.enumerate_desktop(is_admin)
 
     def title(self):
-        return 'Unfinished'
+        if self.conds == self.DEFAULT:
+            return 'All'
+        else:
+            room_building, activity_time, room_numbers, SBNeeded, \
+                instructors_approval, directors_approval = self.conds
+
+            return ' '.join(filter(None,
+                                   (room_building.format_name
+                                    if room_building else None,
+                                    activity_time.format_name
+                                    if activity_time else None,
+                                    'for Select Classrooms'
+                                    if room_numbers else None)))
 
 
 # Setup stuffs

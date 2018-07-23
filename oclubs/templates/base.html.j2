@@ -36,7 +36,7 @@
 		<div class="top-nav">
 			<ul>
 				<li class="sweep {% if is_home %}active{% endif %}"><a href="{{ url_for('homepage') }}">Home</a></li>
-				<li class="sweep {% if is_list %}active{% endif %}"><a href="{{ url_for('clubblueprint.clublist', club_filter='all') }}">Club List</a></li>
+				<li class="sweep {% if is_list %}active{% endif %}"><a href="{{ url_for('clubblueprint.clublist', club_filter='all') }}">Clubs</a></li>
 				<li class="sweep {% if is_allact %}active{% endif %}"><a href="{{ url_for('actblueprint.allactivities', club_filter='all') }}">Activities</a></li>
 				<li class="sweep"><a href="{{ url_for('resblueprint.allreservations', res_filter='all') }}">Reservations</a></li>
 				<li class="sweep {% if is_photos %}active{% endif %}"><a href="{{ url_for('actblueprint.allphotos') }}">Photos</a></li>

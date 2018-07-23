@@ -24,8 +24,8 @@ from oclubs.exceptions import UploadNotSupported, NoRow
 actblueprint = Blueprint('actblueprint', __name__)
 
 
-@actblueprint.route('/all/<clubfilter:club_filter>/', defaults={'page': 1})
-@actblueprint.route('/all/<clubfilter:club_filter>/<int:page>')
+@actblueprint.route('viewlist/<clubfilter:club_filter>/', defaults={'page': 1})
+@actblueprint.route('viewlist/<clubfilter:club_filter>/<int:page>')
 def allactivities(club_filter, page):
     '''All Activities'''
     act_num = 20
@@ -38,6 +38,11 @@ def allactivities(club_filter, page):
                            acts=acts,
                            pagination=pagination,
                            club_filter=club_filter)
+
+
+@actblueprint.route('/')
+def home_redirect():
+    return redirect(url_for('.allactivities', club_filter='all'))
 
 
 @actblueprint.route('/photos/', defaults={'page': 1})

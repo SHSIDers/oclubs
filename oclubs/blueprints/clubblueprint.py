@@ -25,7 +25,7 @@ from oclubs.access import siteconfig
 clubblueprint = Blueprint('clubblueprint', __name__)
 
 
-@clubblueprint.route('/list/<clubfilter:club_filter>')
+@clubblueprint.route('/viewlist/<clubfilter:club_filter>')
 def clublist(club_filter):
     '''Club list by club type'''
     num = 18
@@ -34,6 +34,11 @@ def clublist(club_filter):
                            is_list=True,
                            clubs=clubs,
                            club_filter=club_filter)
+
+
+@clubblueprint.route('/')
+def home_redirect():
+    return redirect(url_for('.clublist', club_filter='all'))
 
 
 @clubblueprint.route('/<club>/manage')
