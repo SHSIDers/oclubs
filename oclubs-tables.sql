@@ -61,7 +61,7 @@ CREATE TABLE activity (
 	act_desc int NOT NULL, # Foreign key to text.text_id
 	act_date int unsigned NOT NULL,
 	act_time tinyint NOT NULL, # 0 = unknown, 1 = noon, 2 = afterschool, 3 = hongmei, 4 = others
-	act_location varchar(255) NOT NULL, 
+	act_location varchar(255) NOT NULL,
 	act_cas int NOT NULL, # CAS hours
 	act_post int NOT NULL, # Foreign key to text.text_id
 	act_selections varchar(255), NOT NULL # stores object in JSON
@@ -171,7 +171,7 @@ CREATE TABLE classroom (
 	room_building tinyint, # Enum Building
 	room_desc varchar(255) # optional descriptors (eg ASB only)
 );
-
+z
 CREATE INDEX room_id ON classroom (room_id);
 
 CREATE TABLE reservation (
@@ -179,10 +179,10 @@ CREATE TABLE reservation (
 	res_activity int NOT NULL, # Foreign key to act.act_id
 	res_classroom int NOT NULL, # Foreign key to classroom.room_id
 	res_SBNeeded boolean NOT NULL, # true = need smartboard, false = no need smartboard
-	res_SBAppDesc varchar(512) NOT NULL,
-	res_instructors_approval boolean NOT NULL,
-	res_directors_approval boolean NOT NULL,
-	res_SBApp_success boolean NOT NULL # true = sucess, allowed to use smartboard, default = false, application to use still pending
+	res_SBAppDesc varchar(512),
+	res_instructors_approval boolean DEFAULT false,
+	res_directors_approval boolean DEFAULT false,
+	res_SBApp_success boolean DEFAULT false # true = sucess, allowed to use smartboard, default = false, application to use still pending
 );
 
 CREATE INDEX res_id ON classroom (res_id);
