@@ -7,7 +7,6 @@ from __future__ import absolute_import, unicode_literals, division
 from datetime import datetime, date, timedelta
 
 from oclubs.access import database
-from oclubs.enums import ActivityTime, Building
 from oclubs.objs.base import BaseObject, Property, paged_db_read
 from oclubs.objs.activity import Activity
 
@@ -42,7 +41,7 @@ class Reservation(BaseObject):
 
     @property
     def classroomBuilding(self):
-        ret = database.fetch_oneentry(cls.table,
+        ret = database.fetch_oneentry(self.table,
                                       'room_building',
                                       {'room_id': self.classroom.id})
         return ret.formatname()
@@ -75,10 +74,23 @@ class Reservation(BaseObject):
         if additional_conds:
             conds.update(additional_conds)
 
+        conds['where'] = conds.get('where', [])
+
+        if SBNeeded is not None:
+            conds['where'].append(('=', 'res_SBNeeded', SBNeeded))
+        if instructors_approval is not None:
+            conds['where'].append(('=', 'res_instructors_approval',
+                                   instructors_approval))
+        if directors_approval is not None:
+            conds['where'].append(('=', 'res_directors_approval',
+                                   directors_approval))
+        if SBApp_success is not None:
+            conds['where'].append(('=', 'res_SBApp_success', SBApp_success))
+
         conds['join'] = conds.get('join', [])
         conds['join'].append(('inner', 'activity',
                              [('act_id', 'res_activity')]))
-        conds['where'] = conds.get('where', [])
+
         if isinstance(dates, date):
             conds['where'].append(('=', 'act_date', date_int(dates)))
         elif dates != (True, True):
@@ -103,6 +115,7 @@ class Reservation(BaseObject):
         conds['join'] = conds.get('join', [])
         conds['join'].append(('inner', 'classroom',
                              [('room_id', 'res_classroom')]))
+
         if room_buildings:
             room_buildings = [room_building.value for
                               room_building in room_buildings]
@@ -110,24 +123,15 @@ class Reservation(BaseObject):
         if room_numbers:
             conds['where'].append(('in', 'room_number', room_numbers))
 
-        if SBNeeded is not None:
-            conds['where'].append(('=', 'res_SBNeeded', SBNeeded))
-        if instructors_approval is not None:
-            conds['where'].append(('=', 'res_instructors_approval',
-                                   instructors_approval))
-        if directors_approval is not None:
-            conds['where'].append(('=', 'res_directors_approval',
-                                   directors_approval))
-        if SBApp_success is not None:
-            conds['where'].append(('=', 'res_SBApp_success', SBApp_success))
-
         if order_by_time:
             conds['order'] = conds.get('order', [])
             conds['order'].append(('act_date', False))
 
         pager_fetch, pager_return = pager
 
-        ret = pager_fetch(database.fetch_onecol, 'reservation', 'res_id',
+        ret = pager_fetch(database.fetch_onecol,
+                          cls.table,
+                          cls.identifier,
                           conds, distinct=True)
 
         ret = [cls(item) for item in ret]

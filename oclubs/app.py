@@ -197,7 +197,8 @@ def login_submit():
         login_user(user, remember=('remember' in request.form))
 
         target = request.form.get('next')
-        if not target or not is_safe_url(target) or redirect_to_personal(target):
+        if not target \
+                or not is_safe_url(target) or redirect_to_personal(target):
             return redirect(url_for('userblueprint.personal'))
         return redirect(target)
     else:

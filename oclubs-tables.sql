@@ -171,7 +171,7 @@ CREATE TABLE classroom (
 	room_building tinyint, # Enum Building
 	room_desc varchar(255) # optional descriptors (eg ASB only)
 );
-z
+
 CREATE INDEX room_id ON classroom (room_id);
 
 CREATE TABLE reservation (

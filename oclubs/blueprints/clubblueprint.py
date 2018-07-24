@@ -151,7 +151,9 @@ def memberinfo_notify_members(club):
         return redirect(url_for('.memberinfo', club=club.callsign))
     for member in club.members:
         member.notify_user(notify_contents)
-        parameters = {'member': member, 'club': club, 'notify_contents': notify_contents}
+        parameters = {'member': member,
+                      'club': club,
+                      'notify_contents': notify_contents}
         contents = render_email_template('notifymembers', parameters)
         member.email_user('Notification - ' + club.name, contents)
     flash('You have successfully notified members.', 'notify_members')
@@ -513,9 +515,11 @@ def adjust_status_submit(club_type):
     return redirect(url_for('.adjust_status', club_type=club_type))
 
 
-@clubblueprint.route('/adjust_status/all_free_join', defaults={'club_type': 'all'},
+@clubblueprint.route('/adjust_status/all_free_join',
+                     defaults={'club_type': 'all'},
                      methods=['POST'])
-@clubblueprint.route('/adjust_status/<club_type>/all_free_join', methods=['POST'])
+@clubblueprint.route('/adjust_status/<club_type>/all_free_join',
+                     methods=['POST'])
 @special_access_required
 @require_not_student
 def adjust_status_all_free_join(club_type):
@@ -535,9 +539,11 @@ def adjust_status_all_free_join(club_type):
     return redirect(url_for('.adjust_status', club_type=club_type))
 
 
-@clubblueprint.route('/adjust_status/all_by_invitation', defaults={'club_type': 'all'},
+@clubblueprint.route('/adjust_status/all_by_invitation',
+                     defaults={'club_type': 'all'},
                      methods=['POST'])
-@clubblueprint.route('/adjust_status/<club_type>/all_by_invitation', methods=['POST'])
+@clubblueprint.route('/adjust_status/<club_type>/all_by_invitation',
+                     methods=['POST'])
 @special_access_required
 @require_not_student
 def adjust_status_all_by_invitation(club_type):
@@ -643,7 +649,8 @@ def allclubsinfo():
     info = []
     info.append(('Club ID', 'Name', 'Leader', 'Leader\'s Class', 'Teacher',
                  'Introduction', 'Location', '# of Members',
-                 '# of registered activities', '# of activities with attendance',
+                 '# of registered activities',
+                 '# of activities with attendance',
                  'Is Active or Not', 'Type', 'Description'))
     info.extend([(club.id, club.name, club.leader.passportname,
                   club.leader.grade_and_class,

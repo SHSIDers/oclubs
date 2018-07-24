@@ -19,7 +19,8 @@ class Club(BaseObject):
     leader = Property('club_leader', 'User')
     description = Property('club_desc', 'FormattedText', search=True)
     location = Property('club_location')
-    is_active = Property('club_inactive', lambda v: not v, search_require_true=True)
+    is_active = Property('club_inactive', lambda v: not v,
+                         search_require_true=True)
     intro = Property('club_intro', search=True)
     picture = Property('club_picture', 'Upload')
     type = Property('club_type', ClubType)
@@ -27,8 +28,10 @@ class Club(BaseObject):
     reactivate = Property('club_reactivate', bool)
     reservation_allowed = Property('club_reservation_allowed', bool)
     smartboard_allowed = Property('club_smartboard_allowed', bool)
-    smartboard_teacherapp_bypass = Property('club_smartboard_teacherapp_bypass', bool)
-    smartboard_directorapp_bypass = Property('club_smartboard_directorapp_bypass', bool)
+    smartboard_teacherapp_bypass = \
+        Property('club_smartboard_teacherapp_bypass', bool)
+    smartboard_directorapp_bypass = \
+        Property('club_smartboard_directorapp_bypass', bool)
     members = ListProperty('club_member', 'cm_club', 'cm_user', 'User')
     all_act = ListProperty('activities', 'act_club', 'act_id', 'Activity')
 

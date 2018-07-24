@@ -12,5 +12,6 @@ from oclubs import access
 from oclubs import objs
 from oclubs import app
 from oclubs import worker
+from oclubs import filters
 
-__all__ = ['enums', 'exceptions', 'access', 'objs', 'app', 'worker']
+__all__ = ['enums', 'exceptions', 'access', 'objs', 'app', 'worker', 'filters']
