@@ -1,0 +1,94 @@
+{% extends "base.html.j2" %}
+{% from 'macros.html.j2' import render_pagination, desktop_sidebar_room,
+  mobile_selection_room %}
+{% block title %}View Classrooms{% endblock %}
+{% block content %}
+
+<!-- Below Navbar -->
+<div class="large_container">
+  {{ desktop_sidebar_room('.viewclassrooms', room_filter, form) }}
+
+<!-- todo: mop up messy css -->
+  <div class="main-content col-md-10" id="reservation-list">
+    {% if is_all %}
+      <h1 class="title_next bold">All Classrooms - {{ room_filter.title() }}</h1>
+    {% else %}
+      <h1 class="title_next bold">Available Classrooms - {{ room_filter.title() }}</h1>
+    {% endif %}
+
+    {{ mobile_selection_room('.viewclassrooms', room_filter) }}
+
+    <table class="table table-hover table-bordered" id="resinfotable">
+    {% if is_all %}
+        <thead>
+          <tr>
+            <th>Building</th>
+            <th>Timeslot</th>
+            <th>Classrooms</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for building in info[0] %}
+            {% for timeslot in info[1] %}
+              {% set timeslotloop = loop %}
+              <tr>
+                {% if timeslotloop.first %}
+                  <td rowspan="{{ info[1]|length }}">{{ building.format_name }}</td>
+                {% endif %}
+                <td>{{ timeslot.format_name }}</td>
+                <td>
+                {% for room in info[2][building][timeslot] %}
+                  {{ room.room_number }}
+                  {{ "  " if not loop.last }}
+                {% endfor %}
+                </td>
+              </tr>
+            {% endfor %}
+          {% endfor %}
+        </tbody>
+    {% else %}
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Building</th>
+            <th>Timeslot</th>
+            <th>Free classrooms</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for date in info[0] %}
+          {% for building in info[1] %}
+            {% set buildingloop = loop %}
+            {% for timeslot in info[2] %}
+              {% set timeslotloop = loop %}
+              <tr>
+                {% if timeslotloop.first and buildingloop.first %}
+                  <td rowspan="{{ info[1]|length * info[2]|length }}">
+                    {% if date == today %}
+                    <b>Today: {{ date.strftime("%Y-%m-%d, %A") }}</b>
+                    {% else %}
+                    {{ date.strftime("%Y-%m-%d, %A") }}
+                    {% endif %}
+                  </td>
+                {% endif %}
+                {% if timeslotloop.first %}
+                  <td rowspan="{{ info[2]|length }}">{{ building.format_name }}</td>
+                {% endif %}
+                <td>{{ timeslot.format_name }}</td>
+                <td>
+                {% for room in info[3][building][timeslot][date] %}
+                  {{ room.room_number }}
+                  {{ "  " if not loop.last }}
+                {% endfor %}
+                </td>
+              </tr>
+            {% endfor %}
+          {% endfor %}
+        {% endfor %}
+        </tbody>
+    {% endif %}
+    </table>
+  </div>
+</div>
+
+{% endblock %}

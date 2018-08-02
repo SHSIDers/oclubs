@@ -4,6 +4,10 @@
 
 from __future__ import absolute_import, unicode_literals, division
 
+# for debugging purposes
+from __future__ import print_function
+import sys
+
 from datetime import date
 
 from flask import (
@@ -11,15 +15,17 @@ from flask import (
 )
 from flask_login import current_user, login_required, fresh_login_required
 
+from oclubs.utils.dates import today, DATE_RANGE_MAX
 from oclubs.enums import UserType, ActivityTime
 from oclubs.shared import (
     get_callsign, special_access_required, Pagination, render_email_template,
     download_xlsx, partition, require_student_membership,
     require_past_activity, require_future_activity, require_active_club,
-    true_or_fail, form_is_valid, error_or_fail, fail
+    true_or_fail, form_is_valid, error_or_fail, fail, get_callsign_
 )
-from oclubs.objs import User, Activity, Upload, FormattedText
+from oclubs.objs import User, Activity, Upload, FormattedText, Reservation
 from oclubs.exceptions import UploadNotSupported, NoRow
+from oclubs.forms.reservation_forms import PairReservation
 
 actblueprint = Blueprint('actblueprint', __name__)
 
@@ -87,11 +93,13 @@ def actintro(activity):
         selection = ''
 
     is_other_act = activity.time in [ActivityTime.UNKNOWN, ActivityTime.OTHERS]
+
     return render_template('activity/actintro.html.j2',
                            is_other_act=is_other_act,
                            has_access=has_access,
                            can_join=can_join,
-                           selection=selection)
+                           selection=selection,
+                           has_reservation=activity.has_reservation)
 
 
 @actblueprint.route('/<activity>/introduction/submit', methods=['POST'])
@@ -265,9 +273,10 @@ def changeactinfo_submit(activity):
 
     desc = request.form['description'].strip()
     if desc != activity.description.raw:
-        activity.description = FormattedText.handle(current_user,
-                                                    activity.club,
-                                                    request.form['description'])
+        activity.description = FormattedText.handle(
+            current_user,
+            activity.club,
+            request.form['description'])
     try:
         actdate = date(int(request.form['year']),
                        int(request.form['month']),
@@ -305,6 +314,61 @@ def changeactinfo_submit(activity):
         member['user'].notify_user('%s\'s information has been changed.'
                                    % activity.name)
     return redirect(url_for('.actintro', activity=activity.callsign))
+
+
+@actblueprint.route('/<activity>/pairreservation', methods=['GET', 'POST'])
+@get_callsign(Activity, 'activity')
+@special_access_required
+def pairreservation(activity):
+    reservations = Reservation.get_reservations_conditions(
+        status=1,
+        reserver_club=activity.club,
+        dates=(today(), DATE_RANGE_MAX)
+    )
+
+    form = PairReservation()
+
+    if reservations:
+        choices = []
+        for reservation in reservations:
+            if reservation.activity is None:
+                choices.append((
+                    reservation.callsign,
+                    str(reservation.date) + ' ' +
+                    str(reservation.timeslot.format_name) +
+                    ': ' +
+                    str(reservation.classroom.location)
+                ))
+        form.reservations_for_pairing.choices = choices
+
+    if request.method == 'POST':
+        if form.check():
+            selected_reservation = get_callsign_(
+                Reservation,
+                str(form.reservations_for_pairing.data))
+
+            selected_reservation.status = 2
+            selected_reservation.activity = activity
+
+            if activity.reservation is None:
+                activity.reservation = selected_reservation
+            else:
+                activity.reservation.activity = None
+                activity.reservation.status = 1
+                activity.reservation = selected_reservation
+
+            activity.date = selected_reservation.date
+            activity.time = selected_reservation.timeslot
+            activity.location = selected_reservation.classroom.location
+
+            return redirect(url_for('resblueprint.reservationinfo',
+                                    reservation=selected_reservation.callsign))
+        else:
+            return render_template('/activity/pairreservation.html.j2',
+                                   form=form)
+
+    return render_template('/activity/pairreservation.html.j2',
+                           form=form)
 
 
 @actblueprint.route('/<activity>/attendance')

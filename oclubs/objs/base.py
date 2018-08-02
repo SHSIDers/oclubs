@@ -7,6 +7,10 @@
 
 from __future__ import absolute_import, unicode_literals
 
+# for debugging purposes
+from __future__ import print_function
+import sys
+
 from functools import wraps
 import types
 from enum import Enum
@@ -249,6 +253,8 @@ class _BaseMetaclass(type):
                 raise NotImplementedError
             data = {}
             for key, value in _propsdb.items():
+                print('Key: ' + key, file=sys.stderr)
+                print('Value: ' + value, file=sys.stderr)
                 data[key] = self._dbdata[value]
 
             if dup_key_update:
@@ -268,6 +274,8 @@ class _BaseMetaclass(type):
         dct['create'] = create
 
         if 'name' in dct:
+            # reservation.callsign is defined in reservation.py
+            # reservations themselves don't have names
             @property
             def callsign(self):
                 """The callsign for use in urls."""

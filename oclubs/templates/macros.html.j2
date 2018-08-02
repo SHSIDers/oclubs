@@ -100,3 +100,39 @@
 		</select>
 		{% endfor %}
 {% endmacro %}
+
+{% macro desktop_sidebar_room(endpoint, room_filter, form) %}
+<script src="{{ url_for('static', filename='js/dateselection.min.js') }}"></script>
+
+<div id="sidebar" class="col-md-2">
+	{% for group in room_filter.enumerate_desktop() %}
+	<div class = 'list-group'>
+		<li class="list-group-item active">{{ group.name }}</li>
+		{% for elmt in group.elements %}
+		<a href="{{ url_for(endpoint, room_filter=elmt.url) }}" class="list-group-item{% if elmt.selected %} selected{% endif %}">{{ elmt.name }}</a>
+		{% endfor %}
+	</div>
+	{% endfor %}
+	<div class="list-group">
+		{% for field in form.errors %}
+	    <div>
+	        {{ form.errors[field] }}
+	    </div>
+		{% endfor %}
+		<form action="{{ url_for(endpoint, room_filter=room_filter.to_url()) }}" method="post">
+			<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+			{{ form.viewclassroom_options.label }}{{ form.viewclassroom_options }}
+			<div id="date_options_div">
+				{{ form.date_options.label }}{{ form.date_options }}
+			{{ form.date_select_start }}
+			{{ form.date_select_end }}
+			</div>
+			{{ form.submit }}
+		</form>
+	</div>
+	{{ caller and called() }}
+</div>
+{% endmacro %}
+
+{% macro mobile_selection_room(endpoint, room_filter) %}
+{% endmacro %}

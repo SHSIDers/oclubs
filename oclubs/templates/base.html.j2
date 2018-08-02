@@ -21,7 +21,8 @@
 	<a href="{{ url_for('homepage') }}" class="{% if is_home %}active{% endif %}">Home</a>
 	<a href="{{ url_for('clubblueprint.clublist', club_filter='all') }}" class="{% if is_list %}active{% endif %}">Club List</a>
 	<a href="{{ url_for('actblueprint.allactivities', club_filter='all') }}" class="{% if is_allact %}active{% endif %}">Activities</a>
-	<a href="{{ url_for('resblueprint.allreservations', res_filter='all') }}">Reservations</a>
+	<a href="{{ url_for('resblueprint.viewreservations', res_filter='all') }}" class="{% if is_viewres %}active{% endif %}">Reservations</a>
+	<a href="{{ url_for('resblueprint.viewclassrooms', room_filter='all') }}" class="{% if is_viewroom %}active{% endif %}">Classrooms</a>
 	<a href="{{ url_for('actblueprint.allphotos') }}" class="{% if is_photos %}active{% endif %}">Photos</a>
 	<a href="{{ url_for('about') }}" class="{% if is_about %}active{% endif %}">About</a>
 </div>
@@ -38,7 +39,8 @@
 				<li class="sweep {% if is_home %}active{% endif %}"><a href="{{ url_for('homepage') }}">Home</a></li>
 				<li class="sweep {% if is_list %}active{% endif %}"><a href="{{ url_for('clubblueprint.clublist', club_filter='all') }}">Clubs</a></li>
 				<li class="sweep {% if is_allact %}active{% endif %}"><a href="{{ url_for('actblueprint.allactivities', club_filter='all') }}">Activities</a></li>
-				<li class="sweep"><a href="{{ url_for('resblueprint.allreservations', res_filter='all') }}">Reservations</a></li>
+				<li class="sweep {% if is_viewres %}active{% endif %}"><a href="{{ url_for('resblueprint.viewreservations', res_filter='all') }}">Reservations</a></li>
+				<li class="sweep {% if is_viewroom %}active{% endif %}"><a href="{{ url_for('resblueprint.viewclassrooms', room_filter='all') }}">Classrooms</a></li>
 				<li class="sweep {% if is_photos %}active{% endif %}"><a href="{{ url_for('actblueprint.allphotos') }}">Photos</a></li>
 				<li class="sweep {% if is_about %}active{% endif %}"><a href="{{ url_for('about') }}">About</a></li>
 			</ul>

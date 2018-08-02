@@ -12,10 +12,10 @@
 		<table class="table table-hover table-bordered" id="actinfotable">
 			<thead>
 				<tr>
-					<th>Contents</th>
+					<th>Activity Name</th>
 					<th>Club</th>
 					<th>Date</th>
-					<th>Type</th>
+					<th>Timeslot</th>
 					<th>Location</th>
 				</tr>
 			</thead>
@@ -26,7 +26,7 @@
 					<td>{{ act.club.name }}</td>
 					<td>{{ act.date }}</td>
 					<td>{{ act.time.format_name }}</td>
-					<td>{{ act.location }}</td>
+					<td>{{ act.location }}{% if act.has_reservation %} (Reserved){% endif %}</td>
 				</tr>
 				{% endfor %}
 			</tbody>

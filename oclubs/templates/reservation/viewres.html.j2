@@ -1,0 +1,89 @@
+{% extends "base.html.j2" %}
+{% from 'macros.html.j2' import render_pagination, desktop_sidebar_res,
+  mobile_selection_res %}
+{% block title %}View Reservations{% endblock %}
+{% block content %}
+
+<!-- Below Navbar -->
+<div class="large_container">
+  {{ desktop_sidebar_res('.viewreservations', res_filter, form, clearBtn, is_admin) }}
+
+  <div class="main-content col-md-10" id="reservation-list">
+    <h1 class="title_next bold">Reservations - {{ res_filter.title() }}</h1>
+    {{ mobile_selection_res('.viewreservations', res_filter, is_admin) }}
+    {% if not is_admin and not is_owner %}
+        <table class="table table-hover table-bordered" id="resinfotable">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Timeslot</th>
+              <th>Location</th>
+              <th>Reserver</th>
+              <th>Activity Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for reservation in res %}
+            <tr class="clickable" data-href="{{ url_for('.reservationinfo', reservation=reservation.callsign) }}">
+              {% if reservation.status == 1 %}
+                <td>{{ reservation.date  }}</td>
+                <td>{{ reservation.timeslot.format_name }}</td>
+                <td>{{ reservation.classroom.location }}</td>
+                <td>{{ reservation.reserver_club.name }}</td>
+                <td>N/A</td>
+              {% elif reservation.status == 2 %}
+                <td>{{ reservation.date  }}</td>
+                <td>{{ reservation.timeslot.format_name }}</td>
+                <td>{{ reservation.classroom.location }}</td>
+                <td>{{ reservation.reserver_club.name }}</td>
+                <td>{{ reservation.activity.name }}</td>
+              {% elif reservation.status == 3 %}
+              {% endif %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    {% else %}
+        <table class="table table-hover table-bordered" id="resinfotable">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Timeslot</th>
+              <th>Location</th>
+              <th>Reserver</th>
+              <th>Activity Name</th>
+              <th>Smartboard</th>
+              <th>Smartboard Application Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for reservation in res %}
+            <tr class="clickable" data-href="{{ url_for('.reservationinfo', reservation=reservation.callsign) }}">
+              {% if reservation.status == 1 %}
+                <td>{{ reservation.date  }}</td>
+                <td>{{ reservation.timeslot.format_name }}</td>
+                <td>{{ reservation.classroom.location }}</td>
+                <td>{{ reservation.reserver_club.name }}</td>
+                <td>N/A</td>
+                <td>{% if reservation.SBNeeded %}Yes{% else %}No{% endif %}</td>
+                <td>{{ reservation.SBApp_status.format_name }}</td>
+              {% elif reservation.status == 2 %}
+                <td>{{ reservation.date  }}</td>
+                <td>{{ reservation.timeslot.format_name }}</td>
+                <td>{{ reservation.classroom.location }}</td>
+                <td>{{ reservation.reserver_club.name }}</td>
+                <td>{{ reservation.activity.name }}</td>
+                <td>{% if reservation.SBNeeded %}Yes{% else %}No{% endif %}</td>
+                <td>{{ reservation.SBApp_status.format_name }}</td>
+              {% elif reservation.status == 3 %}
+              {% endif %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    {% endif %}
+    <center>{{ render_pagination(pagination) }}</center>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,138 @@
+{% extends "base.html.j2" %}
+{% block title %}View Reservations - {{ g.club.name }}{% endblock %}
+{% block content %}
+
+<!-- Below Navbar -->
+<div class="large_container">
+
+  <div class="main-content col-md-10" id="reservation-list">
+    <h1 class="title_next bold">Reservations - {{ g.club.name }}</h1>
+    {% if not is_admin and not is_owner %}
+        <table class="table table-hover table-bordered" id="resinfotable">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Timeslot</th>
+              <th>Location</th>
+              <th>Activity Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for reservation in res %}
+            <tr class="clickable" data-href="{{ url_for('.reservationinfo', reservation=reservation.callsign) }}">
+              {% if reservation.status == 1 %}
+                <td>{{ reservation.date  }}</td>
+                <td>{{ reservation.timeslot.format_name }}</td>
+                <td>{{ reservation.classroom.location }}</td>
+                <td>Not paired with a activity</td>
+              {% elif reservation.status == 2 %}
+                <td>{{ reservation.date  }}</td>
+                <td>{{ reservation.timeslot.format_name }}</td>
+                <td>{{ reservation.classroom.location }}</td>
+                <td>{{ reservation.activity.name }}</td>
+              {% endif %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    {% else %}
+        <table class="table table-hover table-bordered" id="resinfotable">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Timeslot</th>
+              <th>Location</th>
+              <th>Activity Name</th>
+              <th>Smartboard Needed?</th>
+              <th>Smartboard Application Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for reservation in res %}
+            <tr class="clickable" data-href="{{ url_for('.reservationinfo', reservation=reservation.callsign) }}">
+              {% if reservation.status == 1 %}
+                <td>{{ reservation.date  }}</td>
+                <td>{{ reservation.timeslot.format_name }}</td>
+                <td>{{ reservation.classroom.location }}</td>
+                <td>N/A</td>
+                <td>{% if reservation.SBNeeded %}Yes{% else %}No{% endif %}</td>
+                <td>{{ reservation.SBApp_status.format_name }}</td>
+              {% elif reservation.status == 2 %}
+                <td>{{ reservation.date  }}</td>
+                <td>{{ reservation.timeslot.format_name }}</td>
+                <td>{{ reservation.classroom.location }}</td>
+                <td>{{ reservation.activity.name }}</td>
+                <td>{% if reservation.SBNeeded %}Yes{% else %}No{% endif %}</td>
+                <td>{{ reservation.SBApp_status.format_name }}</td>
+              {% endif %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    {% endif %}
+  </div>
+
+
+{% if is_admin or is_owner %}
+<div>
+Additional information: <br>
+Can Reserve: {{ g.club.reservation_allowed }} <br>
+Can Apply for Smartboard: {{ g.club.smartboard_allowed }} <br>
+</div>
+{% endif %}
+
+  {% if is_admin %}
+  <div class="col-sm-4">
+    <center>
+      <a class="btn btn-info btn-lg" href="#changecanreserve" data-toggle="modal" data-target="#changecanreserve">Change Reservation Privileges</a>
+    </center>
+  </div>
+  <div class="col-sm-4">
+    <center>
+      <a class="btn btn-info btn-lg" href="#changecanreserve" data-toggle="modal" data-target="#changecanSB">Change Smartboard Privileges</a>
+    </center>
+  </div>
+  {% endif %}
+
+  <div class="modal fade" id="changecanreserve">
+  	<div class="modal-dialog">
+  		<div class="modal-content">
+  			<div class="modal-header">
+  				<button type="button" class="close" data-dismiss="modal">&times;</button>
+  				<h4 class="modal-title">Change Reservation Privileges</h4>
+  			</div>
+  			<div class="modal-body">
+  				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+  				<form action="{{ url_for('.viewreservations_club', club=g.club.callsign) }}" method="post" class="inline empty-left">
+  					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+  					{{ canReserveForm.changeCanReserve.label }} <br>
+  					{{ canReserveForm.changeCanReserve }} <br>
+  					{{ canReserveForm.submit }}
+  				</form>
+  			</div>
+  		</div>
+  	</div>
+  </div>
+
+  <div class="modal fade" id="changecanSB">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Change Smartboard Privileges</h4>
+        </div>
+        <div class="modal-body">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <form action="{{ url_for('.viewreservations_club', club=g.club.callsign) }}" method="post" class="inline empty-left">
+            <input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+            {{ canSBForm.changeCanSB.label }} <br>
+            {{ canSBForm.changeCanSB }} <br>
+            {{ canSBForm.submit }}
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

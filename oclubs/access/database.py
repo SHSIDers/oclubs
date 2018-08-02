@@ -11,6 +11,10 @@ returns data from the execution.
 
 from __future__ import absolute_import
 
+# for debugging purposes
+from __future__ import print_function
+import sys
+
 from flask import g
 import MySQLdb
 import MySQLdb.constants.CLIENT
@@ -447,6 +451,27 @@ def delete_rows(table, conds):
     conds = _parse_comp_cond(conds)
 
     rows = _execute("DELETE FROM %s %s;" % (_encode_name(table), conds),
+                    write=True, ret='rowcount')
+
+    if not rows:
+        raise NoRow
+
+    return rows
+
+def delete_rows_(table, conds):
+    """
+    Execute a ``DELETE`` on a table.
+
+    :param basestring table: table name
+    :param conds: conditions
+    :type conds: list or dict
+    :returns: number of rows deleted
+    :rtype: int or long
+    :raises NoRow: if no row was deleted
+    """
+    conds = _parse_comp_cond(conds)
+
+    rows = _execute("DELETE %s FROM %s %s;" % (_encode_name(table), _encode_name(table), conds),
                     write=True, ret='rowcount')
 
     if not rows:

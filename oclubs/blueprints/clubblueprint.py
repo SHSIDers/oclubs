@@ -47,7 +47,9 @@ def home_redirect():
 @special_access_required
 def club(club):
     '''Club Management Page'''
-    return render_template('club/clubmanage.html.j2')
+    can_reserve = club.reservation_allowed
+    return render_template('club/clubmanage.html.j2',
+                           can_reserve=can_reserve)
 
 
 @clubblueprint.route('/<club>/')
@@ -62,9 +64,13 @@ def clubintro(club):
     see_email = (current_user.is_active and
                  current_user.type == UserType.ADMIN or
                  current_user == club.leader)
+    is_admin = (current_user.type == UserType.CLASSROOM_ADMIN or
+                current_user.type == UserType.DIRECTOR or
+                current_user.type == UserType.ADMIN)
     return render_template('club/clubintro.html.j2',
                            free_join=free_join,
-                           see_email=see_email)
+                           see_email=see_email,
+                           is_admin=is_admin)
 
 
 @clubblueprint.route('/<club>/introduction/submit', methods=['POST'])
@@ -329,6 +335,7 @@ def newact(club):
 @require_active_club
 @special_access_required
 def newact_submit(club):
+    # the new form filing for creating reservations is done using wtforms
     '''Input new activity's information into database'''
     try:
         a = Activity.new()
@@ -374,6 +381,7 @@ def newact_submit(club):
             a.selections = [choice.strip() for choice in choices]
         else:
             a.selections = []
+        a.reservation = None
         a.create()
         flash(a.name + ' has been successfully created.', 'newact')
     except ValueError:
@@ -714,6 +722,10 @@ def newclub_submit():
         c.type = ClubType(clubtype)
         c.joinmode = ClubJoinMode.FREE_JOIN
         c.reactivate = True
+        c.reservation_allowed = True
+        c.smartboard_allowed = True
+        c.smartboard_teacherapp_bypass = False
+        c.smartboard_directorapp_bypass = False
         c.create()
         c.add_member(current_user)
         c.description = FormattedText.handle(current_user, c,

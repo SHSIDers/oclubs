@@ -10,10 +10,10 @@ from flask_login import UserMixin
 from passlib.context import CryptContext
 from xkcdpass import xkcd_password as xp
 
+from oclubs.utils.dates import int_to_dateobj, dateobj_to_int
 from oclubs.access import database, email, redis
 from oclubs.enums import UserType
 from oclubs.exceptions import NoRow, PasswordTooShort
-from oclubs.objs.activity import int_date
 from oclubs.objs.base import BaseObject, Property, ListProperty, paged_db_read
 
 
@@ -97,14 +97,13 @@ class User(BaseObject, UserMixin):
         if self.is_disabled:
             return
 
-        from oclubs.objs.activity import date_int
         database.insert_row(
             'notification',
             {
                 'notification_user': self.id,
                 'notification_text': contents,
                 'notification_isread': False,
-                'notification_date': date_int(date.today())
+                'notification_date': dateobj_to_int(date.today())
             }
         )
 
@@ -150,7 +149,7 @@ class User(BaseObject, UserMixin):
             }
         )
         for item in ret:
-            item['date'] = int_date(item['date'])
+            item['date'] = int_to_dateobj(item['date'])
 
         return pager_return(ret)
 
@@ -186,7 +185,7 @@ class User(BaseObject, UserMixin):
                 {'invitation_user': self.id}
             )
         for item in ret:
-            item['date'] = int_date(item['date'])
+            item['date'] = int_to_dateobj(item['date'])
             item['club'] = Club(item['club'])
         return ret
 

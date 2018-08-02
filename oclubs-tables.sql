@@ -176,15 +176,23 @@ CREATE INDEX room_id ON classroom (room_id);
 
 CREATE TABLE reservation (
 	res_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT;
-	res_activity int NOT NULL, # Foreign key to act.act_id
+	res_activity int, # Foreign key to act.act_id
+	res_date int unsigned NOT NULL, # The date when the reservation is effective
+	res_date_of_res int unsigned NOT NULL, # The date when the reservation was created
+	res_timeslot tinyint NOT NULL, # based on ActivityTime enum
+	res_status tinyint NOT NULL, # 1 = club not yet paired with activity, # 2 = club paired with activity,  # 3 = non-club
+	res_activity_name varchar(255),
+	res_reserver_name varchar(255),
+	res_reserver_club int, # Foreign key to club.club_id
+	res_owner int, # Foreign key to user.user_id
 	res_classroom int NOT NULL, # Foreign key to classroom.room_id
 	res_SBNeeded boolean NOT NULL, # true = need smartboard, false = no need smartboard
 	res_SBAppDesc varchar(512),
 	res_instructors_approval boolean DEFAULT false,
 	res_directors_approval boolean DEFAULT false,
-	res_SBApp_success boolean DEFAULT false # true = sucess, allowed to use smartboard, default = false, application to use still pending
+	res_SBApp_status tinyint DEFAULT 0 # based on SBAppStatus enum
 );
 
 CREATE INDEX res_id ON classroom (res_id);
 CREATE INDEX res_SBNeeded ON reservation (res_SBNeeded);
-CREATE INDEX res_SBApp_success ON reservation (res_SBApp_success);
+CREATE INDEX res_SBApp_status ON reservation (res_SBApp_status);

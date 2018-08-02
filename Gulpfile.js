@@ -12,6 +12,8 @@ var uglify = require('gulp-uglify');
 var imagemin = require('gulp-imagemin');
 var rename = require('gulp-rename');
 var plumber = require('gulp-plumber');
+var watch = require('gulp-watch');
+var gutil = require('gutil');
 
 var plumberErrorHandler = {
 	errorHandler: function (error) {
@@ -62,7 +64,7 @@ gulp.task('scripts', function() {
 		.pipe(plumber(plumberErrorHandler))
 		.pipe(jshint())
 		.pipe(rename({ suffix: '.min' }))
-		.pipe(uglify())
+		.pipe(uglify()).on('error', function (err) { gutil.log(err.toString()); })
 		.pipe(gulp.dest('./oclubs/static/js'));
 });
 

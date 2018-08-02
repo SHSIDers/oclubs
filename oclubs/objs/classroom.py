@@ -4,12 +4,16 @@
 
 from __future__ import absolute_import, unicode_literals, division
 
-from flask_wtf import FlaskForm
-from wtforms.widgets import ListWidget, CheckboxInput
-from wtforms import SelectMultipleField, SubmitField, SelectField
+# for debugging purposes
+from __future__ import print_function
+import sys
 
+from datetime import date
+
+from oclubs.utils.dates import date_range_iterator
 from oclubs.access import database
 from oclubs.objs.base import BaseObject, Property, paged_db_read
+from oclubs.objs.reservation import Reservation
 from oclubs.enums import Building, ActivityTime
 
 
@@ -25,28 +29,43 @@ class Classroom(BaseObject):
 
     @property
     def location(self):
-        ret = self.building.format_name + " " + self.room_number.upper()
+        ret = self.building.format_name + ' ' + self.room_number.upper()
         return ret
 
     @classmethod
     @paged_db_read
-    def get_classroom_conditions(cls, additional_conds=None, building=None,
+    def get_classroom_conditions(cls, additional_conds=None, buildings=(),
                                  timeslot=None, order_by_room_number=True,
                                  pager=None):
+
+        """
+        Get classrooms （regardless of whether it is reserved)
+
+        buildings type: either one Building object or list of Building objects
+        timeslot type: ActivityTime object
+
+        return: list of Classroom objects
+        """
+
         conds = {}
         if additional_conds:
             conds.update(additional_conds)
 
         conds['where'] = conds.get('where', [])
 
-        if building:
-            conds['where'].append(('=', 'room_building', building))
+        if buildings:
+            if isinstance(buildings, Building):
+                conds['where']. \
+                    append(('=', 'room_building', buildings.value))
+            else:
+                buildings = [building.value for building in buildings]
+                conds['where'].append(('=', 'room_building', buildings))
 
         if timeslot:
-            if timeslot == ActivityTime.AFTERSCHOOL.value:
+            if timeslot == ActivityTime.AFTERSCHOOL:
                 conds['where'].append(('=',
                                       'room_studentsToUseAfternoon', '1'))
-            if timeslot == ActivityTime.NOON.value:
+            if timeslot == ActivityTime.NOON:
                 conds['where'].append(('=', 'room_studentsToUseLunch', '1'))
 
         if order_by_room_number:
@@ -64,16 +83,97 @@ class Classroom(BaseObject):
 
         return pager_return(ret)
 
+    @classmethod
+    def get_free_classroom_conditions(cls, buildings=(), timeslot=None,
+                                      dates=(True, True)):
 
-class MultiCheckboxForm(SelectMultipleField):
-    widget = ListWidget(prefix_label=False)
-    option_widget = CheckboxInput()
+        '''
+        Obtains free classrooms
 
+        building, timeslot: enum objects
+        dates: date object
 
-class classroomSidebarForm(FlaskForm):
-    classrooms_list = MultiCheckboxForm('Classrooms', coerce=int)
-    submit = SubmitField('Submit selection')
+        if date is provided: return structure
+        ret = {
+            building: {
+                timeslot: {
+                    date: rooms,
+                    date: rooms,
+                    ...
+                },
+                ...
+            },
+            ...
+        }
 
+        if date is not provided: return structure
+        ret = {
+            building: {
+                timeslot: rooms,
+                ...
+            },
+            ...
+        }
+        where building, timeslot, date are objects
+        rooms are lists of classroom objects
+        '''
 
-class clearSelectionForm(FlaskForm):
-    clear = SubmitField('Clear selection')
+        ret = {}
+
+        # set up the buildings in ret
+        if buildings:
+            if isinstance(buildings, Building):
+                ret[buildings] = {}
+            else:
+                for building in buildings:
+                    ret[building] = {}
+        else:
+            # if unspecified then all buildings are included
+            for building in Building:
+                ret[building] = {}
+
+        # each building
+        for building in ret.keys():
+            # set up timeslots in each ret[building]
+            if timeslot:
+                ret[building][timeslot] = {}
+            else:
+                # both timeslots are included if timeslot is None
+                ret[building][ActivityTime.NOON] = {}
+                ret[building][ActivityTime.AFTERSCHOOL] = {}
+
+            # each timeslot for each building
+            for timeslot in ret[building].keys():
+                all_classrooms = cls.get_classroom_conditions(
+                    buildings=building,
+                    timeslot=timeslot)
+
+                # no date is provided
+                if dates == (True, True):
+                    ret[building][timeslot] = all_classrooms
+                # if date is provided
+                else:
+                    # set up dates in each ret[building][timeslot]
+                    if isinstance(dates, date):
+                        ret[building][timeslot][dates] = []
+                    else:
+                        start_date, end_date = dates
+                        for single_date in date_range_iterator(start_date,
+                                                               end_date):
+                            ret[building][timeslot][single_date] = []
+
+                    # each date for each timeslot for each building
+                    for single_date in ret[building][timeslot].keys():
+                        reservations = Reservation.get_reservations_conditions(
+                            dates=single_date,
+                            room_buildings=building,
+                            timeslot=timeslot)
+
+                        # free classroom = all classroom - reserved classroom
+                        free_classrooms = list(all_classrooms)
+                        for reservation in reservations:
+                            free_classrooms.remove(reservation.classroom)
+
+                        ret[building][timeslot][single_date] = free_classrooms
+
+        return ret

@@ -53,7 +53,7 @@ class ActivityTime(Enum):
     @property
     def format_name(self):
         """Formats the value of the enum for display."""
-        return ['Unknown', 'Noon', 'Afterschool', 'HongMei',
+        return ['Unknown', 'Lunch', 'Afterschool', 'HongMei',
                 'Others'][self.value]
 
 
@@ -76,6 +76,19 @@ class Building(Enum):
     def format_name(self):
         """Formats the value of the enum for display."""
         return ['', 'XMT'][self.value]
+
+
+class SBAppStatus(Enum):
+    """Enum for smartboard application statuses"""
+    PENDING = 0
+    APPROVED = 1
+    REJECTED = 2
+    NA = 3
+
+    @property
+    def format_name(self):
+        return ['Pending', 'Approved', 'Rejected', 'N/A'][self.value]
+
 
 
 __all__ = ['UserType', 'ClubType', 'ActivityTime', 'ClubJoinMode', 'Building']

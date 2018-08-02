@@ -1,0 +1,45 @@
+{% extends "base.html.j2" %}
+{% block title %}{% endblock %}
+
+{% block content %}
+<script src="{{ url_for('static', filename='js/newreservation.min.js') }}"></script>
+
+<body data-updateurl="{{ url_for('.update_free_classrooms') }}">
+</body>
+
+<!-- Below Navbar -->
+<div class="large_container">
+
+  <!-- Main Content -->
+	<div class="main-content col-md-10" id="intropage">
+		{% if can_reserve %}
+			{% for field in form.errors %}
+		    <div>
+		        {{ form.errors[field] }}
+		    </div>
+			{% endfor %}
+			<form id="new_reservation" action="{{ url_for('.newreservation_club', club=g.club.callsign) }}" method="post">
+				<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+				{{ form.building.label }}{{ form.building }} <br>
+				{{ form.timeslot.label }}{{ form.timeslot }} <br>
+				{{ form.date_selection.label }} <br> {{ form.date_selection }} <br>
+				{{ form.free_classrooms.label }} <br> {{ form.free_classrooms}} <br>
+				{% if can_SB %}
+				{{ form.SBNeeded.label }} <br> {{ form.SBNeeded }} <br>
+				<div id="sb_app_desc_div">
+					{{ form.SBAppDesc.label }} <br> {{ form.SBAppDesc }} <br>
+				</div>
+				{% else %}
+				<div>This club cannot apply for smartbaord.</div>
+				{% endif %}
+				{{ form.submit }}
+			</form>
+		{% else %}
+			This club is not allowed to reserve classrooms
+		{% endif %}
+  </div>
+
+</div>
+
+
+{% endblock %}

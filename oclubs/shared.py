@@ -2,6 +2,10 @@
 # -*- coding: UTF-8 -*-
 #
 
+# for debugging purposes
+from __future__ import print_function
+import sys
+
 import os
 from functools import wraps
 from math import ceil
@@ -25,6 +29,7 @@ from oclubs.access.secrets import get_secret
 from oclubs.exceptions import NoRow
 from oclubs.filters.resfilter import ResFilter, ResFilterConverter
 from oclubs.filters.clubfilter import ClubFilter, ClubFilterConverter
+from oclubs.filters.roomfilter import RoomFilter, RoomFilterConverter
 from oclubs.enums import UserType
 
 with open('/srv/oclubs/oclubs/example.md', 'r') as f:
@@ -64,6 +69,7 @@ def read_xlsx(file, data_type, header):
 
 
 def get_callsign(objtype, kw):
+    '''Decorator function'''
     def decorator(func):
         @wraps(func)
         def decorated_function(*args, **kwargs):
@@ -80,6 +86,16 @@ def get_callsign(objtype, kw):
         return decorated_function
 
     return decorator
+
+
+def get_callsign_(objtype, kw):
+    '''returns object'''
+    try:
+        item = int(re.match(r'^\d+', kw).group(0))
+        item = objtype(item)
+    except (NameError, AttributeError, OverflowError, NoRow):
+        abort(404)
+    return item
 
 
 def special_access_required(func):
@@ -324,6 +340,8 @@ def init_app(app):
     app.jinja_env.globals['csrf_token'] = generate_csrf_token
     app.jinja_env.globals['ClubFilter'] = ClubFilter
     app.jinja_env.globals['ResFilter'] = ResFilter
+    app.jinja_env.globals['RoomFilter'] = RoomFilter
 
     app.url_map.converters['clubfilter'] = ClubFilterConverter
     app.url_map.converters['resfilter'] = ResFilterConverter
+    app.url_map.converters['roomfilter'] = RoomFilterConverter

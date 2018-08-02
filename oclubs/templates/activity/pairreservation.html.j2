@@ -1,0 +1,26 @@
+{% extends "base.html.j2" %}
+{% block title %}Pair Resrvation{% endblock %}
+
+{% block content %}
+
+<!-- Below Navbar -->
+<div class="large_container">
+
+  <!-- Main Content -->
+	<div class="main-content col-md-10" id="intropage">
+		{% for field in form.errors %}
+			<div>
+					{{ form.errors[field] }}
+			</div>
+		{% endfor %}
+		<form action="{{ url_for('.pairreservation', activity=g.activity.callsign) }}" method="post">
+			<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+			{{ form.reservations_for_pairing.label }} <br> {{ form.reservations_for_pairing }}
+      {{ form.submit }}
+		</form>
+  </div>
+
+</div>
+
+
+{% endblock %}

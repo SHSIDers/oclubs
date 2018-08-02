@@ -17,7 +17,8 @@
 			<p>{{ g.activity.club.name }}</p>
 		</div>
 		<div class="longdesc">
-			<p>Time: {{ g.activity.date }}</p>
+			<p>Date: {{ g.activity.date }}</p>
+			<p>Timeslot: {{ g.activity.time.format_name }}</p>
 			{% if g.activity.description.raw %}
 			<br>
 			<p class="midtext">Description:</p>
@@ -81,6 +82,18 @@
 			</div>
 			{% endif %}
 
+			<div class="col-sm-6">
+				{% if has_reservation %}
+					<a class="btn btn-info btn-lg" href="{{ url_for('resblueprint.reservationinfo', reservation=g.activity.reservation.callsign) }}">Reserved: {{ g.activity.reservation.date }} {{ g.activity.reservation.timeslot.format_name }} {{ g.activity.reservation.classroom.location }}</a>
+					<a class="btn btn-info btn-lg" href="{{ url_for('.pairreservation', activity=g.activity.callsign) }}">Change Reservation</a>
+				{% else %}
+					{% if has_access and g.activity.is_future %}
+					<a class="btn btn-info btn-lg" href="{{ url_for('.pairreservation', activity=g.activity.callsign) }}">Pair a Reservation</a>
+					{% endif %}
+				{% endif %}
+			</div>
+
+
 			{% if has_access and not g.activity.is_future %}
 			<div class="col-sm-6">
 				<a class="btn btn-info btn-lg" href="{{ url_for('.attendance', activity=g.activity.callsign) }}">Attendance</a>
@@ -89,6 +102,7 @@
 				<a class="btn btn-info btn-lg" href="{{ url_for('.changeactpost', activity=g.activity.callsign) }}">{% if g.activity.post.raw or g.activity.pictures %}Edit{% else %}Create{% endif %} Activity Post</a>
 			</div>
 			{% endif %}
+
 		</div>
 		</center>
 		{% if is_other_act and g.activity.is_future and can_join %}

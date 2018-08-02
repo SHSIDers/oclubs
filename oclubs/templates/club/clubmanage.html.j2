@@ -94,4 +94,10 @@
 	</div>
 </div>
 
+{% if can_reserve %}
+<a class="btn btn-primary large_button" href="{{ url_for('resblueprint.newreservation_club', club=g.club.callsign) }}">New Reservation</a>
+{% else %}
+<div class="btn btn-primary large_button">This club cannot reserve.</div>
+{% endif %}
+
 {% endblock %}

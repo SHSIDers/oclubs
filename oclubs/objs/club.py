@@ -4,8 +4,7 @@
 
 from __future__ import absolute_import, unicode_literals
 
-from datetime import date
-
+from oclubs.utils.dates import dateobj_to_int, today
 from oclubs.access import database, redis
 from oclubs.enums import ClubType, UserType, ClubJoinMode
 from oclubs.objs.base import BaseObject, Property, ListProperty, paged_db_read
@@ -163,7 +162,6 @@ class Club(BaseObject):
         del self.members
 
     def send_invitation(self, user):
-        from oclubs.objs.activity import date_int
         from oclubs.exceptions import AlreadyExists
 
         try:
@@ -171,7 +169,7 @@ class Club(BaseObject):
                 'invitation',
                 {'invitation_club': self.id,
                  'invitation_user': user.id,
-                 'invitation_date': date_int(date.today())}
+                 'invitation_date': dateobj_to_int(today())}
             )
         except AlreadyExists:
             pass
