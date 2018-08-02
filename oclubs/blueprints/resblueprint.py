@@ -22,7 +22,7 @@ from oclubs.utils.dates import today, str_to_date_dict, date_to_str_dict, \
     int_to_dateobj
 from oclubs.enums import UserType, ActivityTime, Building, SBAppStatus
 from oclubs.shared import (
-    get_callsign, special_access_required, Pagination
+    get_callsign_decorator, special_access_required, Pagination
 )
 from oclubs.objs import Club, Reservation, Classroom
 from oclubs.forms.classroom_forms import (
@@ -223,7 +223,7 @@ def viewclassrooms(room_filter):
 
 @resblueprint.route('<reservation>')
 @resblueprint.route('<reservation>/info', methods=['GET', 'POST'])
-@get_callsign(Reservation, 'reservation')
+@get_callsign_decorator(Reservation, 'reservation')
 def reservationinfo(reservation):
     '''Information page for a reservation'''
     # determine privileges
@@ -294,7 +294,7 @@ def reservationinfo(reservation):
 
 
 @resblueprint.route('new/club/<club>', methods=['GET', 'POST'])
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @special_access_required
 def newreservation_club(club):
     '''For clubs to create new reservations'''
@@ -388,7 +388,7 @@ def update_free_classrooms():
 
 
 @resblueprint.route('viewres/club/<club>',  methods=['GET', 'POST'])
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 def viewreservations_club(club):
     is_admin = False
     is_owner = False
@@ -433,7 +433,7 @@ def viewreservations_club(club):
 
 
 @resblueprint.route('<reservation>/delete')
-@get_callsign(Reservation, 'reservation')
+@get_callsign_decorator(Reservation, 'reservation')
 def deletereservation(reservation):
     club = reservation.reserver_club
     single_date = reservation.date

@@ -1,7 +1,6 @@
 uwsgi
 flask
 flask-login
-configobj
 WTForms
 Flask-WTF
 redis

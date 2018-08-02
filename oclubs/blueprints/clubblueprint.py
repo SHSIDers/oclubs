@@ -14,7 +14,7 @@ from flask_login import current_user, login_required, fresh_login_required
 from oclubs.objs import Activity, User, Club, Upload, FormattedText
 from oclubs.enums import UserType, ClubType, ClubJoinMode, ActivityTime
 from oclubs.shared import (
-    download_xlsx, get_callsign, special_access_required,
+    download_xlsx, get_callsign_decorator, special_access_required,
     render_email_template, Pagination, require_active_club,
     require_student_membership, require_membership, require_not_student,
     true_or_fail, form_is_valid, fail
@@ -42,7 +42,7 @@ def home_redirect():
 
 
 @clubblueprint.route('/<club>/manage')
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
 def club(club):
@@ -54,7 +54,7 @@ def club(club):
 
 @clubblueprint.route('/<club>/')
 @clubblueprint.route('/<club>/introduction')
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 def clubintro(club):
     '''Club Intro'''
     free_join = (current_user.is_active and
@@ -74,7 +74,7 @@ def clubintro(club):
 
 
 @clubblueprint.route('/<club>/introduction/submit', methods=['POST'])
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @login_required
 @require_active_club
 def clubintro_submit(club):
@@ -99,7 +99,7 @@ def clubintro_submit(club):
 
 
 @clubblueprint.route('/<club>/new_leader')
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
 @fresh_login_required
@@ -109,7 +109,7 @@ def newleader(club):
 
 
 @clubblueprint.route('/<club>/new_leader/submit', methods=['POST'])
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
 @fresh_login_required
@@ -134,7 +134,7 @@ def newleader_submit(club):
 
 
 @clubblueprint.route('/<club>/member_info')
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @require_membership
 def memberinfo(club):
     '''Check Members' Info'''
@@ -146,7 +146,7 @@ def memberinfo(club):
 
 
 @clubblueprint.route('/<club>/member_info/notify_members', methods=['POST'])
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
 def memberinfo_notify_members(club):
@@ -167,7 +167,7 @@ def memberinfo_notify_members(club):
 
 
 @clubblueprint.route('/<club>/member_info/download')
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @require_membership
 @special_access_required
 def memberinfo_download(club):
@@ -180,7 +180,7 @@ def memberinfo_download(club):
 
 
 @clubblueprint.route('/<club>/change_info')
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
 def changeclubinfo(club):
@@ -189,7 +189,7 @@ def changeclubinfo(club):
 
 
 @clubblueprint.route('/<club>/change_info/submit', methods=['POST'])
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
 def changeclubinfo_submit(club):
@@ -229,7 +229,7 @@ def changeclubinfo_submit(club):
 
 
 @clubblueprint.route('/<club>/adjust_member')
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
 @fresh_login_required
@@ -241,7 +241,7 @@ def adjustmember(club):
 
 
 @clubblueprint.route('/<club>/adjust_member/submit', methods=['POST'])
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
 @fresh_login_required
@@ -261,7 +261,7 @@ def adjustmember_submit(club):
 
 
 @clubblueprint.route('/<club>/invite_member/submit', methods=['POST'])
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
 @fresh_login_required
@@ -291,7 +291,7 @@ def invitemember(club):
 
 @clubblueprint.route('/<club>/activities/', defaults={'page': 1})
 @clubblueprint.route('/<club>/activities/<int:page>')
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 def clubactivities(club, page):
     '''One Club's Activities'''
     act_num = 20
@@ -308,7 +308,7 @@ def clubactivities(club, page):
 
 @clubblueprint.route('/<club>/photos/', defaults={'page': 1})
 @clubblueprint.route('/<club>/photos/<int:page>')
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 def clubphoto(club, page):
     '''Individual Club's Photo Page'''
     pic_num = 20
@@ -320,7 +320,7 @@ def clubphoto(club, page):
 
 
 @clubblueprint.route('/<club>/new_activity')
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
 def newact(club):
@@ -331,7 +331,7 @@ def newact(club):
 
 
 @clubblueprint.route('/<club>/new_activity/submit', methods=['POST'])
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
 def newact_submit(club):
@@ -399,7 +399,7 @@ def newact_submit(club):
 
 
 @clubblueprint.route('/<club>/hongmei_status')
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @special_access_required
 def hongmei_status(club):
     '''Check HongMei Status'''
@@ -409,7 +409,7 @@ def hongmei_status(club):
 
 
 @clubblueprint.route('/<club>/hongmei_status/download')
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @special_access_required
 def hongmei_status_download(club):
     '''Download HongMei status'''
@@ -435,7 +435,7 @@ def hongmei_status_download(club):
 
 
 @clubblueprint.route('/<club>/new_hongmei_schedule')
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
 def newhm(club):
@@ -448,7 +448,7 @@ def newhm(club):
 
 
 @clubblueprint.route('/<club>/new_hongmei_schedule/submit', methods=['POST'])
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
 def newhm_submit(club):
@@ -572,7 +572,7 @@ def adjust_status_all_by_invitation(club_type):
 
 
 @clubblueprint.route('/<club>/register_hongmei')
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @login_required
 @require_student_membership
 @require_active_club
@@ -591,7 +591,7 @@ def registerhm(club):
 
 
 @clubblueprint.route('/<club>/register_hongmei/submit', methods=['POST'])
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @login_required
 @require_student_membership
 @require_active_club
@@ -775,7 +775,7 @@ def adjustclubs_submit():
 
 
 @clubblueprint.route('/<club>/reactivate', methods=['POST'])
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @special_access_required
 @fresh_login_required
 def reactivate_submit(club):

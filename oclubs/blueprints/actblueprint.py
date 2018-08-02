@@ -18,10 +18,10 @@ from flask_login import current_user, login_required, fresh_login_required
 from oclubs.utils.dates import today, DATE_RANGE_MAX
 from oclubs.enums import UserType, ActivityTime
 from oclubs.shared import (
-    get_callsign, special_access_required, Pagination, render_email_template,
+    get_callsign_decorator, special_access_required, Pagination, render_email_template,
     download_xlsx, partition, require_student_membership,
     require_past_activity, require_future_activity, require_active_club,
-    true_or_fail, form_is_valid, error_or_fail, fail, get_callsign_
+    true_or_fail, form_is_valid, error_or_fail, fail, get_callsign
 )
 from oclubs.objs import User, Activity, Upload, FormattedText, Reservation
 from oclubs.exceptions import UploadNotSupported, NoRow
@@ -74,7 +74,7 @@ def allphotos(page):
 
 @actblueprint.route('/<activity>/')
 @actblueprint.route('/<activity>/introduction')
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 def actintro(activity):
     '''Club Activity Page'''
     if current_user.is_authenticated:
@@ -103,7 +103,7 @@ def actintro(activity):
 
 
 @actblueprint.route('/<activity>/introduction/submit', methods=['POST'])
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 @login_required
 @require_active_club
 @require_student_membership
@@ -127,7 +127,7 @@ def actintro_submit(activity):
 
 
 @actblueprint.route('/<activity>/post/change')
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 @special_access_required
 @require_active_club
 @require_past_activity
@@ -137,7 +137,7 @@ def changeactpost(activity):
 
 
 @actblueprint.route('/<activity>/post/change/submit', methods=['POST'])
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 @special_access_required
 @require_active_club
 @require_past_activity
@@ -159,7 +159,7 @@ def changeactpost_submit(activity):
 
 
 @actblueprint.route('/<activity>/invite_hongmei')
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 @require_active_club
 @special_access_required
 @require_future_activity
@@ -169,7 +169,7 @@ def hongmei_invite(activity):
 
 
 @actblueprint.route('/<activity>/invite_hongmei/submit', methods=['POST'])
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 @require_active_club
 @special_access_required
 @require_future_activity
@@ -194,7 +194,7 @@ def hongmei_invite_submit(activity):
 
 
 @actblueprint.route('/<activity>/signup_status')
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 @require_active_club
 @special_access_required
 @require_future_activity
@@ -204,7 +204,7 @@ def actstatus(activity):
 
 
 @actblueprint.route('/<activity>/signup_status/submit', methods=['POST'])
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 @require_active_club
 @special_access_required
 @require_future_activity
@@ -228,7 +228,7 @@ def actstatus_submit(activity):
 
 
 @actblueprint.route('/<activity>/signup_status/download')
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 @special_access_required
 def actstatus_download(activity):
     '''Download activity status'''
@@ -246,7 +246,7 @@ def actstatus_download(activity):
 
 
 @actblueprint.route('/<activity>/change_activity_info')
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 @special_access_required
 def changeactinfo(activity):
     '''Allow club leaders to change activity info'''
@@ -260,7 +260,7 @@ def changeactinfo(activity):
 
 @actblueprint.route('/<activity>/change_activity_info/submit',
                     methods=['POST'])
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 @special_access_required
 def changeactinfo_submit(activity):
     '''Input change in activity info into database'''
@@ -317,7 +317,7 @@ def changeactinfo_submit(activity):
 
 
 @actblueprint.route('/<activity>/pairreservation', methods=['GET', 'POST'])
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 @special_access_required
 def pairreservation(activity):
     reservations = Reservation.get_reservations_conditions(
@@ -343,7 +343,7 @@ def pairreservation(activity):
 
     if request.method == 'POST':
         if form.check():
-            selected_reservation = get_callsign_(
+            selected_reservation = get_callsign(
                 Reservation,
                 str(form.reservations_for_pairing.data))
 
@@ -372,7 +372,7 @@ def pairreservation(activity):
 
 
 @actblueprint.route('/<activity>/attendance')
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 @special_access_required
 @require_past_activity
 def attendance(activity):
@@ -385,7 +385,7 @@ def attendance(activity):
 
 
 @actblueprint.route('/<activity>/attendance/submit', methods=['POST'])
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 @special_access_required
 @require_past_activity
 def attendance_submit(activity):
@@ -404,7 +404,7 @@ def attendance_submit(activity):
 
 
 @actblueprint.route('/<activity>/attendance/download')
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 @special_access_required
 def attendance_download(activity):
     '''Download activity's attendance'''

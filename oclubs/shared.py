@@ -68,7 +68,7 @@ def read_xlsx(file, data_type, header):
     return contents
 
 
-def get_callsign(objtype, kw):
+def get_callsign_decorator(objtype, kw):
     '''Decorator function'''
     def decorator(func):
         @wraps(func)
@@ -88,8 +88,8 @@ def get_callsign(objtype, kw):
     return decorator
 
 
-def get_callsign_(objtype, kw):
-    '''returns object'''
+def get_callsign(objtype, kw):
+    '''Function that returns the object directly'''
     try:
         item = int(re.match(r'^\d+', kw).group(0))
         item = objtype(item)
