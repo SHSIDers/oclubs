@@ -4,10 +4,6 @@
 
 from __future__ import absolute_import, unicode_literals, division
 
-# for debugging purposes
-from __future__ import print_function
-import sys
-
 from datetime import date, timedelta
 
 from oclubs.utils.dates import dateobj_to_int, int_to_dateobj, ONE_DAY

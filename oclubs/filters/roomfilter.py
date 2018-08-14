@@ -2,10 +2,6 @@
 # -*- coding: UTF-8 -*-
 #
 
-# for debugging purposes
-from __future__ import print_function
-import sys
-
 from datetime import date
 
 from flask import abort

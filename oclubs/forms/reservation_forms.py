@@ -4,10 +4,6 @@
 
 from __future__ import absolute_import, unicode_literals, division
 
-# for debugging purposes
-from __future__ import print_function
-import sys
-
 from oclubs.utils.dates import today, tommorow, next_week, \
     DATE_RANGE_MAX
 

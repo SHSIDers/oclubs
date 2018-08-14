@@ -120,20 +120,6 @@
 <br>
 <div class="clearfix {% if leader_club %}clearfix-bordered{% endif %}"></div>
 
-{% if leader_club %}
-<br>
-<div class="container">
-	{{ get_messages(['reactivate_submit']) }}
-	{% for club in leader_club %}
-	{% if club.is_active %}
-	<a class="btn btn-success downloadbtn-sm" href="{{ url_for('clubblueprint.club', club=club.callsign) }}">Manage {{ club.name }}</a>
-	{% elif not club.reactivate %}
-	<a class="btn btn-warning downloadbtn-sm" href="#reactivate_modal_{{ club.id }}" data-toggle="modal" data-target="#reactivate_modal_{{ club.id }}">Renew {{ club.name }}</a>
-	{% endif %}
-	{% endfor %}
-</div>
-{% endif %}
-
 {% for club in leader_club %}
 {% if not club.is_active and not club.reactivate %}
 <div id="reactivate_modal_{{ club.id }}" class="modal fade" role="dialog">

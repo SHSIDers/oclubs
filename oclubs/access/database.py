@@ -11,10 +11,6 @@ returns data from the execution.
 
 from __future__ import absolute_import
 
-# for debugging purposes
-from __future__ import print_function
-import sys
-
 from flask import g
 import MySQLdb
 import MySQLdb.constants.CLIENT

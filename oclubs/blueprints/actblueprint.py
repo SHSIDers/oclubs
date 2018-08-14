@@ -4,10 +4,6 @@
 
 from __future__ import absolute_import, unicode_literals, division
 
-# for debugging purposes
-from __future__ import print_function
-import sys
-
 from datetime import date
 
 from flask import (
