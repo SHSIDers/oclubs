@@ -165,8 +165,6 @@ class Reservation(BaseObject):
 
         conds['where'].append(('in', 'room_number', [room_number]))
 
-        print(conds, file=sys.stderr)
-
         ret = database.delete_rows_multiple(cls.table, conds)
 
         return ret

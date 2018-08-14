@@ -51,19 +51,6 @@ def home_redirect():
     return redirect(url_for('.clublist', club_filter='all'))
 
 
-# no longer used
-# management functions on club homepage
-@clubblueprint.route('/<club>/dashboard')
-@get_callsign_decorator(Club, 'club')
-@require_active_club
-@special_access_required
-def club(club):
-    '''Club Management Page'''
-    can_reserve = club.reservation_allowed
-    return render_template('club/clubmanage.html.j2',
-                           can_reserve=can_reserve)
-
-
 @clubblueprint.route('/<club>/')
 @get_callsign_decorator(Club, 'club')
 def clubintro(club):
@@ -130,15 +117,12 @@ def newleader(club):
 @fresh_login_required
 def newleader_submit(club):
     '''Change leader in database'''
-    print('posted', sys.stderr)
     leader_old = club.leader
     members_obj = club.members
     leader_name = request.form['leader']
-    print(leader_name, file=sys.stderr)
 
     for member_obj in members_obj:
         if leader_name == member_obj.passportname:
-            print('Member' + member_obj.passportname, file=sys.stderr)
             club.leader = member_obj
             break
     else:
@@ -744,12 +728,7 @@ def newclub_submit():
         c.description = FormattedText.handle(current_user, c,
                                              request.form['description'])
 
-        print('here', file=sys.stderr)
-        print(type(request.files.getlist('picture')[0]), file=sys.stderr)
-        print(request.files.getlist('picture')[0], file=sys.stderr)
-
         if request.files.getlist('picture'):
-            print('picture gotten', file=sys.stderr)
             try:
                 c.picture = Upload.handle(
                     current_user, c,

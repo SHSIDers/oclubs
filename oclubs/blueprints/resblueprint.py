@@ -278,8 +278,6 @@ def reservationinfo(reservation):
                 if instructors_approval_form.changeIApproval.data == 'True'
                 else False)
 
-        print(instructors_approval_form.changeIApproval.data, file=sys.stderr)
-
         return redirect(url_for('.reservationinfo',
                                 reservation=reservation.callsign))
 
@@ -308,7 +306,6 @@ def newreservation_club(club):
     can_SB = club.smartboard_allowed
 
     if request.method == 'POST':
-        print('psoted', file=sys.stderr)
         if form.check():
             res = Reservation.new()
 
@@ -342,9 +339,6 @@ def newreservation_club(club):
                 if form.SBNeeded.data == 'yes':
                     res.SBNeeded = True
                     res.SBAppDesc = form.SBAppDesc.data
-                    print(type(form.SBAppDesc.data), file=sys.stderr)
-
-                    print(form.SBAppDesc.data, file=sys.stderr)
                     res.SBApp_status = SBAppStatus.PENDING
 
             res.activity = None
