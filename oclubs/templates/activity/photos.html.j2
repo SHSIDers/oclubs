@@ -1,45 +1,114 @@
-{% extends "base.html.j2" %}{% from 'macros.html.j2' import render_pagination %}
-{% block title %}All Photos{% endblock %}
+{% extends "base.html.j2" %}
+{% from 'macros.html.j2' import render_pagination, search_bar %}
+
+{% block additionalcssjs %}
+<link href="{{ url_for('static', filename='css/sidebar.min.css') }}" rel="stylesheet" type="text/css" media="all">
+<script src="{{ url_for('static', filename='js/imagesloaded.pkgd.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/masonry.pkgd.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/infinite-scroll.pkgd.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/content.min.js') }}"></script>
+{% endblock %}
+
+{% block title %}Activity & Photos{% endblock %}
+
 {% block content %}
 
-<!-- Below Navbar -->
-<div class="large_container" id="allphotospage">
-	<h1 class="text-center title">All Photos</h1>
-	{% if act_recent %}
-	<div class="jumbotron">
-		<div class="col-sm-4" id="photo-image">
-			<img src="{{ act_recent.pictures[0].location_external }}" class="img-responsive img-thumbnail" alt="Image">
-		</div>
-		<div class="col-sm-8" id="photo-desc">
-			<h1 class="title no-top-margin">{{ act_recent.club.name }}</h1>
-			<h1 class="title_next">{{ act_recent.name }}</h1>
-			<h3 class="largetext">Recent Event - This is the most recent activity with photos.</h3>
-			<h3 class="largetext">Feel free to check it out.</h3>
-			<h3 class="largetext">Below are more fantastic club photos.</h3>
-		</div>
-		<div class="clearfix"></div>
-	</div>
-	<br>
-	{% endif %}
-	<div class="clearfix"></div>
-	{% if acts %}
-	<div class="photoblocks row">
-	{% for act in acts %}
-	<div class="col-lg-3 col-sm-4 col-xs-6 emptyline {% if loop.index % 4 == 1 %}clear-lg{% endif %} {% if loop.index % 3 == 1 %}clear-sm{% endif %} {% if loop.index % 2 == 1 %}clear-xs{% endif %}">
-		<div class="photo clickable" data-href="{{ url_for('.actintro', activity=act.callsign) }}">
-			<img src="{{ act.pictures[0].location_external }}" class="img-responsive" alt="{{ act.name }}">
-			<h4 class="midtext">{{ act.name }}</h4>
-			<p class="smalltext">{{ act.club.name }}</p>
+<div class="container" id="photo_gallery">
+	<!-- Row for nav tabs -->
+	<div class="row">
+		<div class="col-md-12">
+			{% include 'club/club_head.html.j2' %}
 		</div>
 	</div>
-	{% endfor %}
+
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-6">
+					<h1 class="">Activities and Photos</h1>
+				</div>
+				<div class="col-md-2">
+				</div>
+				<div class="col-md-4">
+					{{ search_bar('activity', 'Search for activities...') }}
+					<!-- ./form-group -->
+				</div>
+			</div>
+			<!-- /.row -->
+		</div>
+		<!-- /.col-md-12 -->
 	</div>
-	{% else %}
-	<p class="text-center white smalltext">No club has any activity with photos yet.</p>
-	{% endif %}
-	<div class="clearfix"></div>
-	<br>
-	<center>{{ render_pagination(pagination) }}</center>
+	<!-- /.row -->
+
+	<hr class="separator" id="separator_title">
+
+	<div class="row">
+		{% if act_latest %}
+		<div class="jumbotron">
+			<div class="row">
+				<div class="col-md-5 post_image">
+					<a class="" href="{{ act_latest.pictures[0].location_external }}">
+						<img class="img-thumbnail" src="{{ act_latest.pictures[0].location_external }}" alt="{{ act_latest.name }}">
+					</a>
+				</div>
+				<div class="col-md-7">
+					<h2 class=""><a class="title_link" href="{{ url_for('.actintro', activity=act_latest.callsign) }}">Latest - {{ act_latest.name }}</a></h2>
+					<hr class="separator" id="separator_title">
+					<p>{{ act_latest.date.strftime("%Y-%m-%d, %A") }}, {{ act_latest.time.format_name }}</p>
+					<p><a class="title_link" href="{{ url_for('clubblueprint.clubintro', club=act_latest.club.callsign) }}">{{ act_latest.club.name }}</a></p>
+					<p>{{ act_latest.description.formatted }}</p>
+				</div>
+			</div>
+			<!-- /.row -->
+		</div>
+		<!-- /.jumbotron -->
+		{% endif %}
+	</div>
+	<!-- /.row -->
+
+	<div class="row">
+		<div class="col-md-12">
+			{% if acts %}
+			<div class="grid" id="photo_gallery">
+				<div class="grid-sizer"></div>
+				<div class="gutter-sizer"></div>
+				{% for act in acts %}
+				<div class="grid-item">
+					<div class="thumbnail photo_gallery_thumbnail">
+						<img src="{{ act.pictures[0].location_external }}" class="img-responsive" alt="{{ act.name }}">
+						<div class="caption">
+							<h5><a class="title_link" href="{{ url_for('.actintro', activity=act.callsign) }}">{{ act.name }}</a></h5>
+							<hr class="separator" id="separator_title">
+							<p>{{ act.date.strftime("%Y-%m-%d, %A") }}, {{ act.time.format_name }}</p>
+							<p><a class="title_link" href="{{ url_for('clubblueprint.clubintro', club=act.club.callsign) }}">{{ act.club.name }}</a></p>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+				<a class="pagination_next" href="{{ url_for_other_page(pagination.page + 1)  }}">Next</a>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+	<!-- /.row -->
+
+	<div class="page-load-status">
+
+		<p class="infinite-scroll-request">
+			<div class="loader-ellips">
+				<span class="loader-ellips__dot"></span>
+				<span class="loader-ellips__dot"></span>
+				<span class="loader-ellips__dot"></span>
+				<span class="loader-ellips__dot"></span>
+			</div>
+		</p>
+		<p class="infinite-scroll-last">End of content</p>
+		<p class="infinite-scroll-error">No more pages to load</p>
+
+	</div>
+
 </div>
+<!-- /.container -->
 
 {% endblock %}

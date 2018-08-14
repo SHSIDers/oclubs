@@ -4,6 +4,10 @@
 
 from __future__ import absolute_import, unicode_literals, division
 
+# for debugging purposes
+from __future__ import print_function
+import sys
+
 from datetime import date
 
 from flask import (
@@ -25,14 +29,20 @@ from oclubs.access import siteconfig
 clubblueprint = Blueprint('clubblueprint', __name__)
 
 
-@clubblueprint.route('/viewlist/<clubfilter:club_filter>')
+@clubblueprint.route('/view/<clubfilter:club_filter>')
 def clublist(club_filter):
     '''Club list by club type'''
     num = 18
     clubs = Club.randomclubs(num, **club_filter.to_kwargs())
+    info = {}
+    for club in clubs:
+        info[club.name] = club.activities()[0] \
+            if club.activities() else None
+
     return render_template('club/clublist.html.j2',
                            is_list=True,
                            clubs=clubs,
+                           info=info,
                            club_filter=club_filter)
 
 
@@ -41,7 +51,9 @@ def home_redirect():
     return redirect(url_for('.clublist', club_filter='all'))
 
 
-@clubblueprint.route('/<club>/manage')
+# no longer used
+# management functions on club homepage
+@clubblueprint.route('/<club>/dashboard')
 @get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
@@ -53,7 +65,6 @@ def club(club):
 
 
 @clubblueprint.route('/<club>/')
-@clubblueprint.route('/<club>/introduction')
 @get_callsign_decorator(Club, 'club')
 def clubintro(club):
     '''Club Intro'''
@@ -67,10 +78,14 @@ def clubintro(club):
     is_admin = (current_user.type == UserType.CLASSROOM_ADMIN or
                 current_user.type == UserType.DIRECTOR or
                 current_user.type == UserType.ADMIN)
+
+    invite_member = club.joinmode == ClubJoinMode.BY_INVITATION
+
     return render_template('club/clubintro.html.j2',
                            free_join=free_join,
                            see_email=see_email,
-                           is_admin=is_admin)
+                           is_admin=is_admin,
+                           invite_member=invite_member)
 
 
 @clubblueprint.route('/<club>/introduction/submit', methods=['POST'])
@@ -115,25 +130,29 @@ def newleader(club):
 @fresh_login_required
 def newleader_submit(club):
     '''Change leader in database'''
+    print('posted', sys.stderr)
     leader_old = club.leader
     members_obj = club.members
     leader_name = request.form['leader']
+    print(leader_name, file=sys.stderr)
+
     for member_obj in members_obj:
         if leader_name == member_obj.passportname:
+            print('Member' + member_obj.passportname, file=sys.stderr)
             club.leader = member_obj
             break
     else:
-        assert False, 'wtf?'
+        abort(500)
     for member in club.teacher_and_members:
         parameters = {'user': member, 'club': club, 'leader_old': leader_old}
         contents = render_email_template('newleader', parameters)
         member.email_user('New Leader - ' + club.name, contents)
         member.notify_user(club.leader.nickname +
                            ' becomes the new leader of ' + club.name + '.')
-    return render_template('club/success.html.j2')
+    return redirect(url_for('.clubintro', club=club.callsign))
 
 
-@clubblueprint.route('/<club>/member_info')
+@clubblueprint.route('/<club>/members')
 @get_callsign_decorator(Club, 'club')
 @require_membership
 def memberinfo(club):
@@ -145,7 +164,7 @@ def memberinfo(club):
                            has_access=has_access)
 
 
-@clubblueprint.route('/<club>/member_info/notify_members', methods=['POST'])
+@clubblueprint.route('/<club>/members/notify_members', methods=['POST'])
 @get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
@@ -166,7 +185,7 @@ def memberinfo_notify_members(club):
     return redirect(url_for('.memberinfo', club=club.callsign))
 
 
-@clubblueprint.route('/<club>/member_info/download')
+@clubblueprint.route('/<club>/members/download')
 @get_callsign_decorator(Club, 'club')
 @require_membership
 @special_access_required
@@ -179,7 +198,7 @@ def memberinfo_download(club):
     return download_xlsx('Member Info.xlsx', info)
 
 
-@clubblueprint.route('/<club>/change_info')
+@clubblueprint.route('/<club>/edit_info')
 @get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
@@ -188,7 +207,7 @@ def changeclubinfo(club):
     return render_template('club/changeclubinfo.html.j2')
 
 
-@clubblueprint.route('/<club>/change_info/submit', methods=['POST'])
+@clubblueprint.route('/<club>/edit_info/submit', methods=['GET', 'POST'])
 @get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
@@ -196,23 +215,27 @@ def changeclubinfo_submit(club):
     '''Change club's info'''
     intro = request.form['intro']
     if len(intro) > 90:
-        fail('Your intro is too long.', 'clubinfo')
+        fail('Your one sentence description is too long.', 'clubinfo')
         return redirect(url_for('.changeclubinfo', club=club.callsign))
     elif request.form['intro'] != '':
         club.intro = request.form['intro']
 
     desc = request.form['description'].strip()
-    if desc and desc != club.description.raw:
+
+    if desc:
         club.description = FormattedText.handle(current_user, club,
                                                 request.form['description'])
-    if request.files['picture'].filename != '':
+
+    if request.files.getlist('picture'):
         try:
             club.picture = Upload.handle(current_user, club,
-                                         request.files['picture'])
+                                         request.files.getlist('picture')[0])
         except UploadNotSupported:
             fail('Please upload the correct file type.', 'clubinfo')
             return redirect(url_for('.changeclubinfo', club=club.callsign))
+
     teacher_email = request.form['email']
+
     if teacher_email != club.teacher.studentid:
         club.teacher = User.find_teacher(teacher_email)
     location = request.form['location']
@@ -223,9 +246,7 @@ def changeclubinfo_submit(club):
         contents = render_email_template('changeclubinfo', parameters)
         member.email_user('Change Club Info - ' + club.name, contents)
         member.notify_user(club.name + '\'s information has been changed.')
-    flash('The information about club has been successfully submitted.',
-          'clubinfo')
-    return redirect(url_for('.changeclubinfo', club=club.callsign))
+    return redirect(url_for('.clubintro', club=club.callsign))
 
 
 @clubblueprint.route('/<club>/adjust_member')
@@ -297,26 +318,18 @@ def clubactivities(club, page):
     act_num = 20
     count, acts = club.activities(limit=((page-1)*act_num, act_num))
     pagination = Pagination(page, act_num, count)
-    club_pic = []
-    club_pic.extend([item['upload'] for item in club.allactphotos(limit=3)[1]])
-    club_pic.extend([Upload(-101) for _ in range(3 - len(club_pic))])
     return render_template('club/clubact.html.j2',
-                           club_pic=club_pic,
                            acts=acts,
                            pagination=pagination)
 
 
-@clubblueprint.route('/<club>/photos/', defaults={'page': 1})
-@clubblueprint.route('/<club>/photos/<int:page>')
+@clubblueprint.route('/<club>/photos/')
 @get_callsign_decorator(Club, 'club')
-def clubphoto(club, page):
+def clubphoto(club):
     '''Individual Club's Photo Page'''
-    pic_num = 20
-    count, uploads = club.allactphotos(limit=((page-1)*pic_num, pic_num))
-    pagination = Pagination(page, pic_num, count)
+    uploads = club.allactphotos()
     return render_template('club/clubphoto.html.j2',
-                           uploads=uploads,
-                           pagination=pagination)
+                           uploads=uploads)
 
 
 @clubblueprint.route('/<club>/new_activity')
@@ -697,7 +710,7 @@ def newclub_submit():
     true_or_fail(clubname, 'Please input club name.', 'newclub')
     true_or_fail(email, 'Please input teacher\'s email address.', 'newclub')
     true_or_fail(location, 'Please input club\'s meeting location.', 'newclub')
-    true_or_fail(intro, 'Please input club\'s one-sentence introduction.',
+    true_or_fail(intro, 'Please input club\'s one-sentence description.',
                         'newclub')
     true_or_fail(len(intro) <= 90, 'Your one sentence intro is too long.',
                                    'newclub')
@@ -718,7 +731,6 @@ def newclub_submit():
         c.location = location
         c.is_active = False
         c.intro = intro
-        c.picture = Upload(-101)
         c.type = ClubType(clubtype)
         c.joinmode = ClubJoinMode.FREE_JOIN
         c.reactivate = True
@@ -726,10 +738,21 @@ def newclub_submit():
         c.smartboard_allowed = True
         c.smartboard_teacherapp_bypass = False
         c.smartboard_directorapp_bypass = False
+        c.picture = Upload(-101)
         c.create()
         c.add_member(current_user)
         c.description = FormattedText.handle(current_user, c,
                                              request.form['description'])
+
+        if request.files.getlist('picture'):
+            print('picture gotten', file=sys.stderr)
+            try:
+                c.picture = Upload.handle(
+                    current_user, c,
+                    request.files.getlist('picture')[0])
+            except UploadNotSupported:
+                fail('Please upload the correct file type.', 'clubinfo')
+                
         return redirect(url_for('.clubintro', club=c.callsign))
     return redirect(url_for('.newclub'))
 

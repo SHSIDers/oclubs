@@ -1,116 +1,155 @@
-{% extends "base.html.j2" %}{% from 'macros.html.j2' import get_messages, desktop_sidebar %}
+{% extends "base.html.j2" %}
+
+{% from 'macros.html.j2' import get_messages %}
+
+{% block additionalcssjs %}
+<script src="{{ url_for('static', filename='js/imagesloaded.pkgd.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/masonry.pkgd.min.js') }}"></script>
+<link href="{{ url_for('static', filename='css/content.min.css') }}" rel="stylesheet" type="text/css" media="all">
+<script src="{{ url_for('static', filename='js/content.min.js') }}"></script>
+{% endblock %}
+
 {% block title %}{{ g.activity.name }}{% endblock %}
+
 {% block content %}
 
-<!-- Below Navbar -->
-<div class="large_container">
-	<!-- Side Menu -->
-	{{ desktop_sidebar('.allactivities', ClubFilter.from_club(g.activity.club)) }}
+<div class="container">
+	<div class="row">
+		<div class="col-md-1">
+		</div>
 
-	<!-- Main Content -->
-	<div class="main-content col-md-10" id="intropage">
-		{% if is_other_act and g.activity.is_future and can_join %}
-		<form action="{{ url_for('.actintro_submit', activity=g.activity.callsign) }}" method="post" id="join_form">
-		{% endif %}
-		<div class="jumbotron">
-			<h1 class="title">{{ g.activity.name }}</h1>
-			<p>{{ g.activity.club.name }}</p>
+		<div class="col-md-10">
+			<h1 class="">{{ g.activity.name }}</h1>
 		</div>
-		<div class="longdesc">
-			<p>Date: {{ g.activity.date }}</p>
-			<p>Timeslot: {{ g.activity.time.format_name }}</p>
-			{% if g.activity.description.raw %}
-			<br>
-			<p class="midtext">Description:</p>
-			{{ g.activity.description.formatted }}
-			{% endif %}
-		</div>
-		{{ get_messages(['signup']) }}
+		<!-- /.col-md-10 -->
 
-		{% if g.activity.selections %}
-		{% if selection %}
-		<p class="white midtext">Your Selection:</p>
-		<p class="white midtext">{{ selection }}</p>
-		{% else %}
-		<p class="white midtext">Selection:</p>
-		<select name="selection" class="selection_bar white">
-			{% for choice in g.activity.selections %}
-			<option class="black" value="{{ choice }}">{{ choice }}</option>
-			{% endfor %}
-		</select>
-		{% endif %}
-		{% endif %}
-		{% if not g.activity.is_future %}
-		<div class="longdesc">
-		<h1 class="midtext">Post for {{ g.activity.name }}:</h1>
-		{% for pic in g.activity.pictures %}
-		<div class="col-sm-3 emptyline">
-			<img src="{{ pic.location_external }}" class="img-thumbnail" alt="{{ g.activity.name }}">
+		<div class="col-md-1">
 		</div>
-		{% endfor %}
-		<div class="clearfix"></div>
-		{% if g.activity.post.raw %}
-		<p>Post:</p>
-		{{ g.activity.post.formatted }}
-		{% elif not g.activity.pictures %}
-		<p>There is no post for this activity yet.</p>
-		{% endif %}
+	</div>
+	<!-- /.row -->
+
+	<div class="row">
+		<div class="col-md-1">
 		</div>
-		{% endif %}
-		<center>
-		<div class="intro_function">
-			<div class="col-sm-6">
-				<a class="btn btn-info btn-lg" href="{{ url_for('clubblueprint.clubintro', club=g.activity.club.callsign) }}">Club Introduction</a>
+
+		<div class="col-md-10">
+			<hr class="separator" id="separator_title">
+		</div>
+
+		<div class="col-md-1">
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-1">
+		</div>
+
+		<div class="col-md-10">
+			<div class="panel panel-primary">
+				<div class="panel-body">
+					<p><b><a class="title_link" href="{{ url_for('clubblueprint.clubintro', club=g.activity.club.callsign) }}">{{ g.activity.club.name }}</a></b></p>
+					<p><b>Time</b>: {{ g.activity.date.strftime("%Y-%m-%d, %A") }}, {{ g.activity.time.format_name }}</p>
+					<p><b>Location</b>: {{ g.activity.location }} {% if g.activity.has_reservation %} (<a href="{{ url_for('resblueprint.reservationinfo', reservation=g.activity.reservation.callsign) }}">Reserved</a>){% endif %}</p>
+					<p>
+						{% if g.activity.description.raw %}
+						<b>Description</b>: {{ g.activity.description.formatted }}
+						{% endif %}
+					</p>
+					<p>
+						{% if g.activity.post.raw %}
+						<b>Post</b>: {{ g.activity.post.formatted }}
+						{% endif %}
+					</p>
+				</div>
+			</div>
+			<!-- /.panel -->
+		</div>
+		<!-- /.col-md-12 -->
+	</div>
+	<!-- /.row -->
+
+	{% if g.activity.pictures %}
+	<div class="row">
+		<div class="col-md-12 text-center">
+			<div class="grid" id="photo_gallery">
+				<div class="grid-sizer"></div>
+				<div class="gutter-sizer"></div>
+				{% for photo in g.activity.pictures %}
+				<div class="grid-item">
+					<div class="thumbnail photo_gallery_thumbnail">
+						<a class="" href="{{ photo.location_external }}">
+						<img src="{{ photo.location_external }}" class="img-responsive" alt="{{ g.activity.name }}">
+					</a>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+		<!-- /.col-md-10 -->
+
+		<div class="col-md-1">
+		</div>
+	</div>
+	<!-- /.row -->
+	{% endif %}
+
+	{% if has_access %}
+
+	<div class="row">
+		<div class="col-md-1">
+		</div>
+
+		<div class="col-md-10">
+			<hr class="separator" >
+		</div>
+
+		<div class="col-md-1">
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-1">
+		</div>
+
+		<div class="col-md-10 text-center">
+
+			{% if g.activity.is_future %}
+			<div class="btn-group btn_content" role="button">
+				<a class="btn btn-default btn-lg" href="{{ url_for('.changeactinfo', activity=g.activity.callsign) }}">Edit Activity</a>
 			</div>
 
-			{% if is_other_act and g.activity.is_future and can_join %}
-			<div class="col-sm-6">
-				<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-				<input class="btn btn-info btn-lg" type="submit" value="Join">
-			</div>
-			{% endif %}
-
-			{% if has_access and g.activity.is_future %}
-			<div class="col-sm-6">
-				<a class="btn btn-info btn-lg" href="{{ url_for('.actstatus', activity=g.activity.callsign) }}">Signup Status</a>
-			</div>
-			{% endif %}
-
-			{% if has_access and g.activity.is_future %}
-			<div class="col-sm-6">
-				<a class="btn btn-info btn-lg" href="{{ url_for('.changeactinfo', activity=g.activity.callsign) }}">Change Activity Info</a>
-			</div>
-			{% endif %}
-
-			<div class="col-sm-6">
+			{% if g.activity.club.reservation_allowed %}
+			<div class="btn-group btn_content" role="button">
 				{% if has_reservation %}
-					<a class="btn btn-info btn-lg" href="{{ url_for('resblueprint.reservationinfo', reservation=g.activity.reservation.callsign) }}">Reserved: {{ g.activity.reservation.date }} {{ g.activity.reservation.timeslot.format_name }} {{ g.activity.reservation.classroom.location }}</a>
-					<a class="btn btn-info btn-lg" href="{{ url_for('.pairreservation', activity=g.activity.callsign) }}">Change Reservation</a>
+				<a class="btn btn-default btn-lg" href="{{ url_for('.pairreservation', activity=g.activity.callsign) }}">Change Reservation</a>
 				{% else %}
-					{% if has_access and g.activity.is_future %}
-					<a class="btn btn-info btn-lg" href="{{ url_for('.pairreservation', activity=g.activity.callsign) }}">Pair a Reservation</a>
-					{% endif %}
+				<a class="btn btn-default btn-lg" href="{{ url_for('.pairreservation', activity=g.activity.callsign) }}">Pair a Reservation</a>
 				{% endif %}
 			</div>
+			{% endif %}
 
+			{% endif %}
 
-			{% if has_access and not g.activity.is_future %}
-			<div class="col-sm-6">
-				<a class="btn btn-info btn-lg" href="{{ url_for('.attendance', activity=g.activity.callsign) }}">Attendance</a>
+			{% if not g.activity.is_future %}
+			<div class="btn-group btn_content" role="button">
+				<a class="btn btn-default btn-lg" href="{{ url_for('.changeactpost', activity=g.activity.callsign) }}">{% if g.activity.post.raw or g.activity.pictures %}Edit{% else %}Create{% endif %} Post</a>
 			</div>
-			<div class="col-sm-6">
-				<a class="btn btn-info btn-lg" href="{{ url_for('.changeactpost', activity=g.activity.callsign) }}">{% if g.activity.post.raw or g.activity.pictures %}Edit{% else %}Create{% endif %} Activity Post</a>
+
+			<div class="btn-group btn_content" role="button">
+				<a class="btn btn-default btn-lg" href="{{ url_for('.attendance', activity=g.activity.callsign) }}">Attendance</a>
 			</div>
 			{% endif %}
 
 		</div>
-		</center>
-		{% if is_other_act and g.activity.is_future and can_join %}
-		</form>
-		{% endif %}
-	</div>
-</div>
+		<!-- /.col-md-10 -->
 
-<div class="clearfix"></div>
+		<div class="col-md-1">
+		</div>
+	</div>
+	<!-- /.row -->
+	{% endif %}
+
+</div>
+<!-- /.container -->
 
 {% endblock %}

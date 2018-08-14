@@ -1,38 +1,99 @@
-{% extends "base.html.j2" %}{% from 'macros.html.j2' import render_pagination, desktop_sidebar, mobile_selection %}
-{% block title %}All Activities{% endblock %}
+{% extends "base.html.j2" %}
+
+{% from 'macros.html.j2' import render_pagination, search_bar %}
+
+{% block additionalcssjs %}
+<link href="{{ url_for('static', filename='css/sidebar.min.css') }}" rel="stylesheet" type="text/css" media="all">
+{% endblock %}
+
+{% block title %}Activities{% endblock %}
+
 {% block content %}
 
-<!-- Below Navbar -->
-<div class="large_container">
-	{{ desktop_sidebar('.allactivities', club_filter) }}
+<div class="container">
+	<!-- Row for nav tabs -->
+	<div class="row">
+		<div class="col-md-2">
+		</div>
 
-	<div class="main-content col-md-10" id="act-club-list">
-		<h1 class="title_next bold">Activites - {{ club_filter.title() }}</h1>
-		{{ mobile_selection('.allactivities', club_filter) }}
-		<table class="table table-hover table-bordered" id="actinfotable">
-			<thead>
-				<tr>
-					<th>Activity Name</th>
-					<th>Club</th>
-					<th>Date</th>
-					<th>Timeslot</th>
-					<th>Location</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for act in acts %}
-				<tr class="clickable act" data-href="{{ url_for('.actintro', activity=act.callsign) }}">
-					<td>{{ act.name }}</td>
-					<td>{{ act.club.name }}</td>
-					<td>{{ act.date }}</td>
-					<td>{{ act.time.format_name }}</td>
-					<td>{{ act.location }}{% if act.has_reservation %} (Reserved){% endif %}</td>
-				</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-		<center>{{ render_pagination(pagination) }}</center>
+		<div class="col-md-10 col-xs-12">
+			{% include 'club/club_head.html.j2' %}
+		</div>
 	</div>
+
+
+	<div class="row">
+		<div class="col-md-2">
+		</div>
+
+		<div class="col-md-10">
+			<div class="row">
+				<div class="col-md-8">
+					<h1 class="">Activites <small>  - {{ club_filter.title() }}</small></h1>
+				</div>
+				<div class="col-md-4">
+					{{ search_bar('activity', 'Search for activities...') }}
+					<!-- ./form-group -->
+				</div>
+				<!-- ./col-md-4 -->
+			</div>
+			<!-- ./row -->
+		</div>
+		<!-- ./col-md-10 -->
+	</div>
+	<!-- ./row -->
+
+	<hr class="separator" id="separator_title">
+
+	<div class="row">
+		<div class="col-md-2">
+			<div class="hidden-xs hidden-sm">
+				{% for group in club_filter.enumerate_desktop() %}
+				<div class="list-group">
+					<li class="list-group-item active">{{ group.name }}</li>
+					{% for elmt in group.elements %}
+					<a href="{{ url_for('actblueprint.allactivities', club_filter=elmt.url) }}" class="list-group-item{% if elmt.selected %} selected{% endif %}">{{ elmt.name }}</a> {% endfor %}
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+
+		<div class="col-md-10">
+			<div class="panel panel-default">
+				<div class="table-responsive">
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th class="">Club</th>
+								<th class="">Activity name</th>
+								<th class="col-sm-2">Date</th>
+								<th class="">Timeslot</th>
+								<th class="">Location</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for act in acts %}
+							<tr class="clickable act" data-href="{{ url_for('.actintro', activity=act.callsign) }}">
+								<td>{{ act.club.name }}</td>
+								<td>{{ act.name }}</td>
+								<td>{{ act.date }}</td>
+								<td>{{ act.time.format_name }}</td>
+								<td>{{ act.location }}{% if act.has_reservation %} (Reserved){% endif %}</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<!-- ./table-responsive -->
+			</div>
+			<!-- ./panel -->
+			<center>{{ render_pagination(pagination) }}</center>
+		</div>
+		<!-- ./col-md-10 -->
+	</div>
+	<!-- ./row -->
+
 </div>
+<!-- ./container -->
 
 {% endblock %}

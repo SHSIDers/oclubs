@@ -10,13 +10,11 @@ import sys
 
 from datetime import date
 
-import json
-
 from flask import (
     Blueprint, render_template, url_for, request, redirect, abort,
-    make_response, jsonify
+    jsonify, flash
 )
-from flask_login import current_user, login_required, fresh_login_required
+from flask_login import current_user
 
 from oclubs.utils.dates import today, str_to_date_dict, date_to_str_dict, \
     int_to_dateobj
@@ -28,9 +26,11 @@ from oclubs.objs import Club, Reservation, Classroom
 from oclubs.forms.classroom_forms import (
     ClassroomSidebarForm, ClearSelectionForm, ViewClassroomsForm
 )
-from oclubs.forms.reservation_forms import (NewReservationForm_Club,
-        ChangeSBStatusForm, ChangeDirectorsApprovalForm, ChangeInstructorsApprovalForm,
-        ChangeCanReservationForm, ChangeCanSmartboardForm
+from oclubs.forms.reservation_forms import (
+    NewReservationForm,
+    ChangeSBStatusForm, ChangeDirectorsApprovalForm,
+    ChangeInstructorsApprovalForm,
+    ChangeCanReservationForm, ChangeCanSmartboardForm
 )
 from oclubs.exceptions import NoRow
 
@@ -62,7 +62,7 @@ def viewreservations(res_filter, page):
     available_classrooms = Classroom.get_classroom_conditions(
         buildings=res_filter.conds[0] if res_filter.conds[0] else None,
         timeslot=res_filter.conds[1] if res_filter.conds[1] else None)
-    classrooms_list = [(r.room_id, r.room_number)
+    classrooms_list = [(str(r.id), r.room_number)
                        for r in available_classrooms]
 
     form = ClassroomSidebarForm()
@@ -76,12 +76,15 @@ def viewreservations(res_filter, page):
         temp = list(res_filter.conds)
 
         # after submit selection
-        if form.submit.data:
+        if form.submit_classrooms.data:
             if form.classrooms_list.data:
+                selected_classrooms_id = \
+                    str(form.classrooms_list.data).split(',')
+                print(selected_classrooms_id, file=sys.stderr)
                 # convert a list of room_id from form data
                 # to a list of room_numbers for res_filter
                 temp[2] = [dict(classrooms_list)[id]
-                           for id in form.classrooms_list.data]
+                           for id in selected_classrooms_id]
             else:
                 temp[2] = None
 
@@ -101,7 +104,7 @@ def viewreservations(res_filter, page):
         # to a list of room_id
         for r in available_classrooms:
             if str(r.room_number) in res_filter.conds[2]:
-                defaultSelection.append(r.room_id)
+                defaultSelection.append(r.id)
     form.classrooms_list.process_data(defaultSelection)
 
     return render_template('reservation/viewres.html.j2',
@@ -146,6 +149,7 @@ def viewclassrooms(room_filter):
     # Order: Lunch, Afterschool
     timeslots.sort(key=lambda t: t.format_name, reverse=True)
 
+    # display all classrooms no longer used
     # no date provided, display all classrooms
     if room_filter.conds[2] is None:
         is_all = True
@@ -168,6 +172,7 @@ def viewclassrooms(room_filter):
         # rebuild the room_filter
         temp = list(room_filter.conds)
 
+        # this choice can no longer be selected
         if form.viewclassroom_options.data == 'all_classrooms':
             temp[2] = None
         else:
@@ -221,8 +226,7 @@ def viewclassrooms(room_filter):
                            form=form)
 
 
-@resblueprint.route('<reservation>')
-@resblueprint.route('<reservation>/info', methods=['GET', 'POST'])
+@resblueprint.route('<reservation>', methods=['GET', 'POST'])
 @get_callsign_decorator(Reservation, 'reservation')
 def reservationinfo(reservation):
     '''Information page for a reservation'''
@@ -299,11 +303,16 @@ def reservationinfo(reservation):
 def newreservation_club(club):
     '''For clubs to create new reservations'''
 
-    form = NewReservationForm_Club()
+    form = NewReservationForm()
+
     can_reserve = club.reservation_allowed
+    if not can_reserve:
+        form.submit.render_kw = {'disabled': 'disabled'}
+
     can_SB = club.smartboard_allowed
 
     if request.method == 'POST':
+        print('psoted', file=sys.stderr)
         if form.check():
             res = Reservation.new()
 
@@ -330,15 +339,17 @@ def newreservation_club(club):
                 abort(500)
             res.classroom = classroom
 
+            res.SBNeeded = False
+            res.SBAppDesc = None
+            res.SBApp_status = SBAppStatus.NA
             if can_SB:
                 if form.SBNeeded.data == 'yes':
                     res.SBNeeded = True
                     res.SBAppDesc = form.SBAppDesc.data
+                    print(type(form.SBAppDesc.data), file=sys.stderr)
+
+                    print(form.SBAppDesc.data, file=sys.stderr)
                     res.SBApp_status = SBAppStatus.PENDING
-            else:
-                res.SBNeeded = False
-                res.SBAppDesc = None
-                res.SBApp_status = SBAppStatus.NA
 
             res.activity = None
             res.instructors_approval = False
@@ -458,5 +469,7 @@ def deletereservation(reservation):
 
     if ret > 1:
         abort(500)
+
+    flash('Successfully deleted reservation.')
 
     return redirect(url_for('.viewreservations_club', club=club.callsign))

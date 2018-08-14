@@ -1,0 +1,11 @@
+<div class="grid-item">
+  <div class="thumbnail photo_gallery_thumbnail">
+    <img src="{{ act.pictures[0].location_external }}" class="img-responsive" alt="{{ act.name }}">
+    <div class="caption">
+      <h5><a class="title_link" href="{{ url_for('.actintro', activity=act.callsign) }}">{{ act.name }}</a></h5>
+      <hr class="separator" id="separator_title">
+      <p>{{ act.date.strftime("%Y-%m-%d, %A") }}, {{ act.time.format_name }}</p>
+      <p>{{ act.club.name }}</p>
+    </div>
+  </div>
+</div>

@@ -1,53 +1,109 @@
-{% extends "base.html.j2" %}{% from 'macros.html.j2' import get_messages %}
+{% extends "base.html.j2" %}
+{% from 'macros.html.j2' import get_messages %}
+
+{% block additionalcssjs %}
+<link href="{{ url_for('static', filename='css/content.min.css') }}" rel="stylesheet" type="text/css" media="all">
+{% endblock %}
+
 {% block title %}Attendance{% endblock %}
+
 {% block content %}
 
-<!-- Below Navbar -->
 <div class="container">
-	<h1 class="title">Attendance for {{ g.activity.name }}</h1>
-	<h2 class="title_next">{{ g.activity.club.name }}</h2>
-	{{ get_messages(['attendance']) }}
-	<form action="{{ url_for('.attendance_submit', activity=g.activity.callsign) }}" method="post" id="attendance_form">
-		<table class="table table-hover table-bordered" id="attendancetable">
-			<thead>
-				<tr>
-					<th class="width-10">Picture</th>
-					<th>Nick Name</th>
-					<th>Class</th>
-					<th>Current Attendance</th>
-					<th>Change Attendance</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for member in attend %}
-				<tr class="act">
-					<td><img src="{{ member.picture.location_external }}" class="img-responsive width-70" alt="{{ member.nickname }}"></td>
-					<td>{{ member.nickname }}</td>
-					<td>{{ member.grade_and_class }}</td>
-					<td><span class="glyphicon glyphicon-check"></span></td>
-					<td><label class="btn btn-primary btn-lg" for="{{ member.id }}"><input type="checkbox" name="attendance" value="{{ member.id }}" id="{{ member.id }}">&nbsp;Change Attendance</label></td>
-				</tr>
+
+	<div class="row">
+		<div class="col-md-1">
+		</div>
+
+		<div class="col-md-10">
+			<h1> {{ g.activity.name }} <small> - Attendance</small></h1>
+		</div>
+
+		<div class="col-md-1">
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-1">
+		</div>
+
+		<div class="col-md-10">
+			<hr class="separator" id="separator_title">
+		</div>
+
+		<div class="col-md-1">
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-1">
+		</div>
+
+		<div class="col-md-10 textcenter">
+			{% if get_flashed_messages(['attendance']) %}
+			<div class="alert alert-success">
+				<span class="glyphicon glyphicon-ok"></span>
+				{% for message in get_flashed_messages(category_filter=['attendance']) %}
+				{{ message }}
 				{% endfor %}
-				{% for member in absent %}
-				<tr class="act">
-					<td><img src="{{ member.picture.location_external }}" class="img-responsive width-70" alt="{{ member.nickname }}"></td>
-					<td>{{ member.nickname }}</td>
-					<td>{{ member.grade_and_class }}</td>
-					<td><span class="glyphicon glyphicon-unchecked"></span></td>
-					<td><label class="btn btn-primary btn-lg" for="{{ member.id }}"><input type="checkbox" name="attendance" value="{{ member.id }}" id="{{ member.id }}">&nbsp;Change Attendance</label></td>
-				</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-		<center>
-		<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-		<input class="btn btn-primary downloadbtn" type="submit" value="Submit the Attendance">
-	</form>
-	</center>
-	<br>
-	<center>
-		<a class="btn btn-success downloadbtn" href="{{ url_for('.attendance_download', activity=g.activity.callsign) }}" target="_blank">Download as Excel Document</a>
-	</center>
+			</div>
+			{% endif %}
+			<form action="{{ url_for('.attendance_submit', activity=g.activity.callsign) }}" method="post" id="attendance_form">
+				<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+				<div class="panel panel-default">
+					<div class="table-responsive">
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th>Nickname</th>
+									<th>Class</th>
+									<th>Current attendance</th>
+									<th>Toggle attendance<th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for member in attend %}
+									<tr>
+										<td>{{ member.nickname }}</td>
+										<td>{{ member.grade_and_class }}</td>
+										<td><span class="glyphicon glyphicon-check"></span></td>
+										<td><label class="btn btn-default" for="{{ member.id }}"><input type="checkbox" name="attendance" value="{{ member.id }}" id="{{ member.id }}">&nbsp;&nbsp;Toggle</label></td>
+									</tr>
+									{% endfor %}
+									{% for member in absent %}
+									<tr>
+										<td>{{ member.nickname }}</td>
+										<td>{{ member.grade_and_class }}</td>
+										<td><span class="glyphicon glyphicon-unchecked"></span></td>
+										<td><label class="btn btn-default" for="{{ member.id }}"><input type="checkbox" name="attendance" value="{{ member.id }}" id="{{ member.id }}">&nbsp;&nbsp;Toggle</label></td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+						<!-- ./table-responsive -->
+						<div class="btn-group btn_content" role="button">
+							<input class="btn btn-primary downloadbtn" type="submit" value="Submit">
+						</div>
+						<div class="input-group pull-right">
+						<div class="btn-group btn_content" role="button">
+							<a class="btn btn-success" href="{{ url_for('.attendance_download', activity=g.activity.callsign) }}" target="_blank">Download Excel Spreadsheet (.xlsx)</a>
+						</div>
+					</div>
+					</center>
+				</form>
+			</div>
+			<!-- /.panel -->
+		</form>
+	</div>
+	<!-- /.col-md-10-->
+
+	<div class="col-md-1">
+	</div>
 </div>
+<!-- /.row -->
+
+</div>
+<!-- ./container -->
 
 {% endblock %}

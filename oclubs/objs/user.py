@@ -53,7 +53,7 @@ class User(BaseObject, UserMixin):
     @property
     def grade_and_class(self):
         # %d cannot accept None
-        return '%s - %s' % (self.grade, self.currentclass)
+        return '%s(%s)' % (self.grade, self.currentclass)
 
     @property
     def is_disabled(self):

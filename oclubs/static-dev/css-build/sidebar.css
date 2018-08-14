@@ -1,0 +1,16 @@
+#building_icon {
+  height: 12px;
+}
+
+#submit_classrooms,
+.separator {
+  margin-top: 10px;
+}
+
+.separator {
+  margin-bottom: 10px;
+}
+
+.sidebar_btn {
+  margin: 0;
+}

@@ -1,0 +1,531 @@
+@font-face {
+  font-weight: 100;
+  font-style: italic;
+  font-family: Montserrat;
+  src: local("Montserrat Thin Italic"), local(Montserrat-ThinItalic), url(/static/cdn/fonts/s/montserrat/v12/JTUOjIg1_i6t8kCHKm459WxZqh7k29c.eot) format("eot"), url(/static/cdn/fonts/s/montserrat/v12/JTUOjIg1_i6t8kCHKm459WxZqh7k29M.woff2) format("woff2"), url(/static/cdn/fonts/s/montserrat/v12/JTUOjIg1_i6t8kCHKm459WxZqh7k29U.woff) format("woff");
+}
+
+@font-face {
+  font-weight: 200;
+  font-style: italic;
+  font-family: Montserrat;
+  src: local("Montserrat ExtraLight Italic"), local(Montserrat-ExtraLightItalic), url(/static/cdn/fonts/s/montserrat/v12/JTUPjIg1_i6t8kCHKm459WxZBg_z_PZ0.eot) format("eot"), url(/static/cdn/fonts/s/montserrat/v12/JTUPjIg1_i6t8kCHKm459WxZBg_z_PZw.woff2) format("woff2"), url(/static/cdn/fonts/s/montserrat/v12/JTUPjIg1_i6t8kCHKm459WxZBg_z_PZ2.woff) format("woff");
+}
+
+@font-face {
+  font-weight: 300;
+  font-style: italic;
+  font-family: Montserrat;
+  src: local("Montserrat Light Italic"), local(Montserrat-LightItalic), url(/static/cdn/fonts/s/montserrat/v12/JTUPjIg1_i6t8kCHKm459WxZYgzz_PZ0.eot) format("eot"), url(/static/cdn/fonts/s/montserrat/v12/JTUPjIg1_i6t8kCHKm459WxZYgzz_PZw.woff2) format("woff2"), url(/static/cdn/fonts/s/montserrat/v12/JTUPjIg1_i6t8kCHKm459WxZYgzz_PZ2.woff) format("woff");
+}
+
+@font-face {
+  font-weight: 400;
+  font-style: italic;
+  font-family: Montserrat;
+  src: local("Montserrat Italic"), local(Montserrat-Italic), url(/static/cdn/fonts/s/montserrat/v12/JTUQjIg1_i6t8kCHKm459WxRyS7i.eot) format("eot"), url(/static/cdn/fonts/s/montserrat/v12/JTUQjIg1_i6t8kCHKm459WxRyS7m.woff2) format("woff2"), url(/static/cdn/fonts/s/montserrat/v12/JTUQjIg1_i6t8kCHKm459WxRyS7g.woff) format("woff");
+}
+
+@font-face {
+  font-weight: 500;
+  font-style: italic;
+  font-family: Montserrat;
+  src: local("Montserrat Medium Italic"), local(Montserrat-MediumItalic), url(/static/cdn/fonts/s/montserrat/v12/JTUPjIg1_i6t8kCHKm459WxZOg3z_PZ0.eot) format("eot"), url(/static/cdn/fonts/s/montserrat/v12/JTUPjIg1_i6t8kCHKm459WxZOg3z_PZw.woff2) format("woff2"), url(/static/cdn/fonts/s/montserrat/v12/JTUPjIg1_i6t8kCHKm459WxZOg3z_PZ2.woff) format("woff");
+}
+
+@font-face {
+  font-weight: 600;
+  font-style: italic;
+  font-family: Montserrat;
+  src: local("Montserrat SemiBold Italic"), local(Montserrat-SemiBoldItalic), url(/static/cdn/fonts/s/montserrat/v12/JTUPjIg1_i6t8kCHKm459WxZFgrz_PZ0.eot) format("eot"), url(/static/cdn/fonts/s/montserrat/v12/JTUPjIg1_i6t8kCHKm459WxZFgrz_PZw.woff2) format("woff2"), url(/static/cdn/fonts/s/montserrat/v12/JTUPjIg1_i6t8kCHKm459WxZFgrz_PZ2.woff) format("woff");
+}
+
+@font-face {
+  font-weight: 700;
+  font-style: italic;
+  font-family: Montserrat;
+  src: local("Montserrat Bold Italic"), local(Montserrat-BoldItalic), url(/static/cdn/fonts/s/montserrat/v12/JTUPjIg1_i6t8kCHKm459WxZcgvz_PZ0.eot) format("eot"), url(/static/cdn/fonts/s/montserrat/v12/JTUPjIg1_i6t8kCHKm459WxZcgvz_PZw.woff2) format("woff2"), url(/static/cdn/fonts/s/montserrat/v12/JTUPjIg1_i6t8kCHKm459WxZcgvz_PZ2.woff) format("woff");
+}
+
+@font-face {
+  font-weight: 800;
+  font-style: italic;
+  font-family: Montserrat;
+  src: local("Montserrat ExtraBold Italic"), local(Montserrat-ExtraBoldItalic), url(/static/cdn/fonts/s/montserrat/v12/JTUPjIg1_i6t8kCHKm459WxZbgjz_PZ0.eot) format("eot"), url(/static/cdn/fonts/s/montserrat/v12/JTUPjIg1_i6t8kCHKm459WxZbgjz_PZw.woff2) format("woff2"), url(/static/cdn/fonts/s/montserrat/v12/JTUPjIg1_i6t8kCHKm459WxZbgjz_PZ2.woff) format("woff");
+}
+
+@font-face {
+  font-weight: 900;
+  font-style: italic;
+  font-family: Montserrat;
+  src: local("Montserrat Black Italic"), local(Montserrat-BlackItalic), url(/static/cdn/fonts/s/montserrat/v12/JTUPjIg1_i6t8kCHKm459WxZSgnz_PZ0.eot) format("eot"), url(/static/cdn/fonts/s/montserrat/v12/JTUPjIg1_i6t8kCHKm459WxZSgnz_PZw.woff2) format("woff2"), url(/static/cdn/fonts/s/montserrat/v12/JTUPjIg1_i6t8kCHKm459WxZSgnz_PZ2.woff) format("woff");
+}
+
+@font-face {
+  font-weight: 100;
+  font-style: normal;
+  font-family: Montserrat;
+  src: local("Montserrat Thin"), local(Montserrat-Thin), url(/static/cdn/fonts/s/montserrat/v12/JTUQjIg1_i6t8kCHKm45_QpRyS7i.eot) format("eot"), url(/static/cdn/fonts/s/montserrat/v12/JTUQjIg1_i6t8kCHKm45_QpRyS7m.woff2) format("woff2"), url(/static/cdn/fonts/s/montserrat/v12/JTUQjIg1_i6t8kCHKm45_QpRyS7g.woff) format("woff");
+}
+
+@font-face {
+  font-weight: 200;
+  font-style: normal;
+  font-family: Montserrat;
+  src: local("Montserrat ExtraLight"), local(Montserrat-ExtraLight), url(/static/cdn/fonts/s/montserrat/v12/JTURjIg1_i6t8kCHKm45_aZA3gnD-g.eot) format("eot"), url(/static/cdn/fonts/s/montserrat/v12/JTURjIg1_i6t8kCHKm45_aZA3gnD_g.woff2) format("woff2"), url(/static/cdn/fonts/s/montserrat/v12/JTURjIg1_i6t8kCHKm45_aZA3gnD-A.woff) format("woff");
+}
+
+@font-face {
+  font-weight: 300;
+  font-style: normal;
+  font-family: Montserrat;
+  src: local("Montserrat Light"), local(Montserrat-Light), url(/static/cdn/fonts/s/montserrat/v12/JTURjIg1_i6t8kCHKm45_cJD3gnD-g.eot) format("eot"), url(/static/cdn/fonts/s/montserrat/v12/JTURjIg1_i6t8kCHKm45_cJD3gnD_g.woff2) format("woff2"), url(/static/cdn/fonts/s/montserrat/v12/JTURjIg1_i6t8kCHKm45_cJD3gnD-A.woff) format("woff");
+}
+
+@font-face {
+  font-weight: 400;
+  font-style: normal;
+  font-family: Montserrat;
+  src: local("Montserrat Regular"), local(Montserrat-Regular), url(/static/cdn/fonts/s/montserrat/v12/JTUSjIg1_i6t8kCHKm459Wlhzw.eot) format("eot"), url(/static/cdn/fonts/s/montserrat/v12/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2) format("woff2"), url(/static/cdn/fonts/s/montserrat/v12/JTUSjIg1_i6t8kCHKm459WlhzQ.woff) format("woff");
+}
+
+@font-face {
+  font-weight: 500;
+  font-style: normal;
+  font-family: Montserrat;
+  src: local("Montserrat Medium"), local(Montserrat-Medium), url(/static/cdn/fonts/s/montserrat/v12/JTURjIg1_i6t8kCHKm45_ZpC3gnD-g.eot) format("eot"), url(/static/cdn/fonts/s/montserrat/v12/JTURjIg1_i6t8kCHKm45_ZpC3gnD_g.woff2) format("woff2"), url(/static/cdn/fonts/s/montserrat/v12/JTURjIg1_i6t8kCHKm45_ZpC3gnD-A.woff) format("woff");
+}
+
+@font-face {
+  font-weight: 600;
+  font-style: normal;
+  font-family: Montserrat;
+  src: local("Montserrat SemiBold"), local(Montserrat-SemiBold), url(/static/cdn/fonts/s/montserrat/v12/JTURjIg1_i6t8kCHKm45_bZF3gnD-g.eot) format("eot"), url(/static/cdn/fonts/s/montserrat/v12/JTURjIg1_i6t8kCHKm45_bZF3gnD_g.woff2) format("woff2"), url(/static/cdn/fonts/s/montserrat/v12/JTURjIg1_i6t8kCHKm45_bZF3gnD-A.woff) format("woff");
+}
+
+@font-face {
+  font-weight: 700;
+  font-style: normal;
+  font-family: Montserrat;
+  src: local("Montserrat Bold"), local(Montserrat-Bold), url(/static/cdn/fonts/s/montserrat/v12/JTURjIg1_i6t8kCHKm45_dJE3gnD-g.eot) format("eot"), url(/static/cdn/fonts/s/montserrat/v12/JTURjIg1_i6t8kCHKm45_dJE3gnD_g.woff2) format("woff2"), url(/static/cdn/fonts/s/montserrat/v12/JTURjIg1_i6t8kCHKm45_dJE3gnD-A.woff) format("woff");
+}
+
+@font-face {
+  font-weight: 800;
+  font-style: normal;
+  font-family: Montserrat;
+  src: local("Montserrat ExtraBold"), local(Montserrat-ExtraBold), url(/static/cdn/fonts/s/montserrat/v12/JTURjIg1_i6t8kCHKm45_c5H3gnD-g.eot) format("eot"), url(/static/cdn/fonts/s/montserrat/v12/JTURjIg1_i6t8kCHKm45_c5H3gnD_g.woff2) format("woff2"), url(/static/cdn/fonts/s/montserrat/v12/JTURjIg1_i6t8kCHKm45_c5H3gnD-A.woff) format("woff");
+}
+
+@font-face {
+  font-weight: 900;
+  font-style: normal;
+  font-family: Montserrat;
+  src: local("Montserrat Black"), local(Montserrat-Black), url(/static/cdn/fonts/s/montserrat/v12/JTURjIg1_i6t8kCHKm45_epG3gnD-g.eot) format("eot"), url(/static/cdn/fonts/s/montserrat/v12/JTURjIg1_i6t8kCHKm45_epG3gnD_g.woff2) format("woff2"), url(/static/cdn/fonts/s/montserrat/v12/JTURjIg1_i6t8kCHKm45_epG3gnD-A.woff) format("woff");
+}
+
+body {
+  font-family: Montserrat;
+}
+
+body.day-mode {
+  background-color: #fff;
+  color: #333;
+
+  a {
+    color: #333;
+  }
+}
+
+body.day-mode code {
+  background-color: #f8f8f8;
+  color: #333;
+}
+
+body.day-mode #day-night-toggle {
+  background-color: #202020;
+  color: #fff;
+}
+
+body.day-mode .navbar-default {
+  border-color: #e7e7e7;
+  background-color: #f8f8f8;
+}
+
+body.day-mode .navbar-default #notifications_button_link {
+  color: inherit;
+}
+
+body.day-mode .navbar-default .navbar-nav > .active > a {
+  background-color: #f8f8f8;
+  color: #777;
+}
+
+body.day-mode .search_textbox {
+  border-color: #ccc;
+}
+
+body.day-mode .search_textbox.highlighted {
+  border-color: #337ab7;
+}
+
+body.day-mode .clickable-a {
+  color: #333;
+}
+
+body.day-mode .title_link {
+  color: inherit;
+}
+
+body.day-mode .plaintext_link {
+  color: #333;
+}
+
+body.day-mode .loader-ellips__dot {
+  color: #777;
+}
+
+body.day-mode .jumbotron {
+  background-color: #e7e7e7;
+}
+
+body.day-mode .pagination > li > a {
+  color: #333;
+}
+
+body.night-mode {
+  background-color: #202020;
+  color: #fff;
+
+  a {
+    color: #fff;
+  }
+
+  //Form-group & .modal-content {
+    background-color: #303030;
+  }
+}
+
+body.night-mode code {
+  background-color: #303030;
+  color: #fff;
+}
+
+body.night-mode #day-night-toggle {
+  background-color: #fff;
+  color: #333;
+}
+
+body.night-mode .navbar-default {
+  border-color: #303030;
+  background-color: #303030;
+}
+
+body.night-mode .navbar-default .navbar-nav > li > a {
+  color: #fff;
+}
+
+body.night-mode .navbar-default .navbar-nav > .active > a {
+  background-color: #303030;
+  color: #fff;
+}
+
+body.night-mode .navbar-default #notifications_button_link {
+  color: #fff;
+}
+
+body.night-mode .navbar-default .navbar-default .navbar-toggle:hover,
+body.night-mode .navbar-default .navbar-toggle:focus {
+  border-color: #303030;
+  background-color: #303030;
+}
+
+body.night-mode .navbar-default .navbar-nav > li > a:hover {
+  border-color: #fff;
+  background-color: #fff;
+  color: #202020;
+}
+
+body.night-mode .nav-tabs {
+  border-bottom: 1px solid #666;
+}
+
+body.night-mode .nav-tabs > li.active > a {
+  border: 1px solid;
+  border-color: #666;
+  border-bottom-color: transparent;
+  background-color: #202020;
+  color: #fff;
+}
+
+body.night-mode .nav-tabs > li > a:hover {
+  border-color: #fff;
+  background-color: #fff;
+  color: #202020;
+}
+
+body.night-mode .clickable-a {
+  color: #fff;
+}
+
+body.night-mode .title_link {
+  color: inherit;
+}
+
+body.night-mode .plaintext_link {
+  color: #fff;
+}
+
+body.night-mode .separator {
+  border-top-color: #666;
+}
+
+body.night-mode .loader-ellips__dot {
+  color: #777;
+}
+
+body.night-mode .jumbotron {
+  background-color: #303030;
+}
+
+body.night-mode .search_textbox {
+  border: 1.5px solid;
+  border-color: #303030;
+  background-color: #202020;
+}
+
+body.night-mode .search_textbox.highlighted {
+  border-color: #337ab7;
+}
+
+body.night-mode .btn-default {
+  border-color: #303030;
+  background-color: #303030;
+  color: #fff;
+}
+
+body.night-mode #search_bar_beside_title .btn-default {
+  border-color: #666;
+  background-color: #666;
+}
+
+body.night-mode .img-thumbnail,
+body.night-mode .thumbnail {
+  border-color: #303030;
+  background-color: #303030;
+}
+
+body.night-mode .thumbnail .caption,
+body.night-mode a.list-group-item {
+  color: #fff;
+}
+
+body.night-mode a.list-group-item:hover {
+  border-color: #fff;
+  background-color: #fff;
+  color: #202020;
+}
+
+body.night-mode .list-group-item {
+  border-color: #666;
+  background-color: #303030;
+}
+
+body.night-mode .list-group-item.active {
+  border-color: #337ab7;
+  background-color: #337ab7;
+}
+
+body.night-mode .panel,
+body.night-mode .well {
+  border-color: #303030;
+  background-color: #303030;
+}
+
+body.night-mode table {
+  border-color: #666;
+  background-color: #303030;
+}
+
+body.night-mode table > thead > tr > td {
+  border-bottom-color: #666;
+}
+
+body.night-mode table > tbody > tr > td {
+  border-top-color: #666;
+}
+
+body.night-mode .table-hover > tbody > tr:hover {
+  background-color: #666;
+}
+
+body.night-mode .table > tbody > tr > td.danger > a,
+body.night-mode .table > tbody > tr > td.success > a,
+body.night-mode .table > tbody > tr > td.warning > a {
+  color: #202020;
+}
+
+body.night-mode .list-group .select2-dropdown {
+  border-color: #202020;
+  background-color: #202020;
+}
+
+body.night-mode .list-group .select2-container--default .select2-selection--single {
+  border-color: #666;
+  background-color: #666;
+}
+
+body.night-mode .list-group .select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: #fff;
+}
+
+body.night-mode .list-group .select2-container--default .select2-selection--multiple {
+  border-color: #666;
+  background-color: #666;
+}
+
+body.night-mode .list-group .select2-container--default .select2-selection--multiple .select2-selection__rendered .select2-selection__choice {
+  border-color: #202020;
+  background-color: #202020;
+}
+
+body.night-mode .list-group .select2-container--default .select2-results__option[aria-selected=true] {
+  background-color: #fff;
+  color: #202020;
+}
+
+body.night-mode .select2-dropdown {
+  border-color: #666;
+  background-color: #666;
+}
+
+body.night-mode .select2-container--default .select2-selection--single {
+  border-color: #666;
+  background-color: #202020;
+}
+
+body.night-mode .select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: #fff;
+}
+
+body.night-mode .select2-container--default .select2-results__option[aria-selected=true] {
+  background-color: #fff;
+  color: #666;
+}
+
+body.night-mode .form-control {
+  border-color: #666;
+  background-color: #202020;
+  color: #fff;
+}
+
+body.night-mode .form-group .btn-default,
+body.night-mode .form-group .panel-default .panel-heading {
+  border-color: #666;
+  background-color: #666;
+  color: #fff;
+}
+
+body.night-mode .form-group .btn-default:hover {
+  border-color: #fff;
+  background-color: #fff;
+  color: #202020;
+}
+
+body.night-mode .form-group .input-group-addon {
+  border-color: #666;
+  background-color: #666;
+  color: #fff;
+}
+
+body.night-mode .modal-header {
+  border-bottom-color: #666;
+}
+
+body.night-mode .btn-default:hover,
+body.night-mode .modal .btn-default {
+  border-color: #fff;
+  background-color: #fff;
+  color: #202020;
+}
+
+body.night-mode .pagination > li > a {
+  border-color: #666;
+  background-color: #303030;
+  color: #fff;
+}
+
+body.night-mode .pagination > li :hover {
+  border-color: #fff;
+  background-color: #fff;
+  color: #202020;
+}
+
+.navbar-nav > li {
+  position: relative;
+  float: left;
+}
+
+.navbar-nav .active a:after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-bottom: 5px solid #5bc0eb;
+  content: " ";
+}
+
+.navbar-brand {
+  position: absolute;
+  margin: auto;
+  margin-right: 0;
+  padding: 5px;
+}
+
+.navbar-brand img {
+  max-height: 100%;
+}
+
+.badge-notify {
+  position: relative;
+  top: 4px;
+  left: -15px;
+  background: red;
+  font-size: 8pt;
+}
+
+#notifications_button {
+  padding: 14px 16px 5px;
+}
+
+@media (max-width: 480px) {
+  #notifications_button {
+    padding: 8px 10px 5px 10;
+  }
+}
+
+center-pills {
+  display: inline-block;
+}
+
+.nav-justified {
+  border-spacing: 15px 0;
+  border-collapse: separate;
+}
+
+#scroll_to_top_btn {
+  position: fixed;
+  right: 30px;
+  bottom: 20px;
+  z-index: 1;
+  display: none;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+#page-content {
+  min-height: -webkit-calc(100vh - 400px);
+  min-height: calc(100vh - 400px);
+}

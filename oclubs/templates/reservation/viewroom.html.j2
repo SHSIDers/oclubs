@@ -1,94 +1,210 @@
 {% extends "base.html.j2" %}
-{% from 'macros.html.j2' import render_pagination, desktop_sidebar_room,
-  mobile_selection_room %}
-{% block title %}View Classrooms{% endblock %}
+
+{% block additionalcssjs %}
+<link href="{{ url_for('static', filename='css/sidebar.min.css') }}" rel="stylesheet" type="text/css" media="all">
+<script src="{{ url_for('static', filename='js/select2.pkgd.min.js') }}"></script>
+<link href="{{ url_for('static', filename='css/select2.min.css') }}" rel="stylesheet" type="text/css" media="all">
+<script src="{{ url_for('static', filename='js/selection.min.js') }}"></script>
+<link href="{{ url_for('static', filename='css/form.min.css') }}" rel="stylesheet" type="text/css" media="all">
+{% endblock %}
+
+{% block title %}Classrooms{% endblock %}
+
 {% block content %}
 
-<!-- Below Navbar -->
-<div class="large_container">
-  {{ desktop_sidebar_room('.viewclassrooms', room_filter, form) }}
+<div class="container">
 
-<!-- todo: mop up messy css -->
-  <div class="main-content col-md-10" id="reservation-list">
-    {% if is_all %}
-      <h1 class="title_next bold">All Classrooms - {{ room_filter.title() }}</h1>
-    {% else %}
-      <h1 class="title_next bold">Available Classrooms - {{ room_filter.title() }}</h1>
-    {% endif %}
+  <div class="row">
+    <div class="col-md-2">
+    </div>
 
-    {{ mobile_selection_room('.viewclassrooms', room_filter) }}
+    <div class="col-md-10">
+      {% include 'reservation/res_head.html.j2' %}
+    </div>
+  </div>
 
-    <table class="table table-hover table-bordered" id="resinfotable">
-    {% if is_all %}
-        <thead>
-          <tr>
-            <th>Building</th>
-            <th>Timeslot</th>
-            <th>Classrooms</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for building in info[0] %}
-            {% for timeslot in info[1] %}
+  <div class="row">
+    <div class="col-md-2">
+    </div>
+
+    <div class="col-md-10">
+      {% if is_all %}
+      <h1 class="">All Classrooms <small> - {{ room_filter.title() }}</small></h1>
+      {% else %}
+      <h1 class="">Available Classrooms <small> - {{ room_filter.title() }}</small></h1>
+      {% endif %}
+    </div>
+  </div>
+
+  <hr class="separator" id="separator_title">
+
+  <div class="row">
+    <div class="col-md-2">
+      <div class="hidden-xs hidden-sm">
+        {% for group in room_filter.enumerate_desktop() %}
+        <div class = 'list-group'>
+          <li class="list-group-item active">{{ group.name }}
+            {% if group.identifier == 'building' %}
+            <span class="pull-right">
+              <span class="glyphicon"><img id="building_icon" src="/static/images/icons/glyphicons-90-building-white.png"></span>
+            </span>
+            {% elif group.identifier == 'timeslot'%}
+            <span class="pull-right">
+              <span class="glyphicon glyphicon-time"></span>
+            </span>
+            {% endif %}
+          </li>
+          {% for elmt in group.elements %}
+          <a href="{{ url_for('.viewclassrooms', room_filter=elmt.url) }}" class="list-group-item{% if elmt.selected %} selected{% endif %}">{{ elmt.name }}</a>
+          {% endfor %}
+        </div>
+        {% endfor %}
+      </div>
+      <div class="list-group">
+        <li class="list-group-item active clearfix">Date
+          <span class="pull-right">
+            <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </li>
+        <div class="list-group-item">
+          {% if form.errors %}
+          <div class="alert alert-warning">
+            <span class="glyphicon glyphicon-warning-sign"></span>
+            {% for field in form.errors %}
+            <small>{{ form.errors[field] }}</small>
+            {% endfor %}
+          </div>
+          {% endif %}
+          <div class="form-group">
+            <form action="{{ url_for('.viewclassrooms', room_filter=room_filter.to_url()) }}" method="post">
+              <input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-12">
+                  {{ form.date_options(class_="form-control") }}
+                </div>
+                <div class="col-md-1"></div>
+              </div>
+              <div id="date_select_start_div">
+                <hr class="separator">
+                <div class="row">
+                  <div class="col-md-1"></div>
+                  <div class="col-md-12">
+                    {{ form.date_select_start(class_="form-control") }}
+                  </div>
+                  <div class="col-md-1"></div>
+                </div>
+              </div>
+              <div id="date_select_end_div">
+                <center> - </center>
+                <div class="row">
+                  <div class="col-md-1"></div>
+                  <div class="col-md-12">
+                    {{ form.date_select_end(class_="form-control") }}
+                  </div>
+                </div>
+                <div class="col-md-1"></div>
+              </div>
+              <hr class="separator">
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-12">
+                  <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                    <div class="btn-group">
+                      <div class="submit_btn">
+                        {{ form.submit(class_="btn btn-primary") }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-1"></div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div> <!-- /.col-md-2 -->
+
+    <div class="col-md-10">
+      <div class="panel panel-default">
+        <div class="table-responsive">
+          <table class="table">
+            {% if is_all %}
+            <!-- View all classrooms no longer used -->a
+            <thead>
+              <tr>
+                <th>Building</th>
+                <th>Timeslot</th>
+                <th>Classrooms</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for building in info[0] %}
+              {% for timeslot in info[1] %}
               {% set timeslotloop = loop %}
               <tr>
                 {% if timeslotloop.first %}
-                  <td rowspan="{{ info[1]|length }}">{{ building.format_name }}</td>
+                <td rowspan="{{ info[1]|length }}">{{ building.format_name }}</td>
                 {% endif %}
                 <td>{{ timeslot.format_name }}</td>
                 <td>
-                {% for room in info[2][building][timeslot] %}
+                  {% for room in info[2][building][timeslot] %}
                   {{ room.room_number }}
                   {{ "  " if not loop.last }}
-                {% endfor %}
+                  {% endfor %}
                 </td>
               </tr>
-            {% endfor %}
-          {% endfor %}
-        </tbody>
-    {% else %}
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Building</th>
-            <th>Timeslot</th>
-            <th>Free classrooms</th>
-          </tr>
-        </thead>
-        <tbody>
-        {% for date in info[0] %}
-          {% for building in info[1] %}
-            {% set buildingloop = loop %}
-            {% for timeslot in info[2] %}
+              {% endfor %}
+              {% endfor %}
+            </tbody>
+            {% else %}
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Building</th>
+                <th>Timeslot</th>
+                <th>Available classrooms</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for date in info[0] %}
+              {% for building in info[1] %}
+              {% set buildingloop = loop %}
+              {% for timeslot in info[2] %}
               {% set timeslotloop = loop %}
               <tr>
                 {% if timeslotloop.first and buildingloop.first %}
-                  <td rowspan="{{ info[1]|length * info[2]|length }}">
-                    {% if date == today %}
-                    <b>Today: {{ date.strftime("%Y-%m-%d, %A") }}</b>
-                    {% else %}
-                    {{ date.strftime("%Y-%m-%d, %A") }}
-                    {% endif %}
-                  </td>
+                <td rowspan="{{ info[1]|length * info[2]|length }}">
+                  {% if date == today %}
+                  <b>{{ date.strftime("%Y-%m-%d, %A") }} (Today)</b>
+                  {% else %}
+                  {{ date.strftime("%Y-%m-%d, %A") }}
+                  {% endif %}
+                </td>
                 {% endif %}
                 {% if timeslotloop.first %}
-                  <td rowspan="{{ info[2]|length }}">{{ building.format_name }}</td>
+                <td rowspan="{{ info[2]|length }}">{{ building.format_name }}</td>
                 {% endif %}
                 <td>{{ timeslot.format_name }}</td>
                 <td>
-                {% for room in info[3][building][timeslot][date] %}
+                  {% for room in info[3][building][timeslot][date] %}
                   {{ room.room_number }}
-                  {{ "  " if not loop.last }}
-                {% endfor %}
+                  {% if not loop.last %}&nbsp;&nbsp;{% endif %}
+                  {% endfor %}
                 </td>
               </tr>
-            {% endfor %}
-          {% endfor %}
-        {% endfor %}
-        </tbody>
-    {% endif %}
-    </table>
-  </div>
-</div>
+              {% endfor %}
+              {% endfor %}
+              {% endfor %}
+            </tbody>
+            {% endif %}
+          </table>
+        </div> <!-- /.table-responsive -->
+      </div> <!-- /.panel -->
+    </div> <!-- /.col-md-10 -->
+
+
+  </div> <!-- /.row -->
+</div> <!-- /.container-->
 
 {% endblock %}

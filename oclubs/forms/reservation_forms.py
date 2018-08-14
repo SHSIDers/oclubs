@@ -20,13 +20,13 @@ from oclubs.enums import Building, ActivityTime, SBAppStatus
 from oclubs.objs.classroom import Classroom
 
 
-class NewReservationForm_Club(FlaskForm):
-    building = RadioField(
+class NewReservationForm(FlaskForm):
+    building = SelectField(
         'Building',
         choices=[(b.format_name, b.format_name) for b in Building],
         default=Building.XMT.format_name)
 
-    timeslot = RadioField(
+    timeslot = SelectField(
         'Timeslot',
         choices=[('noon',
                   ActivityTime.NOON.format_name),
@@ -52,9 +52,9 @@ class NewReservationForm_Club(FlaskForm):
                  ('no', 'No')],
         default='no')
 
-    SBAppDesc = TextAreaField('Smartboard Application Description',)
+    SBAppDesc = TextAreaField('Smartboard Application Description')
 
-    submit = SubmitField('Submit Reservation')
+    submit = SubmitField('Submit')
 
     def check(self):
         building = Building[self.building.data.upper()]
@@ -129,11 +129,11 @@ class NewReservationForm_Club(FlaskForm):
         if classroom not in realtime_free_rooms:
             self.errors[self.free_classrooms] = \
                 'Sorry, ' + \
-                building + ' ' + \
+                building.format_name + ' ' + \
                 classroom + ' ' + \
                 'is no longer available for ' + \
                 str(single_date) + ' ' + \
-                timeslot_str
+                timeslot_str + '.'
             return False
 
         if SBNeeded == 'yes' and len(SBAppDesc) == 0:
@@ -142,7 +142,7 @@ class NewReservationForm_Club(FlaskForm):
 
         if len(SBAppDesc) > 500:
             self.errors[self.SBAppDesc] = 'The description cannot exceed '
-            '500 characters'
+            '500 characters.'
 
         return True
 
@@ -157,7 +157,7 @@ class PairReservation(FlaskForm):
     def check(self):
         if self.reservations_for_pairing.data == 'none':
             self.errors[self.reservations_for_pairing] = \
-                'There are no reservations available for pairing.'
+                'No reservations available for pairing.'
             return False
 
         return True

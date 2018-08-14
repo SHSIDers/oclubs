@@ -1,0 +1,9 @@
+<!-- For sub navigation for club management system -->
+
+<!-- Container and columns divs are defined in html page files
+Column different for the pages -->
+<ul class="nav nav-tabs">
+  <li role="navigation" class="{% if is_photos %}active{% endif %}"><a class="plaintext_link" href="{{ url_for('actblueprint.allphotos') }}">Activities & Photos</a></li>
+  <li role="navigation" class="{% if is_allact %}active{% endif %}"><a class="plaintext_link" href="{{ url_for('actblueprint.allactivities', club_filter='all') }}">Activities List</a></li>
+  <li role="navigation" class="{% if is_list %}active{% endif %}"><a class="plaintext_link" href="{{ url_for('clubblueprint.clublist', club_filter='all') }}">Clubs</a></li>
+</ul>

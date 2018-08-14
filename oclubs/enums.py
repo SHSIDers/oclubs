@@ -39,7 +39,7 @@ class ClubType(Enum):
     def format_name(self):
         """Formats the value of the enum for display."""
         return ['', 'Academics', 'Sports', 'Arts', 'Services',
-                'Entertainment', 'Others', 'School Teams'][self.value]
+                'Entertainment', 'Other', 'School Teams'][self.value]
 
 
 class ActivityTime(Enum):
@@ -53,8 +53,8 @@ class ActivityTime(Enum):
     @property
     def format_name(self):
         """Formats the value of the enum for display."""
-        return ['Unknown', 'Lunch', 'Afterschool', 'HongMei',
-                'Others'][self.value]
+        return ['N/A', 'Lunch', 'Afterschool', 'HongMei',
+                'Other'][self.value]
 
 
 class ClubJoinMode(Enum):
@@ -65,7 +65,7 @@ class ClubJoinMode(Enum):
     @property
     def format_name(self):
         """Formats the value of the enum for display."""
-        return ['', 'Free Join', 'By Invitation'][self.value]
+        return ['', 'Free to Join', 'Invitation'][self.value]
 
 
 class Building(Enum):
@@ -90,5 +90,5 @@ class SBAppStatus(Enum):
         return ['Pending', 'Approved', 'Rejected', 'N/A'][self.value]
 
 
-
-__all__ = ['UserType', 'ClubType', 'ActivityTime', 'ClubJoinMode', 'Building']
+__all__ = ['UserType', 'ClubType', 'ActivityTime', 'ClubJoinMode',
+           'Building', 'SBAppStatus']

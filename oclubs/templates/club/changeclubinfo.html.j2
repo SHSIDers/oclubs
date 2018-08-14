@@ -1,45 +1,105 @@
-{% extends "base.html.j2" %}{% from 'macros.html.j2' import get_messages %}
-{% block title %}Change Club Info{% endblock %}
+{% extends "base.html.j2" %}
+
+{% block additionalcssjs %}
+<link href="{{ url_for('static', filename='css/form.min.css') }}" rel="stylesheet" type="text/css" media="all">
+{% endblock %}
+
+
+{% block title %}Edit Club Info{% endblock %}
+
 {% block content %}
 
-<!-- Below Navbar -->
 <div class="container">
-	<form class="form-group white" action="{{ url_for('.changeclubinfo_submit', club=g.club.callsign) }}" method="post" enctype="multipart/form-data">
-		<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-		<h1 class="title">Change Club Info</h1>
-		<h2 class="title_next">{{ g.club.name }}</h2>
-		{{ get_messages(['clubinfo']) }}
-		<label class="largetext" for="intro">One sentence Intro:</label>
-		<input type="text" class="form-control" name="intro" id="intro" value="{{ g.club.intro }}" maxlength="90">
-		<p>Please keep this as short and precise as possible.</p>
-		<br>
-		<label for="picture" class="largetext">Picture:</label>
-		<div class="clearfix"></div>
-		<input class="hide" type="file" name="picture" id="picture" accept="image/*">
-		<label for="picture" class="upload_button">
-			<span class="glyphicon glyphicon-upload"></span>
-			<span>Choose an image...</span>
-		</label>
-		<p class="upload_content" id="upload_content"></p>
-		<div class="clearfix"></div>
-		<br>
-		<label class="largetext" for="email">Club Teacher's Email Address:</label>
-		<input type="email" class="form-control" name="email" id="email" value="{{ g.club.teacher.studentid }}">
-		<p class="smailltext">Your club teacher's email address, not yours.</p>
-		<br>
-		<label class="largetext" for="location">Club Location:</label>
-		<input type="text" class="form-control" name="location" id="location" value="{{ g.club.location }}">
-		<br>
-		<label for="description" class="largetext">Introduction Paragraphs:</label>
-		<textarea class="form-control" rows="10" name="description" id="description">{{ g.club.description.raw }}</textarea>
-		<br>
-		<p>*We support <a class="white-a" href={{ url_for('markdown') }}>markdown</a> in this post. </p>
-		<p>*For a new paragraph, please leave a blank line between two paragraphs so that we can format it into what you entered.</p>
-		<br>
-		<input type="submit" class="btn btn-primary" value="Submit">
-	</form>
-</div>
+	<div class="row">
+		<div class="col-md-12">
+			<h1> Edit Club Information <small> - {{ g.club.name }}</small></h1>
+		</div>
+	</div>
 
-<div class="clearfix"></div>
+	<hr class="separator" id="separator_title">
+
+	<div class="row">
+		<div class="col-md-12">
+			<form class="form-group" action="{{ url_for('.changeclubinfo_submit', club=g.club.callsign) }}" method="post" enctype="multipart/form-data">
+				<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+				{% if get_flashed_messages(['clubinfo']) %}
+				<div class="alert alert-warning">
+					<span class="glyphicon glyphicon-warning-sign"></span>
+					{% for message in get_flashed_messages(category_filter=['clubinfo']) %}
+					{{ message }}
+					{% endfor %}
+				</div>
+				{% endif %}
+				<div class="form-group">
+					<div class="input-group">
+						<span class="input-group-addon">One sentence description</span>
+						<input type="text" class="form-control" name="intro" id="intro" value="{{ g.club.intro }}" maxlength="90">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group">
+								<span class="input-group-addon">Instructor's email</span>
+								<input type="email" class="form-control" name="email" id="email" value="{{ g.club.teacher.studentid }}">
+							</div>
+						</div>
+
+						<!-- /.col-md-6 -->
+						<div class="col-md-6">
+							<div class="input-group">
+								<span class="input-group-addon">Location (general)</span>
+								<input type="text" class="form-control" name="location" id="location" value="{{ g.club.location }}">
+							</div>
+						</div>
+						<!-- /.col-md-6 -->
+					</div>
+					<!-- /.row -->
+				</div>
+				<!-- /.form-group -->
+
+				<div class="form-group">
+					<div class="input-group">
+						<label>Upload club image</label>: &nbsp;&nbsp;
+						<label class="btn btn-default btn-sm">
+							<span class="glyphicon glyphicon-upload"></span> Upload
+							<input type="file" multiple="multiple" name="picture" id="picture" accept="image/*" hidden>
+						</label>
+						<p id="upload_content"></p>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							Club description
+							</div>
+							<div class="panel-body">
+								<textarea class="form-control" rows="10" name="description" id="description">{{ g.club.description.raw }}</textarea>
+								<br>
+								<span class="help-block">
+									Post content supports &nbsp;<button class="btn btn-default btn-xs btn_stop_default" id="markdownhelp_btn" data-toggle="collapse" data-target="#markdownhelp">markdown <span class="caret"></span></button>&nbsp;.
+									Enter a blank line for a new paragraph.
+								</span>
+								<div class="collapse" id="markdownhelp">
+									{% include 'static/markdown-tooltip.html.j2' %}
+								</div>
+							</div>
+						</div>
+						<!-- /.panel -->
+					</div>
+
+					<div class="form-group">
+						<div class="input-group">
+							<button class="btn btn-primary" type="submit">Submit</button>
+						</div>
+					</div>
+			</form>
+		</div>
+		<!-- /.col-md-12 -->
+	</div>
+	<!-- /.row -->
+</div>
 
 {% endblock %}

@@ -1,32 +1,32 @@
 {% macro render_pagination(pagination) %}
 <ul class="pagination">
-{% if pagination.has_prev %}
+	{% if pagination.has_prev %}
 	<li>
 		<a href="{{ url_for_other_page(pagination.page - 1)  }}">&laquo;</a>
 	</li>
-{% endif %}
-{%- for page in pagination.iter_pages() %}
-{% if page['num'] %}
+	{% endif %}
+	{%- for page in pagination.iter_pages() %}
+	{% if page['num'] %}
 	{% if page['num'] != pagination.page %}
 	<li>
 		<a {% if page['hide'] %}class="page-hide-{{ page['hide'] }}"{% endif %} href="{{ url_for_other_page(page['num']) }}">{{ page['num'] }}</a>
 	</li>
 	{% else %}
-	<li class="active">
+	<li>
 		<a><strong>{{ page['num'] }}</strong></a>
 	</li>
 	{% endif %}
-{% else %}
+	{% else %}
 	<li class="ellipsis">
 		<a>…</a>
 	</li>
-{% endif %}
-{%- endfor %}
-{% if pagination.has_next %}
+	{% endif %}
+	{%- endfor %}
+	{% if pagination.has_next %}
 	<li>
 		<a href="{{ url_for_other_page(pagination.page + 1)  }}">&raquo;</a>
 	</li>
-{% endif %}
+	{% endif %}
 </div>
 {% endmacro %}
 
@@ -34,105 +34,25 @@
 {% with messages = get_flashed_messages(category_filter=categories) %}
 {% if messages %}
 {% if br_before %}<br>{% endif %}
-<ul class="list-group no-top-margin black">
 	{% for message in messages %}
-	<li class="list-group-item">{{ message }}</li>
+	{{ message }}
 	{% endfor %}
-</ul>
 {% if br_after %}<br>{% endif %}
 {% endif %}
 {% endwith %}
 {% endmacro %}
 
-{% macro desktop_sidebar(endpoint, club_filter) %}
-<div id="sidebar" class="col-md-2">
-	{% for group in club_filter.enumerate_desktop() %}
-	<div class="list-group">
-		<li class="list-group-item active">{{ group.name }}</li>
-		{% for elmt in group.elements %}
-		<a href="{{ url_for(endpoint, club_filter=elmt.url) }}" class="list-group-item{% if elmt.selected %} selected{% endif %}">{{ elmt.name }}</a>
-		{% endfor %}
-	</div>
-	{% endfor %}
-	{{ caller and caller() }}
+{% macro search_bar(search_value, placeholder_text) %}
+<div class="form-group" id="search_bar_beside_title">
+	<form class="" action="{{ url_for('search') }}" method="get">
+		<div class="input-group">
+			<input type="hidden" name="search_type" value="{{ search_value }}">
+			<input type="hidden" name="page" value="1">
+			<input type="text" name="keywords" placeholder="{{ placeholder_text }}" class="form-control search_textbox">
+			<span class="input-group-btn">
+				<button class="btn btn-default" id="search_btn" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+			</span>
+		</div>
+	</form>
 </div>
-{% endmacro %}
-
-{% macro mobile_selection(endpoint, club_filter) %}
-<select class="mobileselect emptyline">
-	{% for elmt in club_filter.enumerate_mobile() %}
-	<option value="{{ url_for(endpoint, club_filter=elmt.url) }}"{% if elmt.selected %} selected="selected"{% endif %}>{{ elmt.name }}</option>
-	{% endfor %}
-</select>
-{% endmacro %}
-
-{% macro desktop_sidebar_res(endpoint, res_filter, form, clearBtn, is_admin) %}
-<div id="sidebar" class="col-md-2">
-	{% for group in res_filter.enumerate_desktop(is_admin) %}
-	<div class="list-group">
-		<li class="list-group-item active">{{ group.name }}</li>
-		{% for elmt in group.elements %}
-		<a href="{{ url_for(endpoint, res_filter=elmt.url) }}" class="list-group-item{% if elmt.selected %} selected{% endif %}">{{ elmt.name }}</a>
-		{% endfor %}
-	</div>
-	{% endfor %}
-	<div class="list-group">
-		<form action="{{ url_for(endpoint, res_filter=res_filter.to_url()) }}" method="post">
-			<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-			{{ form.classrooms_list.label }}{{ form.classrooms_list }}
-			{{ form.submit }}
-		</form>
-		<form action="{{ url_for(endpoint, res_filter=res_filter.to_url()) }}" method="post">
-			<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-			{{ clearBtn.clear }}
-		</form>
-	</div>
-	{{ caller and caller() }}
-</div>
-{% endmacro %}
-
-{% macro mobile_selection_res(endpoint, res_filter, is_admin) %}
-		{% for group in res_filter.enumerate_mobile(is_admin) %}
-		<select class="mobileselect emptyline" size="{{ group.elements|length }}">
-				{% for elmt in group.elements %}
-				<option value="{{ url_for(endpoint, res_filter=elmt.url) }}"{% if elmt.selected %} selected="selected"{% endif %}>{{ elmt.name }}</option>
-				{% endfor %}
-		</select>
-		{% endfor %}
-{% endmacro %}
-
-{% macro desktop_sidebar_room(endpoint, room_filter, form) %}
-<script src="{{ url_for('static', filename='js/dateselection.min.js') }}"></script>
-
-<div id="sidebar" class="col-md-2">
-	{% for group in room_filter.enumerate_desktop() %}
-	<div class = 'list-group'>
-		<li class="list-group-item active">{{ group.name }}</li>
-		{% for elmt in group.elements %}
-		<a href="{{ url_for(endpoint, room_filter=elmt.url) }}" class="list-group-item{% if elmt.selected %} selected{% endif %}">{{ elmt.name }}</a>
-		{% endfor %}
-	</div>
-	{% endfor %}
-	<div class="list-group">
-		{% for field in form.errors %}
-	    <div>
-	        {{ form.errors[field] }}
-	    </div>
-		{% endfor %}
-		<form action="{{ url_for(endpoint, room_filter=room_filter.to_url()) }}" method="post">
-			<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-			{{ form.viewclassroom_options.label }}{{ form.viewclassroom_options }}
-			<div id="date_options_div">
-				{{ form.date_options.label }}{{ form.date_options }}
-			{{ form.date_select_start }}
-			{{ form.date_select_end }}
-			</div>
-			{{ form.submit }}
-		</form>
-	</div>
-	{{ caller and called() }}
-</div>
-{% endmacro %}
-
-{% macro mobile_selection_room(endpoint, room_filter) %}
 {% endmacro %}

@@ -54,22 +54,26 @@ def home_redirect():
 @actblueprint.route('/photos/', defaults={'page': 1})
 @actblueprint.route('/photos/<int:page>')
 def allphotos(page):
-    pic_num = 20
+    pic_num = 15
     count, acts = Activity.get_activities_conditions(
         require_photos=True,
         limit=((page-1)*pic_num, pic_num))
-    act_recent = ''
+    act_latest = ''
     if page == 1:
         try:
-            act_recent = acts[0]
+            act_latest = acts[0]
         except IndexError:
             pass
     pagination = Pagination(page, pic_num, count)
-    return render_template('activity/photos.html.j2',
+    current_page = page
+    template = 'activity/photos.html.j2' \
+               if page == 1 else 'activity/photo-items.html.j2'
+    return render_template(template,
                            is_photos=True,
-                           act_recent=act_recent,
+                           act_latest=act_latest,
                            acts=acts,
-                           pagination=pagination)
+                           pagination=pagination,
+                           current_page=current_page)
 
 
 @actblueprint.route('/<activity>/')
@@ -154,8 +158,7 @@ def changeactpost_submit(activity):
                                         activity=activity.callsign))
     activity.post = FormattedText.handle(current_user, activity.club,
                                          request.form['post'])
-    flash('Activity post has been successfully modified.', 'actpost')
-    return redirect(url_for('.changeactpost', activity=activity.callsign))
+    return redirect(url_for('.actintro', activity=activity.callsign))
 
 
 @actblueprint.route('/<activity>/invite_hongmei')
@@ -253,6 +256,7 @@ def changeactinfo(activity):
     years = (lambda m: map(lambda n: m + n, range(2)))(date.today().year)
     cas = int(activity.cas)
     return render_template('/activity/changeactinfo.html.j2',
+                           is_allact=True,
                            years=years,
                            act_types=ActivityTime,
                            cas=cas)
@@ -361,8 +365,9 @@ def pairreservation(activity):
             activity.time = selected_reservation.timeslot
             activity.location = selected_reservation.classroom.location
 
-            return redirect(url_for('resblueprint.reservationinfo',
-                                    reservation=selected_reservation.callsign))
+            return redirect(url_for(
+                '.actintro',
+                activity=selected_reservation.activity.callsign))
         else:
             return render_template('/activity/pairreservation.html.j2',
                                    form=form)

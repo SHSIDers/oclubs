@@ -65,13 +65,15 @@ def personal():
                                activities=activities,
                                leader_club=leader_club,
                                allow_club_creation=allow_club_creation,
-                               receive_email=receive_email)
+                               receive_email=receive_email,
+                               is_user=True)
     else:
         years = (lambda m: map(lambda n: m + n, range(2)))(date.today().year)
         return render_template('user/admin.html.j2',
                                pictures=pictures,
                                years=years,
-                               receive_email=receive_email)
+                               receive_email=receive_email,
+                               is_user=True)
 
 
 @userblueprint.route('/submit_info', methods=['POST'])
@@ -330,7 +332,8 @@ def notifications(page):
                            notifications=notes_all[1],
                            number=num,
                            pagination=Pagination(page, note_num, notes_all[0]),
-                           invitations=invitations_all)
+                           invitations=invitations_all,
+                           is_user=True)
 
 
 @userblueprint.route('/notifications/submit', methods=['POST'])

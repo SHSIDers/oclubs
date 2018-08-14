@@ -1,45 +1,119 @@
 {% extends "base.html.j2" %}
-{% block title %}{% endblock %}
+
+{% block additionalcssjs %}
+<script src="{{ url_for('static', filename='js/select2.pkgd.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/selection.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/newreservation.min.js') }}"></script>
+<link href="{{ url_for('static', filename='css/select2.min.css') }}" rel="stylesheet" type="text/css" media="all">
+<link href="{{ url_for('static', filename='css/form.min.css') }}" rel="stylesheet" type="text/css" media="all">
+{% endblock %}
+
+
+
+{% block title %}New Reservation{% endblock %}
 
 {% block content %}
-<script src="{{ url_for('static', filename='js/newreservation.min.js') }}"></script>
 
 <body data-updateurl="{{ url_for('.update_free_classrooms') }}">
 </body>
+<!-- ajax uses this url to retrieve the list of free classrooms -->
 
-<!-- Below Navbar -->
-<div class="large_container">
+<div class="container">
 
-  <!-- Main Content -->
-	<div class="main-content col-md-10" id="intropage">
-		{% if can_reserve %}
-			{% for field in form.errors %}
-		    <div>
-		        {{ form.errors[field] }}
-		    </div>
-			{% endfor %}
-			<form id="new_reservation" action="{{ url_for('.newreservation_club', club=g.club.callsign) }}" method="post">
-				<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-				{{ form.building.label }}{{ form.building }} <br>
-				{{ form.timeslot.label }}{{ form.timeslot }} <br>
-				{{ form.date_selection.label }} <br> {{ form.date_selection }} <br>
-				{{ form.free_classrooms.label }} <br> {{ form.free_classrooms}} <br>
-				{% if can_SB %}
-				{{ form.SBNeeded.label }} <br> {{ form.SBNeeded }} <br>
-				<div id="sb_app_desc_div">
-					{{ form.SBAppDesc.label }} <br> {{ form.SBAppDesc }} <br>
+	<br>
+	<br>
+	<br>
+
+	<div class="row">
+		<div class="col-md-3">
+		</div>
+		<div class="col-md-6">
+			<div class="form-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4>New Reservation - {{ g.club.name }} </h4>
+					</div>
+					<div class="panel-body">
+						{% if form.errors %}
+						<br>
+						<div class="alert alert-warning">
+							<span class="glyphicon glyphicon-warning-sign"></span>
+							{% for field in form.errors %}
+							{{ form.errors[field] }}
+							{% endfor %}
+						</div>
+						{% endif %}
+						<form id="new_reservation" action="{{ url_for('.newreservation_club', club=g.club.callsign) }}" method="post">
+							<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+							<div class="form-group">
+								{{ form.building.label }}
+								{{ form.building(class_="form-control") }}
+							</div>
+							<div class="form-group">
+								{{ form.timeslot.label }}
+								{{ form.timeslot(class_="form-control") }}
+							</div>
+							<div class="form-group">
+								{{ form.date_selection.label }}
+								{{ form.date_selection(class_="form-control") }}
+							</div>
+							<div class="form-group">
+								{{ form.free_classrooms.label }}
+								{{ form.free_classrooms(class_="form-control") }}
+							</div>
+							<div class="loading_gif">
+								<div class="lds-css ng-scope"><div class="lds-magnify"><div><div><div></div><div></div></div></div></div></div>
+								Fetching available classrooms...
+							</div>
+							<div class="finished_loading"></div>
+							<hr class="separator">
+							{% if g.club.smartboard_allowed %}
+							<div class="form-group">
+								<div class="radio">
+									{{ form.SBNeeded.label }}
+									{{ form.SBNeeded }}
+								</div>
+							</div>
+							<div id="sb_app_desc_div">
+								{{ form.SBAppDesc.label }} <br>
+								{{ form.SBAppDesc(class_="form-control", rows="5") }}
+							</div>
+							{% else %}
+							<p>This club is not allowed to use smartbaord. </p>
+							{% endif %}
+							<hr class="separator">
+							<div class="form-group">
+								<div class="input-group">
+									{{ form.submit(class_="btn btn-primary") }}
+									{% if not g.club.reservation_allowed %}&nbsp;&nbsp;This club is not allowed to reserve.{% endif %}
+								</div>
+							</div>
+						</form>
+					</div>
+					<!-- /.panel-body -->
 				</div>
-				{% else %}
-				<div>This club cannot apply for smartbaord.</div>
-				{% endif %}
-				{{ form.submit }}
-			</form>
-		{% else %}
-			This club is not allowed to reserve classrooms
-		{% endif %}
-  </div>
-
+				<!-- /.panel -->
+			</div>
+			<!-- /.form-group -->
+		</div>
+		<!-- /.col-md-6 -->
+		<div class="col-md-3">
+		</div>
+	</div>
+	<!-- /.row -->
 </div>
+<!-- ./container -->
+
+
+
+
+
+
+
+
+
+
+
 
 
 {% endblock %}

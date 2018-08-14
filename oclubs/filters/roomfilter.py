@@ -13,7 +13,7 @@ from werkzeug.routing import PathConverter
 
 from oclubs.utils.dates import (
     str_to_date_dict, date_to_str_dict, str_to_words_dict, int_to_dateobj,
-    dateobj_to_int
+    dateobj_to_int, this_week
 )
 from oclubs.enums import Building, ActivityTime
 
@@ -21,7 +21,7 @@ from oclubs.enums import Building, ActivityTime
 # current implementation, roomfilter supports only 1 building
 # get_classroom_conditions and get_reservations_conditions support multiple
 class RoomFilter(object):
-    DEFAULT = (None, None, None)
+    DEFAULT = (None, None, this_week())
     # url format: /all, gives defailt values
     # url format: /[building]/[timeslot]/[dates]
     # dates support thisweek, nextweek, today, tmrw, single date
@@ -125,8 +125,8 @@ class RoomFilter(object):
 
     @classmethod
     def build_url(cls, conds):
-        if conds == cls.DEFAULT:
-            return 'all'
+        # if conds == cls.DEFAULT:
+        #     return 'all'
 
         building, timeslot, dates = conds
 
@@ -209,29 +209,26 @@ class RoomFilter(object):
         return self.enumerate_desktop()
 
     def title(self):
-        if self.conds == self.DEFAULT:
-            return 'XMT'
+        building, timeslot, dates = self.conds
+
+        if dates is None:
+            date_str = None
         else:
-            building, timeslot, dates = self.conds
+            try:
+                date_str = date_to_str_dict()[dates]
+                date_str = str_to_words_dict()[date_str]
+                date_str = 'for ' + date_str.title()
+            except KeyError:
+                if isinstance(dates, date):
+                    date_str = 'for Selected Date'
+                else:
+                    date_str = 'for Selected Dates'
 
-            if dates is None:
-                date_str = None
-            else:
-                try:
-                    date_str = date_to_str_dict()[dates]
-                    date_str = str_to_words_dict()[date_str]
-                    date_str = 'for ' + date_str.title()
-                except KeyError:
-                    if isinstance(dates, date):
-                        date_str = 'for Selected Date'
-                    else:
-                        date_str = 'for Selected Dates'
-
-            return ' '.join(filter(None,
-                                   ('XMT',
-                                    timeslot.format_name
-                                    if timeslot else None,
-                                    date_str)))
+        return ' '.join(filter(None,
+                               ('XMT',
+                                timeslot.format_name
+                                if timeslot else None,
+                                date_str)))
 
 
 class RoomFilterConverter(PathConverter):

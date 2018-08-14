@@ -79,7 +79,8 @@ nginx::nginx_vhosts:
     listen_options: default_server
     uwsgi: uwsgi
     add_header:
-      Content-Security-Policy: "default-src \\'self\\'"
+      Content-Security-Policy: "default-src \\'self\\'; img-src \\'self\\' https://loremflickr.com"
+
       X-Content-Type-Options: nosniff
       X-Frame-Options: SAMEORIGIN
 

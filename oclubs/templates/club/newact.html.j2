@@ -1,111 +1,192 @@
-{% extends "base.html.j2" %}{% from 'macros.html.j2' import get_messages %}
+{% extends "base.html.j2" %}
+
+{% block additionalcssjs %}
+<script src="{{ url_for('static', filename='js/select2.pkgd.min.js') }}"></script>
+<link href="{{ url_for('static', filename='css/select2.min.css') }}" rel="stylesheet" type="text/css" media="all">
+<script src="{{ url_for('static', filename='js/selection.min.js') }}"></script>
+<link href="{{ url_for('static', filename='css/form.min.css') }}" rel="stylesheet" type="text/css" media="all">
+{% endblock %}
+
 {% block title %}New Activity{% endblock %}
+
 {% block content %}
 
-<!-- Below Navbar -->
 <div class="container">
-	<form class="form-group" id="newact" action="{{ url_for('.newact_submit', club=g.club.callsign) }}" method="post">
-		<div class="row">
-			<div class="col-sm-6">
-				<h1 class="title">New Activity</h1>
-				{{ get_messages(['newact'], br_before=True) }}
-				<div class="form-horizontal white smalltext" role="form">
-					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-					<label class="col-sm-2" for="name">Name:</label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control" id="name" name="name">
-					</div>
-
-					<div class="clearfix emptyline-lg"></div>
-					<label class="col-sm-2" for="date">Date:</label>
-					<div class="col-sm-10 black no-padding">
-						<div class="col-sm-4">
-							<select name="year" class="form-control">
-								{% for year in years %}
-								<option value="{{ year }}">{{ year }}</option>
-								{% endfor %}
-							</select>
-						</div>
-						<div class="col-sm-4">
-							<select name="month" class="form-control">
-								{% for month in range(1,13) %}
-								<option value="{{ month }}">{{ month }}</option>
-								{% endfor %}
-							</select>
-						</div>
-						<div class="col-sm-4">
-							<select name="day" class="form-control">
-								{% for day in range(1,32) %}
-								<option value="{{ day }}">{{ day }}</option>
-								{% endfor %}
-							</select>
-						</div>
-						<!-->
-					</div>
-					<div class="clearfix emptyline-lg"></div>
-					<label class="col-sm-2" for="location">Location:</label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control" id="location" name="location">
-					</div>
-					<div class="clearfix emptyline-lg"></div>
-					<label class="col-sm-2" for="act_type">Type:</label>
-					<div class="col-sm-10">
-						<select class="form-control black" id="act_type" name="act_type" type="dropdown">
-							<option value="noon">Noon Meeting</option>
-							<option value="afterschool">Afterschool Meeting</option>
-							<option value="others">Others</option>
-						</select>
-					</div>
-					<div class="clearfix emptyline-lg"></div>
-					<label class="col-sm-2" for="cas">CAS:</label>
-					<div class="col-sm-5">
-						<input type="number" class="form-control" id="cas" name="cas" min="0">
-					</div>
-					<div class="col-sm-5">
-						<select class="form-control black" name="time_type">
-							<option value="hours">Hours</option>
-							<option value="minutes">Minutes</option>
-						</select>
-					</div>
-				</div>
-
-			</div>
-			<div class="col-sm-6">
-				<img src="{{ url_for('static', filename='/images/activity.jpg') }}" class="img-responsive img-thumbnail" alt="Activity">
-			</div>
-		</div>
-		<div class="clearfix emptyline-lg"></div>
-
-		<div class="form-group white smalltext">
-			<label for="description">Description: <span>(optional)</span></label>
-			<textarea class="form-control" rows="10" id="description" name="description"></textarea>
-			<p>You can describe the selection below here if you want to allow members to choose.</p>
+	<div class="row">
+		<div class="col-md-1">
 		</div>
 
-		<div class="form-group white smalltext row">
-			<div class="col-sm-6 row">
-				<div class="col-sm-6">
-					<label for="has_selection">Allow Selection for Members?</label>
-				</div>
-				<div class="col-sm-6">
-					<select class="form-control" id="has_selection" name="has_selection">
-						<option value="no">No</option>
-						<option value="yes">Yes</option>
-					</select>
-				</div>
-			</div>
-			<div class="col-sm-6">
-				<input type="text" class="form-control" name="selections" placeholder="Choice One;Choice Two;Choice Three">
-				<p>*Please use ";" to seperate the choices.</p>
-			</div>
-			<div class="clearfix"></div>
-			<div class="col-sm-12">
-				<p>*Only activities other than noon/afternoon meetings can accept selection.</p>
-			</div>
+		<div class="col-md-10">
+			<h1> New Activity <small> - {{ g.club.name }}</small></h1>
 		</div>
-		<div class="clearfix"></div>
-		<center><input class="midtext padding-3 btn btn-info" type="submit" value="Submit"></center>
-	</form>
+
+		<div class="col-md-1">
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-1">
+		</div>
+
+		<div class="col-md-10">
+			<hr class="separator" id="separator_title">
+		</div>
+
+		<div class="col-md-1">
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-1">
+		</div>
+
+		<div class="col-md-10">
+			<form class="form-group" action="{{ url_for('.newact_submit', club=g.club.callsign) }}" method="post">
+				<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+				{% if get_flashed_messages(['newact']) %}
+				<div class="alert alert-warning">
+					<span class="glyphicon glyphicon-warning-sign"></span>
+					{% for message in get_flashed_messages(category_filter=['newact']) %}
+					{{ message }}
+					{% endfor %}
+				</div>
+				{% endif %}
+				<div class="form-group">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="input-group">
+								<span class="input-group-addon">Activity Name</span>
+								<input type="text" class="form-control" id="name" name="name">
+							</div>
+						</div>
+					</div>
+					<!-- /.row -->
+				</div>
+
+				<div class="form-group">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="input-group">
+								<span class="input-group-addon">Year</span>
+								<select name="year" class="form-control">
+									{% for year in years %}
+									<option value="{{ year }}">{{ year }}</option>
+									{% endfor %}
+								</select>
+							</div>
+						</div>
+						<!-- /.col-md-4 -->
+						<div class="col-md-4">
+							<div class="input-group">
+								<span class="input-group-addon">Month</span>
+								<select name="month" class="form-control">
+									{% for month in range(1,13) %}
+									<option value="{{ month }}">{{ month }}</option>
+									{% endfor %}
+								</select>
+							</div>
+						</div>
+						<!-- /.col-md-4 -->
+						<div class="col-md-4">
+							<div class="input-group">
+								<span class="input-group-addon">Day</span>
+								<select name="day" class="form-control">
+									{% for day in range(1,31) %}
+									<option value="{{ day }}">{{ day }}</option>
+									{% endfor %}
+								</select>
+							</div>
+						</div>
+						<!-- /.col-md-4 -->
+					</div>
+					<!-- /.row -->
+				</div>
+				<!-- /.form-group -->
+
+				<div class="form-group">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="input-group">
+								<span class="input-group-addon">Timeslot</span>
+								<select class="form-control" id="act_type" name="act_type">
+									<option value="noon">Lunch</option>
+									<option value="afterschool">Afterschool</option>
+									<option value="others">Other</option>
+								</select>
+							</div>
+						</div>
+						<!-- /.col-md-4 -->
+						<div class="col-md-4">
+							<div class="input-group">
+								<span class="input-group-addon">Location</span>
+								<input type="text" class="form-control" name="location" id="location">
+							</div>
+						</div>
+						<!-- /.col-md-4 -->
+						<div class="col-md-4">
+							<div class="row">
+								<div class="col-md-8 col-xs-8">
+									<div class="input-group">
+										<span class="input-group-addon">CAS</span>
+										<input type="number" class="form-control" id="cas" name="cas" min="0" value="{{ cas }}">
+									</div>
+								</div>
+								<div class="col-md-4 col-xs-4">
+									<div class="input-group pull-right">
+										<select class="form-control" name="time_type">
+											<option value="hours">Hour(s)</option>
+											<option value="minutes">Minutes</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- /.col-md-4 -->
+					</div>
+					<!-- /.row -->
+					<span class="help-block">
+						Note that if the activity is later paired with a reservation, the date, timeslot, and location will be updated based on the reservation.
+					</span>
+				</div>
+				<!-- /.form-group -->
+
+				<br>
+
+				<div class="form-group">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							Description
+						</div>
+						<div class="panel-body">
+							<textarea class="form-control" rows="10" name="description" id="description"></textarea>
+							<br>
+							<span class="help-block">
+								The description supports &nbsp;<button class="btn btn-default btn-xs btn_stop_default" id="markdownhelp_btn" data-toggle="collapse" data-target="#markdownhelp">markdown <span class="caret"></span></button>&nbsp;.
+								Enter a blank line for a new paragraph.
+							</span>
+							<div class="collapse" id="markdownhelp">
+								{% include 'static/markdown-tooltip.html.j2' %}
+							</div>
+						</div>
+					</div>
+					<!-- /.panel -->
+				</div>
+				<!-- /.form-group -->
+				<div class="form-group">
+					<div class="input-group">
+						<button class="btn btn-primary" type="submit">Submit</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<!-- /.col-md-10 -->
+
+		<div class="col-md-1">
+		</div>
+	</div>
+	<!-- /.row -->
+
 </div>
+<!-- /.container -->
 
 {% endblock %}

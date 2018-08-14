@@ -33,7 +33,7 @@ class Reservation(BaseObject):
     owner = Property('res_owner', 'User')  # user that created the reservation
     classroom = Property('res_classroom', 'Classroom')
     SBNeeded = Property('res_SBNeeded', bool)
-    SBAppDesc = Property('res_SBAppDesc', bool)
+    SBAppDesc = Property('res_SBAppDesc')
     instructors_approval = Property('res_instructors_approval', bool)
     directors_approval = Property('res_directors_approval', bool)
     SBApp_status = Property('res_SBApp_status', SBAppStatus)

@@ -1,37 +1,105 @@
-{% extends "base.html.j2" %}{% from 'macros.html.j2' import get_messages %}
-{% block title %}Change Activity Post{% endblock %}
+{% extends "base.html.j2" %}
+{% from 'macros.html.j2' import get_messages %}
+
+{% block additionalcssjs %}
+<link href="{{ url_for('static', filename='css/form.min.css') }}" rel="stylesheet" type="text/css" media="all">
+{% endblock %}
+
+{% block title %}Edit Activity Post{% endblock %}
+
 {% block content %}
 
-<!-- Below Navbar -->
 <div class="container">
-	<form class="form-group white" action="{{ url_for('.changeactpost_submit', activity=g.activity.callsign) }}" method="post" enctype="multipart/form-data">
-		<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-		<h1 class="title">Change Activity Post</h1>
-		<h2 class="title_next">{{ g.activity.club.name }}</h2>
-		<h2 class="title_next">{{ g.activity.name }}</h2>
-		{{ get_messages(['actpost']) }}
-		<p>*Please input below.</p>
-		<label class="largetext" for="picture">Picture:</label>
-		<div class="clearfix"></div>
-		<input class="hide" type="file" multiple="multiple" name="picture" id="picture" accept="image/*">
-		<label for="picture" class="upload_button">
-			<span class="glyphicon glyphicon-upload"></span>
-			<span>Choose images...</span>
-		</label>
-		<p class="upload_content" id="upload_content"></p>
-		<br>
-		<div class="clearfix"></div>
-		<br>
-		<label class="largetext" for="post">Activity Post Contents:</label>
-		<textarea class="form-control" rows="10" name="post" id="post">{{ g.activity.post.raw }}</textarea>
-		<br>
-		<p>*We support <a class="white-a" href={{ url_for('markdown') }}>markdown</a> in this post. </p>
-		<p>*For a new paragraph, please leave a blank line between two paragraphs so that we can format it into what you entered.</p>
-		<br>
-		<input type="submit" class="btn btn-primary" value="Submit">
-	</form>
-</div>
 
-<div class="clearfix"></div>
+	<div class="row">
+		<div class="col-md-1">
+		</div>
 
-{% endblock %}
+		<div class="col-md-10">
+			<h1> Edit Activity Post <small> - {{ g.activity.name }}</small></h1>
+		</div>
+
+		<div class="col-md-1">
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-1">
+		</div>
+
+		<div class="col-md-10">
+			<hr class="separator" id="separator_title">
+		</div>
+
+		<div class="col-md-1">
+		</div>
+	</div>
+
+
+
+	<div class="row">
+		<div class="col-md-1">
+		</div>
+
+		<div class="col-md-10">
+			<form class="form-group" action="{{ url_for('.changeactpost_submit', activity=g.activity.callsign) }}" method="post" enctype="multipart/form-data">
+				<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+				{% if get_flashed_messages(['actpost']) %}
+				<div class="alert alert-warning">
+					<span class="glyphicon glyphicon-warning-sign"></span>
+					{% for message in get_flashed_messages(category_filter=['actpost']) %}
+					{{ message }}
+					{% endfor %}
+				</div>
+				{% endif %}
+				<div class="form-group">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							Post
+							</div>
+							<div class="panel-body">
+								<textarea class="form-control" rows="10" name="post" id="post">{{ g.activity.post.raw }}</textarea>
+								<br>
+								<span class="help-block">
+									Post content supports &nbsp;<button class="btn btn-default btn-xs btn_stop_default" id="markdownhelp_btn" data-toggle="collapse" data-target="#markdownhelp">markdown <span class="caret"></span></button>&nbsp;.
+									Enter a blank line for a new paragraph.
+								</span>
+								<div class="collapse" id="markdownhelp">
+									{% include 'static/markdown-tooltip.html.j2' %}
+								</div>
+							</div>
+						</div>
+						<!-- /.panel -->
+					</div>
+					<!-- /.form-group -->
+					<div class="form-group">
+						<div class="input-group">
+							<label>Upload images</label>: &nbsp;&nbsp;
+							<label class="btn btn-default btn-sm">
+								<span class="glyphicon glyphicon-upload"></span> Upload
+								<input type="file" multiple="multiple" name="picture" id="picture" accept="image/*" hidden>
+							</label>
+							<p id="upload_content"></p>
+							<span class="help-block">
+								To upload multiple images, select while holding <code>Command</code> for macOS and <code>Ctrl</code> for Windows.
+							</span>
+						</div>
+					</div>
+					<!-- /.form-group -->
+					<div class="form-group">
+						<div class="input-group">
+							<button class="btn btn-primary" type="submit">Submit</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			<!-- /.col-md-10 -->
+
+			<div class="col-md-1">
+			</div>
+		</div>
+		<!-- /.row -->
+	</div>
+	<!-- /.container -->
+
+	{% endblock %}

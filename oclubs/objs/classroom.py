@@ -20,7 +20,6 @@ from oclubs.enums import Building, ActivityTime
 class Classroom(BaseObject):
     table = 'classroom'
     identifier = 'room_id'
-    room_id = Property('room_id')
     room_number = Property('room_number')
     studentsToUseLunch = Property('room_studentsToUseLunch', bool)
     studentsToUseAfternoon = Property('room_studentsToUseAfternoon', bool)
