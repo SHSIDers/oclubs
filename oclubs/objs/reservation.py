@@ -167,6 +167,6 @@ class Reservation(BaseObject):
 
         print(conds, file=sys.stderr)
 
-        ret = database.delete_rows_(cls.table, conds)
+        ret = database.delete_rows_multiple(cls.table, conds)
 
         return ret

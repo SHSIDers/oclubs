@@ -16,6 +16,10 @@ input[type=date]::-webkit-inner-spin-button {
   width: 100% !important;
 }
 
+.form-group ul {
+  list-style: none;
+}
+
 .input-group {
   margin-top: 20px;
   margin-bottom: 20px;

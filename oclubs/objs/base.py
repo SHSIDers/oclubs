@@ -253,8 +253,6 @@ class _BaseMetaclass(type):
                 raise NotImplementedError
             data = {}
             for key, value in _propsdb.items():
-                print('Key: ' + key, file=sys.stderr)
-                print('Value: ' + value, file=sys.stderr)
                 data[key] = self._dbdata[value]
 
             if dup_key_update:

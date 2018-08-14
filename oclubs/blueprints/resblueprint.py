@@ -80,7 +80,6 @@ def viewreservations(res_filter, page):
             if form.classrooms_list.data:
                 selected_classrooms_id = \
                     str(form.classrooms_list.data).split(',')
-                print(selected_classrooms_id, file=sys.stderr)
                 # convert a list of room_id from form data
                 # to a list of room_numbers for res_filter
                 temp[2] = [dict(classrooms_list)[id]
@@ -263,7 +262,6 @@ def reservationinfo(reservation):
     )
 
     if request.method == 'POST':
-        print('posted', file=sys.stderr)
         if SBAppStatus_form.submit.data:
             reservation.SBApp_status = \
                 SBAppStatus[SBAppStatus_form.changeStatus.data.upper()]
@@ -273,8 +271,6 @@ def reservationinfo(reservation):
                 True
                 if directors_approval_form.changeDApproval.data == 'True'
                 else False)
-
-        print(directors_approval_form.changeDApproval.data, file=sys.stderr)
 
         if instructors_approval_form.submit.data:
             reservation.instructors_approval = (

@@ -50,7 +50,7 @@ app.jinja_env.globals['ActivityTime'] = ActivityTime
 app.jinja_env.globals['ClubJoinMode'] = ClubJoinMode
 app.jinja_env.globals['Building'] = Building
 
-app.debug = True
+# app.debug = True
 
 login_manager = LoginManager()
 login_manager.init_app(app)

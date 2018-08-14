@@ -44,7 +44,7 @@
 		</div>
 
 		<div class="col-md-10">
-			<form class="form-group" action="{{ url_for('.newclub_submit') }}" method="post">
+			<form class="form-group" action="{{ url_for('.newclub_submit') }}" method="post" enctype="multipart/form-data">
 				<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 				{% if get_flashed_messages(['newclub']) %}
 				<div class="alert alert-warning">
@@ -119,7 +119,7 @@
 						<label>Upload club image</label>: &nbsp;&nbsp;
 						<label class="btn btn-default btn-sm">
 							<span class="glyphicon glyphicon-upload"></span> Upload
-							<input type="file" multiple="multiple" name="picture" id="picture" accept="image/*" hidden>
+							<input type="file" name="picture" id="picture" accept="image/*" hidden>
 						</label>
 						<p id="upload_content"></p>
 					</div>

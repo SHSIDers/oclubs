@@ -458,8 +458,12 @@ def delete_rows(table, conds):
 
     return rows
 
-def delete_rows_(table, conds):
+
+def delete_rows_multiple(table, conds):
     """
+    Forms correct syntax for DELETE, supports JOIN
+    TODO: Merge functionality with delete_rows
+
     Execute a ``DELETE`` on a table.
 
     :param basestring table: table name

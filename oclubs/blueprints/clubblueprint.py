@@ -744,6 +744,10 @@ def newclub_submit():
         c.description = FormattedText.handle(current_user, c,
                                              request.form['description'])
 
+        print('here', file=sys.stderr)
+        print(type(request.files.getlist('picture')[0]), file=sys.stderr)
+        print(request.files.getlist('picture')[0], file=sys.stderr)
+
         if request.files.getlist('picture'):
             print('picture gotten', file=sys.stderr)
             try:
@@ -752,7 +756,7 @@ def newclub_submit():
                     request.files.getlist('picture')[0])
             except UploadNotSupported:
                 fail('Please upload the correct file type.', 'clubinfo')
-                
+
         return redirect(url_for('.clubintro', club=c.callsign))
     return redirect(url_for('.newclub'))
 
