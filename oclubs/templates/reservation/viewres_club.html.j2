@@ -31,12 +31,12 @@
             <tbody>
               {% for reservation in res %}
               <tr class="clickable" data-href="{{ url_for('.reservationinfo', reservation=reservation.callsign) }}">
-                {% if reservation.status == 1 %}
+                {% if reservation.status.name == 'UNPAIRED' %}
                 <td>{{ reservation.date.strftime("%Y-%m-%d, %A") }}</td>
                 <td>{{ reservation.timeslot.format_name }}</td>
                 <td>{{ reservation.classroom.location }}</td>
                 <td class="warning">N/A (Unpaired)</td>
-                {% elif reservation.status == 2 %}
+                {% elif reservation.status.name == 'PAIRED' %}
                 <td>{{ reservation.date.strftime("%Y-%m-%d, %A") }}</td>
                 <td>{{ reservation.timeslot.format_name }}</td>
                 <td>{{ reservation.classroom.location }}</td>
@@ -59,7 +59,7 @@
             <tbody>
               {% for reservation in res %}
               <tr class="clickable" data-href="{{ url_for('.reservationinfo', reservation=reservation.callsign) }}">
-                {% if reservation.status == 1 %}
+                {% if reservation.status.name == 'UNPAIRED' %}
                 <td>{{ reservation.date.strftime("%Y-%m-%d, %A") }}</td>
                 <td>{{ reservation.timeslot.format_name }}</td>
                 <td>{{ reservation.classroom.location }}</td>
@@ -70,7 +70,7 @@
                   {% endwith %}
                   {{ reservation.SBApp_status.format_name }}
                 </td>
-                {% elif reservation.status == 2 %}
+                {% elif reservation.status.name == 'PAIRED' %}
                 <td>{{ reservation.date.strftime("%Y-%m-%d, %A") }}</td>
                 <td>{{ reservation.timeslot.format_name }}</td>
                 <td>{{ reservation.classroom.location }}</td>

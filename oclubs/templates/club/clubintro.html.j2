@@ -52,9 +52,8 @@
 									<center>
 										<div class="club_intro_image">
 											{% if g.club.picture.location_external == '/static/images/icons/icon101.jpg' %}
-											<a class="" href="">
-												<img class="img-thumbnail" src="https://loremflickr.com/320/320?lock={{g.club.id}}?random={{g.club.id}}" alt="{{ g.club.name }}">
-											</a>
+												<img class="img-thumbnail" src="{{ url_for('static', filename='cdn/picsum/640/640/' + range(10, 50)|random|string) }}" alt="{{ g.club.name }}">
+												<a tabindex="0" class="btn btn-xs" role="button" data-toggle="popover" data-trigger="focus" title="This is a placeholder image" data-content="No image was uploaded because the club leader is lazy. <br> Image source: <a href='https://picsum.photos'>Lorem Picsum</a>"><span class="glyphicon glyphicon-info-sign"></span></a>
 											{% else %}
 											<a class="" href="{{ g.club.picture.location_external }}">
 												<img class="img-thumbnail" src="{{ g.club.picture.location_external }}" alt="{{ g.club.name }}">

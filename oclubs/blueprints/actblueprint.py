@@ -12,11 +12,12 @@ from flask import (
 from flask_login import current_user, login_required, fresh_login_required
 
 from oclubs.utils.dates import today, DATE_RANGE_MAX
-from oclubs.enums import UserType, ActivityTime
+from oclubs.enums import UserType, ActivityTime, ResStatus
 from oclubs.shared import (
-    get_callsign_decorator, special_access_required, Pagination, render_email_template,
-    download_xlsx, partition, require_student_membership,
-    require_past_activity, require_future_activity, require_active_club,
+    get_callsign_decorator, special_access_required, Pagination,
+    render_email_template, download_xlsx, partition,
+    require_student_membership, require_past_activity,
+    require_future_activity, require_active_club,
     true_or_fail, form_is_valid, error_or_fail, fail, get_callsign
 )
 from oclubs.objs import User, Activity, Upload, FormattedText, Reservation
@@ -26,8 +27,9 @@ from oclubs.forms.reservation_forms import PairReservation
 actblueprint = Blueprint('actblueprint', __name__)
 
 
-@actblueprint.route('viewlist/<clubfilter:club_filter>/', defaults={'page': 1})
-@actblueprint.route('viewlist/<clubfilter:club_filter>/<int:page>')
+@actblueprint.route('/viewlist/<clubfilter:club_filter>/',
+                    defaults={'page': 1})
+@actblueprint.route('/viewlist/<clubfilter:club_filter>/<int:page>')
 def allactivities(club_filter, page):
     '''All Activities'''
     act_num = 20
@@ -321,7 +323,7 @@ def changeactinfo_submit(activity):
 @special_access_required
 def pairreservation(activity):
     reservations = Reservation.get_reservations_conditions(
-        status=1,
+        status=ResStatus.UNPAIRED,
         reserver_club=activity.club,
         dates=(today(), DATE_RANGE_MAX)
     )
@@ -334,10 +336,9 @@ def pairreservation(activity):
             if reservation.activity is None:
                 choices.append((
                     reservation.callsign,
-                    str(reservation.date) + ' ' +
-                    str(reservation.timeslot.format_name) +
-                    ': ' +
-                    str(reservation.classroom.location)
+                    "%s %s: %s" % (reservation.date,
+                                   reservation.timeslot.format_name,
+                                   reservation.classroom.location)
                 ))
         form.reservations_for_pairing.choices = choices
 
@@ -347,14 +348,14 @@ def pairreservation(activity):
                 Reservation,
                 str(form.reservations_for_pairing.data))
 
-            selected_reservation.status = 2
+            selected_reservation.status = ResStatus.PAIRED
             selected_reservation.activity = activity
 
             if activity.reservation is None:
                 activity.reservation = selected_reservation
             else:
                 activity.reservation.activity = None
-                activity.reservation.status = 1
+                activity.reservation.status = ResStatus.UNPAIRED
                 activity.reservation = selected_reservation
 
             activity.date = selected_reservation.date

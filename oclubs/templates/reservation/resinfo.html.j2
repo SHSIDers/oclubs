@@ -1,9 +1,9 @@
 {% extends "base.html.j2" %}
 
 {% block additionalcssjs %}
-<script src="{{ url_for('static', filename='js/select2.pkgd.min.js') }}"></script>
+<link href="{{ url_for('static', filename='cdn/cdnjs/select2/4.0.5/css/select2.min.css') }}" rel="stylesheet" type="text/css" media="all" integrity="sha384-HIipfSYbpCkh5/1V87AWAeR5SUrNiewznrUrtNz1ux4uneLhsAKzv/0FnMbj3m6g">
+<script src="{{ url_for('static', filename='cdn/cdnjs/select2/4.0.5/js/select2.min.js') }}" integrity="sha384-xMX6VHK1HYyCMM8zHAVkLHgg2rIDhN01+z4rI70RV2dwzzVlHP95uaDOc5ds7Pow"></script>
 <script src="{{ url_for('static', filename='js/selection.min.js') }}"></script>
-<link href="{{ url_for('static', filename='css/select2.min.css') }}" rel="stylesheet" type="text/css" media="all">
 <link href="{{ url_for('static', filename='css/form.min.css') }}" rel="stylesheet" type="text/css" media="all">
 {% endblock %}
 
@@ -26,21 +26,21 @@
 		<div class="col-md-12">
 			<div class="panel panel-primary">
 				<div class="panel-body">
-					{% if g.reservation.status == 1 %}
+					{% if g.reservation.status.name == 'UNPAIRED' %}
 					<p><b>Time</b>: {{ g.reservation.date.strftime("%Y-%m-%d, %A") }}, {{ g.reservation.timeslot.format_name }}</p>
 					<p><b>Location</b>: {{ g.reservation.classroom.location }} </p>
 					<p><b>Date created</b>: {{ g.reservation.date_of_reservation }}</p>
 					<p><b>Type</b>: Club Reservation</p>
 					<p><b>Reserver</b>: <a href="{{ url_for('clubblueprint.clubintro', club=g.reservation.reserver_club.callsign) }}" alt="{{ g.reservation.reserver_club.name }}">{{ g.reservation.reserver_club.name }}</a> (<a href="{{ url_for('.viewreservations_club', club=g.reservation.reserver_club.callsign) }}">All reservations from {{ g.reservation.reserver_club.name }}</a>)</p>
 					<p><b>Activity</b>: Unpaired</p>
-					{% elif g.reservation.status == 2 %}
+					{% elif g.reservation.status.name == 'PAIRED' %}
 					<p><b>Time</b>: {{ g.reservation.date.strftime("%Y-%m-%d, %A") }}, {{ g.reservation.timeslot.format_name }}</p>
 					<p><b>Location</b>: {{ g.reservation.classroom.location }} </p>
 					<p><b>Date created</b>: {{ g.reservation.date_of_reservation }}</p>
 					<p><b>Type</b>: Club Reservation</p>
 					<p><b>Reserver</b>: <a href="{{ url_for('clubblueprint.clubintro', club=g.reservation.reserver_club.callsign) }}" alt="{{ g.reservation.reserver_club.name }}">{{ g.reservation.reserver_club.name }}</a> (<a href="{{ url_for('.viewreservations_club', club=g.reservation.reserver_club.callsign) }}">All reservations from {{ g.reservation.reserver_club.name }}</a>)</p>
 					<p><b>Activity</b>: <a href="{{ url_for('actblueprint.actintro', activity=g.reservation.activity.callsign) }}" alt="{{ g.reservation.activity.name }}">{{ g.reservation.activity.name }}</a></p>
-					{% elif g.reservation.status == 3 %}
+					{% elif g.reservation.status.name == 'TEACHER' %}
 					{% endif %}
 				</div>
 				<!-- /.panel-body -->
@@ -53,7 +53,7 @@
 					Additional information
 				</div>
 				<div class="panel-body">
-					{% if g.reservation.status == 1 or g.reservation.status == 2 %}
+					{% if g.reservation.status.name == 'UNPAIRED' or g.reservation.status.name == 'PAIRED' %}
 					<p><b>Smartboard needed</b>: {% if g.reservation.SBNeeded %}Yes{% else %}No{% endif %}</p>
 					{% if g.reservation.SBNeeded %}
 					<p><b>Smartboard application description</b>: {{ g.reservation.SBAppDesc }} </p>
@@ -62,7 +62,7 @@
 					<p><b>Director's approval</b>: {% if g.reservation.directors_approval %}Approved{% else %}Pending{% endif %} </p>
 					<p><b>Smartboard application status</b>: {{ g.reservation.SBApp_status.format_name }} </p>
 					{% endif %}
-					{% elif g.reservation.status == 3 %}
+					{% elif g.reservation.status.name == 'TEACHER' %}
 					None
 					{% endif %}
 				</div>

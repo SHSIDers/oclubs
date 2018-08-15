@@ -17,10 +17,10 @@ CSS styles for main content:
 
 .title_link {
   text-decoration: underline;
-}
 
-.title_link:hover {
-  text-decoration: none;
+  & :hover {
+    text-decoration: none;
+  }
 }
 
 .list-group .list-group-item.selected {
@@ -34,11 +34,11 @@ tr.clickable:hover {
 .clickable-a {
   text-decoration: none;
   cursor: default;
-}
 
-.clickable-a:hover {
-  text-decoration: none !important;
-  cursor: pointer;
+  & :hover {
+    text-decoration: none !important;
+    cursor: pointer;
+  }
 }
 /* Table elements that act as clickable links */
 /* Post things: Jumbotron and well <div>s */
@@ -46,19 +46,19 @@ tr.clickable:hover {
   width: 100%;
   height: auto;
 }
-@media (max-width: 2560px) {
-  .post_image {
+
+.post_image {
+  border: 0;
+  @media (max-width: 2560px) {
     padding-top: 2%;
-    border: 0;
+  }
+  @media (max-width: 768px) {
+    padding-top: 0;
   }
 }
-@media (max-width: 768px) {
-  .post_image {
-    padding-top: 0;
-    border: 0;
-  }
 
-  .jumbotron p {
+.jumbotron p {
+  @media (max-width: 768px) {
     font-size: 18px;
   }
 }
@@ -175,7 +175,6 @@ tr.clickable:hover {
 .btn_content {
   margin: 10px;
 }
-
 /* .btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle) {
 /*  border-radius: 6px;
 /* }

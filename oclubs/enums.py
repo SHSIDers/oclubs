@@ -78,6 +78,13 @@ class Building(Enum):
         return ['', 'XMT'][self.value]
 
 
+class ResStatus(Enum):
+    """Enum for status of reservations."""
+    UNPAIRED = 1
+    PAIRED = 2
+    TEACHER = 3
+
+
 class SBAppStatus(Enum):
     """Enum for smartboard application statuses"""
     PENDING = 0

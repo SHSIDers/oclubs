@@ -2,6 +2,17 @@
   $(document)
     .ready(function() {
 
+      $(document).on('click', '.navbar-collapse.in', function(e) {
+        if ($(e.target).is('a')) {
+          $(this).collapse('hide');
+        }
+      });
+
+      $('[data-toggle="popover"]').popover({
+        container: 'body',
+        html: true
+      });
+
       $('.clickable')
         .click(function() {
           window.location = $(this)
@@ -28,17 +39,17 @@
       $('#updatecheck')
         .click(function() {
           event.preventDefault();
-          $( '.modal .btn-primary' ).hide();
+          $('.modal .btn-primary').hide();
           var checked = $('#leader_radio input[type=radio]:checked');
           var label = $("label[for='" + checked.attr('id') + "']");
           if (checked.size() > 0) {
             $('.modal .modal-body p')
               .html('New leader: ' + label.html());
-            $( '.modal .btn-primary' ).show();
+            $('.modal .btn-primary').show();
           } else {
             $('.modal .modal-body p')
               .text('No selection made.');
-            $( '.modal .btn-primary' ).hide();
+            $('.modal .btn-primary').hide();
           }
         });
 
@@ -166,6 +177,14 @@
           window.location = this.value;
         });
 
+      function show_scroll_to_top_btn() {
+        if (document.body.scrollTop > 400 || document.documentElement.scrollTop > 400) {
+          document.getElementById('scroll_to_top_btn').style.display = "block";
+        } else {
+          document.getElementById('scroll_to_top_btn').style.display = "none";
+        }
+      }
+
       window.onscroll = function() {
         show_scroll_to_top_btn();
       };
@@ -187,10 +206,28 @@
           $('#search_btn').addClass('btn-default').removeClass('btn-primary');
         });
 
+      function toggle_day_night() {
+        // set body class
+        var body = document.getElementById("body");
+        var currentClass = body.className;
+
+        body.className = currentClass == "day-mode" ? "night-mode" : "day-mode";
+        console.log(body.className);
+        toggle_day_night_btn(body.className);
+
+        // save preference to local storage
+        localStorage.theme = body.className;
+      }
+
       if (localStorage.theme) {
         document.getElementById("body").className = localStorage.theme;
       } else {
         localStorage.theme = 'day-mode';
+      }
+
+      function toggle_day_night_btn(currentClass) {
+        display = currentClass == "day-mode" ? "Night theme" : "Day theme";
+        $("#day-night-toggle").html(display);
       }
 
       toggle_day_night_btn(localStorage.theme);
@@ -207,35 +244,3 @@
 
     });
 }(jQuery));
-
-$(document).on('click', '.navbar-collapse.in', function(e) {
-  if ($(e.target).is('a')) {
-    $(this).collapse('hide');
-  }
-});
-
-function show_scroll_to_top_btn() {
-  if (document.body.scrollTop > 400 || document.documentElement.scrollTop > 400) {
-    document.getElementById('scroll_to_top_btn').style.display = "block";
-  } else {
-    document.getElementById('scroll_to_top_btn').style.display = "none";
-  }
-}
-
-function toggle_day_night() {
-  // set body class
-  var body = document.getElementById("body");
-  var currentClass = body.className;
-
-  body.className = currentClass == "day-mode" ? "night-mode" : "day-mode";
-  console.log(body.className);
-  toggle_day_night_btn(body.className);
-
-  // save preference to local storage
-  localStorage.theme = body.className;
-}
-
-function toggle_day_night_btn(currentClass) {
-  display = currentClass == "day-mode" ? "Night theme" : "Day theme";
-  $("#day-night-toggle").html(display);
-}

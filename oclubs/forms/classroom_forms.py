@@ -7,7 +7,6 @@ from __future__ import absolute_import, unicode_literals, division
 from oclubs.utils.dates import today, ONE_DAY, DATE_RANGE_MIN, DATE_RANGE_MAX
 
 from flask_wtf import FlaskForm
-# from wtforms.widgets import ListWidget, CheckboxInput
 from wtforms import SelectField, SelectMultipleField, SubmitField, RadioField
 from wtforms.fields.html5 import DateField
 from wtforms.validators import InputRequired

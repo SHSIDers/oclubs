@@ -38,7 +38,7 @@
 			<div class="collapse navbar-collapse" id="important-id-for-collapsing">
 				<ul class="nav navbar-nav navbar-right">
 					<li class="nav-item {% if is_list or is_allact or is_photos %}active{% endif %}">
-						<a href="{{ url_for('actblueprint.allphotos') }}">Clubs</a>
+						<a href="{{ url_for('clubblueprint.clublist', club_filter='all') }}">Clubs</a>
 					</li>
 					<li class="nav-item {% if is_viewres or is_viewroom %}active{% endif %}">
 						<a href="{{ url_for('resblueprint.viewreservations', res_filter='all') }}">Reservations</a>

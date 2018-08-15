@@ -12,7 +12,7 @@
   text-decoration: underline;
 }
 
-.title_link:hover {
+.title_link :hover {
   text-decoration: none;
 }
 
@@ -29,7 +29,7 @@ tr.clickable:hover {
   cursor: default;
 }
 
-.clickable-a:hover {
+.clickable-a :hover {
   text-decoration: none !important;
   cursor: pointer;
 }
@@ -39,19 +39,23 @@ tr.clickable:hover {
   height: auto;
 }
 
+.post_image {
+  border: 0;
+}
+
 @media (max-width: 2560px) {
   .post_image {
     padding-top: 2%;
-    border: 0;
   }
 }
 
 @media (max-width: 768px) {
   .post_image {
     padding-top: 0;
-    border: 0;
   }
+}
 
+@media (max-width: 768px) {
   .jumbotron p {
     font-size: 18px;
   }

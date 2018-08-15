@@ -28,7 +28,7 @@ clubblueprint = Blueprint('clubblueprint', __name__)
 @clubblueprint.route('/view/<clubfilter:club_filter>')
 def clublist(club_filter):
     '''Club list by club type'''
-    num = 18
+    num = 20
     clubs = Club.randomclubs(num, **club_filter.to_kwargs())
     info = {}
     for club in clubs:
@@ -206,13 +206,15 @@ def changeclubinfo_submit(club):
         club.description = FormattedText.handle(current_user, club,
                                                 request.form['description'])
 
-    if request.files.getlist('picture'):
-        try:
-            club.picture = Upload.handle(current_user, club,
-                                         request.files.getlist('picture')[0])
-        except UploadNotSupported:
-            fail('Please upload the correct file type.', 'clubinfo')
-            return redirect(url_for('.changeclubinfo', club=club.callsign))
+    if 'picture' in request.files:
+        file = request.files['picture']
+        if file.filename != '':
+            try:
+                club.picture = Upload.handle(current_user, club,
+                                             file)
+            except UploadNotSupported:
+                fail('Please upload the correct file type.', 'clubinfo')
+                return redirect(url_for('.changeclubinfo', club=club.callsign))
 
     teacher_email = request.form['email']
 
@@ -724,13 +726,14 @@ def newclub_submit():
         c.description = FormattedText.handle(current_user, c,
                                              request.form['description'])
 
-        if request.files.getlist('picture'):
-            try:
-                c.picture = Upload.handle(
-                    current_user, c,
-                    request.files.getlist('picture')[0])
-            except UploadNotSupported:
-                fail('Please upload the correct file type.', 'clubinfo')
+        if 'picture' in request.files:
+            file = request.files['picture']
+            if file.filename != '':
+                try:
+                    c.picture = Upload.handle(
+                        current_user, c, file)
+                except UploadNotSupported:
+                    fail('Please upload the correct file type.', 'clubinfo')
 
         return redirect(url_for('.clubintro', club=c.callsign))
     return redirect(url_for('.newclub'))

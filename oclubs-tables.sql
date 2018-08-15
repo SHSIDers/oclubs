@@ -64,7 +64,7 @@ CREATE TABLE activity (
 	act_location varchar(255) NOT NULL,
 	act_cas int NOT NULL, # CAS hours
 	act_post int NOT NULL, # Foreign key to text.text_id
-	act_selections varchar(255), NOT NULL # stores object in JSON
+	act_selections varchar(255) NOT NULL, # stores object in JSON
 	act_reservation int, # Foreign key to reservation.reservations_id
 );
 
@@ -168,14 +168,12 @@ CREATE TABLE classroom (
 	room_number varchar(16) NOT NULL,
 	room_studentsToUseLunch boolean NOT NULL, # true = available to students, false = not available to students
 	room_studentsToUseAfternoon boolean NOT NULL, # true = available to students, false = not available to students
-	room_building tinyint, # Enum Building
+	room_building tinyint NOT NULL, # Enum Building
 	room_desc varchar(255) # optional descriptors (eg ASB only)
 );
 
-CREATE INDEX room_id ON classroom (room_id);
-
 CREATE TABLE reservation (
-	res_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT;
+	res_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	res_activity int, # Foreign key to act.act_id
 	res_date int unsigned NOT NULL, # The date when the reservation is effective
 	res_date_of_res int unsigned NOT NULL, # The date when the reservation was created
@@ -188,11 +186,10 @@ CREATE TABLE reservation (
 	res_classroom int NOT NULL, # Foreign key to classroom.room_id
 	res_SBNeeded boolean NOT NULL, # true = need smartboard, false = no need smartboard
 	res_SBAppDesc varchar(512),
-	res_instructors_approval boolean DEFAULT false,
-	res_directors_approval boolean DEFAULT false,
-	res_SBApp_status tinyint DEFAULT 0 # based on SBAppStatus enum
+	res_instructors_approval boolean NOT NULL DEFAULT false,
+	res_directors_approval boolean NOT NULL DEFAULT false,
+	res_SBApp_status tinyint NOT NULL DEFAULT 0 # based on SBAppStatus enum
 );
 
-CREATE INDEX res_id ON classroom (res_id);
 CREATE INDEX res_SBNeeded ON reservation (res_SBNeeded);
 CREATE INDEX res_SBApp_status ON reservation (res_SBApp_status);

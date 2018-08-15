@@ -9,7 +9,7 @@ from datetime import date, timedelta
 from oclubs.utils.dates import dateobj_to_int, int_to_dateobj, ONE_DAY
 from oclubs.access import database
 from oclubs.objs.base import BaseObject, Property, paged_db_read
-from oclubs.enums import Building, ActivityTime, SBAppStatus
+from oclubs.enums import Building, ActivityTime, SBAppStatus, ResStatus
 
 
 class Reservation(BaseObject):
@@ -22,7 +22,7 @@ class Reservation(BaseObject):
     date_of_reservation = Property('res_date_of_res',
                                    (int_to_dateobj, dateobj_to_int))
     timeslot = Property('res_timeslot', ActivityTime)
-    status = Property('res_status')
+    status = Property('res_status', ResStatus)
     activity_name = Property('res_activity_name')
     reserver_name = Property('res_reserver_name')   # club name, teacher name
     reserver_club = Property('res_reserver_club', 'Club')
@@ -70,7 +70,7 @@ class Reservation(BaseObject):
         conds['where'] = conds.get('where', [])
 
         if status is not None:
-            conds['where'].append(('=', 'res_status', status))
+            conds['where'].append(('=', 'res_status', status.value))
 
         if SBNeeded is not None:
             conds['where'].append(('=', 'res_SBNeeded', SBNeeded))

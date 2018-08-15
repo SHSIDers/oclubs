@@ -3,9 +3,9 @@
 
 {% block additionalcssjs %}
 <link href="{{ url_for('static', filename='css/sidebar.min.css') }}" rel="stylesheet" type="text/css" media="all">
-<script src="{{ url_for('static', filename='js/imagesloaded.pkgd.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/masonry.pkgd.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/infinite-scroll.pkgd.min.js') }}"></script>
+<script src="{{ url_for('static', filename='cdn/cdnjs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js') }}" integrity="sha384-YnGSHPPWEUDKMHFPOVmNP7Xyfwx5G0CHet6IoNgiX6CbFZS8gCeIfEgB1MgPwjdI"></script>
+<script src="{{ url_for('static', filename='cdn/cdnjs/masonry/4.2.2/masonry.pkgd.min.js') }}" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D"></script>
+<script src="{{ url_for('static', filename='cdn/cdnjs/jquery-infinitescroll/3.0.4/infinite-scroll.pkgd.min.js') }}" integrity="sha384-QxL4IMrVuFPsPuCMuAII/wqdwTA6jFrOa2Vdl0/pxSu8DnAK8WeofnkBnpf/GdVf"></script>
 <script src="{{ url_for('static', filename='js/content.min.js') }}"></script>
 {% endblock %}
 

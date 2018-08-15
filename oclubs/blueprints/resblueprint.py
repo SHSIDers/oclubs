@@ -4,6 +4,9 @@
 
 from __future__ import absolute_import, unicode_literals, division
 
+from __future__ import print_function
+import sys
+
 from datetime import date
 
 from flask import (
@@ -14,7 +17,8 @@ from flask_login import current_user
 
 from oclubs.utils.dates import today, str_to_date_dict, date_to_str_dict, \
     int_to_dateobj
-from oclubs.enums import UserType, ActivityTime, Building, SBAppStatus
+from oclubs.enums import UserType, ActivityTime, Building, \
+    SBAppStatus, ResStatus
 from oclubs.shared import (
     get_callsign_decorator, special_access_required, Pagination
 )
@@ -33,9 +37,9 @@ from oclubs.exceptions import NoRow
 resblueprint = Blueprint('resblueprint', __name__)
 
 
-@resblueprint.route('viewres/<resfilter:res_filter>/', defaults={'page': 1},
+@resblueprint.route('/viewres/<resfilter:res_filter>/', defaults={'page': 1},
                     methods=['GET', 'POST'])
-@resblueprint.route('viewres/<resfilter:res_filter>/<int:page>',
+@resblueprint.route('/viewres/<resfilter:res_filter>/<int:page>',
                     methods=['GET', 'POST'])
 def viewreservations(res_filter, page):
     '''Display reservations'''
@@ -45,6 +49,8 @@ def viewreservations(res_filter, page):
         limit=((page-1)*res_num, res_num),
         **res_filter.to_kwargs())
     pagination = Pagination(page, res_num, count)
+
+    print(res, file=sys.stderr)
 
     # admins get a different page
     is_admin = False
@@ -69,7 +75,7 @@ def viewreservations(res_filter, page):
 
     if request.method == 'POST':
         # rebuild the res_filter
-        temp = list(res_filter.conds)
+        temp_filter = list(res_filter.conds)
 
         # after submit selection
         if form.submit_classrooms.data:
@@ -78,16 +84,16 @@ def viewreservations(res_filter, page):
                     str(form.classrooms_list.data).split(',')
                 # convert a list of room_id from form data
                 # to a list of room_numbers for res_filter
-                temp[2] = [dict(classrooms_list)[id]
-                           for id in selected_classrooms_id]
+                temp_filter[2] = [dict(classrooms_list)[id]
+                                  for id in selected_classrooms_id]
             else:
-                temp[2] = None
+                temp_filter[2] = None
 
         # after clear selection
         if clearBtn.clear.data:
-            temp[2] = None
+            temp_filter[2] = None
 
-        res_filter.conds = tuple(temp)
+        res_filter.conds = tuple(temp_filter)
 
         # refresh the page with the updated res_filter
         return redirect(url_for('.viewreservations', res_filter=res_filter))
@@ -129,7 +135,7 @@ def viewroom_redirect():
     return redirect(url_for('.viewclassrooms', room_filter='all'))
 
 
-@resblueprint.route('viewroom/<roomfilter:room_filter>/',
+@resblueprint.route('/viewroom/<roomfilter:room_filter>/',
                     methods=['GET', 'POST'])
 def viewclassrooms(room_filter):
     '''Display classrooms'''
@@ -140,9 +146,8 @@ def viewclassrooms(room_filter):
     # partially unpack dict
     buildings = [building for building in rdict.keys()]
     timeslots = [timeslot for timeslot in rdict[buildings[0]].keys()]
-    buildings.sort(key=lambda b: b.format_name)
-    # Order: Lunch, Afterschool
-    timeslots.sort(key=lambda t: t.format_name, reverse=True)
+    buildings.sort(key=lambda b: b.value)
+    timeslots.sort(key=lambda t: t.value)
 
     # display all classrooms no longer used
     # no date provided, display all classrooms
@@ -165,23 +170,23 @@ def viewclassrooms(room_filter):
 
     if request.method == "POST":
         # rebuild the room_filter
-        temp = list(room_filter.conds)
+        temp_filter = list(room_filter.conds)
 
         # this choice can no longer be selected
         if form.viewclassroom_options.data == 'all_classrooms':
-            temp[2] = None
+            temp_filter[2] = None
         else:
             try:
                 # try to match one of the keywords
-                temp[2] = str_to_date_dict()[form.date_options.data]
+                temp_filter[2] = str_to_date_dict()[form.date_options.data]
             except KeyError:
                 # if its a custom entered date, do form checking
                 if form.check():
                     if form.date_options.data == 'singledate':
-                        temp[2] = form.date_select_start.data
+                        temp_filter[2] = form.date_select_start.data
                     elif form.date_options.data == 'daterange':
-                        temp[2] = (form.date_select_start.data,
-                                   form.date_select_end.data)
+                        temp_filter[2] = (form.date_select_start.data,
+                                          form.date_select_end.data)
                 else:
                     # form check failed, render template again with error msg
                     return render_template('reservation/viewroom.html.j2',
@@ -192,7 +197,7 @@ def viewclassrooms(room_filter):
                                            today=today(),
                                            form=form)
 
-        room_filter.conds = tuple(temp)
+        room_filter.conds = tuple(temp_filter)
 
         return redirect(url_for('.viewclassrooms', room_filter=room_filter))
 
@@ -221,7 +226,7 @@ def viewclassrooms(room_filter):
                            form=form)
 
 
-@resblueprint.route('<reservation>', methods=['GET', 'POST'])
+@resblueprint.route('/<reservation>', methods=['GET', 'POST'])
 @get_callsign_decorator(Reservation, 'reservation')
 def reservationinfo(reservation):
     '''Information page for a reservation'''
@@ -287,7 +292,7 @@ def reservationinfo(reservation):
                            instructors_approval_form=instructors_approval_form)
 
 
-@resblueprint.route('new/club/<club>', methods=['GET', 'POST'])
+@resblueprint.route('/new/club/<club>', methods=['GET', 'POST'])
 @get_callsign_decorator(Club, 'club')
 @special_access_required
 def newreservation_club(club):
@@ -305,7 +310,7 @@ def newreservation_club(club):
         if form.check():
             res = Reservation.new()
 
-            res.status = 1
+            res.status = ResStatus.UNPAIRED
 
             res.date = form.date_selection.data
             res.date_of_reservation = today()
@@ -384,7 +389,7 @@ def update_free_classrooms():
     return jsonify(choices)
 
 
-@resblueprint.route('viewres/club/<club>',  methods=['GET', 'POST'])
+@resblueprint.route('/viewres/club/<club>',  methods=['GET', 'POST'])
 @get_callsign_decorator(Club, 'club')
 def viewreservations_club(club):
     is_admin = False
@@ -408,16 +413,12 @@ def viewreservations_club(club):
 
     if request.method == 'POST':
         if canReserveForm.submit.data:
-            club.reservation_allowed = (
-                True
-                if canReserveForm.changeCanReserve.data == 'True'
-                else False)
+            club.reservation_allowed = \
+                canReserveForm.changeCanReserve.data == 'True'
 
         if canSBForm.submit.data:
-            club.smartboard_allowed = (
-                True
-                if canSBForm.changeCanSB.data == 'True'
-                else False)
+            club.smartboard_allowed = \
+                canSBForm.changeCanSB.data == 'True'
 
         return redirect(url_for('.viewreservations_club', club=club.callsign))
 
@@ -429,7 +430,7 @@ def viewreservations_club(club):
                            canSBForm=canSBForm)
 
 
-@resblueprint.route('<reservation>/delete')
+@resblueprint.route('/<reservation>/delete')
 @get_callsign_decorator(Reservation, 'reservation')
 def deletereservation(reservation):
     club = reservation.reserver_club
@@ -439,9 +440,9 @@ def deletereservation(reservation):
     room_number = reservation.classroom.room_number
     owner = current_user
 
-    if reservation.status == 1:
+    if reservation.status == ResStatus.UNPAIRED:
         pass
-    elif reservation.status == 2:
+    elif reservation.status == ResStatus.PAIRED:
         reservation.activity.reservation = None
 
     try:
@@ -455,7 +456,5 @@ def deletereservation(reservation):
 
     if ret > 1:
         abort(500)
-
-    flash('Successfully deleted reservation.')
 
     return redirect(url_for('.viewreservations_club', club=club.callsign))
