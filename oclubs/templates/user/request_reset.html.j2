@@ -1,0 +1,69 @@
+{% extends "base.html.j2" %}
+
+{% block additionalcssjs %}
+<link href="{{ url_for('static', filename='css/form.min.css') }}" rel="stylesheet" type="text/css" media="all">
+{% endblock %}
+
+{% block title %}Reset Password{% endblock %}
+
+{% block content %}
+
+<!-- Below Navbar -->
+<div class="container">
+
+	<br>
+	<br>
+	<br>
+
+	<div class="row">
+		<div class="col-md-4">
+		</div>
+
+		<div class="col-md-4">
+			<div class="form-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4>Reset Password</h4>
+					</div>
+					<div class="panel-body">
+            {% if not is_expired %}
+              {% if not is_sent %}
+  						<form class="form-group" action="{{ url_for('reset_request', user=user.callsign) }}" method="post">
+  							<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+                <p><b>Login name</b>: {{ user.passportname }}</p>
+                <p><b>Reset instructions will be sent to</b>:</p>
+                <p>{{ user.email }}</p>
+  							<input class="btn btn-primary" type="submit" value="Reset">
+                <hr class="separator">
+                <span class="help-block">
+                  You can also contact a teacher or "customer support" to reset your password.
+                </span>
+  						</form>
+              {% else %}
+              <p>Reset instructions successfully sent to {{ user.email }}</p>
+              <p>Valid for 30 minutes</p>
+              <span class="help-block">
+                The email will most likely end up in the Spam/Junk folder, so please check thoroughly. If it isn't, you might want to upgrade your spam filter :)
+              </span>
+              {% endif %}
+            {% else %}
+              <p>The link has expired. Please try again.</p>
+            {% endif %}
+					</div>
+					<!-- /.panel-body -->
+				</div>
+				<!-- /.panel -->
+			</div>
+			<!-- /.form-control -->
+		</div>
+		<!-- /.col-md-6 -->
+
+		<div class="col-md-4">
+		</div>
+	</div>
+	<!-- /.row -->
+</div>
+<!-- /.container -->
+
+
+{% endblock %}

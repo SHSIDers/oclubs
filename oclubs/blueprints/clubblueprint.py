@@ -51,16 +51,17 @@ def home_redirect():
 @get_callsign_decorator(Club, 'club')
 def clubintro(club):
     '''Club Intro'''
-    free_join = (current_user.is_active and
-                 club.joinmode == ClubJoinMode.FREE_JOIN and
-                 current_user.type == UserType.STUDENT and
-                 current_user not in club.members)
-    see_email = (current_user.is_active and
-                 current_user.type == UserType.ADMIN or
-                 current_user == club.leader)
-    is_admin = (current_user.type == UserType.CLASSROOM_ADMIN or
-                current_user.type == UserType.DIRECTOR or
-                current_user.type == UserType.ADMIN)
+    free_join = (current_user.is_authenticated and
+                 (club.joinmode == ClubJoinMode.FREE_JOIN and
+                  current_user.type == UserType.STUDENT and
+                  current_user not in club.members))
+    see_email = (current_user.is_authenticated and
+                 (current_user.type == UserType.ADMIN or
+                  current_user == club.leader))
+    is_admin = (current_user.is_authenticated and
+                (current_user.type == UserType.CLASSROOM_ADMIN or
+                 current_user.type == UserType.DIRECTOR or
+                 current_user.type == UserType.ADMIN))
 
     invite_member = club.joinmode == ClubJoinMode.BY_INVITATION
 
@@ -152,7 +153,7 @@ def memberinfo_notify_members(club):
     '''Allow club leader to notify members'''
     notify_contents = request.form['contents']
     if not notify_contents:
-        flash('Please input something.', 'notify_members')
+        flash('Contents cannot be blank', 'notify_members')
         return redirect(url_for('.memberinfo', club=club.callsign))
     for member in club.members:
         member.notify_user(notify_contents)
@@ -161,7 +162,7 @@ def memberinfo_notify_members(club):
                       'notify_contents': notify_contents}
         contents = render_email_template('notifymembers', parameters)
         member.email_user('Notification - ' + club.name, contents)
-    flash('You have successfully notified members.', 'notify_members')
+    flash('Notification sent.', 'notify_members')
     return redirect(url_for('.memberinfo', club=club.callsign))
 
 
@@ -640,7 +641,7 @@ def quitclub_submit():
                                contents)
         club.leader.notify_user(current_user.nickname + ' has quit ' +
                                 club.name + '.')
-        flash('You have successfully quitted ' + club.name + '.', 'quit')
+        flash('Goodbye, ' + club.name + '.', 'quit')
     return redirect(url_for('.quitclub'))
 
 

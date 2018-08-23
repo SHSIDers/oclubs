@@ -1,4 +1,5 @@
 {% macro render_pagination(pagination) %}
+{% if pagination.pages > 1 %}
 <ul class="pagination">
 	{% if pagination.has_prev %}
 	<li>
@@ -28,6 +29,7 @@
 	</li>
 	{% endif %}
 </div>
+{% endif %}
 {% endmacro %}
 
 {% macro get_messages(categories, br_before=False, br_after=False) %}

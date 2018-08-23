@@ -98,7 +98,10 @@ def special_access_required(func):
     @login_required
     @wraps(func)
     def decorated_function(*args, **kwargs):
-        if current_user.type != UserType.ADMIN:
+        if current_user.type != UserType.ADMIN \
+                and current_user.type != UserType.CLASSROOM_ADMIN \
+                and current_user.type != UserType.CLUB_ADMIN \
+                and current_user.type != UserType.DIRECTOR:
             if 'club' in kwargs:
                 club = kwargs['club']
             elif 'activity' in kwargs:

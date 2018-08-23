@@ -177,8 +177,10 @@
 					</div>
 				</div>
 
+				{% endif %}
 			</div>
 			<!-- /.row -->
+
 		</div>
 		<!-- /.col-md-10 -->
 
@@ -186,7 +188,6 @@
 		</div>
 	</div>
 	<!-- /.row -->
-	{% endif %}
 
 	{% if current_user.is_active and current_user == g.club.leader and g.club.is_active %}
 

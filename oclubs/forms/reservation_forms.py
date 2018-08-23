@@ -146,7 +146,7 @@ class NewReservationForm(FlaskForm):
 class PairReservation(FlaskForm):
     reservations_for_pairing = SelectField(
         'Unpaired reservations',
-        choices=[('none', '-------- None available --------')])
+        choices=[('none', 'None available')])
 
     submit = SubmitField('Pair Reservation')
 

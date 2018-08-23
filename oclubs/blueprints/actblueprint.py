@@ -52,17 +52,17 @@ def home_redirect():
 @actblueprint.route('/photos/', defaults={'page': 1})
 @actblueprint.route('/photos/<int:page>')
 def allphotos(page):
-    pic_num = 15
+    act_num = 5
     count, acts = Activity.get_activities_conditions(
         require_photos=True,
-        limit=((page-1)*pic_num, pic_num))
+        limit=((page-1)*act_num, act_num))
     act_latest = ''
     if page == 1:
         try:
             act_latest = acts[0]
         except IndexError:
             pass
-    pagination = Pagination(page, pic_num, count)
+    pagination = Pagination(page, act_num, count)
     current_page = page
     template = 'activity/photos.html.j2' \
                if page == 1 else 'activity/photo-items.html.j2'

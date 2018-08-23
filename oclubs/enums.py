@@ -11,7 +11,7 @@ class UserType(Enum):
     """Enum regarding the type of a user."""
     STUDENT = 1
     TEACHER = 2
-    ADMIN = 3  # legacy
+    ADMIN = 3
     CLUB_ADMIN = 4
     CLASSROOM_ADMIN = 5
     DIRECTOR = 6

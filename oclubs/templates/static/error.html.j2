@@ -1,65 +1,248 @@
-{% extends "base.html.j2" %}{% from 'macros.html.j2' import get_messages %}
+{% extends "base.html.j2" %}
+{% from 'macros.html.j2' import get_messages %}
+
+{% block additionalcssjs %}
+<link href="{{ url_for('static', filename='css/errors.min.css') }}" rel="stylesheet" type="text/css" media="all">
+{% endblock %}
+
 {% block title %}
 {% if error_type is equalto 500 %}
-500 Internal Server Error
+Poof! Something is burning!
 {% endif %}
 {% if error_type is equalto 404 %}
-404 Page Not Found
+Nothing Here to Connect
 {% endif %}
 {% if error_type is equalto 403 %}
-403 Forbidden
+For Her Majesty Only!
 {% endif %}
 {% if error_type is equalto 401 %}
-401 Unauthorized
+ID, Please?
 {% endif %}
 {% if error_type is equalto 418 %}
-418 I'm a teapot
+I'm a teapot
 {% endif %}
 {% if error_type is equalto 400 %}
-400 Bad Request
+Doesn't fit!
 {% endif %}
 {% endblock %}
 {% block content %}
 
 <!-- Below Navbar -->
-<div class="container error">
-{% if error_type is equalto 500 %}
-	<h1 class="title text-center">500 Internal Server Error</h1>
-	<center><img src="{{ getpicture('smiley_face', 'png') }}" class="img-responsive" alt="Sad face" width="40%"></center>
-	<br><br>
-	<center><p>Oops. This is an awkward moment. Please contact us and tell us about what you have done so far. Hopefully you can also send the content below to us. We will reply and fix this error as soon as possible. Please click advice/opinion at the bottom of this page to contact us. Thank you for your coorperation.</p></center>
-	{{ get_messages(['500']) }}
-{% endif %}
-{% if error_type is equalto 404 %}
-	<h1 class="title text-center">404 Page Not Found</h1>
-	<center><img src="{{ getpicture('norecord') }}" class="img-responsive img-thumbnail" alt="No Record" width="40%"></center>
-	<br><br>
-	<center><p>We are sorry to tell you. We do not have record for the address you entered. Please recheck if you entered correctly. Thank you for your cooperation.</p></center>
-{% endif %}
-{% if error_type is equalto 403 %}
-	<h1 class="title text-center">403 Forbidden</h1>
-	<center><img src="{{ getpicture('noaccess') }}" class="img-responsive img-thumbnail" alt="No Access" width="40%"></center>
-	<br><br>
-	<center><p>We are sorry to tell you. You have no access to the url you entered. Please login to check if you really have the access. If you are already logged in, then it is certain that you have no access.</p></center>
-{% endif %}
-{% if error_type is equalto 401 %}
-	<h1 class="title text-center">401 Unauthorized</h1>
-	<center><img src="{{ getpicture('notloggedin', 'png') }}" class="img-responsive" alt="Not Logged In" width="40%"></center>
-	<br><br>
-	<center><p>We are sorry to tell you. You are not logged in. Please login to check if you have the access to the url you entered.</p></center>
-{% endif %}
-{% if error_type is equalto 418 %}
-	<h1 class="title text-center">418 I'm a teapot</h1>
-	<center><img src="{{ getpicture('teapot', 'png') }}" class="img-responsive img-thumbnail" alt="I'm a teapot" width="40%"></center>
-	<br><br>
-	<center><p>oClubs server is a little teapot; the resulting entity body is short and stout.</p></center>
-	<center><p>You see this page possibly because you have disabled session in your browser.</p></center>
-{% endif %}
-{% if error_type is equalto 400 %}
-	<h1 class="title text-center">400 Bad Request</h1>
-	<br><br>
-	<center><p>We couldn't understand your request.</p></center>
-{% endif %}
+<div class="container">
+	{% if error_type is equalto 500 %}
+	<br>
+	<div class="row">
+		<div class="col-md-4">
+		</div>
+
+		<div class="col-md-4">
+			<p>
+				<img class="img-thumbnail" src="{{ url_for('static', filename='images/errors/500.png')  }}">
+			</p>
+		</div>
+
+		<div class="col-md-4">
+		</div>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-md-3">
+		</div>
+
+		<div class="col-md-6 text-center">
+			<h4>500 Internal Server Error</h4>
+			<div class="help-block">
+				Uh oh, the outlet is broken!
+				<br> Something went wrong on our side.
+				<br>
+				<br>
+				Please help us fix this by <a class="title_link" target="_blank" href="{{ url_for('reportbug') }}">reporting this bug</a>. <br>
+				Please include the following debug information:
+			</div>
+		</div>
+
+		<div class="col-md-3">
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-3">
+		</div>
+
+		<div class="col-md-6 text-center">
+				<code> {{ get_messages(['500']) }} </code>
+			</div>
+		</div>
+
+		<div class="col-md-3">
+		</div>
+	</div>
+	{% endif %}
+	{% if error_type is equalto 404 %}
+	<br>
+	<div class="row">
+		<div class="col-md-4">
+		</div>
+
+		<div class="col-md-4">
+			<p>
+				<img class="img-thumbnail" src="{{ url_for('static', filename='images/errors/404.png')  }}">
+			</p>
+		</div>
+
+		<div class="col-md-4">
+		</div>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-md-3">
+		</div>
+
+		<div class="col-md-6 text-center">
+			<h4>404 Not Found</h4>
+			<div class="help-block">
+				Couldn't find any outlets here...
+				<br> The page you were looking for doesn't exist.
+				<br> Take me somewhere with outlets: <a href="{{ url_for('homepage') }}">Home</a>
+			</div>
+		</div>
+
+		<div class="col-md-3">
+		</div>
+	</div>
+	{% endif %}
+	{% if error_type is equalto 403 %}
+	<br>
+	<div class="row">
+		<div class="col-md-4">
+		</div>
+
+		<div class="col-md-4">
+			<p>
+				<img class="img-thumbnail" src="{{ url_for('static', filename='images/errors/403.png')  }}">
+			</p>
+		</div>
+
+		<div class="col-md-4">
+		</div>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-md-3">
+		</div>
+
+		<div class="col-md-6 text-center">
+			<h4>403 Forbidden</h4>
+			<div class="help-block">
+				This special outlet is for her majesty only! <br>
+				The page you're trying visit requires special access.
+			</div>
+		</div>
+
+		<div class="col-md-3">
+		</div>
+	</div>
+	{% endif %}
+	{% if error_type is equalto 401 %}
+	<br>
+	<div class="row">
+		<div class="col-md-4">
+		</div>
+
+		<div class="col-md-4">
+			<p>
+				<img class="img-thumbnail" src="{{ url_for('static', filename='images/errors/401.png')  }}">
+			</p>
+		</div>
+
+		<div class="col-md-4">
+		</div>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-md-3">
+		</div>
+
+		<div class="col-md-6 text-center">
+			<h4>401 Unauthorized</h4>
+			<div class="help-block">
+				ID, please? <br>
+				You may need to <a class="title_link" href="{{ url_for('login') }}">login</a>.
+			</div>
+		</div>
+
+		<div class="col-md-3">
+		</div>
+	</div>
+	{% endif %}
+	{% if error_type is equalto 418 %}
+	<br>
+	<div class="row">
+		<div class="col-md-4">
+		</div>
+
+		<div class="col-md-4">
+			<p>
+				<img class="img-thumbnail" src="{{ getpicture('teapot', 'png') }}">
+			</p>
+		</div>
+
+		<div class="col-md-4">
+		</div>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-md-3">
+		</div>
+
+		<div class="col-md-6 text-center">
+			<h4>418 I'm a teapot</h4>
+			<div class="help-block">
+				Connect is a little teapot. <br>
+				The requested entity body is short and stout. ~ <br>
+				The server refuses to brew coffee because it is a teapot.
+				<br>
+				<br>
+				April 1st? <br>
+				<a class="title_link" target="_blank" href="https://en.wikipedia.org/wiki/Hyper_Text_Coffee_Pot_Control_Protocol">Wikipedia: Hyper Text Coffee Pot Control Protocol (HTCPCP)</a>
+			</div>
+		</div>
+
+		<div class="col-md-3">
+		</div>
+	</div>
+	{% endif %}
+	{% if error_type is equalto 400 %}
+	<br>
+	<div class="row">
+		<div class="col-md-4">
+		</div>
+
+		<div class="col-md-4">
+			<p>
+				<img class="img-thumbnail" src="{{ url_for('static', filename='images/errors/400.png')  }}">
+			</p>
+		</div>
+
+		<div class="col-md-4">
+		</div>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-md-3">
+		</div>
+
+		<div class="col-md-6 text-center">
+			<h4>400 Bad Request</h4>
+			<div class="help-block">
+				Doesn't fit the outlet! <br>
+				The server couldn't understand your request.
+			</div>
+		</div>
+
+		<div class="col-md-3">
+		</div>
+	</div>
+	{% endif %}
 </div>
 
 {% endblock %}

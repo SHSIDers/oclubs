@@ -6,7 +6,7 @@ CSS styles for main content:
 
 */
 #separator_title {
-  margin-top: 8px;
+  margin-top: 5px;
   margin-bottom: 23px;
 }
 
@@ -15,17 +15,33 @@ CSS styles for main content:
   margin-bottom: 5px;
 }
 
+#newclubbtn {
+  margin-top: 20px;
+}
+
 .title_link {
   text-decoration: underline;
+}
 
-  & :hover {
-    text-decoration: none;
-  }
+.title_link:hover {
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .list-group .list-group-item.selected {
   font-weight: bold;
 }
+
+.img-thumbnail {
+  transition: none;
+}
+/* Vertical alignment */
+.bottom-column {
+  float: none;
+  display: table-cell;
+  vertical-align: bottom;
+}
+/* Vertical alignment */
 /* Table elements that act as clickable links */
 tr.clickable:hover {
   cursor: pointer;
@@ -33,20 +49,14 @@ tr.clickable:hover {
 
 .clickable-a {
   text-decoration: none;
-  cursor: default;
+}
 
-  & :hover {
-    text-decoration: none !important;
-    cursor: pointer;
-  }
+.clickable-a:hover {
+  text-decoration: none !important;
+  cursor: pointer;
 }
 /* Table elements that act as clickable links */
 /* Post things: Jumbotron and well <div>s */
-.club_list_image {
-  width: 100%;
-  height: auto;
-}
-
 .post_image {
   border: 0;
   @media (max-width: 2560px) {
@@ -62,8 +72,18 @@ tr.clickable:hover {
     font-size: 18px;
   }
 }
+
+.panel {
+  box-shadow: none;
+}
 /* Post things: Jumbotron and well divs */
 /* Image gallery */
+.homepage_thumbnail {
+  background: 50% 50% no-repeat;
+  width: 250px;
+  height: 250px;
+}
+
 .grid-item,
 .grid-sizer {
   width: 23.5%;
@@ -168,16 +188,13 @@ tr.clickable:hover {
 /* Club list refresh btn */
 /* Modal forms */
 .modal .form-group {
-  margin-bottom: 0;
+  margin-bottom: 20px;
 }
 /* Modal forms */
 /* Buttons */
 .btn_content {
   margin: 10px;
 }
-/* .btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle) {
-/*  border-radius: 6px;
-/* }
 /* Buttons */
 /* loading gif */
 @keyframes lds-magnify {

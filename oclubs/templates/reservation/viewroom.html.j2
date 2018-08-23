@@ -187,10 +187,14 @@
                 {% endif %}
                 <td>{{ timeslot.format_name }}</td>
                 <td>
-                  {% for room in info[3][building][timeslot][date] %}
-                  {{ room.room_number }}
-                  {% if not loop.last %}&nbsp;&nbsp;{% endif %}
-                  {% endfor %}
+                  {% if info[3][building][timeslot][date] %}
+                    {% for room in info[3][building][timeslot][date] %}
+                    {{ room.room_number }}
+                    {% if not loop.last %}&nbsp;&nbsp;{% endif %}
+                    {% endfor %}
+                  {% else %}
+                    None
+                  {% endif %}
                 </td>
               </tr>
               {% endfor %}

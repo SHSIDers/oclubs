@@ -10,6 +10,10 @@ DATE_RANGE_MIN = date(2018, 8, 25)
 DATE_RANGE_MAX = date(2019, 7, 5)
 
 
+def timenow():
+    return datetime.now()
+
+
 def today():
     return date.today()
 

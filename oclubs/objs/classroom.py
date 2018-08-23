@@ -39,7 +39,8 @@ class Classroom(BaseObject):
         buildings type: either one Building object or list of Building objects
         timeslot type: ActivityTime object
 
-        return: list of Classroom objects
+        :returns: Classroom objects
+        :rtype: list
         """
 
         conds = {}

@@ -1,109 +1,220 @@
-{% extends "base.html.j2" %}
-{% block title %}Staging{% endblock %}
-{% block additionalcssjs %}<link href="{{ blockpiccss }}" rel="stylesheet" type="text/css" media="all">{% endblock %}
-{% block content %}
-<div class="container">
-	{% for pic in top_pic %}
-	<div class="col-xs-{{ pic.size }} blockpic clickable" data-href="{{ pic.link }}">
-		<div class="img" id="blockpic-{{ pic.id }}" alt=""></div>
-		<div class="mask">
-			<h2>{{ pic.actname }}</h2>
-			<p>{{ pic.content }}</p>
-		</div>
-	</div>
-	{% endfor %}
-</div>
+<!DOCTYPE HTML>
+<html class="hidden" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<meta name="renderer" content="webkit">
 
-<br><br>
+	<script src="{{ url_for('static', filename='cdn/cdnjs/jquery/2.2.2/jquery.min.js') }}" integrity="sha384-mXQoED/lFIuocc//nss8aJOIrz7X7XruhR6bO+sGceiSyMELoVdZkN7F0oYwcFH+"></script>
 
-<div class="container">
-	<div class="hp-container row">
-		<br>
-		<div class="col-sm-4">
-			<div class="panel no-border">
-				<div class="panel-heading">
-					<h2 class="title_next">Excellent Clubs</h2>
-				</div>
-				<div class="panel-body">
-					<div class="list-group" id="hpexlist">
-						{% for club in ex_clubs %}
-						<a href="{{ url_for('clubblueprint.clubintro', club=club.callsign) }}" class="list-group-item">
-							<img src="{{ club.picture.location_external }}" class="img-responsive img-thumbnail hp-excclub-pic" alt="Excellent Club">
-							<h3>{{ club.name }}</h3>
-							<p>{{ club.intro }}</p>
-							<div class="clearfix"></div>
-						</a>
-						{% endfor %}
-						<a href="{{ url_for('clubblueprint.clublist', club_filter='excellent') }}" class="list-group-item">
-							<h3 class="text-center">More</h3>
-						</a>
-					</div>
-				</div>
+	<link href="{{ url_for('static', filename='cdn/cdnjs/twitter-bootstrap/3.3.6/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" media="all" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7">
+	<script src="{{ url_for('static', filename='cdn/cdnjs/twitter-bootstrap/3.3.6/js/bootstrap.min.js') }}" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"></script>
+
+	<!-- <link href="{{ url_for('static', filename='css/oclubs.min.css') }}" rel="stylesheet" type="text/css" media="all"> -->
+	<script src="{{ url_for('static', filename='js/oclubs.min.js') }}"></script>
+
+	<link href="{{ url_for('static', filename='css/base.min.css') }}" rel="stylesheet" type="text/css" media="all">
+	<link href="{{ url_for('static', filename='css/content.min.css') }}" rel="stylesheet" type="text/css" media="all">
+	<link href="{{ url_for('static', filename='css/form.min.css') }}" rel="stylesheet" type="text/css" media="all">
+
+	<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" />
+
+	<title>SHSID Connect</title>
+</head>
+
+<body id="home_body" class="preload">
+
+	<nav class="navbar" id="home_navbar">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#important-id-for-collapsing" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand clearfix" href="/"><img src="{{ url_for('static', filename='images/logo-night.png') }}" class="img-responsive" alt=""></a>
+			</div>
+			<div class="collapse navbar-collapse" id="important-id-for-collapsing">
+				<ul class="nav navbar-nav navbar-right">
+					<li class="nav-item {% if is_list or is_allact or is_photos %}active{% endif %}">
+						<a href="{{ url_for('clubblueprint.clublist', club_filter='all') }}">Clubs</a>
+					</li>
+					<li class="nav-item {% if is_viewres or is_viewroom %}active{% endif %}">
+						<a href="{{ url_for('resblueprint.viewreservations', res_filter='all') }}">Reservations</a>
+					</li>
+					{% if current_user.is_authenticated %}
+					<li class="nav-item {% if is_user %}active{% endif %}">
+						<a href="{{ url_for('userblueprint.personal') }}"><span class="glyphicon glyphicon-user"></span>&nbsp;{{ current_user.nickname }}</a>
+					</li>
+					<li class="nav-item">
+						{% with unread_notifications_num = current_user.get_unread_notifications_num() %}
+						<button class="btn btn-lg btn-link" id="notifications_button">
+							<a href="{{ url_for('userblueprint.notifications') }}" id="notifications_button_link"><span class="glyphicon glyphicon-bell"></span></a>
+						</button>
+						{% if unread_notifications_num %}<span class="badge badge-notify">{{ unread_notifications_num }}</span>{% endif %}
+						{% endwith %}
+					</li>
+					{% else %}
+					<li>
+						<a href="{{ url_for('login', next=request.path) }}"><span class="glyphicon glyphicon-log-in"></span>&nbsp;Login</a>
+					</li>
+					{% endif %}
+				</ul>
 			</div>
 		</div>
-		<div class="col-sm-8">
-			<div class="homepage_block">
-				<div class="col-xs-3">
-					<img id='shsidtimes' src="static/images/cover.jpg" class="img-responsive img-thumbnail" alt="SHSID|Times Cover">
-				</div>
-				<div class="col-xs-9">
-					<div class="col-xs-10 no-padding">
-						<h1 class="title_next">Clubs in SHSID</h1>
-					</div>
-					<div id="a-shsid" class="col-xs-2">
-						<a href="{{ url_for('clubblueprint.clublist', club_filter='all') }}"><h1><span class="glyphicon glyphicon-list float-right"></span></h1></a>
-					</div>
-				</div>
-				<div class="col-sm-9">
-					<h3 class="no-top-margin">Student-led, creative, and surprising</h3>
-				</div>
-				<div class="col-sm-9">
-				<p>In SHSID, many of students participate in club activities. In academics, sports, and many other fields, students can always find what they are interested and join these clubs. All clubs are led by students, and yet they often give out surprising achievements. Let's explore the world of clubs on this website, oClubs!</p>
-				</div>
-				<div class="clearfix"></div>
+	</nav>
+
+	<div class="container" id="homepage_block">
+		<div class="row">
+			<div class="col-md-3">
 			</div>
-			<br>
-			<div class="homepage_block">
-				<h1 class="text-center title_next">Club Photos</h1>
-				{% for pic in pic_acts %}
-				<div class="col-xs-4">
-					<a href="{{ pic.link }}"><img src="{{ pic.picture.location_external }}" class="img-responsive img-thumbnail homepage_clubphotos" alt="{{ pic.actname }}"></a>
-				</div>
-				{% endfor %}
-				<div class="clearfix"></div>
+
+			<div class="col-md-7">
+				<h1>Lorem Ipsum.</h1>
 				<br>
-				<a id="homepage_allclubphotos" class="btn btn-block btn-primary" href="{{ url_for('actblueprint.allphotos') }}">All Club Photos</a>
+				<h4>
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+				</h4>
+				<br>
+				<button class="btn btn-lg btn_orange" id="to_excellentclub">Check out Excellent Clubs</button>
+			</div>
+			<!-- /.col-md-* -->
+
+			<div class="col-md-2">
 			</div>
 		</div>
-		<br>
+		<!-- /.row -->
 	</div>
-	<div class="clearfix"></div>
-	<br>
+	<!-- /.container -->
 
-	<div id="homepage_functions" class="row">
-		<br>
-		<div class="col-xs-3 homepage_function">
-			<h1><span class="glyphicon glyphicon-cd"></span></h1>
-			<h2>Club Members</h2>
-			<h4>Online application</h4>
-		</div>
-		<div class="col-xs-3 homepage_function">
-			<h1><span class="glyphicon glyphicon-apple"></span></h1>
-			<h2>Club Leaders</h2>
-			<h4>Online management</h4>
-		</div>
-		<div class="col-xs-3 homepage_function">
-			<h1><span class="glyphicon glyphicon-globe"></span></h1>
-			<h2>Club Teachers</h2>
-			<h4>Online operation</h4>
-		</div>
-		<div class="col-xs-3 homepage_function clickable" data-href="{{ url_for('about') }}">
-			<h1><center><img src="static/images/more.jpg" class="img-responsive img-circle" alt="More"></center></h1>
-			<h2 class="hp-lrnmr">Learn More</h2>
-			<h4>oClubs's functions</h4>
-		</div>
-		<br>
-	</div>
-</div>
+	<div class="homepage_band">
+		<div class="container">
 
-{% endblock %}
+			<div class="row" id="excellentclub">
+
+				<div class="row">
+					<div class="col-md-1">
+					</div>
+
+					<div class="col-md-10">
+						<h2>Excellent Clubs</h2>
+						<hr class="separator" id="separator_title">
+					</div>
+					<!-- /.col-md-10 -->
+
+					<div class="col-md-1">
+					</div>
+				</div>
+				<!-- /.row -->
+
+				{% for club in excellent_clubs %}
+				<div class="row">
+					<div class="col-md-1">
+					</div>
+
+					<div class="col-md-10">
+						<div class="panel panel-default">
+							<div class="panel-body">
+								<div class="media">
+									<div class="media-body">
+										<div class="row">
+
+											<div class="col-md-3 col-xs-12">
+												<center>
+													<div class="club_list_image">
+														{% if club.picture.location_external == '/static/images/icons/icon101.jpg' %}
+														<img class="img-thumbnail" src="{{ url_for('static', filename='cdn/picsum/640/640/' + range(10, 50)|random|string) }}" alt="{{ club.name }}">
+														<a tabindex="0" class="btn btn-xs" role="button" data-toggle="popover" data-trigger="focus" title="This is a placeholder image" data-content="No image was uploaded because the club leader is lazy. <br> Image source: <a href='https://picsum.photos'>Lorem Picsum</a>"><span class="glyphicon glyphicon-info-sign"></span></a>
+														{% else %}
+														<a class="" href="{{ club.picture.location_external }}">
+															<img class="img-thumbnail" src="{{ club.picture.location_external }}" alt="{{ club.name }}">
+														</a>
+														{% endif %}
+													</div>
+												</center>
+											</div>
+
+											<div class="col-md-9 col-xs-12">
+												<br class="visible-xs">
+												<br class="visible-xs">
+												<h4 class="media-heading"><a class="title_link" href="{{ url_for('clubblueprint.clubintro', club=club.callsign) }}">{{ club.name }}</a></h4>
+												<hr class="separator">
+												<p>{{ club.intro }}</p>
+												{% if info[club.name] %}
+												<br>
+												<p><b>Most recent</b>: <a class="title_link" href="{{ url_for('actblueprint.actintro', activity=info[club.name].callsign) }}">{{ info[club.name].name }}</a></p>
+												<p>{{ info[club.name].description.formatted }}
+													{% endif %}
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- /.panel-body -->
+							</div>
+							<!-- /.panel -->
+						</div>
+						<!-- /.col-md-10 -->
+
+						<div class="col-md-1">
+						</div>
+					</div>
+					<!-- /.row -->
+					{% endfor %}
+
+				</div>
+				<!-- /.row -->
+
+				<br>
+
+				<div class="row">
+					<div class="col-md-12 text-center">
+						<div class="btn-group btn_content">
+
+							<a class="btn btn_lg btn_orange" href="{{ url_for('actblueprint.allphotos') }}">View Photos</a>
+						</div>
+							<div class="btn-group btn_content">
+
+							<a class="btn btn_lg btn_orange" href="{{ url_for('clubblueprint.clublist', club_filter='all') }}">View Clubs</a>
+						</div>
+					</div>
+				</div>
+
+				<br>
+				<br>
+				<br>
+
+			</div>
+			<!-- /.container -->
+
+		</div>
+		<!-- /.homepage-band -->
+
+
+		{% include 'static/footer.html.j2' %}
+
+
+
+
+
+		<div class="scroll_to_top">
+			<a class="btn btn-default" id="scroll_to_top_btn" href="#"><i class="glyphicon glyphicon-triangle-top"></i></a>
+		</div>
+
+		<noscript>
+
+			<footer class="footer navbar-fixed-bottom">
+				<div class="container">
+					<div class="alert alert-danger">
+						<center><span class="glyphicon glyphicon-warning-sign"></span> JavaScript seems to be disabled. To get the best experience, please enable JavaScript.</center>
+					</div>
+				</div>
+			</footer>
+
+		</noscript>
+
+	</body>
+	</html>

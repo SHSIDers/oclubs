@@ -98,7 +98,7 @@ class Upload(BaseObject):
             elif exif[ORIENTATION] == 8:
                 im = im.rotate(90, expand=True)
 
-        im.thumbnail((600, 450))
+        im.thumbnail((4000, 3000))
         im.save(permpath, optimize=True)
 
     @staticmethod

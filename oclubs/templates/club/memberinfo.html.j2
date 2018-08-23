@@ -35,15 +35,16 @@
 		</div>
 
 		<div class="col-md-10">
-			{% if get_flashed_messages(['notify_members']) %}
+			{% if get_flashed_messages(category_filter=['notify_members']) %}
 			<div class="alert alert-warning">
-				<span class="glyphicon glyphicon-warning-ok"></span>
+				<span class="glyphicon glyphicon-warning-sign"></span>
 				{% for message in get_flashed_messages(category_filter=['notify_members']) %}
 				{{ message }}
 				{% endfor %}
 			</div>
 			{% endif %}
 
+			{% if current_user == g.club.leader %}
 			<a class="btn btn-primary" href="#notifyMembers" data-toggle="modal" data-target="#notifyMembers">Notify Members</a>
 
 			<div class="modal fade" id="notifyMembers" tabindex="-1" role="dialog">
@@ -51,31 +52,22 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-							<h4 class="modal-title">Invite Member</h4>
+							<h4 class="modal-title">Notify Members</h4>
 						</div>
 						<div class="modal-body">
 							<div class="form-group">
-								<form action="{{ url_for('.invitemember', club=g.club.callsign) }}" method="post" id="invite_form">
+								<form action="{{ url_for('clubblueprint.memberinfo_notify_members', club=g.club.callsign) }}"  method="post" id="notify_form">
 									<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 
 									<div class="form-group">
-										<div class="input-group">
-											<span class="input-group-addon">Grade and class</span>
-											<input class="form-control" id="gradeclass" type="text" name="gradeclass">
-										</div>
-									</div>
-
-									<div class="form-group">
-										<div class="input-group">
-											<span class="input-group-addon">Passport Name</span>
-											<input class="form-control" id="passportname" type="text" name="passportname">
-										</div>
+										Contents
+										<textarea class="form-control" rows="8" id="contents" name="contents"></textarea>
 									</div>
 
 									<hr class="separator">
 									<div class="btn-toolbar">
 										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-										<input type="submit" class="btn btn-primary" value="Invite">
+										<input type="submit" class="btn btn-primary" value="Send">
 									</div>
 								</form>
 							</div>
@@ -83,29 +75,9 @@
 					</div><!-- /.modal-content -->
 				</div><!-- /.modal-dialog -->
 			</div><!-- /.modal -->
-			<div class="modal fade" id="notifyMembers">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<form class="form-group" action="{{ url_for('clubblueprint.memberinfo_notify_members', club=g.club.callsign) }}" id="notify_form" method="post">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal">&times;</button>
-								<h4 class="modal-title">Notify Members</h4>
-							</div>
-							<div class="modal-body">
-								<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-								<label for="contents">Contents:</label>
-								<textarea class="form-control" rows="10" id="contents" name="contents"></textarea>
-								<div class="clearfix"></div>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-								<input type="submit" class="btn btn-primary" value="Notify Members">
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
+			{% endif %}
 		</div>
+		<!-- /.col-md-10 -->
 
 		<div class="col-md-1">
 		</div>

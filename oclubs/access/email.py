@@ -16,7 +16,7 @@ from envelopes import Envelope, SMTP
 
 from oclubs.access.delay import delayed_func
 
-from_email = ('no-reply@oclubs.shs.cn', 'oClubs')
+from_email = ('no-reply@oclubs.shs.cn', 'Connect')
 
 
 @delayed_func

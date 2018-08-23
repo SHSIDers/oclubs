@@ -2639,6 +2639,12 @@ thead {
   }
 }
 
+.img-thumbnail {
+  -webkit-transition: none;
+  -o-transition: none;
+  transition: none;
+}
+
 @media screen and (max-width: 600px) {
   .img-thumbnail {
     padding: 0;

@@ -47,8 +47,6 @@ def viewreservations(res_filter, page):
         **res_filter.to_kwargs())
     pagination = Pagination(page, res_num, count)
 
-    print(res, file=sys.stderr)
-
     # admins get a different page
     is_admin = False
     if current_user.is_authenticated:
@@ -326,8 +324,6 @@ def newreservation_club(club):
             for room in classrooms:
                 if room_number == room.room_number:
                     classroom = room
-            if classroom is None:
-                abort(500)
             res.classroom = classroom
 
             res.SBNeeded = False
@@ -449,9 +445,6 @@ def deletereservation(reservation):
                                              room_number,
                                              owner)
     except NoRow:
-        abort(500)
-
-    if ret > 1:
-        abort(500)
+        pass
 
     return redirect(url_for('.viewreservations_club', club=club.callsign))

@@ -15,24 +15,219 @@ major shared elements: navbar, nav, footer
   --day-grey-border-color: #e7e7e7;
   --day-default-color: #777;
   --night-background-color: #202020;
-  --night-color: #ffffff;
+  --night-color: #f8f8f8;
   --night-grey-background-color: #303030;
   --night-grey-border-color: #303030;
   --night-default-color: #666;
   --primary-color: #337ab7;
+  --orange: #FFAC3A;
+}
+
+.preload {
+  /* Used to disable transition on page load */
+  & * {
+    transition: none !important;
+  }
+
+  & *::before {
+    transition: none !important;
+  }
+
+  & *::after {
+    transition: none !important;
+  }
+}
+
+.hidden {
+  & * {
+    display: none !important;
+  }
+
+  & *::before {
+    display: none !important;
+  }
+
+  & *::after {
+    display: none !important;
+  }
 }
 
 body {
   font-family: var(--main-font);
+
+  & * {
+    transition: none;
+  }
+}
+/* --------- Homepage --------- */
+#home_body {
+  background-image: url("/static/images/homepagebg.jpg");
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: 55% -120px;
+  background-size: 110% auto;
+
+  & #scroll_to_top_btn {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+  }
+
+  & .footer {
+    margin-top: 0;
+  }
+
+  & .panel {
+    background-color: var(--day-background-color);
+    border: 1px solid transparent;
+  }
+
+  & .panel-default{
+    border-color: #ddd;
+  }
+
+  & .img-thumbnail {
+    border-color: var(--day-grey-border-color);
+    background-color: var(--day-background-color);
+  }
+
+  & .separator {
+      border-top-color: var(--day-grey-border-color);
+    }
+
+}
+@media(max-width: 1024px) {
+  #home_body {
+    background-position: 50% -80px;
+    background-size: 150% auto;
+  }
+}
+@media(max-width: 768px) {
+  #home_body {
+    background-position: 50% -100px;
+    background-size: 200% auto;
+  }
+}
+@media(max-width: 580px) {
+  #home_body {
+    background-position: 50% -100px;
+    background-size: 250% auto;
+  }
+}
+@media(max-width: 450px) {
+  #home_body {
+    background-position: 50% -60px;
+    background-size: 300% auto;
+  }
 }
 
+#homepage_block {
+  color: var(--night-color);
+  position: relative;
+  left: 0;
+  top: 150px;
+
+  & h1 {
+    font-size: 40px;
+  }
+}
+@media(max-width: 1024px) {
+  #homepage_block {
+    top: 140px;
+  }
+}
+@media(max-width: 768px) {
+  #homepage_block {
+    top: 120px;
+  }
+}
+
+#home_navbar {
+  & a {
+    color: var(--night-color);
+  }
+
+  & a:hover {
+    color: var(--day-color);
+  }
+
+  & .icon-bar {
+    background-color: var(--night-color);
+  }
+}
+
+#homepage_logo {
+  width: 250px;
+  height: auto;
+}
+
+.btn_orange {
+  background-color: var(--orange);
+  color: var(--night-color);
+  border-radius: 5px;
+  font-size: 15px;
+  padding: 8px 25px;
+
+  &:hover {
+    background-color: var(--orange);
+    color: var(--night-color);
+  }
+
+  &:focus {
+    background-color: var(--orange);
+    color: var(--night-color);
+  }
+}
+
+.homepage_band {
+  color: var(--day-color);
+  background-color: var(--day-background-color);
+  position: relative;
+  height: 100%
+}
+/* --------- Homepage --------- */
+/* --------- Footer --------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+.footer {
+  position: relative;
+  margin-top: 50px;
+  padding-top: 40px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: auto;
+}
+
+.footer::before {
+  border-top: 8px solid var(--primary-color);
+  top: 0;
+  content: " ";
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+#footer_logo img {
+  width: 40%;
+  height: auto;
+  margin-top: 10px;
+  margin-bottom: 16px;
+}
+/* --------- Footer --------- */
 /* --------- Day mode --------- */
 body.day-mode {
   background-color: var(--day-background-color);
   color: var(--day-color);
 
-  a {
+  & .footer {
     color: var(--day-color);
+    background-color: var(--day-grey-background-color);
   }
 
   & code {
@@ -40,30 +235,32 @@ body.day-mode {
     color: var(--day-color);
   }
 
-  & #day-night-toggle {
-    color: var(--night-color);
-    background-color: var(--night-background-color);
-  }
-
   & .navbar-default {
     background-color: var(--day-grey-background-color);
-    border-color: var(--day-grey-border-color);
 
     & #notifications_button_link {
-      color: inherit;
+      color: var(--day-default-color);
     }
 
     & .navbar-nav > .active > a {
-      color: var(--day-default-color);
+      color: var(--primary-color);
       background-color: var(--day-grey-background-color);
     }
   }
 
-  & .search_textbox {
-    border-color: #ccc;
-
-    &.highlighted {
+  & #search_bar_beside_title:hover {
+    & input {
       border-color: var(--primary-color);
+      transition: border-color 0.1s ease-in;
+    }
+
+    & button {
+      color: var(--night-color);
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      transition: border-color 0.3s ease-in;
+      transition: background-color 0.3s ease-in;
+      transition: color 0.2s ease-in;
     }
   }
 
@@ -84,7 +281,7 @@ body.day-mode {
   }
 
   & .jumbotron {
-    background-color: var(--day-grey-border-color);
+    background-color: var(--day-background-color);
   }
 
   & .pagination > li > a {
@@ -92,14 +289,14 @@ body.day-mode {
   }
 }
 /* --------- End of day mode --------- */
-
 /* --------- Night mode --------- */
 body.night-mode {
   background-color: var(--night-background-color);
   color: var(--night-color);
 
-  a {
+  & .footer {
     color: var(--night-color);
+    background-color: var(--night-grey-background-color);
   }
 
   & code {
@@ -107,37 +304,29 @@ body.night-mode {
     color: var(--night-color);
   }
 
-  & #day-night-toggle {
-    color: var(--day-color);
-    background-color: var(--day-background-color);
-  }
-
   & .navbar-default {
     background-color: var(--night-grey-background-color);
-    border-color: var(--night-grey-background-color);
+
+    & #notifications_button_link {
+      color: var(--night-color);
+    }
 
     & .navbar-nav > li > a {
       color: var(--night-color);
     }
 
     & .navbar-nav > .active > a {
-      color: var(--night-color);
+      color: var(--primary-color);
       background-color: var(--night-grey-background-color);
-    }
-
-    & #notifications_button_link {
-      color: var(--night-color);
     }
 
     & .navbar-default .navbar-toggle:hover,
     & .navbar-toggle:focus {
-      border-color: var(--night-grey-background-color);
       background-color: var(--night-grey-background-color);
     }
 
     & .navbar-nav > li > a:hover {
       background-color: var(--night-color);
-      border-color: var(--night-color);
       color: var(--night-background-color);
     }
   }
@@ -181,7 +370,7 @@ body.night-mode {
   }
 
   & .jumbotron {
-    background-color: var(--night-grey-background-color);
+    background-color: var(--night-background-color);
   }
 
   & .search_textbox {
@@ -203,6 +392,22 @@ body.night-mode {
   & #search_bar_beside_title .btn-default {
     background-color: var(--night-default-color);
     border-color: var(--night-default-color);
+  }
+
+  & #search_bar_beside_title:hover {
+    & input {
+      border-color: var(--primary-color);
+      transition: border-color 0.1s ease-in;
+    }
+
+    & button {
+      color: var(--night-color);
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      transition: border-color 0.3s ease-in;
+      transition: background-color 0.3s ease-in;
+      transition: color 0.2s ease-in;
+    }
   }
 
   & .img-thumbnail {
@@ -344,6 +549,7 @@ body.night-mode {
         color: var(--night-color);
       }
     }
+
     & .btn-default {
       background-color: var(--night-default-color);
       border-color: var(--night-default-color);
@@ -362,21 +568,18 @@ body.night-mode {
       border-color: var(--night-default-color);
     }
   }
-  //Form-group
-
+  /*Form-group*/
+  & .modal .close {
+    color: var(--night-color);
+  }
 
   & .modal-content {
     background-color: var(--night-grey-background-color);
   }
 
   & .modal-header {
+    background-color: var(--night-grey-background-color);
     border-bottom-color: var(--night-default-color);
-  }
-
-  & .modal .btn-default {
-    background-color: var(--night-color);
-    border-color: var(--night-color);
-    color: var(--night-background-color);
   }
 
   & .btn-default:hover {
@@ -392,14 +595,58 @@ body.night-mode {
       color: var(--night-color);
     }
 
-    & :hover{
+    & :hover {
       background-color: var(--night-color);
       border-color: var(--night-color);
       color: var(--night-background-color);
     }
   }
+
+  & .popover {
+    border: 1px solid var(--night-default-color);
+    background-color: var(--night-default-color);
+    -webkit-box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+  }
+
+  & .popover.right {
+    & .arrow {
+      border-right-color: var(--night-default-color);
+    }
+
+    & .arrow:after {
+      border-right-color: var(--night-default-color);
+    }
+  }
+
+  & .popover-title {
+    background-color: var(--night-default-color);
+    border-color: var(--night-default-color);
+  }
+
+  & .popover-content {
+    background-color: var(--night-grey-background-color);
+    border-color: var(--night-grey-background-color);
+  }
+
+  & #scroll_to_top_btn {
+    border-color: var(--night-background-color);
+  }
 }
 /* --------- End of night mode --------- */
+.navbar {
+  border: 0;
+}
+
+.navbar-nav {
+  margin: 0;
+}
+@media(max-width: 768px) {
+  .navbar-nav {
+    margin-top: 8px;
+  }
+}
 
 .navbar-nav > li {
   float: left;
@@ -407,7 +654,7 @@ body.night-mode {
 }
 
 .navbar-nav .active a::after {
-  border-bottom: 5px solid #5bc0eb;
+  border-bottom: 5px solid var(--primary-color);
   bottom: 0;
   content: " ";
   left: 0;
@@ -417,74 +664,46 @@ body.night-mode {
 
 .navbar-brand {
   margin-right: 0;
-  padding: 5px;
+  padding: 12px 15px;
   position: absolute;
   margin: auto;
 }
-/* @media (max-width: 2560px) {
-  .navbar-brand {
-    left: 29%;
-  }
-}
 
-@media (max-width: 1900px) {
-  .navbar-brand {
-    left: 22.5%;
-  }
-}
-
-@media (max-width: 1440px) {
-  .navbar-brand {
-    left: 13%;
-  }
-}
-
-@media (max-width: 1360px) {
-  .navbar-brand {
-    left: 11%;
-  }
-}
-
-@media (max-width: 1024px) {
-  .navbar-brand {
-    left: 7%;
-  }
-}
-
-@media (max-width: 768px) {
-  .navbar-brand {
-    left: 4%;
-  }
-}
-
-@media (max-width: 425px) {
-  .navbar-brand {
-    left: 2%;
-  }
-} */
 .navbar-brand img {
   max-height: 100%;
 }
 
+.jumbotron {
+  border-right: 7px solid var(--primary-color);
+  padding: 0 40px 0 30px !important;
+  right: 15px;
+  position: relative;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
 .badge-notify {
   font-size: 8pt;
-  background: red;
+  background: var(--primary-color);
   position: relative;
   top: 4px;
   left: -15px;
+  padding: 5px 7px 3px;
+}
+
+.badge-notify-dot {
+  font-size: 8pt;
+  background: var(--primary-color);
 }
 
 #notifications_button {
-  padding: 14px 16px 5px;
+  padding: 14px 10px 7px;
+  margin-right: 7px;
 }
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   #notifications_button {
-    padding: 8px 10px 5px 10 px;
+    padding: 8px 10px 5px;
   }
-}
-
-center-pills {
-  display: inline-block;
 }
 
 .nav-justified {
@@ -506,7 +725,78 @@ center-pills {
   font-size: 18px;
   /* Increase font size */
 }
-
-#page-content {
-  min-height: calc(100vh - 400px);
+/* --------- Day/Night Theme Toggle --------- */
+.day_night_toggle_form {
+  /* Remove the extra spacing */
+  padding: 0;
+  margin: 0;
+  height: 30px;
 }
+@media(max-width: 768px) {
+  .day_night_toggle_form {
+    /* Remove the extra spacing */
+    margin-top: -5px;
+    margin-right: -10px;
+  }
+}
+
+.day_night_toggle_wrapper {
+  /* Control the size here */
+  -webkit-transform: scale(0.5);
+  -moz-transform: scale(0.5);
+  -ms-transform: scale(0.5);
+  transform: scale(0.5);
+}
+
+.day_night_toggle {
+  position: relative;
+  display: block;
+  width: 90px;
+  height: 50px;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--night-background-color);
+  transition: 0.5s;
+}
+
+.slider::before {
+  position: absolute;
+  content: "";
+  bottom: 14px;
+  top: 8px;
+  background-color: var(--orange);
+  transition: 0.5s;
+}
+
+.day_night_toggle input {
+  display: none;
+}
+
+input:checked + .slider {
+  background-color: #5EAFF2;
+}
+
+input:checked + .slider::before {
+  transform: translateX(51px) rotateZ(45deg);
+  background: var(--orange);
+}
+
+.slider.round {
+  border-radius: 35px;
+}
+
+.slider.round::before {
+  width: 43%;
+  height: 43%;
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
+  transform: rotateZ(-45deg);
+}
+/* --------- Day/Night Theme Toggle --------- */

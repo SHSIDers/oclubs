@@ -1,6 +1,76 @@
 ( function ( $ ) {
 	$( document )
 		.ready( function () {
+			function toggleDayNightBtn( currentClass ) {
+				if ( currentClass === 'day-mode' ) {
+					$( '.day_night_toggle input' )
+						.prop( 'checked', false );
+				} else {
+					$( '.day_night_toggle input' )
+						.prop( 'checked', true );
+				}
+			}
+
+			function toggleDayNightLogo( currentClass ) {
+				if ( currentClass === 'day-mode' ) {
+					$( '.logo_img_night' )
+						.hide();
+					$( '.logo_img_day' )
+						.show();
+				} else {
+					$( '.logo_img_night' )
+						.show();
+					$( '.logo_img_day' )
+						.hide();
+				}
+			}
+
+			function toggleDayNight() {
+				var body = $( 'body' );
+
+				body.toggleClass( 'day-mode night-mode' );
+
+				// save preference to local storage
+				// toggle btn
+				if ( body.hasClass( 'day-mode' ) ) {
+					localStorage.theme = 'day-mode';
+					toggleDayNightLogo( 'day-mode' );
+				} else if ( body.hasClass( 'night-mode' ) ) {
+					localStorage.theme = 'night-mode';
+					toggleDayNightLogo( 'night-mode ' );
+				}
+			}
+
+			if ( localStorage.theme ) {
+				if ( localStorage.theme === 'day-mode' ) {
+					$( 'body' )
+						.removeClass( 'night-mode' );
+					$( 'body' )
+						.addClass( 'day-mode' );
+				} else if ( localStorage.theme === 'night-mode' ) {
+					$( 'body' )
+						.addClass( 'night-mode' );
+					$( 'body' )
+						.removeClass( 'day-mode' );
+				}
+			} else {
+				localStorage.theme = 'day-mode';
+				$( 'body' )
+					.addClass( 'day-mode' );
+			}
+
+			// $( '.day_night_toggle_wrapper' ).hide();
+			toggleDayNightLogo( localStorage.theme );
+			toggleDayNightBtn( localStorage.theme );
+
+			// setTimeout( function () {
+			// 	$( '.day_night_toggle_wrapper' ).show( 1000 );
+			// }, 2000 );
+
+			$( '.day_night_toggle input' )
+				.change( function () {
+					toggleDayNight();
+				} );
 
 			$( document )
 				.on( 'click', '.navbar-collapse.in', function ( e ) {
@@ -62,9 +132,10 @@
 
 			$( '#updatequit' )
 				.click( function () {
-					var selected = $( '.form-group select option:selected' );
+					var selectedText = $( '#_clubs option:selected' )
+						.text();
 					$( '.modal .modal-body p' )
-						.text( 'Your choice is ' + selected.text() + '.' );
+						.text( 'Quit from ' + selectedText + '.' );
 					$( '#clubs' )
 						.val( $( '#_clubs' )
 							.val() );
@@ -182,7 +253,7 @@
 					window.location = this.value;
 				} );
 
-			function showScrollToTopBtn() {
+			window.onscroll = function () {
 				if ( document.body.scrollTop > 400 || document.documentElement.scrollTop > 400 ) {
 					document.getElementById( 'scroll_to_top_btn' )
 						.style.display = 'block';
@@ -190,10 +261,6 @@
 					document.getElementById( 'scroll_to_top_btn' )
 						.style.display = 'none';
 				}
-			}
-
-			window.onscroll = function () {
-				showScrollToTopBtn();
 			};
 
 			$( 'a[href*=\\#]' )
@@ -205,62 +272,36 @@
 						}, 'slow', function () {} );
 				} );
 
-			$( '#search_bar_beside_title' )
-				.hover( function () {
-					$( '.search_textbox' )
-						.addClass( 'highlighted' )
-					$( '#search_btn' )
-						.addClass( 'btn-primary' )
-						.removeClass( 'btn-default' );
-				} )
-				.mouseleave( function () {
-					$( '.search_textbox' )
-						.removeClass( 'highlighted' )
-					$( '#search_btn' )
-						.addClass( 'btn-default' )
-						.removeClass( 'btn-primary' );
+			$( '.homepage_band' )
+				.css( 'margin-top', String( window.innerHeight * 0.65 ) + 'px' );
+			$( window )
+				.on( 'resize', function () {
+					$( '.homepage_band' )
+						.css( 'margin-top', String( window.innerHeight * 0.65 ) + 'px' );
 				} );
 
-			function toggleDayNightBtn( currentClass ) {
-				var display = currentClass === 'day-mode' ? 'Night theme' : 'Day theme';
-				$( '#day-night-toggle' )
-					.html( display );
-			}
-
-			function toggleDayNight() {
-				// set body class
-				var body = document.getElementById( 'body' );
-				var currentClass = body.className;
-
-				body.className = currentClass === 'day-mode' ? 'night-mode' : 'day-mode';
-
-				toggleDayNightBtn( body.className );
-
-				// save preference to local storage
-				localStorage.theme = body.className;
-			}
-
-			if ( localStorage.theme ) {
-				document.getElementById( 'body' )
-					.className = localStorage.theme;
-			} else {
-				localStorage.theme = 'day-mode';
-			}
-
-			toggleDayNightBtn( localStorage.theme );
-
-			$( '#day-night-toggle' )
+			$( '#to_excellentclub' )
 				.click( function () {
-					event.preventDefault();
-					$( '#day-night-toggle' )
-						.blur();
-					toggleDayNight();
+					$( 'html,body' )
+						.animate( {
+							scrollTop: $( '#excellentclub' )
+								.offset()
+								.top - 20
+						}, 1000 );
 				} );
 
 			$( '.btn_stop_default' )
-				.click( function () {
+				.click( function ( event ) {
 					event.preventDefault();
 				} );
+
+			// Remove preload class, enable transitions normally
+			setTimeout( function () {
+				$( 'body' )
+					.removeClass( 'preload' );
+			}, 2000 );
+			$( 'html' )
+				.removeClass( 'hidden' );
 
 		} );
 }( jQuery ) );

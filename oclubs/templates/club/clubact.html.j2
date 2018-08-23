@@ -21,7 +21,7 @@
 					<table class="table table-hover">
 						<thead>
 							<tr>
-								<th>Contents</th>
+								<th>Activity Name</th>
 								<th>Time</th>
 								<th>Location</th>
 							</tr>
@@ -31,7 +31,7 @@
 							<tr class="clickable act" data-href="{{ url_for('actblueprint.actintro', activity=act.callsign) }}">
 								<td>{{ act.name }}</td>
 								<td>{{ act.date }}</td>
-								<td>{{ act.location }}</td>
+								<td>{{ act.location }}{% if act.has_reservation %} (Reserved){% endif %}</td>
 							</tr>
 							{% endfor %}
 						</tbody>

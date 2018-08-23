@@ -49,3 +49,11 @@ textarea {
 .radio label {
   padding-left: 0;
 }
+
+#search_form_group {
+  margin: 0;
+}
+
+#search_form_group_footer {
+  margin: -20px 0 0;
+}

@@ -9,6 +9,7 @@ from datetime import date
 from flask_login import UserMixin
 from passlib.context import CryptContext
 from xkcdpass import xkcd_password as xp
+import uuid
 
 from oclubs.utils.dates import int_to_dateobj, dateobj_to_int
 from oclubs.access import database, email, redis
@@ -34,6 +35,7 @@ class User(BaseObject, UserMixin):
     passportname = Property('user_passport_name')
     password = Property('user_password', (NotImplemented, _encrypt))
     nickname = Property('user_nick_name', rediscached=True)
+    initalized = Property('user_initalized', bool)
     email = Property('user_email')
     phone = Property('user_phone')
     picture = Property('user_picture', 'Upload')
@@ -49,6 +51,10 @@ class User(BaseObject, UserMixin):
     PREFERENCES = {
         'receive_email': (lambda x: bool(int(x)), True),
     }
+
+    @property
+    def callsign(self):
+        return str(self.id)
 
     @property
     def grade_and_class(self):
@@ -279,15 +285,16 @@ class User(BaseObject, UserMixin):
 
             ret = cls.new()
             ret.studentid = emailaddress
-            ret.passportname = 'Teacher'
+            ret.passportname = emailaddress
             ret.password = None
-            ret.nickname = 'Teacher'
+            ret.nickname = emailaddress
             ret.email = emailaddress
             ret.phone = None
             ret.picture = Upload(-101)
             ret.type = UserType.TEACHER
             ret.grade = None
             ret.currentclass = None
+            ret.initalized = False
 
             return ret.create()
 
@@ -305,6 +312,15 @@ class User(BaseObject, UserMixin):
         return [cls(item) for item in tempdata]
 
     @classmethod
+    def get_userobj_from_passportname(cls, passportname):
+        allusers = cls.allusers()
+        for user in allusers:
+            if user.passportname == passportname:
+                return user
+
+        return None
+
+    @classmethod
     def get_new_passwords(cls):
         return [(
             cls(int(key.split(':')[-1])),
@@ -314,3 +330,20 @@ class User(BaseObject, UserMixin):
     @staticmethod
     def generate_password():
         return xp.generate_xkcdpassword(_words)
+
+    @staticmethod
+    def new_reset_request(userObj):
+        '''Creates a new pending reset'''
+        reset_request_id = uuid.uuid4().hex
+
+        reset_request = redis.RedisCache('reset_request:' + reset_request_id,
+                                         1800)
+        reset_request.set(userObj.callsign)
+
+        return reset_request_id
+
+    @staticmethod
+    def get_reset_request(tokenStr):
+        '''Return user callsign from reset token'''
+        return redis.RedisCache(
+            'reset_request:' + tokenStr, 1800).detach().get()

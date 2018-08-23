@@ -1,5 +1,5 @@
 #separator_title {
-  margin-top: 8px;
+  margin-top: 5px;
   margin-bottom: 23px;
 }
 
@@ -8,16 +8,33 @@
   margin-bottom: 5px;
 }
 
+#newclubbtn {
+  margin-top: 20px;
+}
+
 .title_link {
   text-decoration: underline;
 }
 
-.title_link :hover {
+.title_link:hover {
   text-decoration: none;
+  cursor: pointer;
 }
 
 .list-group .list-group-item.selected {
   font-weight: 700;
+}
+
+.img-thumbnail {
+  -webkit-transition: none;
+  -o-transition: none;
+  transition: none;
+}
+
+.bottom-column {
+  display: table-cell;
+  float: none;
+  vertical-align: bottom;
 }
 
 tr.clickable:hover {
@@ -26,17 +43,11 @@ tr.clickable:hover {
 
 .clickable-a {
   text-decoration: none;
-  cursor: default;
 }
 
-.clickable-a :hover {
+.clickable-a:hover {
   text-decoration: none !important;
   cursor: pointer;
-}
-
-.club_list_image {
-  width: 100%;
-  height: auto;
 }
 
 .post_image {
@@ -59,6 +70,17 @@ tr.clickable:hover {
   .jumbotron p {
     font-size: 18px;
   }
+}
+
+.panel {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.homepage_thumbnail {
+  width: 250px;
+  height: 250px;
+  background: 50% 50% no-repeat;
 }
 
 .grid-item,
@@ -225,7 +247,7 @@ tr.clickable:hover {
 }
 
 .modal .form-group {
-  margin-bottom: 0;
+  margin-bottom: 20px;
 }
 
 .btn_content {

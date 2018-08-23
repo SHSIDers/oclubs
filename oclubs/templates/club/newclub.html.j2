@@ -46,7 +46,7 @@
 		<div class="col-md-10">
 			<form class="form-group" action="{{ url_for('.newclub_submit') }}" method="post" enctype="multipart/form-data">
 				<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-				{% if get_flashed_messages(['newclub']) %}
+				{% if get_flashed_messages(category_filter=['newclub']) %}
 				<div class="alert alert-warning">
 					<span class="glyphicon glyphicon-warning-sign"></span>
 					{% for message in get_flashed_messages(category_filter=['newclub']) %}
@@ -129,27 +129,27 @@
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							Club description
-							</div>
-							<div class="panel-body">
-								<textarea class="form-control" rows="10" name="description" id="description"></textarea>
-								<br>
-								<span class="help-block">
-									Post content supports &nbsp;<button class="btn btn-default btn-xs btn_stop_default" id="markdownhelp_btn" data-toggle="collapse" data-target="#markdownhelp">markdown <span class="caret"></span></button>&nbsp;.
-									Enter a blank line for a new paragraph.
-								</span>
-								<div class="collapse" id="markdownhelp">
-									{% include 'static/markdown-tooltip.html.j2' %}
-								</div>
+						</div>
+						<div class="panel-body">
+							<textarea class="form-control" rows="10" name="description" id="description"></textarea>
+							<br>
+							<span class="help-block">
+								Post content supports &nbsp;<button class="btn btn-default btn-xs btn_stop_default" id="markdownhelp_btn" data-toggle="collapse" data-target="#markdownhelp">markdown <span class="caret"></span></button>&nbsp;.
+								Enter a blank line for a new paragraph.
+							</span>
+							<div class="collapse" id="markdownhelp">
+								{% include 'static/markdown-tooltip.html.j2' %}
 							</div>
 						</div>
-						<!-- /.panel -->
 					</div>
+					<!-- /.panel -->
+				</div>
 
-					<div class="form-group">
-						<div class="input-group">
-							<button class="btn btn-primary" type="submit">Create club</button>
-						</div>
+				<div class="form-group">
+					<div class="input-group">
+						<button class="btn btn-primary" type="submit">Create club</button>
 					</div>
+				</div>
 			</form>
 		</div>
 

@@ -1,4 +1,6 @@
 {% for act in acts %}
+{% for picture in act.pictures %}
   {% include 'activity/photo-item.html.j2' %}
+{% endfor %}
 {% endfor %}
 <a class="pagination_next" href="{{ url_for_other_page(pagination.page + 1)  }}">Next</a>

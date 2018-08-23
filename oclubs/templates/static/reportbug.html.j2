@@ -1,0 +1,72 @@
+{% extends "base.html.j2" %}
+{% from 'macros.html.j2' import get_messages %}
+
+{% block additionalcssjs %}
+<link href="{{ url_for('static', filename='css/form.min.css') }}" rel="stylesheet" type="text/css" media="all">
+{% endblock %}
+
+{% block title %}Report a Bug{% endblock %}
+
+
+{% block content %}
+
+
+<div class="container">
+
+	<br>
+	<br>
+	<br>
+
+	<div class="row">
+		<div class="col-md-3">
+		</div>
+
+		<div class="col-md-6">
+			<div class="form-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4>Report a Bug</h4>
+					</div>
+					<div class="panel-body">
+						{% if get_flashed_messages(category_filter=['reportbug']) %}
+						<div class="alert alert-success">
+							<span class="glyphicon glyphicon-ok-sign"></span>
+							{% for message in get_flashed_messages(category_filter=['reportbug']) %}
+							{{ message }}
+							{% endfor %}
+						</div>
+						{% endif %}
+						<form class="form-group" action="{{ url_for('reportbug_submit') }}" method="post">
+							<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+							<div class="form-group">
+									Contents
+									<div class="help-block">
+										Please briefly describe the problem/bug and the actions that caused it.
+										<br>
+										If it was a 500 Internal Server Error, please also include the debug information.
+									</div>
+									<textarea class="form-control" rows="10" name="content" id="content"></textarea>
+							</div>
+							<div class="form-group">
+								<div class="input-group">
+									<input type="submit" class="btn btn-primary" value="Submit">
+								</div>
+							</div>
+						</form>
+					</div>
+					<!-- /.panel-body -->
+				</div>
+				<!-- /.panel -->
+			</div>
+			<!-- /.form-group -->
+		</div>
+		<!-- /.col-md-6 -->
+
+		<div class="col-md-3">
+		</div>
+	</div>
+	<!-- /.row -->
+
+<!-- /.container -->
+
+{% endblock %}

@@ -84,113 +84,113 @@
 		<div class="col-md-12 text-center">
 
 
-				{% if is_admin or is_owner %}
-				<div class="btn-group btn_content" role="group">
-					<a class="btn btn-danger btn-lg" href="{{ url_for('.deletereservation', reservation=g.reservation.callsign) }}">Cancel reservation</a>
-				</div>
-				{% endif %}
+			{% if is_admin or is_owner %}
+			<div class="btn-group btn_content" role="group">
+				<a class="btn btn-danger btn-lg" href="{{ url_for('.deletereservation', reservation=g.reservation.callsign) }}">Cancel reservation</a>
+			</div>
+			{% endif %}
 
-				{% if is_director %}
-				<div class="btn-group btn_content" role="group">
-					<button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#changedirectorsapproval">
-						Change Director's Approval
-					</button>
-				</div>
+			{% if is_director %}
+			<div class="btn-group btn_content" role="group">
+				<button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#changedirectorsapproval">
+					Change Director's Approval
+				</button>
+			</div>
 
-				<div class="modal fade" id="changedirectorsapproval" tabindex="-1" role="dialog">
-					<div class="modal-dialog modal-dialog-centered">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-								<h4 class="modal-title">Change Director's Approval</h4>
-							</div>
-							<div class="modal-body">
-									<form action="{{ url_for('.reservationinfo', reservation=g.reservation.callsign) }}" method="post">
-										<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-										<div class="form-group">
-										<div class="radio">
-											{{ directors_approval_form.changeDApproval(class_="") }}
-										</div>
+			<div class="modal fade" id="changedirectorsapproval" tabindex="-1" role="dialog">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Change Director's Approval</h4>
+						</div>
+						<div class="modal-body">
+							<form action="{{ url_for('.reservationinfo', reservation=g.reservation.callsign) }}" method="post">
+								<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+								<div class="form-group">
+									<div class="radio">
+										{{ directors_approval_form.changeDApproval(class_="") }}
 									</div>
-										<hr class="separator">
-										<div class="btn-toolbar">
-											<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-											{{ directors_approval_form.submit(class_="btn btn-primary") }}
-										</div>
-									</form>
-							</div>
-						</div><!-- /.modal-content -->
-					</div><!-- /.modal-dialog -->
-				</div><!-- /.modal -->
-				{% endif %}
-
-				{% if is_teacher %}
-				<div class="btn-group btn_content" role="group">
-					<button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#changeinstructorsapproval">
-						Change Director's Approval
-					</button>
-				</div>
-
-				<div class="modal fade" id="changeinstructorsapproval" tabindex="-1" role="dialog">
-					<div class="modal-dialog modal-dialog-centered">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-								<h4 class="modal-title">Change Instructor's Approval</h4>
-							</div>
-							<div class="modal-body">
-								<div class="form-group">
-									<form action="{{ url_for('.reservationinfo', reservation=g.reservation.callsign) }}" method="post">
-										<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-										<div class="radio">
-											{{ instructors_approval_form.changeDApproval }}
-										</div>
-										<hr class="separator">
-										<div class="btn-toolbar">
-											<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-											{{ instructors_approval_form.submit(class_="btn btn-primary") }}
-										</div>
-									</form>
 								</div>
-							</div>
-						</div><!-- /.modal-content -->
-					</div><!-- /.modal-dialog -->
-				</div><!-- /.modal -->
-				{% endif %}
-
-				{% if is_admin %}
-				<div class="btn-group btn_content" role="group">
-					<button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#changestatus">
-						Change Smartboard Application Status
-					</button>
-				</div>
-
-				<div class="modal fade" id="changestatus" tabindex="-1" role="dialog">
-					<div class="modal-dialog modal-dialog-centered">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-								<h4 class="modal-title">Change Smartboard Application Status</h4>
-							</div>
-							<div class="modal-body">
-								<div class="form-group">
-									<form action="{{ url_for('.reservationinfo', reservation=g.reservation.callsign) }}" method="post">
-										<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-										<div class="radio">
-											{{ SBAppStatus_form.changeStatus }}
-										</div>
-										<hr class="separator">
-										<div class="btn-toolbar">
-											<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-											{{ SBAppStatus_form.submit(class_="btn btn-primary") }}
-										</div>
-									</form>
+								<hr class="separator">
+								<div class="btn-toolbar">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+									{{ directors_approval_form.submit(class_="btn btn-primary") }}
 								</div>
+							</form>
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+			{% endif %}
+
+			{% if is_teacher %}
+			<div class="btn-group btn_content" role="group">
+				<button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#changeinstructorsapproval">
+					Change Director's Approval
+				</button>
+			</div>
+
+			<div class="modal fade" id="changeinstructorsapproval" tabindex="-1" role="dialog">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Change Instructor's Approval</h4>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<form action="{{ url_for('.reservationinfo', reservation=g.reservation.callsign) }}" method="post">
+									<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+									<div class="radio">
+										{{ instructors_approval_form.changeDApproval }}
+									</div>
+									<hr class="separator">
+									<div class="btn-toolbar">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										{{ instructors_approval_form.submit(class_="btn btn-primary") }}
+									</div>
+								</form>
 							</div>
-						</div><!-- /.modal-content -->
-					</div><!-- /.modal-dialog -->
-				</div><!-- /.modal -->
-				{% endif %}
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+			{% endif %}
+
+			{% if is_admin %}
+			<div class="btn-group btn_content" role="group">
+				<button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#changestatus">
+					Change Smartboard Application Status
+				</button>
+			</div>
+
+			<div class="modal fade" id="changestatus" tabindex="-1" role="dialog">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Change Smartboard Application Status</h4>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<form action="{{ url_for('.reservationinfo', reservation=g.reservation.callsign) }}" method="post">
+									<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+									<div class="radio">
+										{{ SBAppStatus_form.changeStatus }}
+									</div>
+									<hr class="separator">
+									<div class="btn-toolbar">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										{{ SBAppStatus_form.submit(class_="btn btn-primary") }}
+									</div>
+								</form>
+							</div>
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+			{% endif %}
 
 		</div>
 		<!-- /.col-md-20 -->

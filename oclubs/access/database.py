@@ -437,30 +437,7 @@ def delete_rows(table, conds):
     """
     Execute a ``DELETE`` on a table.
 
-    :param basestring table: table name
-    :param conds: conditions
-    :type conds: list or dict
-    :returns: number of rows deleted
-    :rtype: int or long
-    :raises NoRow: if no row was deleted
-    """
-    conds = _parse_comp_cond(conds)
-
-    rows = _execute("DELETE FROM %s %s;" % (_encode_name(table), conds),
-                    write=True, ret='rowcount')
-
-    if not rows:
-        raise NoRow
-
-    return rows
-
-
-def delete_rows_multiple(table, conds):
-    """
-    Forms correct syntax for DELETE, supports JOIN
-    TODO: Merge functionality with delete_rows
-
-    Execute a ``DELETE`` on a table.
+    Supports multi-table DELETE, with JOIN
 
     :param basestring table: table name
     :param conds: conditions
@@ -469,10 +446,25 @@ def delete_rows_multiple(table, conds):
     :rtype: int or long
     :raises NoRow: if no row was deleted
     """
+
+    has_join = False
+    try:
+        if isinstance(conds, dict) and conds['join']:
+            has_join = True
+    except KeyError:
+        pass
+
     conds = _parse_comp_cond(conds)
 
-    rows = _execute("DELETE %s FROM %s %s;" % (_encode_name(table), _encode_name(table), conds),
-                    write=True, ret='rowcount')
+    if has_join:
+        rows = _execute("DELETE %s FROM %s %s;" % (_encode_name(table),
+                                                   _encode_name(table),
+                                                   conds),
+                        write=True,
+                        ret='rowcount')
+    else:
+        rows = _execute("DELETE FROM %s %s;" % (_encode_name(table), conds),
+                        write=True, ret='rowcount')
 
     if not rows:
         raise NoRow

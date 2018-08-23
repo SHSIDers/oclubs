@@ -123,6 +123,7 @@ def _create_account(authority, _type='STUDENT', haspassword=True):
     u.phone = None
     u.grade = None
     u.currentclass = None
+    u.initalized = False
     _user_refresh(u, authority)
     password = User.generate_password() if haspassword else None
     u.password = password

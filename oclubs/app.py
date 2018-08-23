@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+# ! /usr/bin/env python
 # -*- coding: UTF-8 -*-
 #
 
@@ -9,14 +9,14 @@ from urlparse import urlparse, urljoin
 
 from flask import (
     Flask, redirect, request, render_template, url_for, session, abort, flash,
-    Markup, Response
+    Markup,
 )
 from flask_login import (
     LoginManager, login_user, logout_user, login_required, current_user
 )
 from htmlmin.minify import html_minify
 
-from oclubs.objs import User, Club, Activity, Upload, FormattedText
+from oclubs.objs import User, Club, Activity, FormattedText
 from oclubs.access import done as db_done, email
 from oclubs.access.secrets import get_secret
 from oclubs.blueprints import actblueprint, clubblueprint, userblueprint, \
@@ -27,8 +27,9 @@ from oclubs.exceptions import NoRow
 from oclubs.redissession import RedisSessionInterface
 from oclubs.shared import (
     encrypt, Pagination, render_email_template, form_is_valid, markdownexample,
-    init_app
+    init_app, get_callsign_decorator, get_callsign
 )
+from oclubs.forms.miscellaneous_forms import LoginForm
 
 
 app = Flask(__name__)
@@ -49,8 +50,6 @@ app.jinja_env.globals['ClubType'] = ClubType
 app.jinja_env.globals['ActivityTime'] = ActivityTime
 app.jinja_env.globals['ClubJoinMode'] = ClubJoinMode
 app.jinja_env.globals['Building'] = Building
-
-app.debug = True
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -161,10 +160,174 @@ def refresh_login():
                             if request.method == 'POST' else request.path))
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     '''Login page'''
-    return render_template('user/login.html.j2')
+
+    form = LoginForm()
+
+    if request.method == "POST":
+        if request.form['next'] != '':
+            form.nexturl.process_data(request.form.get('next'))
+
+        # first pass
+        if form.is_firstPass.data == 'true':
+
+            if form.check():
+
+                userObj = User.get_userobj_from_passportname(
+                    form.username.data)
+
+                if userObj.initalized:
+                    form.is_initalized.process_data('true')
+
+                form.is_firstPass.process_data('false')
+
+                return render_template('user/login.html.j2',
+                                       form=form,
+                                       is_firstPass=False,
+                                       is_initalized=userObj.initalized)
+
+            # form check failed
+            else:
+                return render_template('user/login.html.j2',
+                                       form=form,
+                                       is_firstPass=True,
+                                       is_initalized=False)
+
+        # second pass
+        else:
+            if form.check():
+                # user initalization, create password, register email
+                if form.is_initalized.data == 'false':
+                    userObj = User.get_userobj_from_passportname(
+                        form.username.data)
+
+                    # to make sure the account is actually not initalized
+                    # prevent using the initalization form to initalize an
+                    # account that is actually already initalized
+                    if userObj.initalized:
+                        form.errors[form.username] = \
+                            'This username has a password already.'
+                        form.is_firstPass.process_data('true')
+                        return render_template('user/login.html.j2',
+                                               form=form,
+                                               is_firstPass=True,
+                                               is_initalized=False)
+
+                    userObj.password = form.password.data
+                    userObj.email = form.email.data
+                    userObj.initalized = True
+
+                    login_user(userObj)
+
+                # regular user login
+                else:
+                    # if reset password request
+                    if form.forgotpassword.data:
+                        userObj = User.get_userobj_from_passportname(
+                            form.username.data)
+                        return redirect(
+                            url_for('.reset_request', user=userObj.callsign))
+
+                    userObj = User.attempt_login(
+                        form.username.data,
+                        form.password.data)
+
+                    if userObj is not None:
+                        login_user(userObj)
+
+                        target = form.nexturl.data
+                        if (not target or target == ''
+                                or not is_safe_url(target)
+                                or redirect_to_personal(target)):
+                            return redirect(url_for('homepage'))
+                        return redirect(target)
+                    else:
+                        form.errors[form.password] = \
+                            'Incorrect username or password'
+
+                        form.password.process_data('')
+
+                        form.is_firstPass.process_data('true')
+
+                        return render_template('user/login.html.j2',
+                                               form=form,
+                                               is_firstPass=True,
+                                               is_initalized=False)
+
+                # login success (no returns due to error)
+                target = form.nexturl.data
+                if (not target or target == ''
+                        or not is_safe_url(target)
+                        or redirect_to_personal(target)):
+                    return redirect(url_for('homepage'))
+                return redirect(target)
+
+            # form check failed
+            else:
+                is_initalized = False
+                if form.is_initalized.data == 'true':
+                    is_initalized = True
+                form.is_firstPass.process_data('true')
+                return render_template('user/login.html.j2',
+                                       form=form,
+                                       is_firstPass=True,
+                                       is_initalized=is_initalized)
+
+    return render_template('user/login.html.j2',
+                           form=form,
+                           is_firstPass=True,
+                           is_initalized=False)
+
+
+@app.route('/requestreset/<user>', methods=['GET', 'POST'])
+@get_callsign_decorator(User, 'user')
+def reset_request(user):
+    if request.method == 'POST':
+        reset_request_id = User.new_reset_request(user)
+        reset_link = url_for('.reset',
+                             reset_request_id=reset_request_id,
+                             _external=True)
+        parameters = {'login_name': user.passportname,
+                      'reset_link': reset_link}
+        contents = render_email_template('reset', parameters)
+        email.send((user.email, user.passportname),
+                   'Reset Password - SHSID Connect',
+                   contents)
+
+        return render_template('user/request_reset.html.j2',
+                               user=user,
+                               is_sent=True)
+
+    return render_template('user/request_reset.html.j2',
+                           user=user,
+                           is_sent=False)
+
+
+@app.route('/reset/<reset_request_id>')
+def reset(reset_request_id):
+    form = LoginForm()
+
+    user_callsign = User.get_reset_request(reset_request_id)
+
+    if user_callsign != '':
+        userObj = get_callsign(User, user_callsign)
+
+        userObj.initalized = False
+        form.is_firstPass.process_data('false')
+
+        form.username.process_data(userObj.passportname)
+        form.email.process_data(userObj.email)
+
+        return render_template('user/login.html.j2',
+                               form=form,
+                               is_firstPass=False,
+                               is_initalized=False)
+
+    else:
+        return render_template('user/request_reset.html.j2',
+                               is_expired=True)
 
 
 def is_safe_url(target):
@@ -178,32 +341,6 @@ def redirect_to_personal(target):
     return target in map(url_for, ['login',
                                    'userblueprint.forgotpw',
                                    'homepage'])
-
-
-@app.route('/login/submit', methods=['POST'])
-def login_submit():
-    '''API to login'''
-    user = User.attempt_login(
-        request.form['username'],
-        request.form['password']
-    )
-    if user is not None:
-        # Just in case a teacher somehow got a valid password...
-        if user.type == UserType.TEACHER:
-            flash('Teachers may not login.', 'login')
-            return redirect(url_for('login'))
-
-        login_user(user, remember=('remember' in request.form))
-
-        target = request.form.get('next')
-        if not target \
-                or not is_safe_url(target) or redirect_to_personal(target):
-            return redirect(url_for('userblueprint.personal'))
-        return redirect(target)
-    else:
-        flash('Please enter your username and password correctly '
-              'in order to login.', 'login')
-        return redirect(url_for('login'))
 
 
 @app.route('/logout')
@@ -224,7 +361,7 @@ def search():
         cls, title, desc, pic, extras = (
             Club, 'name', ['intro', 'description'], lambda obj: obj.picture,
             [])
-    else:
+    elif search_type == 'activity':
         cls, title, desc, pic, extras = (
             Activity, 'name', ['description', 'post'],
             lambda obj: obj.pictures[0] if obj.pictures else None,
@@ -291,51 +428,17 @@ def _search_gettext(obj, name):
 @app.route('/')
 def homepage():
     '''Homepage'''
-    top_pic = []
-    sizes = [3, 6, 3, 6, 3, 3]
-    acts = Activity.get_activities_conditions(
-        require_photos=True, limit=len(sizes))[1]
+    excellent_clubs = Club.excellentclubs()
 
-    top_pic.extend([{
-        'picture': act.pictures[0],
-        'actname': act.name,
-        'content': act.description.formatted,
-        'link': url_for('actblueprint.actintro', activity=act.callsign)
-    } for act in acts])
+    info = {}
+    for club in excellent_clubs:
+        info[club.name] = club.activities()[0] \
+            if club.activities() else None
 
-    top_pic.extend([{
-        'picture': Upload(-101),
-        'actname': 'Default',
-        'content': 'Oops, we don\'t have much picture',
-        'link': '#'
-    } for _ in range(len(sizes) - len(top_pic))])
-
-    for num, (pic, size) in enumerate(zip(top_pic, sizes)):
-        pic['id'] = 'img' + str(num)
-        pic['size'] = size
-
-    blockpiccss = url_for('gen_blockpic_css', **{pic['id']: pic['picture'].id
-                                                 for pic in top_pic})
-
-    ex_clubs = Club.excellentclubs(3)
-    pic_acts = top_pic[0:3]
     return render_template('static/homepage.html.j2',
                            is_home=True,
-                           top_pic=top_pic,
-                           blockpiccss=blockpiccss,
-                           ex_clubs=ex_clubs,
-                           pic_acts=pic_acts)
-
-
-@app.route('/blockpic.css')
-def gen_blockpic_css():
-    css = "#blockpic-img%d{background-image:url(%s)}"
-    ret = ''
-    for key, value in request.args.iteritems():
-        if key.startswith('img'):
-            ret += css % (int(key[3:]), Upload(int(value)).location_external)
-
-    return Response(ret, mimetype='text/css')
+                           excellent_clubs=excellent_clubs,
+                           info=info)
 
 
 @app.route('/about')
@@ -345,26 +448,27 @@ def about():
                            is_about=True)
 
 
-@app.route('/contact_creators')
-def contactcreators():
-    '''Advice Page'''
-    return render_template('static/contactcreators.html.j2')
+@app.route('/feedback')
+def feedback():
+    '''Send feedback Page'''
+    return render_template('static/feedback.html.j2')
 
 
-@app.route('/contact_creators/submit', methods=['POST'])
-def contactcreators_submit():
-    '''Send advice to us'''
+@app.route('/feedback/submit', methods=['POST'])
+def feedback_submit():
+    '''Send feedback to us'''
     sender_name = request.form['name']
     sender_contact = request.form['contact']
     content = request.form['content']
     parameters = {'sender_name': sender_name,
                   'sender_contact': sender_contact,
                   'content': content}
-    contents = render_email_template('contactcreators', parameters)
-    email.send(('creators@oclubs.shs.cn',), 'Contact Creators', contents)
-    flash('The information has been successfully sent to creators.',
-          'contact_creators')
-    return redirect(url_for('.contactcreators'))
+    contents = render_email_template('feedback', parameters)
+    email.send(('creators@oclubs.shs.cn',), 'Feedback', contents)
+    email.send(('angleqian01@gmail.com',), 'Feedback', contents)
+    flash('Your feedback has been sent to our team. Thank you for your time! Your feedback is invaluable.',
+          'feedback')
+    return redirect(url_for('.feedback'))
 
 
 @app.route('/creators')
@@ -373,30 +477,35 @@ def creators():
     return render_template('static/creators.html.j2')
 
 
-@app.route('/contact_admin')
-@login_required
-def contactadmin():
-    '''Complaints Page'''
-    return render_template('static/contactadmin.html.j2')
+@app.route('/reportbug')
+def reportbug():
+    '''Report bug'''
+    return render_template('static/reportbug.html.j2')
 
 
-@app.route('/contact_admin/submit', methods=['POST'])
-@login_required
-def contactadmin_submit():
-    '''Submit complaints'''
+@app.route('/reportbug/submit', methods=['POST'])
+def reportbug_submit():
+    '''Report bug'''
     content = request.form['content']
-    parameters = {'sender_name': '%s (%s, %s)' % (
-                      current_user.nickname,
-                      current_user.passportname,
-                      current_user.grade_and_class),
-                  'sender_contact': current_user.email + ' ' +
-                  str(current_user.phone),
-                  'content': content}
+    content += ' ' + request.user_agent.string
+    if current_user.is_authenticated:
+        parameters = {'sender_name': '%s (%s, %s)' % (
+                          current_user.nickname,
+                          current_user.passportname,
+                          current_user.grade_and_class),
+                      'sender_contact': current_user.email + ' ' +
+                      str(current_user.phone),
+                      'content': content}
+    else:
+        parameters = {'sender_name': 'Anonymous',
+                      'sender_contact': 'None',
+                      'content': content}
     contents = render_email_template('contactadmin', parameters)
     email.send(('clubsadmin@oclubs.shs.cn',), 'Contact Admin', contents)
-    flash('The information has been successfully sent to adminstrators.',
-          'contact_admin')
-    return redirect(url_for('.contactadmin'))
+    email.send(('angleqian01@gmail.com',), 'Contact Admin', contents)
+    flash('Your report has been sent to our team. Thank you for your time! We will fix the problem as soon as possible.',
+          'reportbug')
+    return redirect(url_for('.reportbug'))
 
 
 @app.route('/markdown')

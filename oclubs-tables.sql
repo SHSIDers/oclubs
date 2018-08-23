@@ -8,6 +8,7 @@ CREATE TABLE user (
 	user_nick_name varchar(255) NOT NULL,
 	user_passport_name varchar(255) NOT NULL,
 	user_password tinyblob,
+	user_initalized boolean NOT NULL DEFAULT false,
 	user_picture int NOT NULL, # Foreign key to upload.upload_id
 	user_email tinytext NOT NULL,
 	user_phone bigint,

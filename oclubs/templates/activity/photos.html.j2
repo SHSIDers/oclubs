@@ -74,9 +74,10 @@
 				<div class="grid-sizer"></div>
 				<div class="gutter-sizer"></div>
 				{% for act in acts %}
+				{% for picture in act.pictures %}
 				<div class="grid-item">
 					<div class="thumbnail photo_gallery_thumbnail">
-						<img src="{{ act.pictures[0].location_external }}" class="img-responsive" alt="{{ act.name }}">
+						<img src="{{ picture.location_external }}" class="img-responsive" alt="{{ act.name }}">
 						<div class="caption">
 							<h5><a class="title_link" href="{{ url_for('.actintro', activity=act.callsign) }}">{{ act.name }}</a></h5>
 							<hr class="separator" id="separator_title">
@@ -85,6 +86,7 @@
 						</div>
 					</div>
 				</div>
+				{% endfor %}
 				{% endfor %}
 				<a class="pagination_next" href="{{ url_for_other_page(pagination.page + 1)  }}">Next</a>
 			</div>
