@@ -1,75 +1,145 @@
 {% extends "user/personal.html.j2" %}{% from 'macros.html.j2' import get_messages %}
+
 {% block personal %}
 
-<h2 class="title_next">Download</h2>
-<div class="col-sm-3 admin_function">
-	<h2 class="text-center">Download All Clubs' Info</h2>
-	<center>
-		<a class="btn btn-success smalltext" href="{{ url_for('clubblueprint.allclubsinfo') }}" target="_blank">Download</a>
-	</center>
-</div>
-<div class="col-sm-3 admin_function">
-	<h2 class="text-center">Download All Activities' Info</h2>
-	<center>
-		<a class="btn btn-success smalltext" data-toggle="modal" data-target="#act_download">Download</a>
-	</center>
-</div>
-<div class="col-sm-3 admin_function">
-	<h2 class="text-center">Download All Users' Info</h2>
-	<center>
-		<a class="btn btn-success smalltext" href="{{ url_for('.allusersinfo') }}" target="_blank">Download</a>
-	</center>
-</div>
-
-<div class="clearfix"></div>
 <br>
-<div class="clearfix clearfix-bordered"></div>
 
-<h2 class="title_next">Other Administrative Functions</h2>
-{{ get_messages(['notify_all']) }}
-<div class="admin_button">
-	<a href="{{ url_for('clubblueprint.adjustclubs') }}" class="btn btn-success">Adjust Excellent Clubs</a>
-</div>
-<div class="admin_button">
-	<a href="{{ url_for('clubblueprint.clubmanagementlist') }}" class="btn btn-success">Access to Clubs' Management</a>
-</div>
-<div class="admin_button">
-	<a href="{{ url_for('.changepassword') }}" class="btn btn-success">Change Accounts' Password</a>
-</div>
-<div class="admin_button">
-	<a href="{{ url_for('.changeuserinfo') }}" class="btn btn-success">Change Users' Info</a>
-</div>
-<div class="admin_button">
-	<a href="{{ url_for('.disableaccounts') }}" class="btn btn-success">Disable Accounts</a>
-</div>
-<div class="admin_button">
-	<a href="#hongmei_schedule" data-toggle="modal" data-target="#hongmei_schedule" class="btn btn-success">Check HongMei Schedule</a>
-</div>
-<div class="admin_button">
-	<a href="#adjust_club_status" data-toggle="modal" data-target="#adjust_club_status" class="btn btn-success">Adjust Clubs' Status</a>
-</div>
-<div class="admin_button">
-	<a href="#notify_all" data-toggle="modal" data-target="#notify_all" class="btn btn-success">Notify Users</a>
-</div>
+<div class="row">
 
-<div class="clearfix"></div>
-<br>
-<div class="clearfix clearfix-bordered"></div>
+	<div class="col-md-1">
+	</div>
 
-<h2 class="title_next">Please be careful with following operation</h2>
-{{ get_messages(['rebuild_search', 'club_creation', 'enable_cleanup']) }}
-<div class="admin_button">
-	<a class="btn btn-warning" href="{{ url_for('.refreshusers') }}">Refresh Student Accounts</a>
+	<div class="col-md-10">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h4>Administrative Functions
+					<span class="pull-right glyphicon glyphicon-stats">
+					</span>
+				</h4>
+
+			</div>
+			<div class="panel-body">
+				{% if get_flashed_messages(category_filter=['rebuild_search', 'club_creation', 'enable_cleanup']) %}
+				<div class="alert alert-warning">
+					<span class="glyphicon glyphicon-warning-sign"></span>
+					{% for message in get_flashed_messages(category_filter=['rebuild_search', 'club_creation', 'enable_cleanup']) %}
+					{{ message }}
+					{% endfor %}
+				</div>
+				{% endif %}
+
+				{% if get_flashed_messages(category_filter=['notify_all']) %}
+				<div class="alert alert-success">
+					<span class="glyphicon glyphicon-ok-sign"></span>
+					{% for message in get_flashed_messages(category_filter=['notify_all']) %}
+					{{ message }}
+					{% endfor %}
+				</div>
+				{% endif %}
+
+				<div class="row">
+					<div class="col-md-4">
+						<div class="btn-group btn_content" role="group">
+							<a class="btn btn-default" href="{{ url_for('clubblueprint.allclubsinfo') }}" target="_blank"> Download Clubs' Information (.xlsx) </a>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="btn-group btn_content" role="group">
+							<a class="btn btn-default" data-toggle="modal" data-target="#act_download"> Download Activities' Information (.xlsx) </a>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="btn-group btn_content" role="group">
+							<a class="btn btn-default" href="{{ url_for('.allusersinfo') }}" target="_blank"> Download Users' Information (.xlsx) </a>
+						</div>
+					</div>
+				</div>
+				<!-- /.row -->
+
+				<br>
+
+				<div class="row">
+					<div class="col-md-4">
+						<div class="btn-group btn_content" role="group">
+							<a href="{{ url_for('clubblueprint.adjustclubs') }}" class="btn btn-default">Set Excellent Clubs</a>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="btn-group btn_content" role="group">
+							<a href="{{ url_for('clubblueprint.clubmanagementlist') }}" class="btn btn-default">View Table of All Clubs</a>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="btn-group btn_content" role="group">
+							<a href="#adjust_club_status" data-toggle="modal" data-target="#adjust_club_status" class="btn btn-default">Change Clubs' Status</a>
+						</div>
+					</div>
+				</div>
+				<!-- /.row -->
+
+				<br>
+
+				<div class="row">
+					<div class="col-md-4">
+						<div class="btn-group btn_content" role="group">
+							<a href="#notify_all" data-toggle="modal" data-target="#notify_all" class="btn btn-default">Notify Users</a>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="btn-group btn_content" role="group">
+							<a href="{{ url_for('.changeuserinfo') }}" class="btn btn-default">Edit Users' Info</a>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="btn-group btn_content" role="group">
+							<a href="{{ url_for('.disableaccounts') }}" class="btn btn-default">Disable User Accounts</a>
+						</div>
+					</div>
+				</div>
+				<!-- /.row -->
+
+				<br>
+
+				<div class="row">
+					<div class="col-md-4">
+						<div class="btn-group btn_content" role="group">
+							<a class="btn btn-warning" href="{{ url_for('.refreshusers') }}">Refresh Student Accounts</a>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="btn-group btn_content" role="group">
+							<button class="btn btn-warning" data-toggle="modal" data-target="#fix_search">Sync Search Engine</button>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="btn-group btn_content" role="group">
+							<a class="btn btn-warning" href="{{ url_for('.edit_siteconfig') }}">Edit Site Configuration</a>
+						</div>
+					</div>
+				</div>
+				<!-- /.row -->
+
+
+
+			</div>
+			<!-- /.panel-body -->
+		</div>
+		<!-- /.panel -->
+	</div>
+
+	<div class="col-md-1">
+	</div>
 </div>
-<div class="admin_button">
-	<button class="btn btn-warning" data-toggle="modal" data-target="#fix_search">Auto-fix Search Engine</button>
-</div>
-<div class="admin_button">
-	<a class="btn btn-warning" href="{{ url_for('.download_new_passwords') }}">Download New Accounts' Passwords</a>
-</div>
-<div class="admin_button">
-	<a class="btn btn-warning" href="{{ url_for('.edit_siteconfig') }}">Adjust Site Configuration</a>
-</div>
+<!-- /.row -->
+
 <div id="fix_search" class="modal fade" role="dialog">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -81,54 +151,12 @@
 				<p>When search engine is desynchronized with the database, you can use this operation to auto-fix the problem.</p>
 			</div>
 			<div class="modal-footer">
-				<button class="btn btn-success float-left" data-dismiss="modal">Cancel</button>
+				<button class="btn btn-default float-left" data-dismiss="modal">Cancel</button>
 				<form action="{{ url_for('.rebuildsearch_submit') }}" method="post">
 					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 					<input type="submit" class="btn btn-danger" value="Fix">
 				</form>
 			</div>
-		</div>
-	</div>
-</div>
-
-<div id="hongmei_schedule" class="modal fade" role="dialog">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Check HongMei Schedule</h4>
-			</div>
-			<form action="{{ url_for('actblueprint.checkhongmeischedule_download') }}" target="_blank" id="download_schedule" method="post">
-				<div class="modal-body">
-					<div class="col-sm-4">
-						<select name="year" class="form-control">
-							{% for year in years %}
-							<option value="{{ year }}">{{ year }}</option>
-							{% endfor %}
-						</select>
-					</div>
-					<div class="col-sm-4">
-						<select name="month" class="form-control">
-							{% for month in range(1,13) %}
-							<option value="{{ month }}">{{ month }}</option>
-							{% endfor %}
-						</select>
-					</div>
-					<div class="col-sm-4">
-						<select name="day" class="form-control">
-							{% for day in range(1,32) %}
-							<option value="{{ day }}">{{ day }}</option>
-							{% endfor %}
-						</select>
-					</div>
-					<div class="clearfix"></div>
-				</div>
-				<div class="modal-footer">
-					<button class="btn btn-default float-left" data-dismiss="modal">Close</button>
-					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-					<input type="submit" class="btn btn-success" value="Download">
-				</div>
-			</form>
 		</div>
 	</div>
 </div>
@@ -145,7 +173,7 @@
 					<a class="btn btn-primary large_button" href="{{ url_for('actblueprint.allactivitiesinfo') }}">Download All Activities</a>
 				</div>
 				<div class="col-sm-6">
-					<a class="btn btn-success large_button" href="{{ url_for('actblueprint.thisweek_activitiesinfo') }}">Download This Week's Activities</a>
+					<a class="btn btn-default large_button" href="{{ url_for('actblueprint.thisweek_activitiesinfo') }}">Download This Week's Activities</a>
 				</div>
 				<div class="clearfix"></div>
 			</div>

@@ -286,7 +286,7 @@
 						.animate( {
 							scrollTop: $( '#excellentclub' )
 								.offset()
-								.top - 20
+								.top - 50
 						}, 1000 );
 				} );
 
