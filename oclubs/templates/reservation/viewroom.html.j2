@@ -163,7 +163,7 @@
                 <th>Date</th>
                 <th>Building</th>
                 <th>Timeslot</th>
-                <th>Available classrooms</th>
+                <th width="60%" id="classrooms_column">Available classrooms</th>
               </tr>
             </thead>
             <tbody>
@@ -186,11 +186,10 @@
                 <td rowspan="{{ info[2]|length }}">{{ building.format_name }}</td>
                 {% endif %}
                 <td>{{ timeslot.format_name }}</td>
-                <td>
+                <td class="classrooms_cell">
                   {% if info[3][building][timeslot][date] %}
                     {% for room in info[3][building][timeslot][date] %}
                     {{ room.room_number }}
-                    {% if not loop.last %}&nbsp;&nbsp;{% endif %}
                     {% endfor %}
                   {% else %}
                     None
@@ -210,5 +209,9 @@
 
   </div> <!-- /.row -->
 </div> <!-- /.container-->
+
+<div id="test_length">
+
+</div>
 
 {% endblock %}

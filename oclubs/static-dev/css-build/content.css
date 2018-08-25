@@ -31,6 +31,26 @@
   transition: none;
 }
 
+.classrooms_cell {
+  font-size: 100%;
+  font-family: Menlo,Monaco,Consolas,Courier New,monospace;
+}
+
+.btn,
+.btn_flat,
+.input {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.btn:focus,
+.btn_flat:focus,
+.input:focus {
+  outline: none !important;
+}
+
 .bottom-column {
   display: table-cell;
   float: none;
