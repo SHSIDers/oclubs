@@ -1,0 +1,7 @@
+<!-- For sub navigation for classroom reservation system -->
+
+
+<ul class="nav nav-tabs">
+  <li role="presentation" class="{% if is_viewres %}active{% endif %}"><a class="plaintext_link" href="{{ url_for('resblueprint.viewreservations', res_filter='all') }}">Reservations</a></li>
+  <li role="presentation" class="{% if is_viewroom %}active{% endif %}"><a class="plaintext_link" href="{{ url_for('resblueprint.viewclassrooms', room_filter='all') }}">Classrooms</a></li>
+</ul>

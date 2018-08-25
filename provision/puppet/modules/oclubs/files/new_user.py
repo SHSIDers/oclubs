@@ -49,8 +49,8 @@ if typ == UserType.TEACHER:
 else:
     u = User.new()
 
-    u.studentid = noblank('Login name (Student ID): ')
-    u.passportname = noblank('Real/Passport name: ')
+    u.studentid = noblank('Student ID: ')
+    u.passportname = noblank('Real/Passport name (login username): ')
 
     while True:
         password = getpass.getpass('Password (will not be shown): ')
@@ -73,6 +73,7 @@ else:
     u.phone = None
     u.picture = Upload(-101)
     u.type = typ
+    u.initalized = False
 
     if typ == UserType.STUDENT:
         while True:
@@ -87,7 +88,7 @@ else:
     else:
         u.grade = u.currentclass = None
 
-    u.create(False)
+    u.create()
 
 
 done()

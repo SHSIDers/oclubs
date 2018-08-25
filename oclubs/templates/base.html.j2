@@ -1,90 +1,113 @@
 <!DOCTYPE HTML>
-<html lang="en">
+<html class="hidden" lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	<meta name="renderer" content="webkit">
-	<link href="{{ url_for('static', filename='cdn/cdnjs/twitter-bootstrap/3.3.6/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" media="all" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7">
+
 	<script src="{{ url_for('static', filename='cdn/cdnjs/jquery/2.2.2/jquery.min.js') }}" integrity="sha384-mXQoED/lFIuocc//nss8aJOIrz7X7XruhR6bO+sGceiSyMELoVdZkN7F0oYwcFH+"></script>
+
+	<link href="{{ url_for('static', filename='cdn/cdnjs/twitter-bootstrap/3.3.6/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" media="all" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7">
 	<script src="{{ url_for('static', filename='cdn/cdnjs/twitter-bootstrap/3.3.6/js/bootstrap.min.js') }}" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"></script>
-	<link href="{{ url_for('static', filename='css/oclubs.min.css') }}" rel="stylesheet" type="text/css" media="all">
+
 	<script src="{{ url_for('static', filename='js/oclubs.min.js') }}"></script>
+
+	<link href="{{ url_for('static', filename='css/base.min.css') }}" rel="stylesheet" type="text/css" media="all">
+	<link href="{{ url_for('static', filename='css/content.min.css') }}" rel="stylesheet" type="text/css" media="all">
+
+	<link href="{{ url_for('static', filename='cdn/cdnjs/select2/4.0.5/css/select2.min.css') }}" rel="stylesheet" type="text/css" media="all" integrity="sha384-HIipfSYbpCkh5/1V87AWAeR5SUrNiewznrUrtNz1ux4uneLhsAKzv/0FnMbj3m6g">
+	<script src="{{ url_for('static', filename='cdn/cdnjs/select2/4.0.5/js/select2.min.js') }}" integrity="sha384-xMX6VHK1HYyCMM8zHAVkLHgg2rIDhN01+z4rI70RV2dwzzVlHP95uaDOc5ds7Pow"></script>
+	<script src="{{ url_for('static', filename='js/selection.min.js') }}"></script>
+	<link href="{{ url_for('static', filename='css/form.min.css') }}" rel="stylesheet" type="text/css" media="all">
+
 	{% block additionalcssjs %}{% endblock %}
-	<title>{% block title %}{% endblock %} - oClubs!</title>
+	<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" />
+
+	<title>{% block title %}{% endblock %} &middot; SHSID Connect</title>
 </head>
 
-<body>
-<div id="sidenav">
-	<a id="closebtn">&times;</a>
-	<a href="{{ url_for('homepage') }}" class="{% if is_home %}active{% endif %}">Home</a>
-	<a href="{{ url_for('clubblueprint.clublist', club_filter='all') }}" class="{% if is_list %}active{% endif %}">Club List</a>
-	<a href="{{ url_for('actblueprint.allactivities', club_filter='all') }}" class="{% if is_allact %}active{% endif %}">Activities</a>
-	<a href="{{ url_for('actblueprint.allphotos') }}" class="{% if is_photos %}active{% endif %}">Photos</a>
-	<a href="{{ url_for('about') }}" class="{% if is_about %}active{% endif %}">About</a>
-</div>
-<div id="emptyclose"></div>
-<span class="glyphicon glyphicon-list" id="floatmenu"></span>
+<body id="body" class="preload">
 
-<div class="header">
-	<div class="container">
-		<div class="logo">
-			<a href="/"><img src="{{ url_for('static', filename='images/logo.png') }}" class="img-responsive" alt=""></a>
-		</div>
-		<div class="top-nav">
-			<ul>
-				<li class="sweep {% if is_home %}active{% endif %}"><a href="{{ url_for('homepage') }}">Home</a></li>
-				<li class="sweep {% if is_list %}active{% endif %}"><a href="{{ url_for('clubblueprint.clublist', club_filter='all') }}">Club List</a></li>
-				<li class="sweep {% if is_allact %}active{% endif %}"><a href="{{ url_for('actblueprint.allactivities', club_filter='all') }}">Activities</a></li>
-				<li class="sweep {% if is_photos %}active{% endif %}"><a href="{{ url_for('actblueprint.allphotos') }}">Photos</a></li>
-				<li class="sweep {% if is_about %}active{% endif %}"><a href="{{ url_for('about') }}">About</a></li>
-			</ul>
-		</div>
-		<div class="search">
-			<form action="{{ url_for('search') }}" method="get">
-				<input type="hidden" name="search_type" value="club">
-				<input type="hidden" name="page" value="1">
-				<input type="text" name="keywords" placeholder="Search">
-				<span class="glyphicon glyphicon-search"><input type="submit" value=""></span>
-			</form>
-		</div>
 
-		<div class="login">
-			{% if current_user.is_authenticated %}
-			<a href="{{ url_for('userblueprint.personal') }}"><span class="glyphicon glyphicon-user"></span>&nbsp;{{ current_user.nickname }}</a>
-			{% else %}
-			<a href="{{ url_for('login', next=request.path) }}"><span class="glyphicon glyphicon-log-in"></span>&nbsp;Login</a>
-			{% endif %}
+	<nav class="navbar navbar-default">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#important-id-for-collapsing" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand clearfix" href="/"><img class="logo_img_day" src="{{ url_for('static', filename='images/logo-day.png') }}" class="img-responsive" alt=""></a>
+				<a class="navbar-brand clearfix" href="/"><img class="logo_img_night" src="{{ url_for('static', filename='images/logo-night.png') }}" class="img-responsive" alt=""></a>
+			</div>
+			<div class="collapse navbar-collapse" id="important-id-for-collapsing">
+				<ul class="nav navbar-nav navbar-right">
+					<li class="nav-item day_night_toggle_form">
+						<div class="day_night_toggle_wrapper">
+							<label class="day_night_toggle">
+								<input type="checkbox">
+								<span class="slider round"></span>
+							</label>
+						</div>
+					</li>
+					<li class="nav-item {% if is_list or is_allact or is_photos %}active{% endif %}">
+						<a href="{{ url_for('clubblueprint.clublist', club_filter='all') }}">Clubs</a>
+					</li>
+					<li class="nav-item {% if is_viewres or is_viewroom %}active{% endif %}">
+						<a href="{{ url_for('resblueprint.viewreservations', res_filter='all') }}">Reservations</a>
+					</li>
+					{% if current_user.is_authenticated %}
+					<li class="nav-item {% if is_user %}active{% endif %}">
+						<a href="{{ url_for('userblueprint.personal') }}"><span class="glyphicon glyphicon-user"></span>&nbsp;{{ current_user.nickname }}</a>
+					</li>
+					<li class="nav-item">
+						{% with unread_notifications_num = current_user.get_unread_notifications_num() %}
+						<button class="btn btn-lg btn-link" id="notifications_button">
+							<a href="{{ url_for('userblueprint.notifications') }}" id="notifications_button_link"><span class="glyphicon glyphicon-bell"></span></a>
+						</button>
+						{% if unread_notifications_num %}<span class="badge badge-notify">{{ unread_notifications_num }}</span>{% endif %}
+						{% endwith %}
+					</li>
+					{% else %}
+					<li>
+						<a href="{{ url_for('login', next=request.path) }}"><span class="glyphicon glyphicon-log-in"></span>&nbsp;Login</a>
+					</li>
+					{% endif %}
+				</ul>
+			</div>
 		</div>
+	</nav>
+
+
+
+	{% block head %}{% endblock %}
+
+
+	{% block content %}
+
+	{% endblock %}
+
+	{% include 'static/footer.html.j2' %}
+
+
+	<div class="scroll_to_top">
+		<a class="btn btn-default" id="scroll_to_top_btn" href="#"><i class="glyphicon glyphicon-triangle-top"></i></a>
 	</div>
-</div>
-<div id="page-content">
-{% block content %}{% endblock %}
-</div>
-<div class="clearfix"></div>
 
-<div class="footer">
-	<div class="container text-center">
-		<div class="col-sm-4 soci">
-			<h3>Join Clubs</h3>
-			<p><a href="{{ url_for('clubblueprint.clublist', club_filter='all') }}">Click Here</a></p>
-			<div class="clearfix"></div>
-			<h3>FAQs</h3>
-			<p><a href="{{ url_for('faq') }}">Click Here</a></p>
-		</div>
-		<div class="col-sm-4 footer-left">
-			<h3>Notes</h3>
-			<p>This is a student-made website. We are always welcoming advice about improving this website. Feel free to contact us (or like us) and check our school, SHSID.</p>
-		</div>
-		<div class="col-sm-4 footer-left">
-			<h3>Check Creators' Info</h3>
-			<p><a href="{{ url_for('creators') }}">Click Here</a></p>
-			<div class="clearfix"> </div>
-			<h3>Contact Us</h3>
-			<p><a href="{{ url_for('contactcreators') }}">Contact Creators</a><br><a href="{{ url_for('contactadmin') }}">Contact Administrators</a></p>
-		</div>
-	</div>
-</div>
+	<noscript>
+
+		<footer class="footer navbar-fixed-bottom">
+			<div class="container">
+				<div class="alert alert-danger">
+					<center><span class="glyphicon glyphicon-warning-sign"></span> JavaScript seems to be disabled. To get the best experience, please enable JavaScript.</center>
+				</div>
+			</div>
+		</footer>
+
+	</noscript>
+
 </body>
 </html>

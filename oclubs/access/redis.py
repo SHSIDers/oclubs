@@ -59,7 +59,7 @@ class RedisStuff(object):
     Superclass of all redis stuffs.
 
     :param basestring key: redis key
-    :param int timeout: timeyt in seconds for the key, negative values
+    :param int timeout: timeout in seconds for the key, negative values
         are forever.
     """
     __metaclass__ = _RedisMetaclass

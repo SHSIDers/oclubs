@@ -1,6 +1,5 @@
-#Troll
-
 CREATE DATABASE oclubs CHARACTER SET utf8;
+
 USE oclubs;
 
 CREATE TABLE user (
@@ -9,10 +8,11 @@ CREATE TABLE user (
 	user_nick_name varchar(255) NOT NULL,
 	user_passport_name varchar(255) NOT NULL,
 	user_password tinyblob,
+	user_initalized boolean NOT NULL DEFAULT false,
 	user_picture int NOT NULL, # Foreign key to upload.upload_id
 	user_email tinytext NOT NULL,
 	user_phone bigint,
-	user_type tinyint NOT NULL, # 1=student 2=teacher 3=admin
+	user_type tinyint NOT NULL, # Enum UserType
 	user_grade tinyint, # NULL for teachers
 	user_class tinyint # NULL for teachers
 );
@@ -32,7 +32,11 @@ CREATE TABLE club (
 	club_inactive boolean NOT NULL,
 	club_type tinyint NOT NULL, # 1 = academics, 2 = sports, 3 = arts, 4 = services, 5 = entertainment, 6 = others, 7 = school teams
 	club_joinmode tinyint NOT NULL, # 1 = free join, 2 = by invitation,
-	club_reactivate boolean NOT NULL
+	club_reactivate boolean NOT NULL,
+	club_reservation_allowed boolean NOT NULL DEFAULT true, # true = allowed, false = not allowed
+	club_smartboard_allowed boolean NOT NULL DEFAULT true, # true = allowed, false = not allowed
+	club_smartboard_teacherapp_bypass boolean NOT NULL DEFAULT false, # true = bypass, false = no bypass
+	club_smartboard_directorapp_bypass boolean NOT NULL DEFAULT false # true = bypass, false = no bypass
 );
 
 CREATE INDEX club_name ON club (club_name);
@@ -61,13 +65,15 @@ CREATE TABLE activity (
 	act_location varchar(255) NOT NULL,
 	act_cas int NOT NULL, # CAS hours
 	act_post int NOT NULL, # Foreign key to text.text_id
-	act_selections varchar(255) NOT NULL # stores object in JSON
+	act_selections varchar(255) NOT NULL, # stores object in JSON
+	act_reservation int, # Foreign key to reservation.reservations_id
 );
 
 CREATE INDEX act_club ON activity (act_club);
 CREATE INDEX act_post ON activity (act_post);
 CREATE INDEX act_date ON activity (act_date);
 CREATE INDEX act_time ON activity (act_time);
+CREATE INDEX act_reservation ON activity (act_reservation);
 
 
 CREATE TABLE act_pic (
@@ -157,3 +163,34 @@ CREATE TABLE preferences (
 );
 
 CREATE INDEX pref_user ON preferences (pref_user);
+
+CREATE TABLE classroom (
+	room_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	room_number varchar(16) NOT NULL,
+	room_studentsToUseLunch boolean NOT NULL, # true = available to students, false = not available to students
+	room_studentsToUseAfternoon boolean NOT NULL, # true = available to students, false = not available to students
+	room_building tinyint NOT NULL, # Enum Building
+	room_desc varchar(255) # optional descriptors (eg ASB only)
+);
+
+CREATE TABLE reservation (
+	res_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	res_activity int, # Foreign key to act.act_id
+	res_date int unsigned NOT NULL, # The date when the reservation is effective
+	res_date_of_res int unsigned NOT NULL, # The date when the reservation was created
+	res_timeslot tinyint NOT NULL, # based on ActivityTime enum
+	res_status tinyint NOT NULL, # 1 = club not yet paired with activity, # 2 = club paired with activity,  # 3 = non-club
+	res_activity_name varchar(255),
+	res_reserver_name varchar(255),
+	res_reserver_club int, # Foreign key to club.club_id
+	res_owner int, # Foreign key to user.user_id
+	res_classroom int NOT NULL, # Foreign key to classroom.room_id
+	res_SBNeeded boolean NOT NULL, # true = need smartboard, false = no need smartboard
+	res_SBAppDesc varchar(512),
+	res_instructors_approval boolean NOT NULL DEFAULT false,
+	res_directors_approval boolean NOT NULL DEFAULT false,
+	res_SBApp_status tinyint NOT NULL DEFAULT 0 # based on SBAppStatus enum
+);
+
+CREATE INDEX res_SBNeeded ON reservation (res_SBNeeded);
+CREATE INDEX res_SBApp_status ON reservation (res_SBApp_status);

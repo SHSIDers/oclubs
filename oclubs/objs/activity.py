@@ -4,22 +4,13 @@
 
 from __future__ import absolute_import, unicode_literals, division
 
-from datetime import datetime, date, timedelta
+from datetime import date, timedelta
 import json
 
+from oclubs.utils.dates import ONE_DAY, int_to_dateobj, dateobj_to_int
 from oclubs.access import database
 from oclubs.enums import ActivityTime
 from oclubs.objs.base import BaseObject, Property, ListProperty, paged_db_read
-
-ONE_DAY = timedelta(days=1)
-
-
-def int_date(dateint):
-    return datetime.strptime(str(dateint), Activity.date_fmtstr).date()
-
-
-def date_int(dateobj):
-    return int(dateobj.strftime(Activity.date_fmtstr))
 
 
 class Activity(BaseObject):
@@ -28,20 +19,23 @@ class Activity(BaseObject):
     name = Property('act_name', search=True)
     club = Property('act_club', 'Club')
     description = Property('act_desc', 'FormattedText', search=True)
-    date = Property('act_date', (int_date, date_int))
+    date = Property('act_date', (int_to_dateobj, dateobj_to_int))
     time = Property('act_time', ActivityTime)
     location = Property('act_location')
     cas = Property('act_cas', (lambda val: val/60, lambda val: val*60))
     post = Property('act_post', 'FormattedText', search=True)
     selections = Property('act_selections', json, error_default='[]')
+    reservation = Property('act_reservation', 'Reservation')
     attendance = ListProperty('attendance', 'att_act', 'att_user', 'User')
     pictures = ListProperty('act_pic', 'actpic_act', 'actpic_upload', 'Upload')
-
-    date_fmtstr = '%Y%m%d'
 
     @property
     def is_future(self):
         return self.date > date.today()
+
+    @property
+    def has_reservation(self):
+        return True if self.reservation is not None else False
 
     @property
     def one_line_selections(self):
@@ -141,21 +135,22 @@ class Activity(BaseObject):
         conds['where'] = conds.get('where', [])
 
         if isinstance(dates, date):
-            conds['where'].append(('=', 'act_date', date_int(dates)))
+            conds['where'].append(('=', 'act_date', dateobj_to_int(dates)))
         elif dates != (True, True):
             start, end = dates
 
             if start is True:
                 conds['where'].append(('<=', 'act_date',
-                                       date_int(end or date.today())))
+                                       dateobj_to_int(end or date.today())))
             elif end is True:
                 conds['where'].append(('>', 'act_date',
-                                       date_int(start or date.today())))
+                                       dateobj_to_int(start or date.today())))
             else:
                 start = (start or date.today()) + ONE_DAY
                 end = (end or date.today()) + ONE_DAY
                 conds['where'].append(('range', 'act_date',
-                                       (date_int(start), date_int(end))))
+                                       (dateobj_to_int(start),
+                                        dateobj_to_int(end))))
 
         if times:
             times = [time.value for time in times]
@@ -190,8 +185,12 @@ class Activity(BaseObject):
 
         pager_fetch, pager_return = pager
 
-        ret = pager_fetch(database.fetch_onecol, 'activity', 'act_id', conds,
+        ret = pager_fetch(database.fetch_onecol,
+                          cls.table,
+                          cls.identifier,
+                          conds,
                           distinct=True)
+
         ret = [cls(item) for item in ret]
 
         return pager_return(ret)
@@ -205,4 +204,5 @@ class Activity(BaseObject):
         weekday = date.today().weekday()
         today = date.today()
         return cls.get_activities_conditions(
-            dates=(today - timedelta(weekday + 1), today + timedelta(6 - weekday)))
+            dates=(today - timedelta(weekday + 1),
+                   today + timedelta(6 - weekday)))

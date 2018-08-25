@@ -1,61 +1,98 @@
-{% extends "base.html.j2" %}{% from 'macros.html.j2' import get_messages %}
+{% extends "base.html.j2" %}
+{% from 'macros.html.j2' import get_messages %}
+
+{% block additionalcssjs %}
+<link href="{{ url_for('static', filename='cdn/cdnjs/select2/4.0.5/css/select2.min.css') }}" rel="stylesheet" type="text/css" media="all" integrity="sha384-HIipfSYbpCkh5/1V87AWAeR5SUrNiewznrUrtNz1ux4uneLhsAKzv/0FnMbj3m6g">
+<script src="{{ url_for('static', filename='cdn/cdnjs/select2/4.0.5/js/select2.min.js') }}" integrity="sha384-xMX6VHK1HYyCMM8zHAVkLHgg2rIDhN01+z4rI70RV2dwzzVlHP95uaDOc5ds7Pow"></script>
+<script src="{{ url_for('static', filename='js/selection.min.js') }}"></script>
+<link href="{{ url_for('static', filename='css/form.min.css') }}" rel="stylesheet" type="text/css" media="all">
+{% endblock %}
+
 {% block title %}Quit Club{% endblock %}
+
 {% block content %}
 
-<!-- Below Navbar -->
 <div class="container">
-	<div class="col-sm-3">
-		<img src="{{ url_for('static', filename='images/areyousure1.jpg') }}" class="img-responsive img-thumbnail" alt="Are you sure?">
-	</div>
-	<div class="col-sm-6">
-		<h1 class="white title_next">Quitting Club</h1>
-		{{ get_messages(['quit'], br_after=True) }}
-		{% if quitting_clubs %}
-		<form class="form-group white middle">
-			<p class="midtext"><i>If you really want to quit a club, then please select the club and state your reason. Your quitting request will be emailed to the club leader.</i></p>
-			<br>
-			<label for="clubs">The club:</label>
-			<select class="form-control black" id="_clubs" name="_clubs" type="dropdown">
-				{% for club in quitting_clubs %}
-				<option value="{{ club.id }}">{{ club.name }}</option>
-				{% endfor %}
-			</select>
-			<br>
-			<label for="reason">Reason:</label>
-			<textarea class="form-control" rows="10" name="_reason" id="_reason"></textarea>
-			<br>
-			<button type="button" class="btn btn-info" data-toggle="modal" data-target="#confirmation" id="updatequit">Submit</button>
-		</form>
-		{% else %}
-		<p class="white midtext">You do not have any club to quit yet.</p>
-		{% endif %}
-	</div>
-	<div class="col-sm-3">
-		<img src="{{ url_for('static', filename='images/areyousure2.jpg') }}" class="img-responsive img-thumbnail" alt="Are you sure?">
-	</div>
-</div>
 
-<div id="confirmation" class="modal fade" role="dialog">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Confirmation</h4>
+	<br>
+	<br>
+	<br>
+
+	<div class="row">
+		<div class="col-md-4">
+		</div>
+
+		<div class="col-md-4">
+			<div class="form-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4>Quit Club</h4>
+					</div>
+					<div class="panel-body">
+						{% if get_flashed_messages(category_filter=['quit']) %}
+						<div class="alert alert-warning">
+							<span class="glyphicon glyphicon-warning-sign"></span>
+							{% for message in get_flashed_messages(category_filter=['quit']) %}
+							{{ message }}
+							{% endfor %}
+						</div>
+						{% endif %}
+						<form class="form-group">
+							<div class="form-group">
+									Club
+									<select class="form-control" id="_clubs" name="_clubs">
+										{% for club in quitting_clubs %}
+										<option value="{{ club.id }}">{{ club.name }}</option>
+										{% endfor %}
+									</select>
+							</div>
+
+							<div class="form-group">
+									Reason
+									<textarea class="form-control" rows="7" name="_reason" id="_reason"></textarea>
+							</div>
+
+							<div class="form-group">
+								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmation" id="updatequit">Submit</button>
+							</div>
+						</form>
+
+						<div class="modal fade" id="confirmation" tabindex="-1" role="dialog">
+							<div class="modal-dialog modal-dialog-centered">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+										<h4 class="modal-title">Confirm</h4>
+									</div>
+									<div class="modal-body">
+										<p></p>
+											<form id='quit_club' action="{{ url_for('.quitclub_submit') }}" method="post">
+												<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+												<input name="clubs" id="clubs" type="hidden" value="">
+												<input name="reason" id="reason" type="hidden" value="">
+												<hr class="separator">
+												<div class="btn-toolbar">
+													<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+													<input type="submit" class="btn btn-primary" value="Confirm">
+												</div>
+											</form>
+									</div>
+								</div><!-- /.modal-content -->
+							</div><!-- /.modal-dialog -->
+						</div><!-- /.modal -->
+					</div>
+					<!-- /.panel-body -->
+				</div>
+				<!-- /.panel -->
 			</div>
-			<div class="modal-body">
-				<p></p>
-			</div>
-			<div class="modal-footer">
-				<form id='quit_club' action="{{ url_for('.quitclub_submit') }}" method="post">
-					<button type="button" class="btn btn-default" data-dismiss="modal">No!</button>
-					<input type="submit" class="btn btn-primary" value="Confirm">
-					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-					<input name="clubs" id="clubs" type="hidden" value="">
-					<input name="reason" id="reason" type="hidden" value="">
-				</form>
-			</div>
+			<!-- /.form-group -->
+		</div>
+		<!-- /.col-md-4 -->
+
+		<div class="col-md-4">
 		</div>
 	</div>
 </div>
+<!-- /.container -->
 
 {% endblock %}

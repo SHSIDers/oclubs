@@ -1,72 +1,152 @@
-{% extends "base.html.j2" %}{% from 'macros.html.j2' import get_messages %}
-{% block title %}Adjust Members{% endblock %}
+{% extends "base.html.j2" %}
+
+{% block additionalcssjs %}
+<link href="{{ url_for('static', filename='css/form.min.css') }}" rel="stylesheet" type="text/css" media="all">
+{% endblock %}
+
+
+{% block title %}{% if invite_member %}Invite/{% endif %}Remove Members{% endblock %}
 {% block content %}
 
 <!-- Below Navbar -->
-<div class="container">
-	<h1 class="title">Adjust Members</h1>
-	<h2 class="title_next">{{ g.club.name }}</h2>
-	{{ get_messages(['expelled', 'invite_member']) }}
-	<table class="table table-hover table-bordered emptyline-lg" id="memberinfotable">
-		<thead>
-			<tr>
-				<th class="width-5">Photo</th>
-				<th>Nick Name</th>
-				<th>Official Name</th>
-				<th>Class</th>
-				<th>Operation</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for member in g.club.members %}
-			{% if member != g.club.leader %}
-			<tr class="act" id="{{ member.passportname }}">
-				<td>
-					<img src="{{ member.picture.location_external }}" class="img-responsive table-photo" alt="{{ member.nickname }}">
-				</td>
-				<td>{{ member.nickname }}</td>
-				<td>{{ member.passportname }}</td>
-				<td>{{ member.grade_and_class }}</td>
-				<td>
-					<form action="{{ url_for('.adjustmember_submit', club=g.club.callsign) }}" method="post">
-						<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-						<input type="hidden" name="uid" value="{{ member.id }}">
-						<input class="btn btn-danger tinytext" type="submit" name="expel" value="Expel">
-					</form>
-				</td>
-			</tr>
-			{% endif %}
-			{% endfor %}
-		</tbody>
-	</table>
-	{% if invite_member %}
-	<center><button class="btn btn-success btn-lg" data-toggle="modal" data-target="#invite_member">Invite New Member</button></center>
-	{% endif %}
-</div>
 
-<div id="invite_member" class="modal fade" role="dialog">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Invite Member</h4>
-			</div>
-			<form action="{{ url_for('.invitemember', club=g.club.callsign) }}" method="post" id="invite_form">
-				<div class="modal-body">
-					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-					<label for="gradeclass">Grade and class:</label>
-					<input class="form-control" id="gradeclass" type="text" name="gradeclass">
-					<br>
-					<label for="passportname">Passport Name:</label>
-					<input class="form-control" id="passportname" type="text" name="passportname">
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<input type="submit" class="btn btn-primary" value="Invite">
-				</div>
-			</form>
+<div class="container">
+	<div class="row">
+		<div class="col-md-1">
+		</div>
+
+		<div class="col-md-10">
+			<h1> {% if invite_member %}Invite/{% endif %}Remove Members <small> - {{ g.club.name }}</small></h1>
+		</div>
+
+		<div class="col-md-1">
 		</div>
 	</div>
+
+	<div class="row">
+		<div class="col-md-1">
+		</div>
+
+		<div class="col-md-10">
+			<hr class="separator" id="separator_title">
+		</div>
+
+		<div class="col-md-1">
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-1">
+		</div>
+
+		<div class="col-md-10">
+			{% if get_flashed_messages(['expelled', 'invite_member']) %}
+			<div class="alert alert-warning">
+				<span class="glyphicon glyphicon-warning-sign"></span>
+				{% for message in get_flashed_messages(category_filter=['expelled', 'invite_member']) %}
+				{{ message }}
+				{% endfor %}
+			</div>
+			{% endif %}
+
+			{% if invite_member %}
+			<div class="form-group">
+				<button class="btn btn-primary" data-toggle="modal" data-target="#invite_member">Invite New Member</button>
+			</div>
+
+
+			<div class="modal fade" id="invite_member" tabindex="-1" role="dialog">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Invite Member</h4>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<form action="{{ url_for('.invitemember', club=g.club.callsign) }}" method="post" id="invite_form">
+									<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+
+									<div class="form-group">
+										<div class="input-group">
+											<span class="input-group-addon">Grade and class</span>
+											<input class="form-control" id="gradeclass" type="text" name="gradeclass">
+										</div>
+									</div>
+
+									<div class="form-group">
+										<div class="input-group">
+											<span class="input-group-addon">Passport Name</span>
+											<input class="form-control" id="passportname" type="text" name="passportname">
+										</div>
+									</div>
+
+									<hr class="separator">
+									<div class="btn-toolbar">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										<input type="submit" class="btn btn-primary" value="Invite">
+									</div>
+								</form>
+							</div>
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+			{% endif %}
+		</div>
+		<!-- /.col-md-10 -->
+
+		<div class="col-md-1">
+		</div>
+	</div>
+	<!-- /.row -->
+
+	<div class="row">
+		<div class="col-md-1">
+		</div>
+
+		<div class="col-md-10">
+			<div class="panel panel-default">
+				<div class="table-responsive">
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>Nickname</th>
+								<th>Passport name</th>
+								<th>Class</th>
+								<th>Expel</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for member in g.club.members %}
+							<tr class="act" id="{{ member.passportname }}">
+								<td>{{ member.nickname }}</td>
+								<td>{{ member.passportname }}</td>
+								<td>{{ member.grade_and_class }}</td>
+								<td>
+									<form action="{{ url_for('.adjustmember_submit', club=g.club.callsign) }}" method="post">
+										<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+										<input type="hidden" name="uid" value="{{ member.id }}">
+										<input class="btn btn-danger btn-xs" type="submit" name="expel" value="Expel">
+									</form>
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<!-- /.table-responsive -->
+			</div>
+			<!-- /.panel -->
+		</div>
+		<!-- /.col-md-10 -->
+
+		<div class="col-md-1">
+		</div>
+	</div>
+	<!-- /.row -->
+
 </div>
+<!-- /.container -->
 
 {% endblock %}

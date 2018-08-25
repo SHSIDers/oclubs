@@ -1,31 +1,98 @@
-{% extends "base.html.j2" %}{% from 'macros.html.j2' import get_messages %}
+{% extends "base.html.j2" %}
+
+{% block additionalcssjs %}
+<link href="{{ url_for('static', filename='css/form.min.css') }}" rel="stylesheet" type="text/css" media="all">
+{% endblock %}
+
 {% block title %}Login{% endblock %}
+
 {% block content %}
 
 <!-- Below Navbar -->
 <div class="container">
-	<h1 class="title text-center">Login to oClubs!</h1>
-	<div class="login_message">
-	{{ get_messages(['login']) }}
-	</div>
 
-	<form class="login_block form-group" action="{{ url_for('login_submit') }}" method="post">
-		<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-		<input name="next" type="hidden" value="{{ request.args.get('next') or '' }}">
-		<label for="studentid">Username:</label>
-		<input type="text" class="form-control" id="studentid" name="username" placeholder="Enter username">
-		<br>
-		<label for="password">Password:</label>
-		<input type="password" class="form-control" id="password" name="password" placeholder="Enter password">
-		<div class="clearfix"></div>
-		<label id="remember"><input type="checkbox" value="remember" name="remember">&nbsp;Remember me</label>
-		<a id="forgotpw" class="pull-right" href="{{ url_for('userblueprint.forgotpw') }}">Forgot password?</a>
-		<div class="clearfix"></div>
-		<input class="btn btn-primary" type="submit" value="Login">
-	</form>
-	<div class="login_block">
-		<p>If you do not have an account, please ask your teacher to get your personal account.</p>
+	<br>
+	<br>
+	<br>
+
+	<div class="row">
+		<div class="col-md-4">
+		</div>
+
+		<div class="col-md-4">
+			<div class="form-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4>Login</h4>
+					</div>
+					<div class="panel-body">
+						{% if form.errors %}
+						<div class="alert alert-warning">
+							<span class="glyphicon glyphicon-warning-sign"></span>
+							{% for field in form.errors %}
+							{{ form.errors[field] }}
+							{% endfor %}
+						</div>
+						{% endif %}
+
+						<form class="form-group" action="{{ url_for('login') }}" method="post">
+							<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+							<input name="next" type="hidden" value="{{ request.args.get('next') or '' }}">
+							{{ form.nexturl }}
+							{{ form.is_firstPass }}
+							{{ form.is_initalized }}
+
+							<div class="form-group">
+								{{ form.username.label }}
+								{{ form.username(class_="form-control") }}
+							</div>
+
+							{% if not is_firstPass %}
+							<div class="form-group">
+								{% if is_initalized %}
+								Password
+								{{ form.password(class_="form-control") }}
+
+								{% else %}
+								New password
+								{{ form.password(class_="form-control") }}
+								<span class="help-block">
+									Minimum length: 6 characters
+								</span>
+								Re-enter password
+								{{ form.password_2(class_="form-control") }}
+								<br>
+								Email
+								{{ form.email(class_="form-control") }}
+								<span class="help-block">
+									Used to reset password
+								</span>
+
+								{% endif %}
+							</div>
+							{% endif %}
+							<div class="btn-toolbar">
+									{{ form.submit(class_="btn btn-primary") }}
+									{% if not is_firstpass and is_initalized %}
+									{{ form.forgotpassword(class_="btn btn-default") }}
+									{% endif %}
+							</div>
+						</form>
+					</div>
+					<!-- /.panel-body -->
+				</div>
+				<!-- /.panel -->
+			</div>
+			<!-- /.form-control -->
+		</div>
+		<!-- /.col-md-6 -->
+
+		<div class="col-md-4">
+		</div>
 	</div>
+	<!-- /.row -->
 </div>
+<!-- /.container -->
+
 
 {% endblock %}

@@ -1,83 +1,189 @@
-{% extends "base.html.j2" %}{% from 'macros.html.j2' import get_messages %}
-{% block title %}Change Activity Info{% endblock %}
+{% extends "base.html.j2" %}
+
+{% block additionalcssjs %}
+<link href="{{ url_for('static', filename='cdn/cdnjs/select2/4.0.5/css/select2.min.css') }}" rel="stylesheet" type="text/css" media="all" integrity="sha384-HIipfSYbpCkh5/1V87AWAeR5SUrNiewznrUrtNz1ux4uneLhsAKzv/0FnMbj3m6g">
+<script src="{{ url_for('static', filename='cdn/cdnjs/select2/4.0.5/js/select2.min.js') }}" integrity="sha384-xMX6VHK1HYyCMM8zHAVkLHgg2rIDhN01+z4rI70RV2dwzzVlHP95uaDOc5ds7Pow"></script>
+<script src="{{ url_for('static', filename='js/selection.min.js') }}"></script>
+<link href="{{ url_for('static', filename='css/form.min.css') }}" rel="stylesheet" type="text/css" media="all">
+{% endblock %}
+
+{% block title %}Edit Activity{% endblock %}
+
+
 {% block content %}
 
-<!-- Below Navbar -->
 <div class="container">
-	<form class="form-group white" action="{{ url_for('.changeactinfo_submit', activity=g.activity.callsign) }}" method="post">
-		<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-		<h1 class="title">Change Activity Info</h1>
-		<h2 class="title_next">{{ g.activity.name }}</h2>
-		<p class="largetext emptyline">*Please remember that changing activity's info might confuse your club members.</p>
-		{{ get_messages(['actinfo']) }}
-		<label class="largetext" for="name">Activity Name:</label>
-		<input type="text" class="form-control emptyline-lg" name="name" id="name" value="{{ g.activity.name }}">
-		<label class="largetext" for="date">Activity Date:</label>
-		<div class="clearfix"></div>
-		<div class="row emptyline-lg">
-			<div class="col-sm-4">
-				<select name="year" class="form-control">
-					{% for year in years %}
-					<option value="{{ year }}" {% if g.activity.date.year == year %} selected="selected" {% endif %}>{{ year }}</option>
-					{% endfor %}
-				</select>
-			</div>
-			<div class="col-sm-4">
-				<select name="month" class="form-control">
-					{% for month in range(1,13) %}
-					<option value="{{ month }}" {% if g.activity.date.month == month %} selected="selected" {% endif %}>{{ month }}</option>
-					{% endfor %}
-				</select>
-			</div>
-			<div class="col-sm-4">
-				<select name="day" class="form-control">
-					{% for day in range(1,32) %}
-					<option value="{{ day }}" {% if g.activity.date.day == day %} selected="selected" {% endif %}>{{ day }}</option>
-					{% endfor %}
-				</select>
-			</div>
-		</div>
-		<label class="largetext" for="act_type">Activity Type:</label>
-		<select class="form-control black emptyline-lg" id="act_type" name="act_type" type="dropdown">
-			<option value="noon" {% if g.activity.type == ActivityTime.NOON %} selected="selected" {% endif %}>Noon Meeting</option>
-			<option value="afterschool" {% if g.activity.type == ActivityTime.AFTERSCHOOL %} selected="selected" {% endif %}>Afterschool Meeting</option>
-			<option value="others" {% if g.activity.type == ActivityTime.OTHERS %} selected="selected" {% endif %}>Others</option>
-		</select>
-		<label class="largetext" for="location">Activity Location:</label>
-		<input type="text" class="form-control emptyline-lg" name="location" id="location" value="{{ g.activity.location }}">
-		<label class="largetext" for="cas">CAS:</label>
-		<div class="clearfix"></div>
-		<div class="row emptyline-lg">
-			<div class="col-sm-6">
-				<input type="number" class="form-control" id="cas" name="cas" min="0" value="{{ cas }}">
-			</div>
-			<div class="col-sm-6">
-				<select class="form-control black" name="time_type">
-					<option value="hours">Hours</option>
-					<option value="minutes">Minutes</option>
-				</select>
-			</div>
-		</div>
-		<label for="description" class="largetext">Activity Description:</label>
-		<textarea class="form-control emptyline-lg" rows="10" name="description" id="description">{{ g.activity.description.raw }}</textarea>
 
-		<p>*We support <a class="white-a" href={{ url_for('markdown') }}>markdown</a> in this post. </p>
-		<p>*For a new paragraph, please leave a blank line between two paragraphs so that we can format it into what you entered.</p>
-		<br>
-
-		{% if g.activity.selections %}
-		<div class="form-group white smalltext">
-			<label for="has_selection">Selection</label>
-			<div class="clearfix"></div>
-			<input type="text" class="form-control" name="selections" value="{{ g.activity.one_line_selections }}">
-			<p>*Please use ";" to seperate the choices.</p>
+	<div class="row">
+		<div class="col-md-1">
 		</div>
-		{% endif %}
 
-		<input type="submit" class="btn btn-primary" value="Submit">
-	</form>
+		<div class="col-md-10">
+			<h1> Edit Activity <small> - {{ g.activity.name }}</small></h1>
+		</div>
+
+		<div class="col-md-1">
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-1">
+		</div>
+
+		<div class="col-md-10">
+			<hr class="separator" id="separator_title">
+		</div>
+
+		<div class="col-md-1">
+		</div>
+	</div>
+
+
+	<div class="row">
+		<div class="col-md-1">
+		</div>
+
+		<div class="col-md-10">
+			<form action="{{ url_for('.changeactinfo_submit', activity=g.activity.callsign) }}" method="post">
+				<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+				{% if get_flashed_messages(['actinfo']) %}
+				<div class="alert alert-warning">
+					<span class="glyphicon glyphicon-warning-sign"></span>
+					{% for message in get_flashed_messages(category_filter=['actinfo']) %}
+					{{ message }}
+					{% endfor %}
+				</div>
+				{% endif %}
+				<div class="form-group">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="input-group">
+								<span class="input-group-addon">Activity name</span>
+								<input type="text" class="form-control" name="name" id="name" value="{{ g.activity.name }}">
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /.form group -->
+
+				<div class="form-group">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="input-group">
+								<span class="input-group-addon">Year</span>
+								<select name="year" class="form-control">
+									{% for year in years %}
+									<option value="{{ year }}" {% if g.activity.date.year == year %} selected="selected" {% endif %}>{{ year }}</option>
+									{% endfor %}
+								</select>
+							</div>
+						</div>
+						<!-- /.col-md-4 -->
+						<div class="col-md-4">
+							<div class="input-group">
+								<span class="input-group-addon">Month</span>
+								<select name="month" class="form-control">
+									{% for month in range(1,13) %}
+									<option value="{{ month }}" {% if g.activity.date.month == month %} selected="selected" {% endif %}>{{ month }}</option>
+									{% endfor %}
+								</select>
+							</div>
+						</div>
+						<!-- /.col-md-4 -->
+						<div class="col-md-4">
+							<div class="input-group">
+								<span class="input-group-addon">Day</span>
+								<select name="day" class="form-control">
+									{% for day in range(1,32) %}
+									<option value="{{ day }}" {% if g.activity.date.day == day %} selected="selected" {% endif %}>{{ day }}</option>
+									{% endfor %}
+								</select>
+							</div>
+						</div>
+						<!-- /.col-md-4 -->
+					</div>
+					<!-- /.row -->
+				</div>
+				<!-- /.form-group -->
+				<div class="form-group">
+					<div class="row">
+						<div class="col-md-4 col-xs-12">
+							<div class="input-group">
+								<span class="input-group-addon">Timeslot</span>
+								<select class="form-control" id="act_type" name="act_type">
+									<option value="noon" {% if g.activity.type == ActivityTime.NOON %} selected="selected" {% endif %}>Lunch</option>
+									<option value="afterschool" {% if g.activity.type == ActivityTime.AFTERSCHOOL %} selected="selected" {% endif %}>Afterschool</option>
+									<option value="others" {% if g.activity.type == ActivityTime.OTHERS %} selected="selected" {% endif %}>Other</option>
+								</select>
+							</div>
+						</div>
+						<!-- /.col-md-4 -->
+						<div class="col-md-4 col-xs-12">
+							<div class="input-group">
+								<span class="input-group-addon">Location</span>
+								<input type="text" class="form-control" name="location" id="location" value="{{ g.activity.location }}">
+							</div>
+						</div>
+						<!-- /.col-md-4 -->
+						<div class="col-md-4 col-xs-12">
+							<div class="row">
+								<div class="col-md-8 col-xs-8">
+									<div class="input-group">
+										<span class="input-group-addon">CAS</span>
+										<input type="number" class="form-control" id="cas" name="cas" min="0" value="{{ cas }}">
+									</div>
+								</div>
+								<div class="col-md-4 col-xs-4">
+									<div class="input-group pull-right">
+										<select class="form-control" name="time_type">
+											<option value="hours">Hour(s)</option>
+											<option value="minutes">Minutes</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- /.col-md-4 -->
+					</div>
+					<!-- /.row -->
+				</div>
+				<!-- /.form-group -->
+				<br>
+
+				<div class="form-group">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							Description
+						</div>
+						<div class="panel-body">
+							<textarea class="form-control" rows="10" name="description" id="description">{{ g.activity.description.raw }}</textarea>
+							<br>
+							<span class="help-block">
+								The description supports &nbsp;<button class="btn btn-default btn-xs btn_stop_default" id="markdownhelp_btn" data-toggle="collapse" data-target="#markdownhelp">markdown <span class="caret"></span></button>&nbsp;.
+								Enter a blank line for a new paragraph.
+							</span>
+							<div class="collapse" id="markdownhelp">
+								{% include 'static/markdown-tooltip.html.j2' %}
+							</div>
+						</div>
+					</div>
+					<!-- /.panel -->
+				</div>
+				<!-- /.form-group -->
+				<div class="form-group">
+					<div class="input-group">
+						<button class="btn btn-primary" type="submit">Submit</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<!-- /.col-md-10 -->
+		<div class="col-md-1">
+		</div>
+	</div>
+	<!-- /.row -->
+
 </div>
-
-<div class="clearfix"></div>
+<!-- /.container -->
 
 {% endblock %}

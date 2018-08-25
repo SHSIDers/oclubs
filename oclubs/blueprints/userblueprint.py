@@ -57,21 +57,30 @@ def personal():
         activities.extend([act for act in acts_obj])
         leader_club = filter(lambda club_obj: current_user == club_obj.leader,
                              clubs)
+
+        info = {}
+        for club in clubs:
+            info[club.name] = club.activities()[0] \
+                if club.activities() else None
+
         return render_template('user/student.html.j2',
                                pictures=pictures,
                                clubs=clubs,
+                               info=info,
                                cas=cas,
                                meetings=meetings,
                                activities=activities,
                                leader_club=leader_club,
                                allow_club_creation=allow_club_creation,
-                               receive_email=receive_email)
+                               receive_email=receive_email,
+                               is_user=True)
     else:
         years = (lambda m: map(lambda n: m + n, range(2)))(date.today().year)
         return render_template('user/admin.html.j2',
                                pictures=pictures,
                                years=years,
-                               receive_email=receive_email)
+                               receive_email=receive_email,
+                               is_user=True)
 
 
 @userblueprint.route('/submit_info', methods=['POST'])
@@ -117,7 +126,7 @@ def personalsubmitpassword():
     else:
         try:
             current_user.password = request.form['new']
-            flash('Your information has been successfully changed.',
+            flash('Your password has been successfully changed.',
                   'status_pw')
         except PasswordTooShort:
             fail('Password must be at least six digits.', 'status_pw')
@@ -323,14 +332,15 @@ def notifications(page):
     notes_all = current_user.get_notifications(
         limit=((page-1)*note_num, note_num)
     )
-    current_user.set_notifications_readall()
     invitations_all = current_user.get_invitation()
     num = current_user.get_unread_notifications_num()
+    current_user.set_notifications_readall()
     return render_template('user/notifications.html.j2',
                            notifications=notes_all[1],
                            number=num,
                            pagination=Pagination(page, note_num, notes_all[0]),
-                           invitations=invitations_all)
+                           invitations=invitations_all,
+                           is_user=True)
 
 
 @userblueprint.route('/notifications/submit', methods=['POST'])

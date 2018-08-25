@@ -1,102 +1,276 @@
-{% extends "base.html.j2" %}{% from 'macros.html.j2' import get_messages, desktop_sidebar %}
-{% block title %}Club Intro{% endblock %}
+{% extends "base.html.j2" %}
+{% from 'macros.html.j2' import get_messages %}
+
+{% block additionalcssjs %}
+<script src="{{ url_for('static', filename='js/content.min.js') }}"></script>
+{% endblock %}
+
+{% block title %} {{ g.club.name }} {% endblock %}
+
+
 {% block content %}
 
-<!-- Below Navbar -->
-<div class="large_container">
-	<!-- Side Menu -->
-	{% call desktop_sidebar('.clublist', ClubFilter.from_club(g.club)) %}
-	<div class="list-group">
-		<li class="list-group-item active">This Club's</li>
-		<a href="{{ url_for('.clubactivities', club=g.club.callsign) }}" class="list-group-item">Activities</a>
-		<a href="{{ url_for('.clubphoto', club=g.club.callsign) }}" class="list-group-item">Photos</a>
-	</div>
-	{% endcall %}
-	<!-- Main Content -->
-	<div class="col-md-10 main-content" id="intropage">
-		<div class="jumbotron">
-			<h1 class="title">{{ g.club.name }}</h1>
-			<p>{{ g.club.intro }}</p>
-			<p>Club Leader:&nbsp;{{ g.club.leader.nickname }},&nbsp;{{ g.club.leader.grade_and_class }}</p>
-			<p>Location:&nbsp;{{ g.club.location }}</p>
-			{% if g.club.is_active %}
-			<p>Active</p>
-			{% else %}
-			<p>Inactive</p>
-			{% endif %}
-			{% if see_email %}
-			<p>Club Teacher's Email: {{ g.club.teacher.email }}</p>
-			{% endif %}
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-1">
 		</div>
-		<center><img src="{{ g.club.picture.location_external }}" class="img-thumbnail" alt="Club Picture"></center>
 
-		{% if current_user.is_active and current_user == g.club.leader and g.club.is_active %}
-		<br>
-		<center>
-		<a class="btn btn-success btn-lg" href="{{ url_for('.club', club=g.club.callsign) }}">Manage {{ g.club.name }}</a>
-		</center>
-		{% endif %}
+		<div class="col-md-10">
+			<h1 class="">{{ g.club.name }}</h1>
+		</div>
+		<!-- /.col-md-10 -->
 
-		<div class="longdesc">{{ g.club.description.formatted }}</div>
-
-		<div class="intro_function">
-			{{ get_messages(['join']) }}
-			<div class="col-sm-4">
-				<center>
-					<a class="btn btn-info btn-lg" href="{{ url_for('.clubactivities', club=g.club.callsign) }}">Activities</a>
-				</center>
-			</div>
-			<div class="col-sm-4">
-				<center>
-					<a class="btn btn-info btn-lg" href="{{ url_for('.clubphoto', club=g.club.callsign) }}">Photos</a>
-				</center>
-			</div>
-			{% if free_join %}
-			<div class="col-sm-4">
-				<center>
-					<a class="btn btn-info btn-lg" href="#joinClub" data-toggle="modal" data-target="#joinClub">Join</a>
-				</center>
-			</div>
-			{% endif %}
-			{% if current_user in g.club.members %}
-			<div class="col-sm-4">
-				<center>
-					<a class="btn btn-info btn-lg" href="{{ url_for('clubblueprint.memberinfo', club=g.club.callsign) }}">Member List</a>
-				</center>
-			</div>
-			{% if g.club.activities([ActivityTime.HONGMEI]) %}
-			<div class="col-sm-4">
-				<center>
-					<a class="btn btn-info btn-lg" href="{{ url_for('.registerhm', club=g.club.callsign) }}">Register HongMei Activities</a>
-				</center>
-			</div>
-			{% endif %}
-			{% endif %}
+		<div class="col-md-1">
 		</div>
 	</div>
+	<!-- /.row -->
+
+	<div class="row">
+		<div class="col-md-1">
+		</div>
+
+		<div class="col-md-10">
+			<hr class="separator" id="separator_title">
+		</div>
+
+		<div class="col-md-1">
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-1">
+		</div>
+
+		<div class="col-md-10">
+			<div class="panel panel-primary">
+				<div class="panel-body">
+					<div class="media">
+						<div class="media-body">
+							<div class="row">
+								<div class="col-md-5 col-xs-12">
+									<center>
+										<div class="club_intro_image">
+											{% if g.club.picture.location_external == '/static/images/icons/icon101.jpg' %}
+												<img class="img-thumbnail" src="{{ url_for('static', filename='cdn/picsum/640/640/' + range(10, 50)|random|string) }}" alt="{{ g.club.name }}">
+												<a tabindex="0" class="btn btn-xs" role="button" data-toggle="popover" data-trigger="focus" title="This is a placeholder image" data-content="No image was uploaded because the club leader is lazy. <br> Image source: <a href='https://picsum.photos'>Lorem Picsum</a>"><span class="glyphicon glyphicon-info-sign"></span></a>
+											{% else %}
+											<a class="" href="{{ g.club.picture.location_external }}">
+												<img class="img-thumbnail" src="{{ g.club.picture.location_external }}" alt="{{ g.club.name }}">
+											</a>
+											{% endif %}
+										</div>
+									</center>
+								</div>
+
+								<div class="col-md-7 col-xs-12">
+									<br class="visible-xs">
+									{{ g.club.description.formatted }}
+									<hr class="separator">
+									<p><b>Status</b>: {% if g.club.is_active %}Active{% else %}Inactive{% endif %}</p>
+									<p><b>Leader</b>: {{ g.club.leader.grade_and_class }}, {{ g.club.leader.nickname }}</p>
+									<p><b>Location</b>: {{ g.club.location }}</p>
+								</div>
+							</div>
+							<!-- /.row -->
+						</div>
+						<!-- /.media-body -->
+					</div>
+					<!-- /.media -->
+
+				</div>
+				<!-- /.panel-body -->
+			</div>
+			<!-- /.panel -->
+		</div>
+		<!-- /.col-md-10 -->
+
+		<div class="col-md-1">
+		</div>
+	</div>
+	<!-- /.row -->
+
+	<div class="row">
+		<div class="col-md-1">
+		</div>
+
+		<div class="col-md-10">
+
+			<div class="row">
+
+				{% if free_join or current_user in g.club.members %}
+				<div class="col-md-3 text-center">
+					<div class="btn-group btn_content" role="group">
+						<a class="btn btn-default btn-lg" href="{{ url_for('.clubactivities', club=g.club.callsign) }}">Activities</a>
+					</div>
+				</div>
+
+				<div class="col-md-3 text-center">
+					<div class="btn-group btn_content" role="group">
+						<a class="btn btn-default btn-lg" href="{{ url_for('.clubphoto', club=g.club.callsign) }}">Photos</a>
+					</div>
+				</div>
+
+
+				<div class="col-md-3 text-center">
+					<div class="btn-group btn_content" role="group">
+						<a class="btn btn-default btn-lg" href="{{ url_for('resblueprint.viewreservations_club', club=g.club.callsign) }}">Reservations</a>
+					</div>
+				</div>
+
+				<div class="col-md-3 text-center">
+
+					{% if free_join %}
+					<div class="btn-group btn_content" role="group">
+						<a class="btn btn-default btn-lg" data-toggle="modal" data-target="#joinClub">Join Club</a>
+					</div>
+
+					<div class="modal fade" id="joinClub" tabindex="-1" role="dialog">
+						<div class="modal-dialog modal-dialog-centered">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title">Join {{ g.club.name }}</h4>
+								</div>
+								<div class="modal-body">
+									<div class="form-group">
+										<form action="{{ url_for('clubblueprint.clubintro_submit', club=g.club.callsign) }}" method="post">
+											<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+											<div class="btn-toolbar">
+												<div class="btn-group">
+													<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+												</div>
+												<div class="btn-group">
+													<input type="submit" class="btn btn-primary" value="Join">
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div><!-- /.modal-content -->
+						</div><!-- /.modal-dialog -->
+					</div><!-- /.modal -->
+					{% elif current_user in g.club.members %}
+					<div class="btn-group btn_content" role="group">
+						<a class="btn btn-default btn-lg" href="{{ url_for('clubblueprint.memberinfo', club=g.club.callsign) }}">Members</a>
+					</div>
+					{% endif %}
+
+				</div>
+				{% else %}
+				<div class="col-md-4 text-center">
+					<div class="btn-group btn_content" role="group">
+						<a class="btn btn-default btn-lg" href="{{ url_for('.clubactivities', club=g.club.callsign) }}">Activities</a>
+					</div>
+				</div>
+
+				<div class="col-md-4 text-center">
+					<div class="btn-group btn_content" role="group">
+						<a class="btn btn-default btn-lg" href="{{ url_for('.clubphoto', club=g.club.callsign) }}">Photos</a>
+					</div>
+				</div>
+
+
+				<div class="col-md-4 text-center">
+					<div class="btn-group btn_content" role="group">
+						<a class="btn btn-default btn-lg" href="{{ url_for('resblueprint.viewreservations_club', club=g.club.callsign) }}">Reservations</a>
+					</div>
+				</div>
+
+				{% endif %}
+			</div>
+			<!-- /.row -->
+
+		</div>
+		<!-- /.col-md-10 -->
+
+		<div class="col-md-1">
+		</div>
+	</div>
+	<!-- /.row -->
+
+	{% if current_user.is_active and current_user == g.club.leader and g.club.is_active %}
+
+	<div class="row">
+		<div class="col-md-12">
+			<hr class="separator">
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-3">
+		</div>
+
+		<div class="col-md-6">
+			<div class="form-group">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h4>Manage {{ g.club.name }}
+							<span class="pull-right glyphicon glyphicon-stats">
+							</span>
+						</h4>
+
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="btn-group btn_content" role="group">
+									<a class="btn btn-default " href="{{ url_for('.newact', club=g.club.callsign) }}">New Activity</a>
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="btn-group btn_content" role="group">
+									<a class="btn btn-default " href="{{ url_for('resblueprint.newreservation_club', club=g.club.callsign) }}">New Reservation</a>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+
+							<div class="col-md-6">
+								<div class="btn-group btn_content" role="group">
+									<a class="btn btn-default " href="{{ url_for('.changeclubinfo', club=g.club.callsign) }}">Edit Club Info</a>
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="btn-group btn_content" role="group">
+									<a class="btn btn-default" href="{{ url_for('.adjustmember', club=g.club.callsign) }}">{% if invite_member %}Invite/{% endif %}Remove Members</a>
+								</div>
+							</div>
+
+						</div>
+
+						<div class="row">
+
+							<div class="col-md-6">
+								<div class="btn-group btn_content" role="group">
+									<a class="btn btn-default" href="{{ url_for('.newleader', club=g.club.callsign) }}">Change Leader</a>
+								</div>
+							</div>
+
+							<div class="col-md-6">
+							</div>
+
+						</div>
+						<!-- /.row -->
+					</div>
+					<!-- /.panel-body -->
+				</div>
+				<!-- /.panel -->
+			</div>
+			<!-- /.form-group -->
+		</div>
+		<!-- /.col-md-6 -->
+
+		<div class="col-md-3">
+		</div>
+	</div>
+	<!-- /.row -->
+	{% endif %}
+
 </div>
-
-<div class="clearfix"></div>
-
-<div class="modal fade" id="joinClub">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Join {{ g.club.name }}</h4>
-			</div>
-			<div class="modal-body">
-				<p>Due to SHSID's rule, please do not join more than two afternoon clubs. Also, director's order: please do not join too many clubs.</p>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-				<form action="{{ url_for('clubblueprint.clubintro_submit', club=g.club.callsign) }}" method="post" class="inline empty-left">
-					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-					<input type="submit" class="btn btn-primary" value="Join">
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
+<!-- /.container -->
 
 {% endblock %}

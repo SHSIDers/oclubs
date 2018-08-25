@@ -14,7 +14,7 @@ from flask_login import current_user, login_required, fresh_login_required
 from oclubs.objs import Activity, User, Club, Upload, FormattedText
 from oclubs.enums import UserType, ClubType, ClubJoinMode, ActivityTime
 from oclubs.shared import (
-    download_xlsx, get_callsign, special_access_required,
+    download_xlsx, get_callsign_decorator, special_access_required,
     render_email_template, Pagination, require_active_club,
     require_student_membership, require_membership, require_not_student,
     true_or_fail, form_is_valid, fail
@@ -25,45 +25,55 @@ from oclubs.access import siteconfig
 clubblueprint = Blueprint('clubblueprint', __name__)
 
 
-@clubblueprint.route('/list/<clubfilter:club_filter>')
+@clubblueprint.route('/view/<clubfilter:club_filter>')
 def clublist(club_filter):
     '''Club list by club type'''
-    num = 18
+    num = 20
     clubs = Club.randomclubs(num, **club_filter.to_kwargs())
+    info = {}
+    for club in clubs:
+        info[club.name] = club.activities()[0] \
+            if club.activities() else None
+
     return render_template('club/clublist.html.j2',
                            is_list=True,
                            clubs=clubs,
+                           info=info,
                            club_filter=club_filter)
 
 
-@clubblueprint.route('/<club>/manage')
-@get_callsign(Club, 'club')
-@require_active_club
-@special_access_required
-def club(club):
-    '''Club Management Page'''
-    return render_template('club/clubmanage.html.j2')
+@clubblueprint.route('/')
+def home_redirect():
+    return redirect(url_for('.clublist', club_filter='all'))
 
 
 @clubblueprint.route('/<club>/')
-@clubblueprint.route('/<club>/introduction')
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 def clubintro(club):
     '''Club Intro'''
-    free_join = (current_user.is_active and
-                 club.joinmode == ClubJoinMode.FREE_JOIN and
-                 current_user.type == UserType.STUDENT and
-                 current_user not in club.members)
-    see_email = (current_user.is_active and
-                 current_user.type == UserType.ADMIN or
-                 current_user == club.leader)
+    free_join = (current_user.is_authenticated and
+                 (club.joinmode == ClubJoinMode.FREE_JOIN and
+                  current_user.type == UserType.STUDENT and
+                  current_user not in club.members))
+    see_email = (current_user.is_authenticated and
+                 (current_user.type == UserType.ADMIN or
+                  current_user == club.leader))
+    is_admin = (current_user.is_authenticated and
+                (current_user.type == UserType.CLASSROOM_ADMIN or
+                 current_user.type == UserType.DIRECTOR or
+                 current_user.type == UserType.ADMIN))
+
+    invite_member = club.joinmode == ClubJoinMode.BY_INVITATION
+
     return render_template('club/clubintro.html.j2',
                            free_join=free_join,
-                           see_email=see_email)
+                           see_email=see_email,
+                           is_admin=is_admin,
+                           invite_member=invite_member)
 
 
 @clubblueprint.route('/<club>/introduction/submit', methods=['POST'])
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @login_required
 @require_active_club
 def clubintro_submit(club):
@@ -88,7 +98,7 @@ def clubintro_submit(club):
 
 
 @clubblueprint.route('/<club>/new_leader')
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
 @fresh_login_required
@@ -98,7 +108,7 @@ def newleader(club):
 
 
 @clubblueprint.route('/<club>/new_leader/submit', methods=['POST'])
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
 @fresh_login_required
@@ -107,23 +117,24 @@ def newleader_submit(club):
     leader_old = club.leader
     members_obj = club.members
     leader_name = request.form['leader']
+
     for member_obj in members_obj:
         if leader_name == member_obj.passportname:
             club.leader = member_obj
             break
     else:
-        assert False, 'wtf?'
+        abort(500)
     for member in club.teacher_and_members:
         parameters = {'user': member, 'club': club, 'leader_old': leader_old}
         contents = render_email_template('newleader', parameters)
         member.email_user('New Leader - ' + club.name, contents)
         member.notify_user(club.leader.nickname +
                            ' becomes the new leader of ' + club.name + '.')
-    return render_template('club/success.html.j2')
+    return redirect(url_for('.clubintro', club=club.callsign))
 
 
-@clubblueprint.route('/<club>/member_info')
-@get_callsign(Club, 'club')
+@clubblueprint.route('/<club>/members')
+@get_callsign_decorator(Club, 'club')
 @require_membership
 def memberinfo(club):
     '''Check Members' Info'''
@@ -134,27 +145,29 @@ def memberinfo(club):
                            has_access=has_access)
 
 
-@clubblueprint.route('/<club>/member_info/notify_members', methods=['POST'])
-@get_callsign(Club, 'club')
+@clubblueprint.route('/<club>/members/notify_members', methods=['POST'])
+@get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
 def memberinfo_notify_members(club):
     '''Allow club leader to notify members'''
     notify_contents = request.form['contents']
     if not notify_contents:
-        flash('Please input something.', 'notify_members')
+        flash('Contents cannot be blank', 'notify_members')
         return redirect(url_for('.memberinfo', club=club.callsign))
     for member in club.members:
         member.notify_user(notify_contents)
-        parameters = {'member': member, 'club': club, 'notify_contents': notify_contents}
+        parameters = {'member': member,
+                      'club': club,
+                      'notify_contents': notify_contents}
         contents = render_email_template('notifymembers', parameters)
         member.email_user('Notification - ' + club.name, contents)
-    flash('You have successfully notified members.', 'notify_members')
+    flash('Notification sent.', 'notify_members')
     return redirect(url_for('.memberinfo', club=club.callsign))
 
 
-@clubblueprint.route('/<club>/member_info/download')
-@get_callsign(Club, 'club')
+@clubblueprint.route('/<club>/members/download')
+@get_callsign_decorator(Club, 'club')
 @require_membership
 @special_access_required
 def memberinfo_download(club):
@@ -166,8 +179,8 @@ def memberinfo_download(club):
     return download_xlsx('Member Info.xlsx', info)
 
 
-@clubblueprint.route('/<club>/change_info')
-@get_callsign(Club, 'club')
+@clubblueprint.route('/<club>/edit_info')
+@get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
 def changeclubinfo(club):
@@ -175,31 +188,37 @@ def changeclubinfo(club):
     return render_template('club/changeclubinfo.html.j2')
 
 
-@clubblueprint.route('/<club>/change_info/submit', methods=['POST'])
-@get_callsign(Club, 'club')
+@clubblueprint.route('/<club>/edit_info/submit', methods=['GET', 'POST'])
+@get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
 def changeclubinfo_submit(club):
     '''Change club's info'''
     intro = request.form['intro']
     if len(intro) > 90:
-        fail('Your intro is too long.', 'clubinfo')
+        fail('Your one sentence description is too long.', 'clubinfo')
         return redirect(url_for('.changeclubinfo', club=club.callsign))
     elif request.form['intro'] != '':
         club.intro = request.form['intro']
 
     desc = request.form['description'].strip()
-    if desc and desc != club.description.raw:
+
+    if desc:
         club.description = FormattedText.handle(current_user, club,
                                                 request.form['description'])
-    if request.files['picture'].filename != '':
-        try:
-            club.picture = Upload.handle(current_user, club,
-                                         request.files['picture'])
-        except UploadNotSupported:
-            fail('Please upload the correct file type.', 'clubinfo')
-            return redirect(url_for('.changeclubinfo', club=club.callsign))
+
+    if 'picture' in request.files:
+        file = request.files['picture']
+        if file.filename != '':
+            try:
+                club.picture = Upload.handle(current_user, club,
+                                             file)
+            except UploadNotSupported:
+                fail('Please upload the correct file type.', 'clubinfo')
+                return redirect(url_for('.changeclubinfo', club=club.callsign))
+
     teacher_email = request.form['email']
+
     if teacher_email != club.teacher.studentid:
         club.teacher = User.find_teacher(teacher_email)
     location = request.form['location']
@@ -210,13 +229,11 @@ def changeclubinfo_submit(club):
         contents = render_email_template('changeclubinfo', parameters)
         member.email_user('Change Club Info - ' + club.name, contents)
         member.notify_user(club.name + '\'s information has been changed.')
-    flash('The information about club has been successfully submitted.',
-          'clubinfo')
-    return redirect(url_for('.changeclubinfo', club=club.callsign))
+    return redirect(url_for('.clubintro', club=club.callsign))
 
 
 @clubblueprint.route('/<club>/adjust_member')
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
 @fresh_login_required
@@ -228,7 +245,7 @@ def adjustmember(club):
 
 
 @clubblueprint.route('/<club>/adjust_member/submit', methods=['POST'])
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
 @fresh_login_required
@@ -248,7 +265,7 @@ def adjustmember_submit(club):
 
 
 @clubblueprint.route('/<club>/invite_member/submit', methods=['POST'])
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
 @fresh_login_required
@@ -278,36 +295,28 @@ def invitemember(club):
 
 @clubblueprint.route('/<club>/activities/', defaults={'page': 1})
 @clubblueprint.route('/<club>/activities/<int:page>')
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 def clubactivities(club, page):
     '''One Club's Activities'''
     act_num = 20
     count, acts = club.activities(limit=((page-1)*act_num, act_num))
     pagination = Pagination(page, act_num, count)
-    club_pic = []
-    club_pic.extend([item['upload'] for item in club.allactphotos(limit=3)[1]])
-    club_pic.extend([Upload(-101) for _ in range(3 - len(club_pic))])
     return render_template('club/clubact.html.j2',
-                           club_pic=club_pic,
                            acts=acts,
                            pagination=pagination)
 
 
-@clubblueprint.route('/<club>/photos/', defaults={'page': 1})
-@clubblueprint.route('/<club>/photos/<int:page>')
-@get_callsign(Club, 'club')
-def clubphoto(club, page):
+@clubblueprint.route('/<club>/photos/')
+@get_callsign_decorator(Club, 'club')
+def clubphoto(club):
     '''Individual Club's Photo Page'''
-    pic_num = 20
-    count, uploads = club.allactphotos(limit=((page-1)*pic_num, pic_num))
-    pagination = Pagination(page, pic_num, count)
+    uploads = club.allactphotos()
     return render_template('club/clubphoto.html.j2',
-                           uploads=uploads,
-                           pagination=pagination)
+                           uploads=uploads)
 
 
 @clubblueprint.route('/<club>/new_activity')
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
 def newact(club):
@@ -318,10 +327,11 @@ def newact(club):
 
 
 @clubblueprint.route('/<club>/new_activity/submit', methods=['POST'])
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
 def newact_submit(club):
+    # the new form filing for creating reservations is done using wtforms
     '''Input new activity's information into database'''
     try:
         a = Activity.new()
@@ -367,6 +377,7 @@ def newact_submit(club):
             a.selections = [choice.strip() for choice in choices]
         else:
             a.selections = []
+        a.reservation = None
         a.create()
         flash(a.name + ' has been successfully created.', 'newact')
     except ValueError:
@@ -384,7 +395,7 @@ def newact_submit(club):
 
 
 @clubblueprint.route('/<club>/hongmei_status')
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @special_access_required
 def hongmei_status(club):
     '''Check HongMei Status'''
@@ -394,7 +405,7 @@ def hongmei_status(club):
 
 
 @clubblueprint.route('/<club>/hongmei_status/download')
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @special_access_required
 def hongmei_status_download(club):
     '''Download HongMei status'''
@@ -420,7 +431,7 @@ def hongmei_status_download(club):
 
 
 @clubblueprint.route('/<club>/new_hongmei_schedule')
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
 def newhm(club):
@@ -433,7 +444,7 @@ def newhm(club):
 
 
 @clubblueprint.route('/<club>/new_hongmei_schedule/submit', methods=['POST'])
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @require_active_club
 @special_access_required
 def newhm_submit(club):
@@ -508,9 +519,11 @@ def adjust_status_submit(club_type):
     return redirect(url_for('.adjust_status', club_type=club_type))
 
 
-@clubblueprint.route('/adjust_status/all_free_join', defaults={'club_type': 'all'},
+@clubblueprint.route('/adjust_status/all_free_join',
+                     defaults={'club_type': 'all'},
                      methods=['POST'])
-@clubblueprint.route('/adjust_status/<club_type>/all_free_join', methods=['POST'])
+@clubblueprint.route('/adjust_status/<club_type>/all_free_join',
+                     methods=['POST'])
 @special_access_required
 @require_not_student
 def adjust_status_all_free_join(club_type):
@@ -530,9 +543,11 @@ def adjust_status_all_free_join(club_type):
     return redirect(url_for('.adjust_status', club_type=club_type))
 
 
-@clubblueprint.route('/adjust_status/all_by_invitation', defaults={'club_type': 'all'},
+@clubblueprint.route('/adjust_status/all_by_invitation',
+                     defaults={'club_type': 'all'},
                      methods=['POST'])
-@clubblueprint.route('/adjust_status/<club_type>/all_by_invitation', methods=['POST'])
+@clubblueprint.route('/adjust_status/<club_type>/all_by_invitation',
+                     methods=['POST'])
 @special_access_required
 @require_not_student
 def adjust_status_all_by_invitation(club_type):
@@ -553,7 +568,7 @@ def adjust_status_all_by_invitation(club_type):
 
 
 @clubblueprint.route('/<club>/register_hongmei')
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @login_required
 @require_student_membership
 @require_active_club
@@ -572,7 +587,7 @@ def registerhm(club):
 
 
 @clubblueprint.route('/<club>/register_hongmei/submit', methods=['POST'])
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @login_required
 @require_student_membership
 @require_active_club
@@ -626,7 +641,7 @@ def quitclub_submit():
                                contents)
         club.leader.notify_user(current_user.nickname + ' has quit ' +
                                 club.name + '.')
-        flash('You have successfully quitted ' + club.name + '.', 'quit')
+        flash('Goodbye, ' + club.name + '.', 'quit')
     return redirect(url_for('.quitclub'))
 
 
@@ -638,7 +653,8 @@ def allclubsinfo():
     info = []
     info.append(('Club ID', 'Name', 'Leader', 'Leader\'s Class', 'Teacher',
                  'Introduction', 'Location', '# of Members',
-                 '# of registered activities', '# of activities with attendance',
+                 '# of registered activities',
+                 '# of activities with attendance',
                  'Is Active or Not', 'Type', 'Description'))
     info.extend([(club.id, club.name, club.leader.passportname,
                   club.leader.grade_and_class,
@@ -677,7 +693,7 @@ def newclub_submit():
     true_or_fail(clubname, 'Please input club name.', 'newclub')
     true_or_fail(email, 'Please input teacher\'s email address.', 'newclub')
     true_or_fail(location, 'Please input club\'s meeting location.', 'newclub')
-    true_or_fail(intro, 'Please input club\'s one-sentence introduction.',
+    true_or_fail(intro, 'Please input club\'s one-sentence description.',
                         'newclub')
     true_or_fail(len(intro) <= 90, 'Your one sentence intro is too long.',
                                    'newclub')
@@ -698,14 +714,28 @@ def newclub_submit():
         c.location = location
         c.is_active = False
         c.intro = intro
-        c.picture = Upload(-101)
         c.type = ClubType(clubtype)
         c.joinmode = ClubJoinMode.FREE_JOIN
         c.reactivate = True
+        c.reservation_allowed = True
+        c.smartboard_allowed = True
+        c.smartboard_teacherapp_bypass = False
+        c.smartboard_directorapp_bypass = False
+        c.picture = Upload(-101)
         c.create()
         c.add_member(current_user)
         c.description = FormattedText.handle(current_user, c,
                                              request.form['description'])
+
+        if 'picture' in request.files:
+            file = request.files['picture']
+            if file.filename != '':
+                try:
+                    c.picture = Upload.handle(
+                        current_user, c, file)
+                except UploadNotSupported:
+                    fail('Please upload the correct file type.', 'clubinfo')
+
         return redirect(url_for('.clubintro', club=c.callsign))
     return redirect(url_for('.newclub'))
 
@@ -751,7 +781,7 @@ def adjustclubs_submit():
 
 
 @clubblueprint.route('/<club>/reactivate', methods=['POST'])
-@get_callsign(Club, 'club')
+@get_callsign_decorator(Club, 'club')
 @special_access_required
 @fresh_login_required
 def reactivate_submit(club):

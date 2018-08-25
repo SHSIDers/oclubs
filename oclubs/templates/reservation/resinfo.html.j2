@@ -1,0 +1,204 @@
+{% extends "base.html.j2" %}
+
+{% block additionalcssjs %}
+<link href="{{ url_for('static', filename='cdn/cdnjs/select2/4.0.5/css/select2.min.css') }}" rel="stylesheet" type="text/css" media="all" integrity="sha384-HIipfSYbpCkh5/1V87AWAeR5SUrNiewznrUrtNz1ux4uneLhsAKzv/0FnMbj3m6g">
+<script src="{{ url_for('static', filename='cdn/cdnjs/select2/4.0.5/js/select2.min.js') }}" integrity="sha384-xMX6VHK1HYyCMM8zHAVkLHgg2rIDhN01+z4rI70RV2dwzzVlHP95uaDOc5ds7Pow"></script>
+<script src="{{ url_for('static', filename='js/selection.min.js') }}"></script>
+<link href="{{ url_for('static', filename='css/form.min.css') }}" rel="stylesheet" type="text/css" media="all">
+{% endblock %}
+
+{% block title %}Reservation{% endblock %}
+
+{% block content %}
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<h1 class="">Reservation Information</h1>
+		</div>
+		<!-- /.col-md-12 -->
+	</div>
+	<!-- /.row -->
+
+	<hr class="separator" id="separator_title">
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel panel-primary">
+				<div class="panel-body">
+					{% if g.reservation.status.name == 'UNPAIRED' %}
+					<p><b>Time</b>: {{ g.reservation.date.strftime("%Y-%m-%d, %A") }}, {{ g.reservation.timeslot.format_name }}</p>
+					<p><b>Location</b>: {{ g.reservation.classroom.location }} </p>
+					<p><b>Date created</b>: {{ g.reservation.date_of_reservation }}</p>
+					<p><b>Type</b>: Club Reservation</p>
+					<p><b>Reserver</b>: <a href="{{ url_for('clubblueprint.clubintro', club=g.reservation.reserver_club.callsign) }}" alt="{{ g.reservation.reserver_club.name }}">{{ g.reservation.reserver_club.name }}</a> (<a href="{{ url_for('.viewreservations_club', club=g.reservation.reserver_club.callsign) }}">All reservations from {{ g.reservation.reserver_club.name }}</a>)</p>
+					<p><b>Activity</b>: Unpaired</p>
+					{% elif g.reservation.status.name == 'PAIRED' %}
+					<p><b>Time</b>: {{ g.reservation.date.strftime("%Y-%m-%d, %A") }}, {{ g.reservation.timeslot.format_name }}</p>
+					<p><b>Location</b>: {{ g.reservation.classroom.location }} </p>
+					<p><b>Date created</b>: {{ g.reservation.date_of_reservation }}</p>
+					<p><b>Type</b>: Club Reservation</p>
+					<p><b>Reserver</b>: <a href="{{ url_for('clubblueprint.clubintro', club=g.reservation.reserver_club.callsign) }}" alt="{{ g.reservation.reserver_club.name }}">{{ g.reservation.reserver_club.name }}</a> (<a href="{{ url_for('.viewreservations_club', club=g.reservation.reserver_club.callsign) }}">All reservations from {{ g.reservation.reserver_club.name }}</a>)</p>
+					<p><b>Activity</b>: <a href="{{ url_for('actblueprint.actintro', activity=g.reservation.activity.callsign) }}" alt="{{ g.reservation.activity.name }}">{{ g.reservation.activity.name }}</a></p>
+					{% elif g.reservation.status.name == 'TEACHER' %}
+					{% endif %}
+				</div>
+				<!-- /.panel-body -->
+			</div>
+			<!-- /.panel -->
+
+			{% if is_admin or is_owner %}
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					Additional information
+				</div>
+				<div class="panel-body">
+					{% if g.reservation.status.name == 'UNPAIRED' or g.reservation.status.name == 'PAIRED' %}
+					<p><b>Smartboard needed</b>: {% if g.reservation.SBNeeded %}Yes{% else %}No{% endif %}</p>
+					{% if g.reservation.SBNeeded %}
+					<p><b>Smartboard application description</b>: {{ g.reservation.SBAppDesc }} </p>
+					<hr class="separator">
+					<p><b>Instructor's approval</b>: {% if g.reservation.instructors_approval %}Approved{% else %}Pending{% endif %} </p>
+					<p><b>Director's approval</b>: {% if g.reservation.directors_approval %}Approved{% else %}Pending{% endif %} </p>
+					<p><b>Smartboard application status</b>: {{ g.reservation.SBApp_status.format_name }} </p>
+					{% endif %}
+					{% elif g.reservation.status.name == 'TEACHER' %}
+					None
+					{% endif %}
+				</div>
+				<!-- /.panel-body -->
+			</div>
+			<!-- /.panel -->
+			{% endif %}
+
+		</div>
+		<!-- /.col-md-12 -->
+	</div>
+	<!-- /.row -->
+
+	{% if is_admin or is_owner or is_director or is_teacher %}
+
+	<hr class="separator">
+
+	<div class="row">
+		<div class="col-md-12 text-center">
+
+
+			{% if is_admin or is_owner %}
+			<div class="btn-group btn_content" role="group">
+				<a class="btn btn-danger btn-lg" href="{{ url_for('.deletereservation', reservation=g.reservation.callsign) }}">Cancel reservation</a>
+			</div>
+			{% endif %}
+
+			{% if is_director %}
+			<div class="btn-group btn_content" role="group">
+				<button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#changedirectorsapproval">
+					Change Director's Approval
+				</button>
+			</div>
+
+			<div class="modal fade" id="changedirectorsapproval" tabindex="-1" role="dialog">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Change Director's Approval</h4>
+						</div>
+						<div class="modal-body">
+							<form action="{{ url_for('.reservationinfo', reservation=g.reservation.callsign) }}" method="post">
+								<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+								<div class="form-group">
+									<div class="radio">
+										{{ directors_approval_form.changeDApproval(class_="") }}
+									</div>
+								</div>
+								<hr class="separator">
+								<div class="btn-toolbar">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+									{{ directors_approval_form.submit(class_="btn btn-primary") }}
+								</div>
+							</form>
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+			{% endif %}
+
+			{% if is_teacher %}
+			<div class="btn-group btn_content" role="group">
+				<button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#changeinstructorsapproval">
+					Change Director's Approval
+				</button>
+			</div>
+
+			<div class="modal fade" id="changeinstructorsapproval" tabindex="-1" role="dialog">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Change Instructor's Approval</h4>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<form action="{{ url_for('.reservationinfo', reservation=g.reservation.callsign) }}" method="post">
+									<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+									<div class="radio">
+										{{ instructors_approval_form.changeDApproval }}
+									</div>
+									<hr class="separator">
+									<div class="btn-toolbar">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										{{ instructors_approval_form.submit(class_="btn btn-primary") }}
+									</div>
+								</form>
+							</div>
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+			{% endif %}
+
+			{% if is_admin %}
+			<div class="btn-group btn_content" role="group">
+				<button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#changestatus">
+					Change Smartboard Application Status
+				</button>
+			</div>
+
+			<div class="modal fade" id="changestatus" tabindex="-1" role="dialog">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Change Smartboard Application Status</h4>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<form action="{{ url_for('.reservationinfo', reservation=g.reservation.callsign) }}" method="post">
+									<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+									<div class="radio">
+										{{ SBAppStatus_form.changeStatus }}
+									</div>
+									<hr class="separator">
+									<div class="btn-toolbar">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										{{ SBAppStatus_form.submit(class_="btn btn-primary") }}
+									</div>
+								</form>
+							</div>
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+			{% endif %}
+
+		</div>
+		<!-- /.col-md-20 -->
+	</div>
+	<!-- /.row -->
+	{% endif %}
+
+</div>
+<!-- /.container -->
+
+{% endblock %}

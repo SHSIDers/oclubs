@@ -11,21 +11,25 @@ from flask import (
 )
 from flask_login import current_user, login_required, fresh_login_required
 
-from oclubs.enums import UserType, ActivityTime
+from oclubs.utils.dates import today, DATE_RANGE_MAX
+from oclubs.enums import UserType, ActivityTime, ResStatus
 from oclubs.shared import (
-    get_callsign, special_access_required, Pagination, render_email_template,
-    download_xlsx, partition, require_student_membership,
-    require_past_activity, require_future_activity, require_active_club,
-    true_or_fail, form_is_valid, error_or_fail, fail
+    get_callsign_decorator, special_access_required, Pagination,
+    render_email_template, download_xlsx, partition,
+    require_student_membership, require_past_activity,
+    require_future_activity, require_active_club,
+    true_or_fail, form_is_valid, error_or_fail, fail, get_callsign
 )
-from oclubs.objs import User, Activity, Upload, FormattedText
+from oclubs.objs import User, Activity, Upload, FormattedText, Reservation
 from oclubs.exceptions import UploadNotSupported, NoRow
+from oclubs.forms.reservation_forms import PairReservation
 
 actblueprint = Blueprint('actblueprint', __name__)
 
 
-@actblueprint.route('/all/<clubfilter:club_filter>/', defaults={'page': 1})
-@actblueprint.route('/all/<clubfilter:club_filter>/<int:page>')
+@actblueprint.route('/viewlist/<clubfilter:club_filter>/',
+                    defaults={'page': 1})
+@actblueprint.route('/viewlist/<clubfilter:club_filter>/<int:page>')
 def allactivities(club_filter, page):
     '''All Activities'''
     act_num = 20
@@ -40,30 +44,39 @@ def allactivities(club_filter, page):
                            club_filter=club_filter)
 
 
+@actblueprint.route('/')
+def home_redirect():
+    return redirect(url_for('.allactivities', club_filter='all'))
+
+
 @actblueprint.route('/photos/', defaults={'page': 1})
 @actblueprint.route('/photos/<int:page>')
 def allphotos(page):
-    pic_num = 20
+    act_num = 5
     count, acts = Activity.get_activities_conditions(
         require_photos=True,
-        limit=((page-1)*pic_num, pic_num))
-    act_recent = ''
+        limit=((page-1)*act_num, act_num))
+    act_latest = ''
     if page == 1:
         try:
-            act_recent = acts[0]
+            act_latest = acts[0]
         except IndexError:
             pass
-    pagination = Pagination(page, pic_num, count)
-    return render_template('activity/photos.html.j2',
+    pagination = Pagination(page, act_num, count)
+    current_page = page
+    template = 'activity/photos.html.j2' \
+               if page == 1 else 'activity/photo-items.html.j2'
+    return render_template(template,
                            is_photos=True,
-                           act_recent=act_recent,
+                           act_latest=act_latest,
                            acts=acts,
-                           pagination=pagination)
+                           pagination=pagination,
+                           current_page=current_page)
 
 
 @actblueprint.route('/<activity>/')
 @actblueprint.route('/<activity>/introduction')
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 def actintro(activity):
     '''Club Activity Page'''
     if current_user.is_authenticated:
@@ -82,15 +95,17 @@ def actintro(activity):
         selection = ''
 
     is_other_act = activity.time in [ActivityTime.UNKNOWN, ActivityTime.OTHERS]
+
     return render_template('activity/actintro.html.j2',
                            is_other_act=is_other_act,
                            has_access=has_access,
                            can_join=can_join,
-                           selection=selection)
+                           selection=selection,
+                           has_reservation=activity.has_reservation)
 
 
 @actblueprint.route('/<activity>/introduction/submit', methods=['POST'])
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 @login_required
 @require_active_club
 @require_student_membership
@@ -114,7 +129,7 @@ def actintro_submit(activity):
 
 
 @actblueprint.route('/<activity>/post/change')
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 @special_access_required
 @require_active_club
 @require_past_activity
@@ -124,7 +139,7 @@ def changeactpost(activity):
 
 
 @actblueprint.route('/<activity>/post/change/submit', methods=['POST'])
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 @special_access_required
 @require_active_club
 @require_past_activity
@@ -141,12 +156,11 @@ def changeactpost_submit(activity):
                                         activity=activity.callsign))
     activity.post = FormattedText.handle(current_user, activity.club,
                                          request.form['post'])
-    flash('Activity post has been successfully modified.', 'actpost')
-    return redirect(url_for('.changeactpost', activity=activity.callsign))
+    return redirect(url_for('.actintro', activity=activity.callsign))
 
 
 @actblueprint.route('/<activity>/invite_hongmei')
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 @require_active_club
 @special_access_required
 @require_future_activity
@@ -156,7 +170,7 @@ def hongmei_invite(activity):
 
 
 @actblueprint.route('/<activity>/invite_hongmei/submit', methods=['POST'])
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 @require_active_club
 @special_access_required
 @require_future_activity
@@ -181,7 +195,7 @@ def hongmei_invite_submit(activity):
 
 
 @actblueprint.route('/<activity>/signup_status')
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 @require_active_club
 @special_access_required
 @require_future_activity
@@ -191,7 +205,7 @@ def actstatus(activity):
 
 
 @actblueprint.route('/<activity>/signup_status/submit', methods=['POST'])
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 @require_active_club
 @special_access_required
 @require_future_activity
@@ -215,7 +229,7 @@ def actstatus_submit(activity):
 
 
 @actblueprint.route('/<activity>/signup_status/download')
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 @special_access_required
 def actstatus_download(activity):
     '''Download activity status'''
@@ -233,13 +247,14 @@ def actstatus_download(activity):
 
 
 @actblueprint.route('/<activity>/change_activity_info')
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 @special_access_required
 def changeactinfo(activity):
     '''Allow club leaders to change activity info'''
     years = (lambda m: map(lambda n: m + n, range(2)))(date.today().year)
     cas = int(activity.cas)
     return render_template('/activity/changeactinfo.html.j2',
+                           is_allact=True,
                            years=years,
                            act_types=ActivityTime,
                            cas=cas)
@@ -247,7 +262,7 @@ def changeactinfo(activity):
 
 @actblueprint.route('/<activity>/change_activity_info/submit',
                     methods=['POST'])
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 @special_access_required
 def changeactinfo_submit(activity):
     '''Input change in activity info into database'''
@@ -260,9 +275,10 @@ def changeactinfo_submit(activity):
 
     desc = request.form['description'].strip()
     if desc != activity.description.raw:
-        activity.description = FormattedText.handle(current_user,
-                                                    activity.club,
-                                                    request.form['description'])
+        activity.description = FormattedText.handle(
+            current_user,
+            activity.club,
+            request.form['description'])
     try:
         actdate = date(int(request.form['year']),
                        int(request.form['month']),
@@ -302,8 +318,63 @@ def changeactinfo_submit(activity):
     return redirect(url_for('.actintro', activity=activity.callsign))
 
 
+@actblueprint.route('/<activity>/pairreservation', methods=['GET', 'POST'])
+@get_callsign_decorator(Activity, 'activity')
+@special_access_required
+def pairreservation(activity):
+    reservations = Reservation.get_reservations_conditions(
+        status=ResStatus.UNPAIRED,
+        reserver_club=activity.club,
+        dates=(today(), DATE_RANGE_MAX)
+    )
+
+    form = PairReservation()
+
+    if reservations:
+        choices = []
+        for reservation in reservations:
+            if reservation.activity is None:
+                choices.append((
+                    reservation.callsign,
+                    "%s %s: %s" % (reservation.date,
+                                   reservation.timeslot.format_name,
+                                   reservation.classroom.location)
+                ))
+        form.reservations_for_pairing.choices = choices
+
+    if request.method == 'POST':
+        if form.check():
+            selected_reservation = get_callsign(
+                Reservation,
+                str(form.reservations_for_pairing.data))
+
+            selected_reservation.status = ResStatus.PAIRED
+            selected_reservation.activity = activity
+
+            if activity.reservation is None:
+                activity.reservation = selected_reservation
+            else:
+                activity.reservation.activity = None
+                activity.reservation.status = ResStatus.UNPAIRED
+                activity.reservation = selected_reservation
+
+            activity.date = selected_reservation.date
+            activity.time = selected_reservation.timeslot
+            activity.location = selected_reservation.classroom.location
+
+            return redirect(url_for(
+                '.actintro',
+                activity=selected_reservation.activity.callsign))
+        else:
+            return render_template('/activity/pairreservation.html.j2',
+                                   form=form)
+
+    return render_template('/activity/pairreservation.html.j2',
+                           form=form)
+
+
 @actblueprint.route('/<activity>/attendance')
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 @special_access_required
 @require_past_activity
 def attendance(activity):
@@ -316,7 +387,7 @@ def attendance(activity):
 
 
 @actblueprint.route('/<activity>/attendance/submit', methods=['POST'])
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 @special_access_required
 @require_past_activity
 def attendance_submit(activity):
@@ -335,7 +406,7 @@ def attendance_submit(activity):
 
 
 @actblueprint.route('/<activity>/attendance/download')
-@get_callsign(Activity, 'activity')
+@get_callsign_decorator(Activity, 'activity')
 @special_access_required
 def attendance_download(activity):
     '''Download activity's attendance'''

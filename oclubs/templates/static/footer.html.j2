@@ -1,0 +1,101 @@
+<div class="footer">
+  <div class="container">
+    <br>
+    <div class="row">
+      <div class="col-md-4 col-xs-12">
+        <div id="footer_logo">
+          <a href="/"><img class="logo_img_day" src="{{ url_for('static', filename='images/logo-day.png') }}" class="img-responsive" alt=""></a>
+  				<a href="/"><img class="logo_img_night" src="{{ url_for('static', filename='images/logo-night.png') }}" class="img-responsive" alt=""></a>
+        </div>
+
+        <br>
+
+        <div class="form-group" id="search_form_group_footer">
+          <form action="{{ url_for('search') }}" method="get">
+            <div class="row">
+              <div class="col-md-8">
+                <div id="search_bar_beside_title">
+                  <div class="input-group" id="input_group_footer">
+                    <input type="text" name="keywords" placeholder="Search" value="{{ keywords }}" class="form-control search_textbox">
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" id="search_btn" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <!-- /.col-md-9 -->
+
+              <div class="col-md-4">
+                <div id="search_bar_beside_title">
+                  <select class="form-group" name="search_type">
+                    <option value="club"{% if search_type == 'club' %} selected="selected"{% endif %}>Club</option>
+                    <option value="activity"{% if search_type == 'activity' %} selected="selected"{% endif %}>Activity</option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-md-3 -->
+            </div>
+            <!-- /.row -->
+          </form>
+        </div>
+        <!-- /.form-group -->
+
+        <a class="title_link" href="/">Home</a>
+        &nbsp; &nbsp; &nbsp;
+        <a class="title_link" href="{{ url_for('clubblueprint.clublist', club_filter='all') }}">Clubs</a>
+        &nbsp; &nbsp; &nbsp;
+        <a class="title_link" href="{{ url_for('resblueprint.viewreservations', res_filter='all') }}">Reservations</a>
+        &nbsp; &nbsp; &nbsp;
+        {% if current_user.is_authenticated %}
+          <a class="title_link" href="{{ url_for('userblueprint.personal') }}">{{ current_user.nickname }}</a>
+        {% else %}
+          <a class="title_link" href="{{ url_for('login', next=request.path) }}">Login</a>
+        {% endif %}
+
+        <br class="visible-xs">
+        <br class="visible-xs">
+        <br class="visible-xs">
+        <br class="visible-xs">
+      </div>
+      <!-- /.col-md-4 -->
+
+      <div class="col-md-4 col-xs-12">
+        <h4>We are recruiting developers</h4>
+        <p class="text-muted">
+          No prerequiste web development experience needed.
+          <br>
+          What is required: an insatiable desire to learn new skills.
+        </p>
+        <p>
+          Interested? Contact Angle Qian<a tabindex="0" class="btn btn-xs" role="button" data-trigger="focus" data-toggle="popover" data-placement="top" title="Contact" data-content="<p>Angle Qian: 13122763805</p> <img class='img-thumbnail' src='{{ url_for('static', filename='images/angleqianwechatqrcode.png') }}'>"><span class="glyphicon glyphicon-phone"></span></a>
+        </p>
+
+        <br class="visible-xs">
+        <br class="visible-xs">
+      </div>
+
+      <div class="col-md-4 col-xs-12">
+        <h4>We value your opinion</h4>
+        <p>
+          <span class="text-muted">Something sucks? Poor design? Typo? Feature request?</span>
+          <br>
+          <a class="title_link" target="_blank" href="{{ url_for('feedback') }}">Give Feedback</a>
+        </p>
+        <p>
+          <span class="text-muted">Something broken? Got an error page?</span>
+          <br>
+          <a class="title_link" target="_blank" href="{{ url_for('reportbug') }}">Report a Bug</a> <span class="glyphicon glyphicon-wrench"></span>
+        </p>
+      </div>
+    </div>
+    <!-- /.row -->
+
+    <br>
+    <br>
+
+    <!-- /.row -->
+    <div class="row">
+      <center><p class="text-muted">SHSID Connect</p></center>
+    </div>
+  </div>
+</div>

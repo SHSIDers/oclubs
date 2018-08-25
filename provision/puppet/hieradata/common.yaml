@@ -27,8 +27,7 @@ selinux::type: 'targeted'
 
 python::dev: present
 python::virtualenv: present
-
-python::provider: pip
+python::pip: absent
 
 # Collision
 uwsgi::install_pip: false
@@ -81,6 +80,7 @@ nginx::nginx_vhosts:
     uwsgi: uwsgi
     add_header:
       Content-Security-Policy: "default-src \\'self\\'"
+
       X-Content-Type-Options: nosniff
       X-Frame-Options: SAMEORIGIN
 
@@ -116,7 +116,13 @@ nginx::nginx_vhosts:
               # proxy_pass http://sdn.geekzu.org/g-fonts; # FIXME: Bad proxy_pass, change rewrite rule
               # proxy_pass http://fonts.gmirror.org; # FIXME: Undetermined url
             }
+
+            location /static/cdn/picsum/ {
+              rewrite ^\/static\/cdn\/picsum(\/.*)(\/.*)\/(.*)$ $1$2/?image=$3 break;
+              proxy_pass http://picsum.photos;
+            }
           }
+
       - "%{hiera('httpredir-nginx-cfg')}"
 
 nginx::nginx_locations:

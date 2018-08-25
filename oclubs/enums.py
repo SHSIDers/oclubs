@@ -12,11 +12,17 @@ class UserType(Enum):
     STUDENT = 1
     TEACHER = 2
     ADMIN = 3
+    CLUB_ADMIN = 4
+    CLASSROOM_ADMIN = 5
+    DIRECTOR = 6
 
     @property
     def format_name(self):
         """Formats the value of the enum for display."""
-        return ['', 'Student', 'Teacher', 'Admin'][self.value]
+        return ['', 'Student', 'Teacher', 'Admin',
+                'Club Administrator',
+                'Classroom Reservation Administrator',
+                'Director'][self.value]
 
 
 class ClubType(Enum):
@@ -33,7 +39,7 @@ class ClubType(Enum):
     def format_name(self):
         """Formats the value of the enum for display."""
         return ['', 'Academics', 'Sports', 'Arts', 'Services',
-                'Entertainment', 'Others', 'School Teams'][self.value]
+                'Entertainment', 'Other', 'School Teams'][self.value]
 
 
 class ActivityTime(Enum):
@@ -47,8 +53,8 @@ class ActivityTime(Enum):
     @property
     def format_name(self):
         """Formats the value of the enum for display."""
-        return ['Unknown', 'Noon', 'Afterschool', 'HongMei',
-                'Others'][self.value]
+        return ['N/A', 'Lunch', 'Afterschool', 'HongMei',
+                'Other'][self.value]
 
 
 class ClubJoinMode(Enum):
@@ -59,6 +65,37 @@ class ClubJoinMode(Enum):
     @property
     def format_name(self):
         """Formats the value of the enum for display."""
-        return ['', 'Free Join', 'By Invitation'][self.value]
+        return ['', 'Free to Join', 'Invitation'][self.value]
 
-__all__ = ['UserType', 'ClubType', 'ActivityTime', 'ClubJoinMode']
+
+class Building(Enum):
+    """Enum for buildings for classroom reservation."""
+    XMT = 1
+
+    @property
+    def format_name(self):
+        """Formats the value of the enum for display."""
+        return ['', 'XMT'][self.value]
+
+
+class ResStatus(Enum):
+    """Enum for status of reservations."""
+    UNPAIRED = 1
+    PAIRED = 2
+    TEACHER = 3
+
+
+class SBAppStatus(Enum):
+    """Enum for smartboard application statuses"""
+    PENDING = 0
+    APPROVED = 1
+    REJECTED = 2
+    NA = 3
+
+    @property
+    def format_name(self):
+        return ['Pending', 'Approved', 'Rejected', 'N/A'][self.value]
+
+
+__all__ = ['UserType', 'ClubType', 'ActivityTime', 'ClubJoinMode',
+           'Building', 'SBAppStatus']

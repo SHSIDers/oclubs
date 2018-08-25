@@ -4,8 +4,7 @@
 
 from __future__ import absolute_import, unicode_literals
 
-from datetime import date
-
+from oclubs.utils.dates import dateobj_to_int, today
 from oclubs.access import database, redis
 from oclubs.enums import ClubType, UserType, ClubJoinMode
 from oclubs.objs.base import BaseObject, Property, ListProperty, paged_db_read
@@ -19,12 +18,19 @@ class Club(BaseObject):
     leader = Property('club_leader', 'User')
     description = Property('club_desc', 'FormattedText', search=True)
     location = Property('club_location')
-    is_active = Property('club_inactive', lambda v: not v, search_require_true=True)
+    is_active = Property('club_inactive', lambda v: not v,
+                         search_require_true=True)
     intro = Property('club_intro', search=True)
     picture = Property('club_picture', 'Upload')
     type = Property('club_type', ClubType)
     joinmode = Property('club_joinmode', ClubJoinMode)
     reactivate = Property('club_reactivate', bool)
+    reservation_allowed = Property('club_reservation_allowed', bool)
+    smartboard_allowed = Property('club_smartboard_allowed', bool)
+    smartboard_teacherapp_bypass = \
+        Property('club_smartboard_teacherapp_bypass', bool)
+    smartboard_directorapp_bypass = \
+        Property('club_smartboard_directorapp_bypass', bool)
     members = ListProperty('club_member', 'cm_club', 'cm_user', 'User')
     all_act = ListProperty('activities', 'act_club', 'act_id', 'Activity')
 
@@ -156,7 +162,6 @@ class Club(BaseObject):
         del self.members
 
     def send_invitation(self, user):
-        from oclubs.objs.activity import date_int
         from oclubs.exceptions import AlreadyExists
 
         try:
@@ -164,7 +169,7 @@ class Club(BaseObject):
                 'invitation',
                 {'invitation_club': self.id,
                  'invitation_user': user.id,
-                 'invitation_date': date_int(date.today())}
+                 'invitation_date': dateobj_to_int(today())}
             )
         except AlreadyExists:
             pass

@@ -268,6 +268,8 @@ class _BaseMetaclass(type):
         dct['create'] = create
 
         if 'name' in dct:
+            # reservation.callsign is defined in reservation.py
+            # reservations themselves don't have names
             @property
             def callsign(self):
                 """The callsign for use in urls."""
