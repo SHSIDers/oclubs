@@ -67,6 +67,10 @@ body {
   background-position: 55% -120px;
   background-size: 110% auto;
 
+  & .container {
+    min-height: 0%;
+  }
+
   & #scroll_to_top_btn {
     color: #333;
     background-color: #fff;
@@ -125,20 +129,16 @@ body {
   color: var(--night-color);
   position: relative;
   left: 0;
-  top: 150px;
+  top: 20%;
 
-  & h1 {
-    font-size: 40px;
+  & .home_main_tag {
+    font-size: 38px;
+    margin-bottom: 4%;
   }
-}
-@media(max-width: 1024px) {
-  #homepage_block {
-    top: 140px;
-  }
-}
-@media(max-width: 768px) {
-  #homepage_block {
-    top: 120px;
+
+  & .home_sub_tag {
+    margin-bottom: 7%;
+    font-weight: normal;
   }
 }
 
@@ -183,13 +183,15 @@ body {
   color: var(--day-color);
   background-color: var(--day-background-color);
   position: relative;
-  height: 100%
 }
 /* --------- Homepage --------- */
 /* --------- Footer --------- */
-html {
-  position: relative;
-  min-height: 100%;
+html, body {
+  height: 100%;
+}
+
+.container {
+  min-height: 120%;
 }
 
 .footer {
@@ -430,18 +432,18 @@ body.night-mode {
 
   & a.list-group-item:hover {
     background-color: var(--night-color);
-    border-color: var(--night-color);
+    border-color: var(--night-background-color);
     color: var(--night-background-color);
   }
 
   & .list-group-item {
     background-color: var(--night-grey-background-color);
-    border-color: var(--night-default-color);
+    border-color: var(--night-background-color);
   }
 
   & .list-group-item.active {
     background-color: var(--primary-color);
-    border-color: var(--primary-color);
+    border-color: var(--night-background-color);
   }
 
   & .well {
@@ -674,7 +676,7 @@ body.night-mode {
 }
 
 .jumbotron {
-  border-right: 7px solid var(--primary-color);
+  border-right: 8px solid var(--primary-color);
   padding: 0 40px 0 30px !important;
   right: 15px;
   position: relative;

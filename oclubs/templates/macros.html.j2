@@ -47,9 +47,9 @@
 {% macro search_bar(search_value, placeholder_text) %}
 <div class="form-group" id="search_bar_beside_title">
 	<form class="" action="{{ url_for('search') }}" method="get">
+		<input type="hidden" name="search_type" value="{{ search_value }}">
+		<input type="hidden" name="page" value="1">
 		<div class="input-group">
-			<input type="hidden" name="search_type" value="{{ search_value }}">
-			<input type="hidden" name="page" value="1">
 			<input type="text" name="keywords" placeholder="{{ placeholder_text }}" class="form-control search_textbox">
 			<span class="input-group-btn">
 				<button class="btn btn-default" id="search_btn" type="submit"><span class="glyphicon glyphicon-search"></span></button>

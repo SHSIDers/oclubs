@@ -1,9 +1,4 @@
 {% extends "base.html.j2" %}
-{% from 'macros.html.j2' import get_messages %}
-
-{% block additionalcssjs %}
-<script src="{{ url_for('static', filename='js/content.min.js') }}"></script>
-{% endblock %}
 
 {% block title %} {{ g.club.name }} {% endblock %}
 

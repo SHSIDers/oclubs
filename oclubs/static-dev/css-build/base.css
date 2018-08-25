@@ -173,6 +173,10 @@ body * {
   background-repeat: no-repeat;
 }
 
+#home_body .container {
+  min-height: 0;
+}
+
 #home_body #scroll_to_top_btn {
   border-color: #ccc;
   background-color: #fff;
@@ -235,25 +239,19 @@ body * {
 
 #homepage_block {
   position: relative;
-  top: 150px;
+  top: 20%;
   left: 0;
   color: #f8f8f8;
 }
 
-#homepage_block h1 {
-  font-size: 40px;
+#homepage_block .home_main_tag {
+  margin-bottom: 4%;
+  font-size: 38px;
 }
 
-@media (max-width: 1024px) {
-  #homepage_block {
-    top: 140px;
-  }
-}
-
-@media (max-width: 768px) {
-  #homepage_block {
-    top: 120px;
-  }
+#homepage_block .home_sub_tag {
+  margin-bottom: 7%;
+  font-weight: 400;
 }
 
 #home_navbar a {
@@ -288,21 +286,21 @@ body * {
 
 .homepage_band {
   position: relative;
-  height: 100%;
   background-color: #fff;
   color: #333;
 }
 
+body,
 html {
-  min-height: 100%;
+  height: 100%;
 }
 
-.footer,
-html {
-  position: relative;
+.container {
+  min-height: 120%;
 }
 
 .footer {
+  position: relative;
   right: 0;
   bottom: 0;
   left: 0;
@@ -530,18 +528,18 @@ body.night-mode a.list-group-item {
 }
 
 body.night-mode a.list-group-item:hover {
-  border-color: #f8f8f8;
+  border-color: #202020;
   background-color: #f8f8f8;
   color: #202020;
 }
 
 body.night-mode .list-group-item {
-  border-color: #666;
+  border-color: #202020;
   background-color: #303030;
 }
 
 body.night-mode .list-group-item.active {
-  border-color: #337ab7;
+  border-color: #202020;
   background-color: #337ab7;
 }
 
@@ -750,7 +748,7 @@ body.night-mode #scroll_to_top_btn {
   position: relative;
   right: 15px;
   padding: 0 40px 0 30px !important;
-  border-right: 7px solid #337ab7;
+  border-right: 8px solid #337ab7;
   border-top-right-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
 }
