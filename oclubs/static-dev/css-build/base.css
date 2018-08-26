@@ -164,8 +164,11 @@ body * {
   transition: none;
 }
 
+#backgroundimg {
+  display: none;
+}
+
 #home_body {
-  background-image: url(/static/images/homepagebg.jpg);
   background-attachment: fixed;
   background-position: 55% -120px;
   -webkit-background-size: 110% auto;
@@ -241,7 +244,7 @@ body * {
   position: relative;
   top: 20%;
   left: 0;
-  color: #f8f8f8;
+  color: #333;
 }
 
 #homepage_block .home_main_tag {
@@ -254,16 +257,13 @@ body * {
   font-weight: 400;
 }
 
-#home_navbar a {
-  color: #f8f8f8;
-}
-
+#home_navbar a,
 #home_navbar a:hover {
   color: #333;
 }
 
 #home_navbar .icon-bar {
-  background-color: #f8f8f8;
+  background-color: #333;
 }
 
 #homepage_logo {

@@ -59,19 +59,14 @@
 					.addClass( 'day-mode' );
 			}
 
-			// $( '.day_night_toggle_wrapper' ).hide();
 			toggleDayNightLogo( localStorage.theme );
 			toggleDayNightBtn( localStorage.theme );
-
-			// setTimeout( function () {
-			// 	$( '.day_night_toggle_wrapper' ).show( 1000 );
-			// }, 2000 );
 
 			$( '.day_night_toggle input' )
 				.change( function () {
 					toggleDayNight();
 				} );
-
+				
 			$( document )
 				.on( 'click', '.navbar-collapse.in', function ( e ) {
 					if ( $( e.target )

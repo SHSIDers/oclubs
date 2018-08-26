@@ -14,6 +14,7 @@
 
 	<script src="{{ url_for('static', filename='js/oclubs.min.js') }}"></script>
 
+	<script src="{{ url_for('static', filename='js/home.min.js') }}"></script>
 	<link href="{{ url_for('static', filename='css/base.min.css') }}" rel="stylesheet" type="text/css" media="all">
 	<link href="{{ url_for('static', filename='css/content.min.css') }}" rel="stylesheet" type="text/css" media="all">
 
@@ -26,19 +27,25 @@
 
 	<title>SHSID Connect</title>
 </head>
+<!--
+Things start out black
+This is to ensure readability if background img fails or is slow to load
+Check home.js -->
 
 <body id="home_body" class="preload">
+
+	<img id="backgroundimg" src="/static/images/homepagebg.jpg" />
 
 	<nav class="navbar" id="home_navbar">
 		<div class="container">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#important-id-for-collapsing" aria-expanded="false">
 					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
+					<span class="icon-bar imgnotloaded"></span>
+					<span class="icon-bar imgnotloaded"></span>
+					<span class="icon-bar imgnotloaded"></span>
 				</button>
-				<a class="navbar-brand clearfix" href="/"><img src="{{ url_for('static', filename='images/logo-night.png') }}" class="img-responsive" alt=""></a>
+				<a class="navbar-brand clearfix" href="/"><img src="{{ url_for('static', filename='images/logo-day.png') }}" class="img-responsive" alt=""></a>
 			</div>
 			<div class="collapse navbar-collapse" id="important-id-for-collapsing">
 				<ul class="nav navbar-nav navbar-right">

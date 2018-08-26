@@ -60,15 +60,18 @@ body {
   }
 }
 /* --------- Homepage --------- */
+#backgroundimg {
+  display: none;
+}
+
 #home_body {
-  background-image: url("/static/images/homepagebg.jpg");
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-position: 55% -120px;
   background-size: 110% auto;
 
   & .container {
-    min-height: 0%;
+    min-height: 0;
   }
 
   & #scroll_to_top_btn {
@@ -86,7 +89,7 @@ body {
     border: 1px solid transparent;
   }
 
-  & .panel-default{
+  & .panel-default {
     border-color: #ddd;
   }
 
@@ -96,9 +99,8 @@ body {
   }
 
   & .separator {
-      border-top-color: var(--day-grey-border-color);
-    }
-
+    border-top-color: var(--day-grey-border-color);
+  }
 }
 @media(max-width: 1024px) {
   #home_body {
@@ -126,7 +128,7 @@ body {
 }
 
 #homepage_block {
-  color: var(--night-color);
+  color: var(--day-color);
   position: relative;
   left: 0;
   top: 20%;
@@ -144,7 +146,7 @@ body {
 
 #home_navbar {
   & a {
-    color: var(--night-color);
+    color: var(--day-color);
   }
 
   & a:hover {
@@ -152,7 +154,7 @@ body {
   }
 
   & .icon-bar {
-    background-color: var(--night-color);
+    background-color: var(--day-color);
   }
 }
 
@@ -186,7 +188,8 @@ body {
 }
 /* --------- Homepage --------- */
 /* --------- Footer --------- */
-html, body {
+body,
+html {
   height: 100%;
 }
 

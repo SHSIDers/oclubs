@@ -51,6 +51,25 @@
   outline: none !important;
 }
 
+.nav-tabs > li {
+  display: inline-block;
+  *display: inline;
+  float: none;
+  zoom: 1;
+}
+
+.nav-tabs {
+  margin-right: 15px;
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .nav-tabs {
+    margin: 0;
+    text-align: center;
+  }
+}
+
 .bottom-column {
   display: table-cell;
   float: none;
@@ -132,6 +151,13 @@ tr.clickable:hover {
   margin-bottom: 0;
 }
 
+.page-load-status {
+  padding-top: 20px;
+  border-top: 1px solid #ddd;
+  color: #777;
+  text-align: center;
+}
+
 .loader-ellips {
   position: relative;
   margin: 10px auto;
@@ -146,6 +172,7 @@ tr.clickable:hover {
   width: 1em;
   height: 1em;
   border-radius: .5em;
+  background: #555;
   -webkit-animation-duration: .5s;
   -o-animation-duration: .5s;
   animation-duration: .5s;

@@ -5,7 +5,6 @@ CSS styles for main content:
 
 
 */
-
 #separator_title {
   margin-top: 5px;
   margin-bottom: 23px;
@@ -42,13 +41,35 @@ CSS styles for main content:
   font-size: 100%;
 }
 
-.btn_flat, .btn, .input {
+.btn,
+.btn_flat,
+.input {
   user-select: none;
 
   &:focus {
     outline: none !important;
   }
 }
+/* Nav tabs */
+.nav-tabs > li {
+  float: none;
+  display: inline-block;
+  *display: inline;
+  zoom: 1;
+}
+
+.nav-tabs {
+  text-align: right;
+  margin-right: 15px;
+}
+
+@media(max-width: 768px) {
+  .nav-tabs {
+    text-align: center;
+    margin: 0;
+  }
+}
+/* Nav tabs */
 /* Vertical alignment */
 .bottom-column {
   float: none;
@@ -125,6 +146,13 @@ tr.clickable:hover {
   margin-bottom: 0;
 }
 
+.page-load-status {
+  padding-top: 20px;
+  border-top: 1px solid #DDD;
+  text-align: center;
+  color: #777;
+}
+
 .loader-ellips {
   font-size: 20px;
   /* change size here */
@@ -139,6 +167,8 @@ tr.clickable:hover {
   width: 1em;
   height: 1em;
   border-radius: 0.5em;
+  background: #555;
+  /* change color here */
   position: absolute;
   animation-duration: 0.5s;
   animation-timing-function: ease;
