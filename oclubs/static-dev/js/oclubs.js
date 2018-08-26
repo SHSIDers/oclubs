@@ -273,11 +273,11 @@
 				} );
 
 			$( '.homepage_band' )
-				.css( 'margin-top', String( window.innerHeight * 0.60 ) + 'px' );
+				.css( 'margin-top', String( window.innerHeight * 0.65 ) + 'px' );
 			$( window )
 				.on( 'resize', function () {
 					$( '.homepage_band' )
-						.css( 'margin-top', String( window.innerHeight * 0.60 ) + 'px' );
+						.css( 'margin-top', String( window.innerHeight * 0.65 ) + 'px' );
 				} );
 
 			$( '#to_excellentclub' )
