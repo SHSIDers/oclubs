@@ -15,7 +15,7 @@
 						.css( 'color', '#f8f8f8' );
 					$( '#home_navbar .icon-bar' )
 						.css( 'color', '#f8f8f8' );
-					$( '.nav-brand img' )
+					$( '.navbar-brand img' )
 						.attr( 'src', '/static/images/logo-night.png' );
 				} );
 
