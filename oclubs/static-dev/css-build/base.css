@@ -257,9 +257,12 @@ body * {
   font-weight: 400;
 }
 
-#home_navbar a,
-#home_navbar a:hover {
+#home_navbar a {
   color: #333;
+}
+
+#home_navbar a:hover {
+  color: #333 !important;
 }
 
 #home_navbar .icon-bar {
@@ -419,11 +422,6 @@ body.night-mode .navbar-default .navbar-nav > li > a {
 body.night-mode .navbar-default .navbar-nav > .active > a {
   background-color: #303030;
   color: #337ab7;
-}
-
-body.night-mode .navbar-default .navbar-default .navbar-toggle:hover,
-body.night-mode .navbar-default .navbar-toggle:focus {
-  background-color: #303030;
 }
 
 body.night-mode .navbar-default .navbar-nav > li > a:hover {
