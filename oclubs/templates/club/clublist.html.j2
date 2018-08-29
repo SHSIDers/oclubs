@@ -69,7 +69,7 @@
 											<center>
 												<div class="club_list_image">
 													{% if club.picture.location_external == '/static/images/icons/icon101.jpg' %}
-													<img class="img-thumbnail" src="{{ url_for('static', filename='cdn/picsum/640/640/' + range(10, 50)|random|string) }}" alt="{{ club.name }}">
+													<img class="img-thumbnail" src="{{ url_for('static', filename='cdn/picsum/640/640/' + range(10, 50)|random|string) }}" alt="{{ club.name }}"><br>
 													<a tabindex="0" class="btn btn-xs" role="button" data-toggle="popover" data-trigger="focus" title="This is a placeholder image" data-content="No image was uploaded because the club leader is lazy. <br> Image source: <a href='https://picsum.photos'>Lorem Picsum</a>"><span class="glyphicon glyphicon-info-sign"></span></a>
 													{% else %}
 													<a class="" href="{{ club.picture.location_external }}">
@@ -81,8 +81,6 @@
 										</div>
 
 										<div class="col-md-9 col-xs-12">
-											<br class="visible-xs">
-											<br class="visible-xs">
 											<h4 class="media-heading"><a class="title_link" href="{{ url_for('.clubintro', club=club.callsign) }}">{{ club.name }}</a></h4>
 											<hr class="separator">
 											<p>{{ club.intro }}</p>

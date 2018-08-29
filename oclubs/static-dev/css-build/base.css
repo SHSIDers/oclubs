@@ -242,19 +242,23 @@ body * {
 
 #homepage_block {
   position: relative;
-  top: 20%;
+  top: 25%;
   left: 0;
   color: #333;
 }
 
 #homepage_block .home_main_tag {
-  margin-bottom: 4%;
   font-size: 38px;
 }
 
 #homepage_block .home_sub_tag {
-  margin-bottom: 7%;
+  margin-bottom: 40px;
+  margin-left: 2px;
   font-weight: 400;
+}
+
+#homepage_block button {
+  margin-left: 2px;
 }
 
 #home_navbar a {
@@ -422,6 +426,11 @@ body.night-mode .navbar-default .navbar-nav > li > a {
 body.night-mode .navbar-default .navbar-nav > .active > a {
   background-color: #303030;
   color: #337ab7;
+}
+
+body.night-mode .navbar-default .navbar-default .navbar-toggle:hover,
+body.night-mode .navbar-default .navbar-toggle:focus {
+  background-color: #303030;
 }
 
 body.night-mode .navbar-default .navbar-nav > li > a:hover {

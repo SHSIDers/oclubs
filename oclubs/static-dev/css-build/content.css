@@ -105,6 +105,21 @@ tr.clickable:hover {
   }
 }
 
+@media (max-width: 991px) {
+  .media-heading {
+    margin-top: 20px;
+  }
+
+  .media-body {
+    text-align: center;
+  }
+
+  .club_list_image img {
+    max-width: 90%;
+    max-height: 400px;
+  }
+}
+
 @media (max-width: 768px) {
   .jumbotron p {
     font-size: 18px;
