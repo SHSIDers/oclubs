@@ -293,6 +293,7 @@ body * {
 
 .homepage_band {
   position: relative;
+  padding: 20px;
   background-color: #fff;
   color: #333;
 }
