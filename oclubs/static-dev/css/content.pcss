@@ -5,6 +5,11 @@ CSS styles for main content:
 
 
 */
+code {
+  font-family: Consolas,"Courier New",monospace;
+  font-size: 100%;
+}
+
 #separator_title {
   margin-top: 5px;
   margin-bottom: 23px;
@@ -34,11 +39,11 @@ CSS styles for main content:
 
 .img-thumbnail {
   transition: none;
-  border: 0px;
+  border: 0;
 }
 
 .classrooms_cell {
-  font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+  font-family: Consolas,"Courier New",monospace;
   font-size: 100%;
 }
 
@@ -63,7 +68,6 @@ CSS styles for main content:
   text-align: right;
   margin-right: 15px;
 }
-
 @media(max-width: 768px) {
   .nav-tabs {
     text-align: center;
@@ -102,14 +106,9 @@ tr.clickable:hover {
     padding-top: 0;
   }
 }
-
 @media(max-width: 991px) {
-  .media-heading{
+  .media-heading {
     margin-top: 20px;
-  }
-
-  .media-body {
-    text-align: center;
   }
 
   .club_list_image {

@@ -31,14 +31,14 @@
 					<p><b>Location</b>: {{ g.reservation.classroom.location }} </p>
 					<p><b>Date created</b>: {{ g.reservation.date_of_reservation }}</p>
 					<p><b>Type</b>: Club Reservation</p>
-					<p><b>Reserver</b>: <a href="{{ url_for('clubblueprint.clubintro', club=g.reservation.reserver_club.callsign) }}" alt="{{ g.reservation.reserver_club.name }}">{{ g.reservation.reserver_club.name }}</a> (<a href="{{ url_for('.viewreservations_club', club=g.reservation.reserver_club.callsign) }}">All reservations from {{ g.reservation.reserver_club.name }}</a>)</p>
+					<p><b>Reserver</b>: <a href="{{ url_for('clubblueprint.clubintro', club=g.reservation.reserver_club.callsign) }}" alt="{{ g.reservation.reserver_club.name }}">{{ g.reservation.reserver_club.name }}</a> (<a href="{{ url_for('.viewreservations_club', club=g.reservation.reserver_club.callsign) }}">All reservations</a>)</p>
 					<p><b>Activity</b>: Unpaired</p>
 					{% elif g.reservation.status.name == 'PAIRED' %}
 					<p><b>Time</b>: {{ g.reservation.date.strftime("%Y-%m-%d, %A") }}, {{ g.reservation.timeslot.format_name }}</p>
 					<p><b>Location</b>: {{ g.reservation.classroom.location }} </p>
 					<p><b>Date created</b>: {{ g.reservation.date_of_reservation }}</p>
 					<p><b>Type</b>: Club Reservation</p>
-					<p><b>Reserver</b>: <a href="{{ url_for('clubblueprint.clubintro', club=g.reservation.reserver_club.callsign) }}" alt="{{ g.reservation.reserver_club.name }}">{{ g.reservation.reserver_club.name }}</a> (<a href="{{ url_for('.viewreservations_club', club=g.reservation.reserver_club.callsign) }}">All reservations from {{ g.reservation.reserver_club.name }}</a>)</p>
+					<p><b>Reserver</b>: <a href="{{ url_for('clubblueprint.clubintro', club=g.reservation.reserver_club.callsign) }}" alt="{{ g.reservation.reserver_club.name }}">{{ g.reservation.reserver_club.name }}</a> (<a href="{{ url_for('.viewreservations_club', club=g.reservation.reserver_club.callsign) }}">All reservations </a>)</p>
 					<p><b>Activity</b>: <a href="{{ url_for('actblueprint.actintro', activity=g.reservation.activity.callsign) }}" alt="{{ g.reservation.activity.name }}">{{ g.reservation.activity.name }}</a></p>
 					{% elif g.reservation.status.name == 'TEACHER' %}
 					{% endif %}
@@ -47,7 +47,7 @@
 			</div>
 			<!-- /.panel -->
 
-			{% if is_admin or is_owner %}
+			{% if is_admin or is_owner or is_teacher or is_director %}
 			<div class="panel panel-primary">
 				<div class="panel-heading">
 					Additional information
@@ -84,7 +84,7 @@
 		<div class="col-md-12 text-center">
 
 
-			{% if is_admin or is_owner %}
+			{% if is_admin or is_owner or is_teacher %}
 			<div class="btn-group btn_content" role="group">
 				<a class="btn btn-danger btn-lg" href="{{ url_for('.deletereservation', reservation=g.reservation.callsign) }}">Cancel reservation</a>
 			</div>
@@ -127,7 +127,7 @@
 			{% if is_teacher %}
 			<div class="btn-group btn_content" role="group">
 				<button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#changeinstructorsapproval">
-					Change Director's Approval
+					Change Instructor's Approval
 				</button>
 			</div>
 
@@ -143,7 +143,7 @@
 								<form action="{{ url_for('.reservationinfo', reservation=g.reservation.callsign) }}" method="post">
 									<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 									<div class="radio">
-										{{ instructors_approval_form.changeDApproval }}
+										{{ instructors_approval_form.changeIApproval }}
 									</div>
 									<hr class="separator">
 									<div class="btn-toolbar">

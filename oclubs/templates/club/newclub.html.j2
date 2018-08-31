@@ -10,7 +10,7 @@
 
 {% from 'macros.html.j2' import get_messages %}
 
-{% block title %}New Club{% endblock %}
+{% block title %}Create Club{% endblock %}
 
 {% block content %}
 
@@ -122,6 +122,10 @@
 							<input type="file" name="picture" id="picture" accept="image/*" hidden>
 						</label>
 						<p id="upload_content"></p>
+						<span class="help-block">
+							Files supported: jpg and png <br>
+							Images are capped at 4000 by 3000 pixels.
+						</span>
 					</div>
 				</div>
 

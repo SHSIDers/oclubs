@@ -75,10 +75,10 @@
 			</div>
 
 			<div class="col-xs-6">
-					<div class="pull-right">
-						<a class="btn btn-default" id="newclubbtn" href="{{ url_for('clubblueprint.newclub') }}">Create Club</a>
-						<a class="btn btn-default" id="newclubbtn" href="{{ url_for('clubblueprint.quitclub') }}">Quit Club</a>
-					</div>
+				<div class="pull-right">
+					<a class="btn btn-default" id="newclubbtn" href="{{ url_for('clubblueprint.newclub') }}">Create<span class="hidden-xs">&nbsp;Club</span></a>
+					<a class="btn btn-default" id="newclubbtn" href="{{ url_for('clubblueprint.quitclub') }}">Quit<span class="hidden-xs">&nbsp;Club</span></a>
+				</div>
 			</div>
 		</div>
 
@@ -93,47 +93,50 @@
 
 	<div class="col-md-10">
 		{% for club in clubs %}
-		<div class="well">
-			<div class="media">
-				<div class="media-body">
-					<div class="row">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="media">
+					<div class="media-body">
+						<div class="row">
 
-						<div class="col-md-3 col-xs-12">
-							<center>
-								<div class="club_list_image">
-									{% if club.picture.location_external == '/static/images/icons/icon101.jpg' %}
-									<img class="img-thumbnail" src="{{ url_for('static', filename='cdn/picsum/640/640/' + range(10, 50)|random|string) }}" alt="{{ club.name }}">
-									<a tabindex="0" class="btn btn-xs" role="button" data-toggle="popover" data-trigger="focus" title="This is a placeholder image" data-content="No image was uploaded because the club leader is lazy. <br> Image source: <a href='https://picsum.photos'>Lorem Picsum</a>"><span class="glyphicon glyphicon-info-sign"></span></a>
-									{% else %}
-									<a class="" href="{{ club.picture.location_external }}">
-										<img class="img-thumbnail" src="{{ club.picture.location_external }}" alt="{{ club.name }}">
-									</a>
+							<div class="col-md-3 col-xs-12">
+								<center>
+									<div class="club_list_image">
+										{% if club.picture.location_external == '/static/images/icons/icon101.jpg' %}
+										<img class="img-thumbnail" src="{{ url_for('static', filename='cdn/picsum/640/640/' + range(10, 50)|random|string) }}" alt="{{ club.name }}">
+										<a tabindex="0" class="btn btn-xs" role="button" data-toggle="popover" data-trigger="focus" title="This is a placeholder image" data-content="No image was uploaded because the club leader is lazy. <br> Image source: <a href='https://picsum.photos'>Lorem Picsum</a>"><span class="glyphicon glyphicon-info-sign"></span></a>
+										{% else %}
+										<a class="" href="{{ club.picture.location_external }}">
+											<img class="img-thumbnail" src="{{ club.picture.location_external }}" alt="{{ club.name }}">
+										</a>
+										{% endif %}
+									</div>
+								</center>
+							</div>
+
+							<div class="col-md-9 col-xs-12">
+								<br class="visible-xs">
+								<br class="visible-xs">
+								<h4 class="media-heading"><a class="title_link" href="{{ url_for('clubblueprint.clubintro', club=club.callsign) }}">{{ club.name }}</a></h4>
+								<hr class="separator">
+								<p>{{ club.intro }}</p>
+								<p>CAS Hours: {{ cas[club]|round(1) }} </p>
+								{% if not club.is_active %}
+								<p>(Inactive)</p>
+								{% endif %}
+								{% if info[club.name] %}
+								<br>
+								<p><b>Most recent activity</b>: <a class="title_link" href="{{ url_for('actblueprint.actintro', activity=info[club.name].callsign) }}">{{ info[club.name].name }}</a></p>
+								<p>{{ info[club.name].description.formatted }}
 									{% endif %}
 								</div>
-							</center>
-						</div>
-
-						<div class="col-md-9 col-xs-12">
-							<br class="visible-xs">
-							<br class="visible-xs">
-							<h4 class="media-heading"><a class="title_link" href="{{ url_for('clubblueprint.clubintro', club=club.callsign) }}">{{ club.name }}</a></h4>
-							<hr class="separator">
-							<p>{{ club.intro }}</p>
-							<p>CAS Hours: {{ cas[club]|round(1) }} </p>
-							{% if not club.is_active %}
-							<p>(Inactive)</p>
-							{% endif %}
-							{% if info[club.name] %}
-							<br>
-							<p><b>Most recent activity</b>: <a class="title_link" href="{{ url_for('actblueprint.actintro', activity=info[club.name].callsign) }}">{{ info[club.name].name }}</a></p>
-							<p>{{ info[club.name].description.formatted }}
-								{% endif %}
 							</div>
 						</div>
 					</div>
 				</div>
+				<!-- /.panel-body -->
 			</div>
-			<!-- /.well -->
+			<!-- /.panel -->
 			{% endfor %}
 		</div>
 		<!-- /.col-md-10 -->

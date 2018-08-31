@@ -1,3 +1,8 @@
+code {
+  font-size: 100%;
+  font-family: Consolas,Courier New,monospace;
+}
+
 #separator_title {
   margin-top: 5px;
   margin-bottom: 23px;
@@ -34,7 +39,7 @@
 
 .classrooms_cell {
   font-size: 100%;
-  font-family: Menlo,Monaco,Consolas,Courier New,monospace;
+  font-family: Consolas,Courier New,monospace;
 }
 
 .btn,
@@ -109,10 +114,6 @@ tr.clickable:hover {
 @media (max-width: 991px) {
   .media-heading {
     margin-top: 20px;
-  }
-
-  .media-body {
-    text-align: center;
   }
 
   .club_list_image img {
