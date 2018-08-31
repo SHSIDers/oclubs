@@ -26,6 +26,7 @@
 }
 
 .img-thumbnail {
+  border: 0;
   -webkit-transition: none;
   -o-transition: none;
   transition: none;

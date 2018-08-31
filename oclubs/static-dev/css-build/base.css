@@ -170,9 +170,9 @@ body * {
 
 #home_body {
   background-attachment: fixed;
-  background-position: 55% -120px;
-  -webkit-background-size: 110% auto;
-  background-size: 110% auto;
+  background-position: 60% -90px;
+  -webkit-background-size: 100% auto;
+  background-size: 100% auto;
   background-repeat: no-repeat;
 }
 
@@ -265,6 +265,7 @@ body * {
   color: #333;
 }
 
+#home_navbar a:focus,
 #home_navbar a:hover {
   color: #333 !important;
 }
@@ -293,6 +294,7 @@ body * {
 
 .homepage_band {
   position: relative;
+  padding: 20px;
   background-color: #fff;
   color: #333;
 }
@@ -758,6 +760,14 @@ body.night-mode #scroll_to_top_btn {
   border-right: 8px solid #337ab7;
   border-top-right-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
+}
+
+@media (max-width: 991px) {
+  .jumbotron {
+    right: 0;
+    padding: 0;
+    border: 0;
+  }
 }
 
 .badge-notify {

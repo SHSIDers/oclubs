@@ -66,7 +66,7 @@
 				.change( function () {
 					toggleDayNight();
 				} );
-				
+
 			$( document )
 				.on( 'click', '.navbar-collapse.in', function ( e ) {
 					if ( $( e.target )
@@ -281,7 +281,7 @@
 						.animate( {
 							scrollTop: $( '#excellentclub' )
 								.offset()
-								.top - 8
+								.top - 30
 						}, 1000 );
 				} );
 
