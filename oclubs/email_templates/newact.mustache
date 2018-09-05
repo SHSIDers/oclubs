@@ -1,19 +1,14 @@
 Hi {{ member.nickname }},
 
+
 {{ club.name }} is going to host {{ act.name }}.
 
-Below is the information:
 
 Name: {{ act.name }}
-
 Club: {{ act.club.name }}
-
 Date: {{ act.date }}
-
 Time: {{ act.time.format_name }}
-
 Location: {{ act.location }}
-
 CAS hour: {{ act.cas }}
 
 
@@ -21,11 +16,8 @@ Description:
 
 {{ act.description.raw }}
 
-If you want to participate, please search {{ act.name }} on oClubs for further information.{{ #is_other_act }} You may need to sign up for this activity to participate.{{ /is_other_act }}
-
 
 Thank you for using Connect.
-
 
 Sincerely,
 Connect Team

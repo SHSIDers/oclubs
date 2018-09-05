@@ -38,8 +38,8 @@ class ClubType(Enum):
     @property
     def format_name(self):
         """Formats the value of the enum for display."""
-        return ['', 'Academics', 'Sports', 'Arts', 'Services',
-                'Entertainment', 'Other', 'School Teams'][self.value]
+        return ['', 'Academic', 'Sport', 'Art', 'Service',
+                'Entertainment', 'Other', 'School Team'][self.value]
 
 
 class ActivityTime(Enum):

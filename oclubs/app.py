@@ -7,6 +7,8 @@ from __future__ import absolute_import, unicode_literals, division
 import traceback
 from urlparse import urlparse, urljoin
 
+import random
+
 from flask import (
     Flask, redirect, request, render_template, url_for, session, abort, flash,
     Markup,
@@ -425,10 +427,23 @@ def _search_gettext(obj, name):
         return obj
 
 
+homepage_slogans = (
+    'Make New Friends.',
+    'Uncover Your Passion.',
+    'Start Clubbing.',
+    'Work Together.',
+    'Have Fun!',
+    'Enhance Your Abilities.',
+    'Discover Yourself.',
+)
+
+
 @app.route('/')
 def homepage():
     '''Homepage'''
     excellent_clubs = Club.excellentclubs()
+
+    slogan = random.choice(homepage_slogans)
 
     info = {}
     for club in excellent_clubs:
@@ -438,7 +453,8 @@ def homepage():
     return render_template('static/homepage.html.j2',
                            is_home=True,
                            excellent_clubs=excellent_clubs,
-                           info=info)
+                           info=info,
+                           slogan=slogan)
 
 
 @app.route('/about')
