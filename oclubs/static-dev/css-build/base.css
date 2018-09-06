@@ -208,6 +208,10 @@ body * {
   border-top-color: #e7e7e7;
 }
 
+#home_body .btn_orange {
+  width: 150px;
+}
+
 @media (max-width: 1024px) {
   #home_body {
     background-position: 50% -80px;

@@ -17,59 +17,60 @@
 		</div>
 
 		<div class="col-md-6">
-			<div class="form-group">
+
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h4>Change Leader - {{ g.club.name }}</h4>
 				</div>
 				<div class="panel-body">
-					<form id="leader_radio" action="{{ url_for('.newleader_submit', club=g.club.callsign) }}" method="post">
+					<form action="{{ url_for('.newleader_submit', club=g.club.callsign) }}" method="post">
 						<div class="form-group">
-						{% for member in g.club.members %}
-						<div class="radio">
-						<label>
-							<input type="radio" id="{{ member.id }}" name="leader" value="{{ member.passportname }}" {% if member == g.club.leader %}disabled{% endif %}>
-							<label for="{{ member.id }}">
-								{% if member == g.club.leader %}<b>Current leader</b>: {% endif %} {{ member.nickname }} ({{ member.passportname }})
-							</label>
-						</label>
+							<div class="radio_group">
+							{% for member in g.club.members %}
+							<div class="radio{% if member == g.club.leader %} disabled{% endif %}">
+								<label>
+									<input type="radio" id="{{ member.id }}" name="leader" value="{{ member.passportname }}" {% if member == g.club.leader %}disabled{% endif %}>
+									&nbsp;&nbsp;{% if member == g.club.leader %}<b>Current leader</b>: {% endif %} {{ member.nickname }} ({{ member.passportname }})
+								</label>
+							</div>
+							{% endfor %}
 						</div>
-						{% endfor %}
-					</div>
-					<hr class="separator">
-					<div class="form-group">
-						<div class="input-group">
-							<button class="btn btn-primary" data-toggle="modal" data-target="#confirmation" id="updatecheck">Submit</button>
-						</div>
-					</div>
 
-					<div class="modal fade" id="confirmation" tabindex="-1" role="dialog">
-						<div class="modal-dialog modal-dialog-centered">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-									<h4 class="modal-title">Confirm Selection</h4>
+							<hr class="separator">
+							<div class="form-group">
+								<div class="input-group">
+									<button class="btn btn-primary" data-toggle="modal" data-target="#confirmation" id="updatecheck">Submit</button>
 								</div>
-								<div class="modal-body">
-									<p></p>
+							</div>
+
+							<div class="modal fade" id="confirmation" tabindex="-1" role="dialog">
+								<div class="modal-dialog modal-dialog-centered">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+											<h4 class="modal-title">Confirm Selection</h4>
+										</div>
+										<div class="modal-body">
+											<p></p>
 
 											<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 											<div class="btn-toolbar">
 												<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 												<input class="btn btn-primary" id="submit" name="submit" type="submit" value="Confirm">
 											</div>
-								</div>
-							</div><!-- /.modal-content -->
-						</div><!-- /.modal-dialog -->
-					</div><!-- /.modal -->
+										</div>
+									</div><!-- /.modal-content -->
+								</div><!-- /.modal-dialog -->
+							</div><!-- /.modal -->
+
+						</div>
+						<!-- /.form-group -->
 
 					</form>
 				</div>
 				<!-- /.panel-body -->
 			</div>
 			<!-- /.panel -->
-		</div>
-		<!-- /.form-group -->
 		</div>
 		<!-- /.col-md-6 -->
 

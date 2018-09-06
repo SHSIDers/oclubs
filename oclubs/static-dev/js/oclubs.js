@@ -282,7 +282,7 @@
 							scrollTop: $( '#excellentclub' )
 								.offset()
 								.top - 30
-						}, 1000 );
+						}, 1200, 'swing' );
 				} );
 
 			$( '.btn_flat' )

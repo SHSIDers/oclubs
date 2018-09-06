@@ -430,11 +430,14 @@ def _search_gettext(obj, name):
 homepage_slogans = (
     'Make New Friends.',
     'Uncover Your Passion.',
-    'Start Clubbing.',
+    'Start Clubbing!',
     'Work Together.',
     'Have Fun!',
     'Enhance Your Abilities.',
     'Discover Yourself.',
+    'Really Fun!',
+    'Accomplish Something.',
+    'Create Something.',
 )
 
 
