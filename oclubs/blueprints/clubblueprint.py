@@ -333,70 +333,61 @@ def newact(club):
 def newact_submit(club):
     # the new form filing for creating reservations is done using wtforms
     '''Input new activity's information into database'''
-    # in the process of fixing a potential bug
     try:
+        a = Activity.new()
+        a.name = request.form['name']
+        if not a.name:
+            fail('Please enter the name of the new activity.', 'newact')
+            return redirect(url_for('.newact', club=club.callsign))
+        a.club = club
+        a.description = FormattedText.handle(current_user, club,
+                                             request.form['description'])
+        a.post = FormattedText(0)
         try:
-            a = Activity.new()
-            a.name = request.form['name']
-            if not a.name:
-                fail('Please enter the name of the new activity.', 'newact')
-                return redirect(url_for('.newact', club=club.callsign))
-            a.club = club
-            a.description = FormattedText.handle(current_user, club,
-                                                 request.form['description'])
-            a.post = FormattedText(0)
-            try:
-                actdate = date(int(request.form['year']),
-                               int(request.form['month']),
-                               int(request.form['day']))
-            except ValueError:
-                fail('Invalid date.', 'newact')
-                return redirect(url_for('.newact', club=club.callsign))
-            if actdate < date.today():
-                fail('Please enter a date not eariler than today.', 'newact')
-                return redirect(url_for('.newact', club=club.callsign))
-            a.date = actdate
-            time = ActivityTime[request.form['act_type'].upper()]
-            is_other_act = time in [ActivityTime.UNKNOWN, ActivityTime.OTHERS]
-            a.time = time
-            a.location = request.form['location']
-            time_type = request.form['time_type']
-            try:
-                cas = int(request.form['cas'])
-            except ValueError:
-                fail('Invalid CAS hours.', 'newact')
-                return redirect(url_for('.newact', club=club.callsign))
-            if cas < 0:
-                fail('Invalid CAS hours.', 'newact')
-                return redirect(url_for('.newact', club=club.callsign))
-            if time_type == 'hours':
-                a.cas = cas
-            else:
-                a.cas = cas / 60
-            if (time == ActivityTime.OTHERS or time == ActivityTime.UNKNOWN) and \
-                    request.form['has_selection'] == 'yes':
-                choices = request.form['selections'].split(';')
-                a.selections = [choice.strip() for choice in choices]
-            else:
-                a.selections = []
-            a.reservation = None
-            a.create()
-            flash(a.name + ' has been successfully created.', 'newact')
+            actdate = date(int(request.form['year']),
+                           int(request.form['month']),
+                           int(request.form['day']))
         except ValueError:
-            fail('Please input all information to create a new activity.',
-                 'newact')
+            fail('Invalid date.', 'newact')
+            return redirect(url_for('.newact', club=club.callsign))
+        if actdate < date.today():
+            fail('Please enter a date not eariler than today.', 'newact')
+            return redirect(url_for('.newact', club=club.callsign))
+        a.date = actdate
+        time = ActivityTime[request.form['act_type'].upper()]
+        is_other_act = time in [ActivityTime.UNKNOWN, ActivityTime.OTHERS]
+        a.time = time
+        a.location = request.form['location']
+        time_type = request.form['time_type']
+        try:
+            cas = int(request.form['cas'])
+        except ValueError:
+            fail('Invalid CAS hours.', 'newact')
+            return redirect(url_for('.newact', club=club.callsign))
+        if cas < 0:
+            fail('Invalid CAS hours.', 'newact')
+            return redirect(url_for('.newact', club=club.callsign))
+        if time_type == 'hours':
+            a.cas = cas
         else:
-            for member in club.teacher_and_members:
-                parameters = {'member': member, 'club': club, 'act': a,
-                              'is_other_act': is_other_act}
-                contents = render_email_template('newact', parameters)
-                member.email_user(a.name + ' - ' + club.name, contents)
-                member.notify_user(club.name + ' is going to host ' + a.name +
-                                   ' on ' + actdate.strftime('%b-%d-%y') + '.')
-        return redirect(url_for('.newact', club=club.callsign))
-    except Exception:
-        __import__('traceback').print_exc()
-        raise
+            a.cas = cas / 60
+        a.selections = []
+        a.reservation = None
+        a.create()
+        flash(a.name + ' has been successfully created.', 'newact')
+    except ValueError:
+        fail('Please input all information to create a new activity.',
+             'newact')
+    else:
+        for member in club.teacher_and_members:
+            parameters = {'member': member, 'club': club, 'act': a,
+                          'is_other_act': is_other_act}
+            contents = render_email_template('newact', parameters)
+            member.email_user(a.name + ' - ' + club.name, contents)
+            member.notify_user(club.name + ' is going to host ' + a.name +
+                               ' on ' + actdate.strftime('%b-%d-%y') + '.')
+    return redirect(url_for('.newact', club=club.callsign))
+
 
 
 @clubblueprint.route('/<club>/hongmei_status')
