@@ -307,10 +307,6 @@ def changeactinfo_submit(activity):
         activity.cas = cas
     else:
         activity.cas = cas / 60
-    if (time == ActivityTime.OTHERS or time == ActivityTime.UNKNOWN) and \
-            request.form['selections'] != activity.one_line_selections:
-        choices = request.form['selections'].split(';')
-        activity.selections = [choice.strip() for choice in choices]
 
     for member in activity.signup_list():
         member['user'].notify_user('%s\'s information has been changed.'
