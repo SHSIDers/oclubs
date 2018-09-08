@@ -30,7 +30,7 @@ class ResFilter(object):
         elif len(conds) == 3:
             return False
         else:
-            abort(400)
+            abort(404)
 
     @classmethod
     def from_url(cls, url):

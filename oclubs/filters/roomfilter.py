@@ -31,7 +31,7 @@ class RoomFilter(object):
         if len(conds) == 3:
             pass
         else:
-            abort(400)
+            abort(404)
 
     # converts from str in urls to appropriate date object, single or range
     @classmethod
@@ -46,16 +46,16 @@ class RoomFilter(object):
                 try:
                     return int_to_dateobj(dates[0])
                 except ValueError:
-                    abort(400)
+                    abort(404)
             elif len(dates) == 2:
                 try:
                     start = int_to_dateobj(dates[0])
                     end = int_to_dateobj(dates[1])
                 except ValueError:
-                    abort(400)
+                    abort(404)
                 else:
                     if start >= end:
-                        abort(400)
+                        abort(404)
                     else:
                         return (start, end)
 
