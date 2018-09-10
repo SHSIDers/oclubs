@@ -483,7 +483,7 @@ def feedback_submit():
                   'sender_contact': sender_contact,
                   'content': content}
     contents = render_email_template('feedback', parameters)
-    email.send(('creators@oclubs.shs.cn',), 'Feedback', contents)
+    email.send(('creators@connect.shs.cn',), 'Feedback', contents)
     email.send(('angleqian01@gmail.com',), 'Feedback', contents)
     flash('Your feedback has been sent to our team. Thank you for your time! Your feedback is invaluable.',
           'feedback')
@@ -520,7 +520,7 @@ def reportbug_submit():
                       'sender_contact': 'None',
                       'content': content}
     contents = render_email_template('contactadmin', parameters)
-    email.send(('clubsadmin@oclubs.shs.cn',), 'Contact Admin', contents)
+    email.send(('clubsadmin@connect.shs.cn',), 'Contact Admin', contents)
     email.send(('angleqian01@gmail.com',), 'Contact Admin', contents)
     flash('Your report has been sent to our team. Thank you for your time! We will fix the problem as soon as possible.',
           'reportbug')

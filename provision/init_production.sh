@@ -3,9 +3,9 @@
 set -e
 
 set_hostname() {
-    if [[ $HOSTNAME != 'oclubs.shs.cn' ]]; then
+    if [[ $HOSTNAME != 'connect.shs.cn' ]]; then
         # Translated from: https://github.com/mitchellh/vagrant/blob/master/plugins/guests/redhat/cap/change_host_name.rb
-        local name=oclubs.shs.cn
+        local name=connect.shs.cn
         local basename=oclubs
 
         # Update sysconfig
@@ -174,7 +174,7 @@ main() {
         exit 1
     fi
 
-    echo -e '\e[1mSetting hostname to oclubs.shs.cn...\e[0m'; set_hostname; echo
+    echo -e '\e[1mSetting hostname to connect.shs.cn...\e[0m'; set_hostname; echo
     echo -e '\e[1mCloning oclubs repository...\e[0m'; clone_repo; echo
     echo -e '\e[1mInitializing hieradata...\e[0m'; init_hiera; echo
     echo -e '\e[1mInstalling SSL certs...\e[0m'; install_ssl_certs; echo

@@ -275,7 +275,7 @@ def changepassword_submit():
                       user.passportname,
                       user.grade_and_class),
                   'performer_name': current_user.studentid}
-    email.send(('clubsadmin@oclubs.shs.cn',), 'Admin changed password',
+    email.send(('clubsadmin@connect.shs.cn',), 'Admin changed password',
                render_email_template('adminchangepassword', parameters))
     flash(user.nickname + '\'s password has been successfully set to ' +
           password + '.', 'password')

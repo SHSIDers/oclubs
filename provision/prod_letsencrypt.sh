@@ -10,7 +10,7 @@ server = https://acme-v01.api.letsencrypt.org/directory
 EOF
 
 systemctl stop nginx || true
-certbot certonly --standalone --text --agree-tos -d oclubs.shs.cn -n
+certbot certonly --standalone --text --agree-tos -d connect.shs.cn -n
 CERTBOT_EXITCODE=$?
 if [[ $CERTBOT_EXITCODE == 0 ]]; then
     if ! grep 'httpredir-nginx-cfg' /srv/oclubs/repo/provision/puppet/hieradata/local.yaml &> /dev/null; then
@@ -18,8 +18,8 @@ if [[ $CERTBOT_EXITCODE == 0 ]]; then
 httpredir-nginx-cfg: |-
   # SSL and HTTP redirect configuration
     listen 443 ssl;
-    ssl_certificate /etc/letsencrypt/live/oclubs.shs.cn/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/oclubs.shs.cn/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/connect.shs.cn/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/connect.shs.cn/privkey.pem;
     include /etc/letsencrypt/options-ssl-nginx.conf;
 
     # Redirect non-https traffic to https
@@ -31,7 +31,7 @@ EOF
 fi
 systemctl start nginx || true
 
-sed -i 's/authenticator = standalone/authenticator = nginx/' /etc/letsencrypt/renewal/oclubs.shs.cn.conf
+sed -i 's/authenticator = standalone/authenticator = nginx/' /etc/letsencrypt/renewal/connect.shs.cn.conf
 
 if which certbot &> /dev/null; then
     cat > /etc/cron.daily/certbot << EOF

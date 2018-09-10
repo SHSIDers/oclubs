@@ -75,7 +75,7 @@ nginx::nginx_upstreams:
     members:
       - 'unix:/var/run/uwsgi/uwsgi.sock'
 nginx::nginx_vhosts:
-  'oclubs.shs.cn':
+  'connect.shs.cn':
     listen_options: default_server
     uwsgi: uwsgi
     add_header:
@@ -97,7 +97,7 @@ nginx::nginx_vhosts:
             proxy_hide_header       Set-Cookie;
             proxy_ignore_headers    Set-Cookie;
             proxy_set_header        Cookie "";
-            proxy_set_header        Referer "https://oclubs.shs.cn/";
+            proxy_set_header        Referer "https://connect.shs.cn/";
 
             add_header X-Cache-Status $upstream_cache_status;
 
@@ -127,19 +127,19 @@ nginx::nginx_vhosts:
 
 nginx::nginx_locations:
   '/static':
-    vhost: oclubs.shs.cn
+    vhost: connect.shs.cn
     location_alias: /srv/oclubs/oclubs/static
   '= /favicon.ico':
-    vhost: oclubs.shs.cn
+    vhost: connect.shs.cn
     location_alias: /srv/oclubs/oclubs/static/favicon.ico
   '= /robots.txt':
-    vhost: oclubs.shs.cn
+    vhost: connect.shs.cn
     location_alias: /srv/oclubs/oclubs/static/robots.txt
   '/images':
-    vhost: oclubs.shs.cn
+    vhost: connect.shs.cn
     location_alias: /srv/oclubs/images
   # '/static/cdn/':
-  #   vhost: oclubs.shs.cn
+  #   vhost: connect.shs.cn
   #   # proxy_cache: STATIC
   #   # proxy_cache_valid:
   #   #   - '200 302 1d'
@@ -163,12 +163,12 @@ nginx::nginx_locations:
   #     proxy_ignore_headers: Set-Cookie
   #     proxy_set_header: 'Cookie ""'
   # '/static/cdn/cdnjs/':
-  #   vhost: oclubs.shs.cn
+  #   vhost: connect.shs.cn
   #   proxy: 'http://cdn.bootcss.com'
   #   rewrite_rules:
   #     - '^/static/cdn/cdnjs(/.*)$ $1 break'
   # '/static/cdn/fonts/':
-  #   vhost: oclubs.shs.cn
+  #   vhost: connect.shs.cn
   #   proxy: 'http://fonts.gstatic.com'
   #   # proxy: 'http://fontstatic.useso.com'
   #   # proxy: 'http://fonts-gstatic.proxy.ustclug.org'

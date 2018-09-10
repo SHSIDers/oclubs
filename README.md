@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This website is hosted in SHSID internal network at http://oclubs.shs.cn/.
+This website is hosted in SHSID internal network at http://connect.shs.cn/.
 
 The IP address of this website is 192.168.8.201.
 
@@ -20,9 +20,9 @@ The IP address of this website is 192.168.8.201.
       * `secrets.py`: Secret settings (passcodes and tokens) access via ini, read-only
       * `siteconfig.py`: Web-adjustable site configuration access via ini.
     * `blueprints/`: High level flask code handling various suburls
-      * `actblueprint.py`: http://oclubs.shs.cn/activity
-      * `clubblueprint.py`: http://oclubs.shs.cn/club
-      * `userblueprint.py`: http://oclubs.shs.cn/user
+      * `actblueprint.py`: http://connect.shs.cn/activity
+      * `clubblueprint.py`: http://connect.shs.cn/club
+      * `userblueprint.py`: http://connect.shs.cn/user
     * `email_templates/`: Email templates written in Mustache
     * `objs/`: Python class definitions of high level classes, mostly self-explanatory
       * `base.py`: Definition on how the classes work
