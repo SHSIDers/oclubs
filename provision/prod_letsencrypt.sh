@@ -5,7 +5,7 @@ mkdir -p /etc/letsencrypt/
 
 cat > /etc/letsencrypt/cli.ini << EOF
 email = oclubs@hotmail.com
-server = https://acme-v01.api.letsencrypt.org/directory
+server = https://acme-v02.api.letsencrypt.org/directory
 # server = https://acme-staging.api.letsencrypt.org/directory
 EOF
 
