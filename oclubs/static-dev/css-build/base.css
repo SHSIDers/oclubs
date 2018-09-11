@@ -562,6 +562,12 @@ body.night-mode .well {
   background-color: #303030;
 }
 
+body.night-mode .panel-default .panel-heading {
+  border-color: #666;
+  background-color: #666;
+  color: #f8f8f8;
+}
+
 body.night-mode table {
   border-color: #666;
   background-color: #303030;
