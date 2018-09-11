@@ -27,10 +27,10 @@
 						<div class="form-group">
 							<div class="radio_group">
 							{% for member in g.club.members %}
-							<div class="radio{% if member == g.club.leader %} disabled{% endif %}">
+							<div class="radio{% if member == g.club.leader %} disabled{% endif %}" id="leader_radio">
 								<label>
 									<input type="radio" id="{{ member.id }}" name="leader" value="{{ member.passportname }}" {% if member == g.club.leader %}disabled{% endif %}>
-									&nbsp;&nbsp;{% if member == g.club.leader %}<b>Current leader</b>: {% endif %} {{ member.nickname }} ({{ member.passportname }})
+									&nbsp;&nbsp;<label for="{{ member.id }}">{% if member == g.club.leader %}<b>Current leader</b>: {% endif %} {{ member.nickname }} ({{ member.passportname }})</label>
 								</label>
 							</div>
 							{% endfor %}
