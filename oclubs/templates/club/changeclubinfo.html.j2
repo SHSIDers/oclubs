@@ -22,7 +22,7 @@
 		<div class="col-md-12">
 			<form class="form-group" action="{{ url_for('.changeclubinfo_submit', club=g.club.callsign) }}" method="post" enctype="multipart/form-data">
 				<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-				{% if get_flashed_messages(['clubinfo']) %}
+				{% if get_flashed_messages(['clubinfo']) and get_flashed_messages(['clubinfo']) != '' %}
 				<div class="alert alert-warning">
 					<span class="glyphicon glyphicon-warning-sign"></span>
 					{% for message in get_flashed_messages(category_filter=['clubinfo']) %}

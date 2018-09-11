@@ -43,7 +43,7 @@
 		<div class="col-md-10">
 			<form class="form-group" action="{{ url_for('.newact_submit', club=g.club.callsign) }}" method="post">
 				<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-				{% if get_flashed_messages(['newact']) %}
+				{% if get_flashed_messages(['newact']) and get_flashed_messages(['newact']) != '' %}
 				<div class="alert alert-warning">
 					<span class="glyphicon glyphicon-warning-sign"></span>
 					{% for message in get_flashed_messages(category_filter=['newact']) %}

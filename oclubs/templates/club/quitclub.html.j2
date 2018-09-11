@@ -29,7 +29,7 @@
 						<h4>Quit Club</h4>
 					</div>
 					<div class="panel-body">
-						{% if get_flashed_messages(category_filter=['quit']) %}
+						{% if get_flashed_messages(category_filter=['quit']) and get_flashed_messages(['quit']) != '' %}
 						<div class="alert alert-warning">
 							<span class="glyphicon glyphicon-warning-sign"></span>
 							{% for message in get_flashed_messages(category_filter=['quit']) %}

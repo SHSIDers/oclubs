@@ -46,7 +46,7 @@
 		<div class="col-md-10">
 			<form action="{{ url_for('.changeactinfo_submit', activity=g.activity.callsign) }}" method="post">
 				<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-				{% if get_flashed_messages(['actinfo']) %}
+				{% if get_flashed_messages(['actinfo']) and get_flashed_messages(['actinfo']) != '' %}
 				<div class="alert alert-warning">
 					<span class="glyphicon glyphicon-warning-sign"></span>
 					{% for message in get_flashed_messages(category_filter=['actinfo']) %}

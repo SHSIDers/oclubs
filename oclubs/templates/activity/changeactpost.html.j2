@@ -44,7 +44,7 @@
 		<div class="col-md-10">
 			<form class="form-group" action="{{ url_for('.changeactpost_submit', activity=g.activity.callsign) }}" method="post" enctype="multipart/form-data">
 				<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-				{% if get_flashed_messages(['actpost']) %}
+				{% if get_flashed_messages(['actpost']) and get_flashed_messages(['actpost']) != '' %}
 				<div class="alert alert-warning">
 					<span class="glyphicon glyphicon-warning-sign"></span>
 					{% for message in get_flashed_messages(category_filter=['actpost']) %}

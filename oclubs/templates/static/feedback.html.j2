@@ -27,7 +27,7 @@
 						<h4>We Value Your Opinion</h4>
 					</div>
 					<div class="panel-body">
-						{% if get_flashed_messages(category_filter=['feedback']) %}
+						{% if get_flashed_messages(category_filter=['feedback']) and get_flashed_messages(['feedback']) != '' %}
 						<div class="alert alert-success">
 							<span class="glyphicon glyphicon-ok-sign"></span>
 							{% for message in get_flashed_messages(category_filter=['feedback']) %}

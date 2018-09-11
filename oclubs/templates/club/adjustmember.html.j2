@@ -40,7 +40,7 @@
 		</div>
 
 		<div class="col-md-10">
-			{% if get_flashed_messages(['expelled', 'invite_member']) %}
+			{% if get_flashed_messages(['expelled', 'invite_member']) and get_flashed_messages(['expelled', 'invite_member']) != '' %}
 			<div class="alert alert-warning">
 				<span class="glyphicon glyphicon-warning-sign"></span>
 				{% for message in get_flashed_messages(category_filter=['expelled', 'invite_member']) %}

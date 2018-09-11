@@ -35,7 +35,7 @@
 		</div>
 
 		<div class="col-md-10">
-			{% if get_flashed_messages(category_filter=['reply']) %}
+			{% if get_flashed_messages(category_filter=['reply']) and get_flashed_messages(['reply']) != '' %}
 			<div class="alert alert-warning">
 				<span class="glyphicon glyphicon-warning-sign"></span>
 				{% for message in get_flashed_messages(category_filter=['reply']) %}
