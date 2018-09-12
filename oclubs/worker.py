@@ -126,8 +126,7 @@ def _create_account(authority, _type='STUDENT', haspassword=True):
     u.currentclass = None
     u.initalized = False
     _user_refresh(u, authority)
-    password = User.generate_password() if haspassword else None
-    u.password = password
+    u.password = None
     u.nickname = u.passportname
     u.picture = Upload(-1)
     u.type = UserType[_type]

@@ -4,7 +4,9 @@ USE oclubs;
 
 CREATE TABLE user (
 	user_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	user_login_name varchar(255) NOT NULL, # Student ID
+	user_login_name varchar(255) NOT NULL, # username used to login, currently gnumberid
+	user_gnumber_id varchar(255), # student ID starting with G
+	user_short_id varchar(255), # 5-digit student ID
 	user_nick_name varchar(255) NOT NULL,
 	user_passport_name varchar(255) NOT NULL,
 	user_password tinyblob,

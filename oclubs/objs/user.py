@@ -32,6 +32,8 @@ class User(BaseObject, UserMixin):
     table = 'user'
     identifier = 'user_id'
     studentid = Property('user_login_name')
+    gnumber_id = Property('user_gnumber_id')
+    short_id = Property('user_short_id')
     passportname = Property('user_passport_name')
     password = Property('user_password', (NotImplemented, _encrypt))
     nickname = Property('user_nick_name', rediscached=True)
@@ -220,7 +222,7 @@ class User(BaseObject, UserMixin):
         data = database.fetch_multirow(
             'user',
             {'user_id': 'id', 'user_password': 'password'},
-            {'user_passport_name': username}
+            {'user_login_name': username}
         )
 
         if not data:
@@ -316,6 +318,16 @@ class User(BaseObject, UserMixin):
         allusers = cls.allusers()
         for user in allusers:
             if user.passportname == passportname:
+                return user
+
+        return None
+
+
+    @classmethod
+    def get_userobj_from_loginname(cls, loginname):
+        allusers = cls.allusers()
+        for user in allusers:
+            if user.studentid == loginname:
                 return user
 
         return None

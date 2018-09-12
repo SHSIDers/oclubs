@@ -51,7 +51,7 @@ class LoginForm(FlaskForm):
             self.errors[self.username] = 'Please enter a username.'
             return False
 
-        if User.get_userobj_from_passportname(self.username.data) is None:
+        if User.get_userobj_from_loginname(self.username.data) is None:
             self.errors[self.username] = 'Username doesn\'t exist.'
             return False
 

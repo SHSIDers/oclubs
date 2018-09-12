@@ -177,7 +177,7 @@ def login():
 
             if form.check():
 
-                userObj = User.get_userobj_from_passportname(
+                userObj = User.get_userobj_from_loginname(
                     form.username.data)
 
                 if userObj.initalized:
@@ -202,7 +202,7 @@ def login():
             if form.check():
                 # user initalization, create password, register email
                 if form.is_initalized.data == 'false':
-                    userObj = User.get_userobj_from_passportname(
+                    userObj = User.get_userobj_from_loginname(
                         form.username.data)
 
                     # to make sure the account is actually not initalized
@@ -227,7 +227,7 @@ def login():
                 else:
                     # if reset password request
                     if form.forgotpassword.data:
-                        userObj = User.get_userobj_from_passportname(
+                        userObj = User.get_userobj_from_loginname(
                             form.username.data)
                         return redirect(
                             url_for('.reset_request', user=userObj.callsign))
