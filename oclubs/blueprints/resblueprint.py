@@ -51,7 +51,8 @@ def viewreservations(res_filter, page):
     is_admin = False
     if current_user.is_authenticated:
         if current_user.type == UserType.CLASSROOM_ADMIN or \
-                current_user.type == UserType.DIRECTOR:
+                current_user.type == UserType.DIRECTOR or \
+                current_user.type == UserType.ADMIN:
             is_admin = True
 
     # generate list of possible classrooms to select from based on users
@@ -233,7 +234,8 @@ def reservationinfo(reservation):
 
     if current_user.is_authenticated:
         if current_user.type == UserType.CLASSROOM_ADMIN or \
-                current_user.type == UserType.DIRECTOR:
+                current_user.type == UserType.DIRECTOR or \
+                current_user.type == UserType.ADMIN:
             is_admin = True
 
         if current_user.type == UserType.DIRECTOR:
@@ -390,7 +392,8 @@ def viewreservations_club(club):
 
     if current_user.is_authenticated:
         if current_user.type == UserType.CLASSROOM_ADMIN or \
-                current_user.type == UserType.DIRECTOR:
+                current_user.type == UserType.DIRECTOR or \
+                current_user.type == UserType.ADMIN:
             is_admin = True
 
         if current_user == club.leader:
