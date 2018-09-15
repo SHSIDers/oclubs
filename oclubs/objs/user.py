@@ -288,6 +288,9 @@ class User(BaseObject, UserMixin):
             ret = cls.new()
             ret.studentid = emailaddress
             ret.passportname = emailaddress
+            ret.gnumber_id = emailaddress
+            ret.short_id = emailaddress
+
             ret.password = None
             ret.nickname = emailaddress
             ret.email = emailaddress
