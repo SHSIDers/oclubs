@@ -60,8 +60,9 @@ class LoginForm(FlaskForm):
             pass
         # second pass
         else:
-            if self.password.data is None or self.password.data == '':
-                self.errors[self.password] = 'Please enter a password.'
+            if (not self.forgotpassword.data and
+                    (self.password.data is None or self.password.data == '')):
+                self.errors[self.password] = 'Please enter a password lol.'
                 return False
 
             # initalization checking
