@@ -30,7 +30,7 @@
               {% if not is_sent %}
   						<form class="form-group" action="{{ url_for('reset_request', user=user.callsign) }}" method="post">
   							<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
-                <p><b>Login name</b>: {{ user.passportname }}</p>
+                <p><b>Username</b>: {{ user.studentid }}</p>
                 <p><b>Reset instructions will be sent to</b>:</p>
                 <p>{{ user.email }}</p>
   							<input class="btn btn-primary" type="submit" value="Reset">

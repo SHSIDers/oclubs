@@ -44,7 +44,11 @@
 
 							<div class="form-group">
 								{{ form.username.label }}
+								{% if is_firstPass %}
 								{{ form.username(class_="form-control") }}
+								{% else %}
+								{{ form.username(class_="form-control", readonly=true) }}
+								{% endif %}
 							</div>
 
 							{% if not is_firstPass %}
