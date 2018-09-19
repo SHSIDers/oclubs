@@ -168,7 +168,10 @@ class Classroom(BaseObject):
                         # free classroom = all classroom - reserved classroom
                         free_classrooms = list(all_classrooms)
                         for reservation in reservations:
-                            free_classrooms.remove(reservation.classroom)
+                            try:
+                                free_classrooms.remove(reservation.classroom)
+                            except ValueError:
+                                pass
 
                         ret[building][timeslot][single_date] = free_classrooms
 
