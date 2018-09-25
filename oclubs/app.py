@@ -32,6 +32,7 @@ from oclubs.shared import (
     init_app, get_callsign_decorator, get_callsign
 )
 from oclubs.forms.miscellaneous_forms import LoginForm
+from oclubs.miniprogram import mpser
 
 
 app = Flask(__name__)
@@ -540,6 +541,11 @@ def markdown():
 def faq():
     '''FAQ'''
     return render_template('static/faq.html.j2')
+
+
+@app.route('/mp', methods=['GET', 'POST'])
+def mp():
+    return mpser.mpserialize()
 
 
 if __name__ == '__main__':

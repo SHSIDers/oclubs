@@ -15,6 +15,7 @@ from oclubs import worker
 from oclubs import filters
 from oclubs import utils
 from oclubs import forms
+from oclubs import miniprogram
 
 __all__ = ['enums', 'exceptions', 'access', 'objs', 'app', 'worker', 'filters',
-           'utils', 'forms']
+           'utils', 'forms' , 'miniprogram']
