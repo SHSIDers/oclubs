@@ -1,23 +1,17 @@
-#!/usr/bin/env python
-# -*- coding: UTF-8 -*-
-#
-
 from __future__ import absolute_import, unicode_literals, print_function
 import sys
 
 from flask import jsonify, request
 from oclubs.objs import Club
 from oclubs.shared import get_callsign as getobj
-from oclubs.access import elasticsearch
 
 '''DB fields'''
-_esfields = ['club_name', 'club_desc', 'club_intro']
 
 
 def mpserialize():
     action = request.args['action']
     data = {}
-    if (action == 'getClubPreview'):
+    if action == 'getClubPreview':
         cid = request.args['clubid']
         club = getobj(Club, cid)
         data = {
@@ -25,7 +19,7 @@ def mpserialize():
             'imagesrc': club.picture.location_external
         }
 
-    if (action == 'getClubDetail'):
+    if action == 'getClubDetail':
         cid = request.args['clubid']
         club = getobj(Club, cid)
 
@@ -40,7 +34,7 @@ def mpserialize():
                 'active': club.is_active,
                 'clubname': club.name,
                 'leader': club.leader.grade_and_class
-                + ' ' + club.leader.nickname,
+                          + ' ' + club.leader.nickname,
                 'loc': club.location,
                 'description': club.description.raw,
                 'members': len(club.members)
@@ -69,4 +63,14 @@ def mpserialize():
         data = {
             'clubs': ids
         }
+
+    elif action == 'getClubMembers':
+        cid = request.args.get('cid')
+        club = getobj(Club, cid)
+        data = {
+            'clubid': club.id,
+            'name': club.name,
+            'members': club.members
+        }
+
     return jsonify(data)
