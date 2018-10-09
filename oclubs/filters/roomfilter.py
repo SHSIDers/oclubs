@@ -220,7 +220,8 @@ class RoomFilter(object):
                     date_str = 'for Selected Dates'
 
         return ' '.join(filter(None,
-                               ('XMT',
+                               (building.format_name
+                                if building else None,
                                 timeslot.format_name
                                 if timeslot else None,
                                 date_str)))
