@@ -184,14 +184,12 @@ class ResFilter(object):
                 'name': 'Building',
                 'identifier': 'room_building',
                 'elements': [
-                    # because only one building, no need to provide options
-                    # {'url': 'XMT', 'name': 'XMT',
-                    #  'selected': self.conds[0] ==
-                    #     Building.XMT},
-                    # {'url': 'all', 'name': 'All buildings',
-                    #  'selected': not self.conds[0]}
                     {'url': 'XMT', 'name': 'XMT',
-                     'selected': True}
+                     'selected': self.conds[0] == Building.XMT},
+                    {'url': 'ZXB', 'name': 'ZXB',
+                     'selected': self.conds[0] == Building.ZXB},
+                    {'url': 'all', 'name': 'All buildings',
+                     'selected': not self.conds[0]},
                 ]
             },
             {

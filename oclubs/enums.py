@@ -71,11 +71,12 @@ class ClubJoinMode(Enum):
 class Building(Enum):
     """Enum for buildings for classroom reservation."""
     XMT = 1
+    ZXB = 2
 
     @property
     def format_name(self):
         """Formats the value of the enum for display."""
-        return ['', 'XMT'][self.value]
+        return ['', 'XMT', 'ZXB'][self.value]
 
 
 class ResStatus(Enum):

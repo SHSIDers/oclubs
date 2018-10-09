@@ -139,31 +139,31 @@ class Classroom(BaseObject):
                 ret[building][ActivityTime.AFTERSCHOOL] = {}
 
             # each timeslot for each building
-            for timeslot in ret[building].keys():
+            for ts in ret[building].keys():
                 all_classrooms = cls.get_classroom_conditions(
                     buildings=building,
-                    timeslot=timeslot)
+                    timeslot=ts)
 
                 # no date is provided
                 if dates == (True, True):
-                    ret[building][timeslot] = all_classrooms
+                    ret[building][ts] = all_classrooms
                 # if date is provided
                 else:
                     # set up dates in each ret[building][timeslot]
                     if isinstance(dates, date):
-                        ret[building][timeslot][dates] = []
+                        ret[building][ts][dates] = []
                     else:
                         start_date, end_date = dates
                         for single_date in date_range_iterator(start_date,
                                                                end_date):
-                            ret[building][timeslot][single_date] = []
+                            ret[building][ts][single_date] = []
 
                     # each date for each timeslot for each building
-                    for single_date in ret[building][timeslot].keys():
+                    for single_date in ret[building][ts].keys():
                         reservations = Reservation.get_reservations_conditions(
                             dates=single_date,
                             room_buildings=building,
-                            timeslot=timeslot)
+                            timeslot=ts)
 
                         # free classroom = all classroom - reserved classroom
                         free_classrooms = list(all_classrooms)
@@ -173,6 +173,6 @@ class Classroom(BaseObject):
                             except ValueError:
                                 pass
 
-                        ret[building][timeslot][single_date] = free_classrooms
+                        ret[building][ts][single_date] = free_classrooms
 
         return ret
