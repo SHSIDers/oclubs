@@ -251,7 +251,7 @@ class User(BaseObject, UserMixin):
         return int(reobj.group(1)), int(reobj.group(2))
 
     @classmethod
-    def find_user(cls, gradeclass, passportname):
+    def find_user(cls, gradeclass, gnumber):
         try:
             grade, currentclass = cls.extract_gradeclass(gradeclass)
         except ValueError:
@@ -264,7 +264,7 @@ class User(BaseObject, UserMixin):
                 {
                     'user_grade': grade,
                     'user_class': currentclass,
-                    'user_passport_name': passportname
+                    'user_gnumber_id': gnumber
                 }
             ))
         except NoRow:

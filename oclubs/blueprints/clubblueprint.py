@@ -276,7 +276,7 @@ def invitemember(club):
                  'by invitation.', 'invite_member')
     if form_is_valid():
         new_member = User.find_user(request.form['gradeclass'],
-                                    request.form['passportname'])
+                                    request.form['gnumber'])
         if new_member is None:
             fail('Please input correct user info to invite.', 'invite_member')
         else:
@@ -288,8 +288,9 @@ def invitemember(club):
                      'invite_member')
             else:
                 club.send_invitation(new_member)
-                flash('The invitation has been sent to %s.'
-                      % new_member.nickname, 'invite_member')
+                flash('The invitation has been sent to %s(%s).'
+                      % (new_member.gnumber_id, new_member.nickname),
+                      'invite_member')
     return redirect(url_for('.adjustmember', club=club.callsign))
 
 
