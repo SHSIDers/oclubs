@@ -30,7 +30,7 @@ def send(to_email, subject, content):
     """
 
     try:
-        conn = SMTP('127.0.0.1', 25)
+        conn = SMTP('connect.shs.cn', 25)
         mail = Envelope(
             to_addr=to_email[0],
             from_addr=from_email,
