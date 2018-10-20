@@ -12,8 +12,10 @@ from __future__ import absolute_import, unicode_literals
 
 import traceback
 
-from envelopes import Envelope, SMTP
+import sendgrid
+from sendgrid.helpers.mail import Email, Content, Mail
 
+from oclubs.access.secrets import get_secret
 from oclubs.access.delay import delayed_func
 
 from_email = ('no-reply@connect.shs.cn', 'Connect')
@@ -29,14 +31,14 @@ def send(to_email, subject, content):
     :param basestring content: email content
     """
 
+    if not get_secret('sendgrid_key'):
+        # This is a test machine
+        return
+
     try:
-        conn = SMTP('connect.shs.cn', 25)
-        mail = Envelope(
-            to_addr=to_email[0],
-            from_addr=from_email,
-            subject=subject,
-            text_body=content
-        )
-        conn.send(mail)
+        sg = sendgrid.SendGridAPIClient(apikey=get_secret('sendgrid_key'))
+        content = Content('text/plain', content)
+        mail = Mail(Email(*from_email), subject, Email(to_email[0]), content)
+        sg.client.mail.send.post(request_body=mail.get())
     except Exception:
         traceback.print_exc()
