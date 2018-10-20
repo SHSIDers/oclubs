@@ -325,7 +325,6 @@ class User(BaseObject, UserMixin):
 
         return None
 
-
     @classmethod
     def get_userobj_from_loginname(cls, loginname):
         allusers = cls.allusers()

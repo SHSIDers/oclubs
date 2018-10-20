@@ -390,7 +390,6 @@ def newact_submit(club):
     return redirect(url_for('.newact', club=club.callsign))
 
 
-
 @clubblueprint.route('/<club>/hongmei_status')
 @get_callsign_decorator(Club, 'club')
 @special_access_required

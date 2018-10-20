@@ -292,10 +292,10 @@ def reset_request(user):
         reset_link = url_for('.reset',
                              reset_request_id=reset_request_id,
                              _external=True)
-        parameters = {'login_name': user.passportname,
+        parameters = {'login_name': user.nickname,
                       'reset_link': reset_link}
         contents = render_email_template('reset', parameters)
-        email.send((user.email, user.passportname),
+        email.send((user.email, user.studentid),
                    'Reset Password - SHSID Connect',
                    contents)
 
