@@ -51,7 +51,7 @@ class oclubs::pythond {
         require => Exec['pip-install-requirements'],
     }
 
-    package { 'uwsgi-plugin-python':
+    package { 'uwsgi-plugin-python2':
         ensure => present,
         before => Class['::uwsgi'],
     }
