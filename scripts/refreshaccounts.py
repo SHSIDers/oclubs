@@ -29,7 +29,7 @@ for DBstudent in DBstudents:
     elif DBstudent.gnumber_id!=None and DBstudent.gnumber_id[0]=='G':
         DBstudent.studentid=DBstudent.gnumber_id
         validid=True
-    if validid and DB.grade!=-1:
+    if validid and DBstudent.grade!=-1:
         print("Student:", DBstudent.gnumber_id, file=sys.stderr)
         for student in contents:
             gnumber_id, passport_name, gradeclass = student
@@ -51,7 +51,7 @@ for DBstudent in DBstudents:
             DBstudent.password = None
             DBstudent.initalized = False
             print("Not Found:", DBstudent.gnumber_id, file=sys.stderr)
-    elif not validid and DB.grade!=-1:
+    elif not validid and DBstudent.grade!=-1:
         print("Invalid ID fix?:", DBstudent.gnumber_id, file=sys.stderr)
 
 
