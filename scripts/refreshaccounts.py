@@ -35,6 +35,7 @@ for DBstudent in DBstudents:
             gnumber_id, passport_name, gradeclass = student
             if DBstudent.studentid == str(gnumber_id):
                 found = True
+                print(DBstudent.studentid,DBstudent.gnumber_id,DBstudent.passportname,DBstudent.grade,DBstudent.currentclass)
                 DBstudent.studentid == gnumber_id
                 DBstudent.gnumber_id == gnumber_id
                 DBstudent.passportname = passport_name
