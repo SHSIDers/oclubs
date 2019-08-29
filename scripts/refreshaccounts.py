@@ -10,7 +10,7 @@ from oclubs.shared import read_xlsx
 from oclubs.enums import UserType
 
 GRADECLASSREGEX = re.compile(
-        r'^\s*(\d+)(?:\s*[(-_/\\]\s*|\s+)(\d+)\s*(?:\)\s*)?(?:[AB]\s*)?$')
+        r'(\d{1,2})\s*[(（-]\s*(\d)\s*[）)]\s*[AB]?')
 
 
 with open('2019.xlsx', 'r') as f:
@@ -30,12 +30,11 @@ for DBstudent in DBstudents:
         DBstudent.studentid=DBstudent.gnumber_id
         validid=True
     if validid and DBstudent.grade!=-1:
-        print("Student:", DBstudent.gnumber_id, file=sys.stderr)
+        print("Student:", DBstudent.gnumber_id, DBstudent.passportname, DBstudent.grade, DBstudent.currentclass, file=sys.stderr)
         for student in contents:
             gnumber_id, passport_name, gradeclass = student
             if DBstudent.studentid == str(gnumber_id):
                 found = True
-                print(DBstudent.studentid, DBstudent.gnumber_id, DBstudent.passportname, DBstudent.grade, DBstudent.currentclass)
                 DBstudent.studentid == gnumber_id
                 DBstudent.gnumber_id == gnumber_id
                 DBstudent.passportname = passport_name
