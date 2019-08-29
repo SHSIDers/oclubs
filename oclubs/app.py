@@ -320,7 +320,7 @@ def reset(reset_request_id):
         userObj.initalized = False
         form.is_firstPass.process_data('false')
 
-        form.username.process_data(userObj.passportname)
+        form.username.process_data(userObj.studentid)
         form.email.process_data(userObj.email)
 
         return render_template('user/login.html.j2',
