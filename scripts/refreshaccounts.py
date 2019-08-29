@@ -20,7 +20,7 @@ DBstudentsprelim = User.allusers()
 
 
 DBstudents = [x for x in DBstudentsprelim if x.type == UserType.STUDENT]
-
+invalids = []
 for DBstudent in DBstudents:
     validid = False
     if DBstudent.studentid!=None and DBstudent.studentid[0]=='G':
@@ -29,7 +29,7 @@ for DBstudent in DBstudents:
     elif DBstudent.gnumber_id!=None and DBstudent.gnumber_id[0]=='G':
         DBstudent.studentid=DBstudent.gnumber_id
         validid=True
-    if validid and DBstudent.grade!=-1 and DBstudent.initalized != False:
+    if validid and DBstudent.grade!=-1:
         print("Student:", DBstudent.gnumber_id, DBstudent.passportname, DBstudent.grade, DBstudent.currentclass, file=sys.stderr)
         for student in contents:
             gnumber_id, passport_name, gradeclass = student
@@ -52,12 +52,14 @@ for DBstudent in DBstudents:
             DBstudent.initalized = False
             print("Not Found:", DBstudent.gnumber_id, file=sys.stderr)
     elif not validid and DBstudent.grade!=-1:
-        print("Invalid ID fix?:", DBstudent.gnumber_id, file=sys.stderr)
-
+        invalids.append("Invalid ID fix?:", DBstudent.gnumber_id, file=sys.stderr)
+for x in invalids:
+    print(x)
 
 print(len(contents), file=sys.stderr)
 for student in contents:
     gnumber_id, passport_name, gradeclass = student
+    print("Student:", gnumber_id, passport_name, gradeclass, file=sys.stderr)
     u = User.new()
     u.initalized = False
     u.studentid = gnumber_id
