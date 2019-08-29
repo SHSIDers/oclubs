@@ -29,7 +29,7 @@ for DBstudent in DBstudents:
     elif DBstudent.gnumber_id!=None and DBstudent.gnumber_id[0]=='G':
         DBstudent.studentid=DBstudent.gnumber_id
         validid=True
-    if validid and DBstudent.grade!=-1:
+    if validid and DBstudent.grade!=-1 and DBstudent.initalized != False:
         print("Student:", DBstudent.gnumber_id, DBstudent.passportname, DBstudent.grade, DBstudent.currentclass, file=sys.stderr)
         for student in contents:
             gnumber_id, passport_name, gradeclass = student
