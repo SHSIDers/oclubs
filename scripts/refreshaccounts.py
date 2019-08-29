@@ -10,7 +10,7 @@ from oclubs.shared import read_xlsx
 from oclubs.enums import UserType
 
 GRADECLASSREGEX = re.compile(
-        r'(\d{1,2})\s*[(（-]\s*(\d)\s*[）)]\s*[AB]?')
+        r'(\d{1,2})\s*[(（-]\s*(\d{1,2})\s*[）)]\s*[AB]?')
 
 
 with open('2019.xlsx', 'r') as f:
