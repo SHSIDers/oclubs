@@ -219,6 +219,7 @@ def _execute(sql, write=False, ret='fetch'):
         if write and not g.get('dbtransaction', False):
             cur.execute("START TRANSACTION;")
             g.dbtransaction = True
+        print(sql)
         cur.execute(sql)
 
         if ret == 'fetch':
