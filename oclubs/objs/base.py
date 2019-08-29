@@ -97,9 +97,11 @@ class Property(object):
         if self.is_real:
             if self._dbdata is None:
                 self._data
-
-            if str(dbvalue,encoding='utf-8') == str(self._dbdata[prop.name],encoding='utf-8'):
-                return
+            try: 
+                if str(dbvalue) == str(self._dbdata[prop.name]):
+                    return
+            except:
+                pass
 
             self._dbdata[prop.name] = dbvalue
 
