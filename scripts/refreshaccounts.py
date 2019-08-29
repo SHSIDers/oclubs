@@ -63,7 +63,7 @@ for student in contents:
     u.studentid = gnumber_id
     u.passportname = passport_name
     u.gnumber_id = gnumber_id
-#	u.short_id = short_id
+    u.short_id = None
     _grade = GRADECLASSREGEX.match(gradeclass).group(1)
     _class = GRADECLASSREGEX.match(gradeclass).group(2)
     u.grade = _grade
