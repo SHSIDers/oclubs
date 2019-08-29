@@ -41,8 +41,8 @@ for DBstudent in DBstudents:
                 DBstudent.passportname = passport_name
                 _grade = GRADECLASSREGEX.match(gradeclass).group(1)
                 _class = GRADECLASSREGEX.match(gradeclass).group(2)
-                DBstudent.grade = _grade
-                DBstudent.currentclass = _class
+                DBstudent.grade = int(_grade)
+                DBstudent.currentclass = int(_class)
                 contents.remove(student)
                 print("Found:",gnumber_id, file=sys.stderr)
                 break
