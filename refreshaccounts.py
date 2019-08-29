@@ -37,14 +37,14 @@ for DBstudent in DBstudents:
 			DBstudent.grade = _grade
 			DBstudent.currentclass = _class
 			contents.remove(student)
-			print(f'Found: {gnumber_id}')
+			print "Found:",gnumber_id
 			break
 	if not found:
 		DBstudent.grade = -1
 		DBstudent.currentclass = -1
 		DBstudent.password = None
 		DBstudent.initalized = False
-		print(f'Not Found: {gnumber_id}')
+		print "Not Found:",gnumber_id
 
 
 print(len(contents), file=sys.stderr)
@@ -67,5 +67,5 @@ for student in contents:
 	u.type = UserType.STUDENT
 	u.picture = Upload(-1)
 	u.create()
-	print(f'Created: {gnumber_id}')
+	print "Created:",gnumber_id
 
