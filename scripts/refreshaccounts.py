@@ -16,21 +16,20 @@ GRADECLASSREGEX = re.compile(
 with open('2019.xlsx', 'r') as f:
     contents = read_xlsx(f, 'Students', ['gnumber_id', 'passport_name', 'gradeclass'])
 
-DBstudents = User.allusers()
+DBstudentsprelim = User.allusers()
 
-for DBstudent in DBstudents:
-    if DBstudent.type != UserType.STUDENT:
-        DBstudents.remove(DBstudent)
+
+DBstudents = [x for x in DBstudentsprelim if x.type != UserType.STUDENT]
 
 for DBstudent in DBstudents:
     found = False
+    print("Student:", DBstudent.gnumber_id, file=sys.stderr)
     for student in contents:
         gnumber_id, passport_name, gradeclass = student
         if DBstudent.studentid == str(gnumber_id):
             found = True
             DBstudent.studentid == gnumber_id
             DBstudent.gnumber_id == gnumber_id
-#			DBstudent.short_id = short_id
             DBstudent.passportname = passport_name
             _grade = GRADECLASSREGEX.match(gradeclass).group(1)
             _class = GRADECLASSREGEX.match(gradeclass).group(2)
@@ -44,7 +43,7 @@ for DBstudent in DBstudents:
         DBstudent.currentclass = -1
         DBstudent.password = None
         DBstudent.initalized = False
-        print("Not Found:", gnumber_id, file=sys.stderr)
+        print("Not Found:", DBstudent.gnumber_id, file=sys.stderr)
 
 
 print(len(contents), file=sys.stderr)
