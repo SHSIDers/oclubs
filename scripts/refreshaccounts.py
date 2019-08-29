@@ -14,36 +14,45 @@ GRADECLASSREGEX = re.compile(
 
 
 with open('2019.xlsx', 'r') as f:
-    contents = read_xlsx(f, 'Students', ['gnumber_id', 'passport_name', 'gradeclass'])
+    contents = read_xlsx(f, 'sheet1', ['gnumber_id', 'passport_name', 'gradeclass'])
 
 DBstudentsprelim = User.allusers()
 
 
-DBstudents = [x for x in DBstudentsprelim if x.type != UserType.STUDENT]
+DBstudents = [x for x in DBstudentsprelim if x.type == UserType.STUDENT]
 
 for DBstudent in DBstudents:
-    found = False
-    print("Student:", DBstudent.gnumber_id, file=sys.stderr)
-    for student in contents:
-        gnumber_id, passport_name, gradeclass = student
-        if DBstudent.studentid == str(gnumber_id):
-            found = True
-            DBstudent.studentid == gnumber_id
-            DBstudent.gnumber_id == gnumber_id
-            DBstudent.passportname = passport_name
-            _grade = GRADECLASSREGEX.match(gradeclass).group(1)
-            _class = GRADECLASSREGEX.match(gradeclass).group(2)
-            DBstudent.grade = _grade
-            DBstudent.currentclass = _class
-            contents.remove(student)
-            print("Found:",gnumber_id, file=sys.stderr)
-            break
-    if not found:
-        DBstudent.grade = -1
-        DBstudent.currentclass = -1
-        DBstudent.password = None
-        DBstudent.initalized = False
-        print("Not Found:", DBstudent.gnumber_id, file=sys.stderr)
+    validid = False
+    if DBstudent.studentid!=None and DBstudent.studentid[0]=='G':
+        DBstudent.gnumber_id=DBstudent.studentid
+        validid=True
+    elif DBstudent.gnumber_id!=None and DBstudent.gnumber_id[0]=='G':
+        DBstudent.studentid=DBstudent.gnumber_id
+        validid=True
+    if exists and DB.grade!=-1:
+        print("Student:", DBstudent.gnumber_id, file=sys.stderr)
+        for student in contents:
+            gnumber_id, passport_name, gradeclass = student
+            if DBstudent.studentid == str(gnumber_id):
+                found = True
+                DBstudent.studentid == gnumber_id
+                DBstudent.gnumber_id == gnumber_id
+                DBstudent.passportname = passport_name
+                _grade = GRADECLASSREGEX.match(gradeclass).group(1)
+                _class = GRADECLASSREGEX.match(gradeclass).group(2)
+                DBstudent.grade = _grade
+                DBstudent.currentclass = _class
+                contents.remove(student)
+                print("Found:",gnumber_id, file=sys.stderr)
+                break
+        else:
+            DBstudent.grade = -1
+            DBstudent.currentclass = -1
+            DBstudent.password = None
+            DBstudent.initalized = False
+            print("Not Found:", DBstudent.gnumber_id, file=sys.stderr)
+    elif not validid and DB.grade!=-1:
+        print("Invalid ID fix?:", DBstudent.gnumber_id, file=sys.stderr)
 
 
 print(len(contents), file=sys.stderr)
