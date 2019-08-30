@@ -141,25 +141,27 @@ class Reservation(BaseObject):
         return pager_return(ret)
 
     @classmethod
-    def delete_reservation(cls, single_date, timeslot, building, room_number,
-                           owner):
+    def delete_reservation(cls, single_date=None, timeslot=None, building=None, room_number=None,
+                           owner=None):
         conds = {}
 
         conds['where'] = conds.get('where', [])
-
-        conds['where'].append(('=', 'res_date', dateobj_to_int(single_date)))
-        conds['where'].append(('=', 'res_timeslot', timeslot.value))
-
-        conds['where'].append(('=', 'res_owner', owner.id))
-
-        conds['join'] = conds.get('join', [])
-        conds['join'].append(('inner', 'classroom',
-                             [('room_id', 'res_classroom')]))
-
-        conds['where'].append(('in', 'room_building',
-                              [building.value]))
-
-        conds['where'].append(('in', 'room_number', [room_number]))
+        if single_date:
+            conds['where'].append(('=', 'res_date', dateobj_to_int(single_date)))
+        if timeslot:
+            conds['where'].append(('=', 'res_timeslot', timeslot.value))
+        if owner:
+            conds['where'].append(('=', 'res_owner', owner.id))
+        
+        if building:
+            conds['join'] = conds.get('join', [])
+            conds['join'].append(('inner', 'classroom',
+                                [('room_id', 'res_classroom')]))
+        if building:
+            conds['where'].append(('in', 'room_building',
+                                [building.value]))
+        if room_number:
+            conds['where'].append(('in', 'room_number', [room_number]))
 
         ret = database.delete_rows(cls.table, conds)
 
