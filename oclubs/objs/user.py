@@ -42,8 +42,8 @@ class User(BaseObject, UserMixin):
     phone = Property('user_phone')
     picture = Property('user_picture', 'Upload')
     type = Property('user_type', UserType)
-    grade = Property('user_grade')
-    currentclass = Property('user_class')
+    grade = Property('user_grade', int)
+    currentclass = Property('user_class', int)
     clubs = ListProperty('club_member', 'cm_user', 'cm_club', 'Club')
     attendance = ListProperty('attendance', 'att_user', 'att_act', 'Activity')
 
