@@ -304,10 +304,10 @@ class User(BaseObject, UserMixin):
             return ret.create()
 
     @classmethod
-    def allusers(cls, non_teachers=False):
+    def allusers(cls, only_students=False):
         conds = []
-        if non_teachers:
-            conds.append(('!=', 'user_type', UserType.TEACHER.value))
+        if only_students:
+            conds.append(('=', 'user_type', UserType.STUDENT.value))
 
         tempdata = database.fetch_onecol(
             cls.table,

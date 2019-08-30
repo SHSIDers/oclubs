@@ -71,7 +71,7 @@ class ClubJoinMode(Enum):
 class Building(Enum):
     """Enum for buildings for classroom reservation."""
     XMT = 1
-    ZXB = 2
+    ZTB = 2
 
     @property
     def format_name(self):

@@ -176,3 +176,15 @@ class Classroom(BaseObject):
                         ret[building][ts][single_date] = free_classrooms
 
         return ret
+
+    @classmethod
+    def delete_all_classrooms(cls, building):
+        conds = {}
+
+        conds['where'] = conds.get('where', [])
+        conds['where'].append(('=', 'room_building', building))
+
+        ret = database.delete_rows(cls.table, conds)
+
+        return ret
+
