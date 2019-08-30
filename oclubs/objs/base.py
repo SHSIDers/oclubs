@@ -97,11 +97,8 @@ class Property(object):
         if self.is_real:
             if self._dbdata is None:
                 self._data
-            try: 
-                if dbvalue == self._dbdata[prop.name] or str(dbvalue) == str(self._dbdata[prop.name]):
-                    return
-            except:
-                pass
+            if dbvalue == self._dbdata[prop.name]:
+                return
 
             self._dbdata[prop.name] = dbvalue
 
