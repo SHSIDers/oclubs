@@ -97,11 +97,8 @@ class Property(object):
         if self.is_real:
             if self._dbdata is None:
                 self._data
-            try: 
-                if dbvalue == self._dbdata[prop.name]:
-                    return
-            except:
-                pass
+            if dbvalue == self._dbdata[prop.name]:
+                return
 
             self._dbdata[prop.name] = dbvalue
 
@@ -395,22 +392,6 @@ def __get_ie(ie):
         imp = exp = lambda val: val
     elif ie is NotImplemented:
         imp = exp = lambda val: NotImplemented
-    elif ie is int:
-        def intenforcer(val):
-            if isinstance(val, (int, long)):
-                return val
-            else:
-                raise TypeError
-        imp = lambda val: val
-        exp = intenforcer
-    elif ie is bool:
-        def boolenforcer(val):
-            if isinstance(val, (int,long)):
-                if val == 0 or val == 1:
-                    return val
-            raise TypeError
-        imp = lambda val: val
-        exp = boolenforcer
     elif isinstance(ie, basestring):
         imp, exp = _object_proxy(ie), lambda val: val.id
     elif isinstance(ie, types.ModuleType):
