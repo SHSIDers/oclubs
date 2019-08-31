@@ -4,7 +4,7 @@ from __future__ import absolute_import, unicode_literals, print_function
 import sys
 import codecs
 from oclubs.objs import Reservation,  Classroom
-from oclubs.utils import Building
+from oclubs.enums import Building
 
 
 
