@@ -4,6 +4,7 @@ from __future__ import absolute_import, unicode_literals, print_function
 import sys
 import codecs
 from oclubs.objs import Reservation,  Classroom
+from oclubs.utils import Building
 
 
 
@@ -49,7 +50,7 @@ for i in cs:
     c.room_number = i['r']
     c.studentsToUseLunch = i['l']
     c.studentsToUseAfternoon = i['a']
-    c.building = 2
+    c.building = Building.ZTB
     c.desc = i['d']
     c.create()
     print("Created:",i['r'],i['l'],i['a'],i['d'])
