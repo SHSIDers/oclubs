@@ -76,7 +76,7 @@ class Building(Enum):
     @property
     def format_name(self):
         """Formats the value of the enum for display."""
-        return ['', 'XMT', 'ZXB'][self.value]
+        return ['', 'XMT', 'ZTB'][self.value]
 
 
 class ResStatus(Enum):

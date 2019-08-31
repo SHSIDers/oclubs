@@ -186,8 +186,8 @@ class ResFilter(object):
                 'elements': [
                     {'url': 'XMT', 'name': 'XMT',
                      'selected': self.conds[0] == Building.XMT},
-                    {'url': 'ZXB', 'name': 'ZXB',
-                     'selected': self.conds[0] == Building.ZXB},
+                    {'url': 'ZTB', 'name': 'ZTB',
+                     'selected': self.conds[0] == Building.ZTB},
                     {'url': 'all', 'name': 'All buildings',
                      'selected': not self.conds[0]},
                 ]
