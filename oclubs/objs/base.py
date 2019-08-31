@@ -394,6 +394,22 @@ def __get_ie(ie):
         imp = exp = lambda val: NotImplemented
     elif isinstance(ie, basestring):
         imp, exp = _object_proxy(ie), lambda val: val.id
+    elif ie is int:
+        def intenforcer(val):
+            if isinstance(val, (int, long)):
+                return val
+            else:
+                raise TypeError
+        imp = lambda val: val
+        exp = intenforcer
+    elif ie is bool:
+        def boolenforcer(val):
+            if isinstance(val, (int,long)):
+                if val == 0 or val == 1:
+                    return val
+            raise TypeError
+        imp = lambda val: val
+        exp = boolenforcer
     elif isinstance(ie, types.ModuleType):
         imp, exp = ie.loads, ie.dumps
     elif isinstance(ie, type) and issubclass(ie, BaseObject):
