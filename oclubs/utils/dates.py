@@ -6,8 +6,8 @@ from datetime import datetime, date, timedelta
 
 ONE_DAY = timedelta(days=1)
 
-DATE_RANGE_MIN = date(2018, 8, 25)
-DATE_RANGE_MAX = date(2019, 7, 5)
+DATE_RANGE_MIN = date(2019, 8, 25)
+DATE_RANGE_MAX = date(2020, 7, 5)
 
 
 def timenow():
