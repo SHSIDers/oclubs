@@ -6,8 +6,9 @@ from datetime import datetime, date, timedelta
 
 ONE_DAY = timedelta(days=1)
 
-DATE_RANGE_MIN = date(2019, 8, 25)
-DATE_RANGE_MAX = date(2020, 7, 5)
+year = datetime.now().timetuple()[0] if datetime.now().timetuple()[1]>7 else datetime.now().timetuple()[0]-1
+DATE_RANGE_MIN = date(year, 8, 25)
+DATE_RANGE_MAX = date(year+1, 7, 5)
 
 
 def timenow():
