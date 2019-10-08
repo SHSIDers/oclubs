@@ -293,7 +293,7 @@ def forgotpw():
 @fresh_login_required
 def changeuserinfo():
     '''Allow admin to change users' information'''
-    users = User.allusers(non_teachers=True)
+    users = User.allusers(only_students=True)
     return render_template('user/changeuserinfo.html.j2',
                            users=users)
 
