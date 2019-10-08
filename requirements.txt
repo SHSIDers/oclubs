@@ -54,9 +54,9 @@ python-http-client==3.1.0  # via sendgrid
 python-magic==0.4.15
 pytz==2018.4              # via babel, celery
 redis==2.10.6
-requests==2.19.1          # via sphinx
+requests==2.20.0          # via sphinx
 sendgrid==5.4.0
-six==1.11.0               # via bcrypt, bleach, configobj, html5lib, packaging, pip-tools, sphinx
+six==1.11.0               # via bcrypt, bleach, html5lib, packaging, pip-tools, sphinx
 snowballstemmer==1.2.1    # via sphinx
 sphinx==1.7.5
 sphinxcontrib-websupport==1.1.0  # via sphinx
