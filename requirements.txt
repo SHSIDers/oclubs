@@ -56,7 +56,7 @@ pytz==2018.4              # via babel, celery
 redis==2.10.6
 requests==2.19.1          # via sphinx
 sendgrid==5.4.0
-six==1.11.0               # via bcrypt, bleach, configobj, html5lib, packaging, pip-tools, sphinx
+six==1.11.0               # via bcrypt, bleach, html5lib, packaging, pip-tools, sphinx
 snowballstemmer==1.2.1    # via sphinx
 sphinx==1.7.5
 sphinxcontrib-websupport==1.1.0  # via sphinx
@@ -65,7 +65,7 @@ urllib3==1.23             # via elasticsearch, requests
 uwsgi==2.0.17
 vine==1.1.4               # via amqp
 webencodings==0.5.1       # via html5lib
-werkzeug==0.14.1          # via flask
+werkzeug==0.15.3          # via flask
 wtforms==2.2.1
 xkcdpass==1.16.5
 xlsxwriter==1.0.5
