@@ -41,7 +41,7 @@ mysql==0.0.1
 openpyxl==2.5.4           # via pyexcel-xlsx
 packaging==17.1           # via sphinx
 passlib==1.7.1
-pillow==5.1.0
+pillow==6.2.0
 pip-tools==2.0.2
 pycparser==2.18           # via cffi
 pycrypto==2.6.1
@@ -56,7 +56,7 @@ pytz==2018.4              # via babel, celery
 redis==2.10.6
 requests==2.19.1          # via sphinx
 sendgrid==5.4.0
-six==1.11.0               # via bcrypt, bleach, configobj, html5lib, packaging, pip-tools, sphinx
+six==1.11.0               # via bcrypt, bleach, html5lib, packaging, pip-tools, sphinx
 snowballstemmer==1.2.1    # via sphinx
 sphinx==1.7.5
 sphinxcontrib-websupport==1.1.0  # via sphinx
