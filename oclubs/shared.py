@@ -57,7 +57,7 @@ def download_xlsx(filename, info):
 def read_xlsx(file, data_type, header):
     '''Read xlsx and return a list of data'''
     raw = get_data(file)
-    data = raw[data_type]
+    data = raw[data_type.lower()]
     if [d.lower().strip().replace(' ', '') for d in data[0]] != header:
         raise ValueError
     contents = data[1:]

@@ -396,7 +396,7 @@ def __get_ie(ie):
         imp, exp = _object_proxy(ie), lambda val: val.id
     elif ie is int:
         def intenforcer(val):
-            if isinstance(val, (int, long)):
+            if isinstance(val, (int)):
                 return val
             else:
                 raise TypeError
@@ -404,7 +404,7 @@ def __get_ie(ie):
         exp = intenforcer
     elif ie is bool:
         def boolenforcer(val):
-            if isinstance(val, (int,long)):
+            if isinstance(val, (int)):
                 if val == 0 or val == 1:
                     return val
             raise TypeError
