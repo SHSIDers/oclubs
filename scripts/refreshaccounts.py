@@ -14,7 +14,7 @@ GRADECLASSREGEX = re.compile(
 
 
 with open('2019.xlsx', 'r') as f:
-    contents = read_xlsx(f, 'sheet1', ['gnumber_id', 'passport_name', 'gradeclass'])
+    contents = read_xlsx(f, 'Sheet1', ['gnumber_id', 'passport_name', 'gradeclass'])
 
 DBstudentsprelim = User.allusers()
 
