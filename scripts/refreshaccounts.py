@@ -13,7 +13,7 @@ GRADECLASSREGEX = re.compile(
         r'(\d{1,2})\s*[(（-]\s*(\d{1,2})\s*[）)]\s*[AB]?')
 
 
-with open('2019.xlsx', 'r') as f:
+with open('2019II.xlsx', 'r') as f:
     contents = read_xlsx(f, 'sheet1', ['gnumber_id', 'passport_name', 'gradeclass'])
 
 DBstudentsprelim = User.allusers()
@@ -70,8 +70,8 @@ for student in contents:
     u.short_id = None
     _grade = GRADECLASSREGEX.match(gradeclass).group(1)
     _class = GRADECLASSREGEX.match(gradeclass).group(2)
-    u.grade = _grade
-    u.currentclass = _class
+    u.grade = int(_grade)
+    u.currentclass = int(_class)
     u.phone = None
     u.email = ''
     u.nickname = passport_name
