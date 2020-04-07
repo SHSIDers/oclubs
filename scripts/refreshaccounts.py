@@ -18,43 +18,45 @@ with open('2019.xlsx', 'r') as f:
 
 DBstudentsprelim = User.allusers()
 
+def validate():
+    DBstudents = [x for x in DBstudentsprelim if x.type == UserType.STUDENT]
+    invalids = []
+    for DBstudent in DBstudents:
+        validid = False
+        if DBstudent.studentid!=None and DBstudent.studentid[0]=='G':
+            DBstudent.gnumber_id=DBstudent.studentid
+            validid=True
+        elif DBstudent.gnumber_id!=None and DBstudent.gnumber_id[0]=='G':
+            DBstudent.studentid=DBstudent.gnumber_id
+            validid=True
+        if validid and DBstudent.grade!=-1:
+            print("Student:", DBstudent.gnumber_id, DBstudent.passportname, DBstudent.grade, DBstudent.currentclass, file=sys.stderr)
+            for student in contents:
+                gnumber_id, passport_name, gradeclass = student
+                if DBstudent.studentid == str(gnumber_id):
+                    found = True
+                    DBstudent.studentid == gnumber_id
+                    DBstudent.gnumber_id == gnumber_id
+                    DBstudent.passportname = passport_name
+                    _grade = GRADECLASSREGEX.match(gradeclass).group(1)
+                    _class = GRADECLASSREGEX.match(gradeclass).group(2)
+                    DBstudent.grade = int(_grade)
+                    DBstudent.currentclass = int(_class)
+                    contents.remove(student)
+                    print("Found:",gnumber_id, file=sys.stderr)
+                    break
+            else:
+                DBstudent.grade = -1
+                DBstudent.currentclass = -1
+                DBstudent.password = None
+                DBstudent.initalized = False
+                print("Not Found:", DBstudent.gnumber_id, file=sys.stderr)
+        elif not validid and DBstudent.grade!=-1:
+            invalids.append("Invalid ID fix?:", DBstudent.gnumber_id, file=sys.stderr)
+    for x in invalids:
+        print(x)
 
-DBstudents = [x for x in DBstudentsprelim if x.type == UserType.STUDENT]
-invalids = []
-for DBstudent in DBstudents:
-    validid = False
-    if DBstudent.studentid!=None and DBstudent.studentid[0]=='G':
-        DBstudent.gnumber_id=DBstudent.studentid
-        validid=True
-    elif DBstudent.gnumber_id!=None and DBstudent.gnumber_id[0]=='G':
-        DBstudent.studentid=DBstudent.gnumber_id
-        validid=True
-    if validid and DBstudent.grade!=-1:
-        print("Student:", DBstudent.gnumber_id, DBstudent.passportname, DBstudent.grade, DBstudent.currentclass, file=sys.stderr)
-        for student in contents:
-            gnumber_id, passport_name, gradeclass = student
-            if DBstudent.studentid == str(gnumber_id):
-                found = True
-                DBstudent.studentid == gnumber_id
-                DBstudent.gnumber_id == gnumber_id
-                DBstudent.passportname = passport_name
-                _grade = GRADECLASSREGEX.match(gradeclass).group(1)
-                _class = GRADECLASSREGEX.match(gradeclass).group(2)
-                DBstudent.grade = int(_grade)
-                DBstudent.currentclass = int(_class)
-                contents.remove(student)
-                print("Found:",gnumber_id, file=sys.stderr)
-                break
-        else:
-            DBstudent.grade = -1
-            DBstudent.currentclass = -1
-            DBstudent.password = None
-            DBstudent.initalized = False
-            print("Not Found:", DBstudent.gnumber_id, file=sys.stderr)
-    elif not validid and DBstudent.grade!=-1:
-        invalids.append("Invalid ID fix?:", DBstudent.gnumber_id, file=sys.stderr)
-for x in invalids:
-    print(x)
+validate()
 
 print(len(contents), file=sys.stderr)
 for student in contents:
