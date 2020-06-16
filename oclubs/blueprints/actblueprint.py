@@ -158,7 +158,7 @@ def changeactpost_submit(activity):
                                         request.form['post'])
     return redirect(url_for('.actintro', activity=activity.callsign))
 
-@actblueprint.route('/<activity>/delete', methods=['POST'])
+@actblueprint.route('/<activity>/delete')
 @get_callsign_decorator(Activity, 'activity')
 @special_access_required        
 def delete_activity(activity):
