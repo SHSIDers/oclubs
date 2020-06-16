@@ -121,6 +121,12 @@ class Activity(BaseObject):
                               'actpic_upload': upload.id})
         del self.pictures
 
+    def delete_activity(self):
+        database.delete_rows(
+            'activity',
+            {'act_id': self.id}
+        )
+
     @classmethod
     @paged_db_read
     def get_activities_conditions(cls, times=(), additional_conds=None,
