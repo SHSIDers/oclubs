@@ -122,6 +122,8 @@ class Activity(BaseObject):
         del self.pictures
 
     def delete_activity(self):
+        database.delete_rows('act_pic',
+                             {'actpic_act': self.id})
         database.delete_rows(
             'activity',
             {'act_id': self.id}
