@@ -122,12 +122,13 @@ class Activity(BaseObject):
         del self.pictures
 
     def delete_activity(self):
-        database.delete_rows('act_pic',
-                             {'actpic_act': self.id})
-        database.delete_rows(
-            'activity',
-            {'act_id': self.id}
-        )
+        try:
+            database.delete_rows('act_pic',
+                                {'actpic_act': self.id})
+        except:
+            pass
+        database.delete_rows('activity',{'act_id': self.id})
+        del self.pictures
 
     @classmethod
     @paged_db_read
