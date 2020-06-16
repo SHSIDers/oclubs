@@ -143,6 +143,11 @@
 			<div class="btn-group btn_content" role="button">
 				<a class="btn btn-default btn-lg" href="{{ url_for('.attendance', activity=g.activity.callsign) }}">Attendance</a>
 			</div>
+
+			<div class="btn-group btn_content" role="button">
+				<a class="btn btn-danger btn-lg" href="{{ url_for('.delete_activity', activity=g.activity.callsign) }}">Delete</a>
+			</div>
+
 			{% endif %}
 
 		</div>

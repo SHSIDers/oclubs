@@ -145,22 +145,25 @@ def changeactpost(activity):
 @require_past_activity
 def changeactpost_submit(activity):
     '''Input info into database'''
-    if request.form['action']=='1':
-        activity.delete_activity()
-        return redirect(url_for('.allphotos'))
-    else:
-        for pic in request.files.getlist('picture'):
-            if pic.filename != '':
-                try:
-                    activity.add_picture(
-                        Upload.handle(current_user, activity.club, pic))
-                except UploadNotSupported:
-                    fail('Please upload a correct file type.', 'actpost')
-                    return redirect(url_for('.changeactpost',
-                                            activity=activity.callsign))
-        activity.post = FormattedText.handle(current_user, activity.club,
-                                            request.form['post'])
-        return redirect(url_for('.actintro', activity=activity.callsign))
+    for pic in request.files.getlist('picture'):
+        if pic.filename != '':
+            try:
+                activity.add_picture(
+                    Upload.handle(current_user, activity.club, pic))
+            except UploadNotSupported:
+                fail('Please upload a correct file type.', 'actpost')
+                return redirect(url_for('.changeactpost',
+                                        activity=activity.callsign))
+    activity.post = FormattedText.handle(current_user, activity.club,
+                                        request.form['post'])
+    return redirect(url_for('.actintro', activity=activity.callsign))
+
+@actblueprint.route('/<activity>/delete', methods=['POST'])
+@get_callsign_decorator(Activity, 'activity')
+@special_access_required        
+def delete_activity(activity):
+    activity.delete_activity()
+    return redirect(url_for('.allactivities'))
 
 
 @actblueprint.route('/<activity>/invite_hongmei')
