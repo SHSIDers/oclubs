@@ -145,7 +145,7 @@ def changeactpost(activity):
 @require_past_activity
 def changeactpost_submit(activity):
     '''Input info into database'''
-    if request.form['delete_button'] == '1':
+    if request.form.post['action']=='1':
         activity.delete_activity()
         return redirect(url_for('.allphotos'))
     else:
