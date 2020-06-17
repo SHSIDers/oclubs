@@ -451,12 +451,12 @@ def notifyall_submit():
 
 @userblueprint.route('/refresh_users/submit', methods=['POST'])
 @special_access_required
-@fresh_login_required
 def refreshusers_submit():
     '''Refresh users via excel worksheet'''
     spreadsheet=request.files['refresh_users_excel']
     mode=request.form.get('refreshmode', '')
     success=False
+    log_content=''
     try:
         with open(spreadsheet, 'r') as f:
             contents = read_xlsx(f, 'sheet1', ['gnumber_id', 'passport_name', 'gradeclass'])
