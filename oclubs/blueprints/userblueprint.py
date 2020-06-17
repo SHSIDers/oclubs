@@ -21,7 +21,6 @@ from oclubs.shared import (
 )
 from oclubs.exceptions import PasswordTooShort
 from oclubs.access import siteconfig, email
-from oclubs.scripts.refreshaccounts import validate, newstudents
 
 userblueprint = Blueprint('userblueprint', __name__)
 
@@ -149,52 +148,52 @@ def allusersinfo():
     return download_xlsx('All Users\' Info.xlsx', info)
 
 
-@userblueprint.route('/refresh_users')
-@special_access_required
-@fresh_login_required
-def refreshusers():
-    return render_template('user/refreshuser.html.j2')
+# @userblueprint.route('/refresh_users')
+# @special_access_required
+# @fresh_login_required
+# def refreshusers():
+#     return render_template('user/refreshuser.html.j2')
 
 
-@userblueprint.route('/refresh_users/submit', methods=['POST'])
-@special_access_required
-@fresh_login_required
-def refreshusers_submit():
-    '''Upload excel file to create new users'''
-    if request.files['excel'].filename == '':
-        fail('Please upload an excel file.', 'refresh_users')
-        return redirect(url_for('.refreshusers'))
-    try:
-        contents = read_xlsx(request.files['excel'], 'Students',
-                             ['studentid', 'passportname', 'class'])
-    except KeyError:
-        fail('Please change sheet name to "Students"', 'refresh_users')
-        return redirect(url_for('.refreshusers'))
-    except ValueError:
-        fail('Please input in the correct order.', 'refresh_users')
-        return redirect(url_for('.refreshusers'))
+# @userblueprint.route('/refresh_users/submit', methods=['POST'])
+# @special_access_required
+# @fresh_login_required
+# def refreshusers_submit():
+#     '''Upload excel file to create new users'''
+#     if request.files['excel'].filename == '':
+#         fail('Please upload an excel file.', 'refresh_users')
+#         return redirect(url_for('.refreshusers'))
+#     try:
+#         contents = read_xlsx(request.files['excel'], 'Students',
+#                              ['studentid', 'passportname', 'class'])
+#     except KeyError:
+#         fail('Please change sheet name to "Students"', 'refresh_users')
+#         return redirect(url_for('.refreshusers'))
+#     except ValueError:
+#         fail('Please input in the correct order.', 'refresh_users')
+#         return redirect(url_for('.refreshusers'))
 
-    authority = {}
-    for student in contents:
-        studentid, passportname, gradeclass = student
-        studentid = str(studentid)
-        grade, curclass = User.extract_gradeclass(gradeclass)
-        if studentid in authority:
-            fail('Duplicate Student ID "%s"' % studentid, 'refresh_users')
-            return redirect(url_for('.refreshusers'))
-        authority[studentid] = {
-            'UNIONID': studentid,
-            'NAMEEN': passportname,
-            'GRADENAME': grade,
-            'STUCLASSNAME': curclass,
-        }
+#     authority = {}
+#     for student in contents:
+#         studentid, passportname, gradeclass = student
+#         studentid = str(studentid)
+#         grade, curclass = User.extract_gradeclass(gradeclass)
+#         if studentid in authority:
+#             fail('Duplicate Student ID "%s"' % studentid, 'refresh_users')
+#             return redirect(url_for('.refreshusers'))
+#         authority[studentid] = {
+#             'UNIONID': studentid,
+#             'NAMEEN': passportname,
+#             'GRADENAME': grade,
+#             'STUCLASSNAME': curclass,
+#         }
 
-    from oclubs.worker import refresh_user
-    refresh_user.delay(authority)
+#     from oclubs.worker import refresh_user
+#     refresh_user.delay(authority)
 
-    flash('Student accounts\' information has been successfully '
-          'scheduled to refresh.', 'refresh_users')
-    return redirect(url_for('.refreshusers'))
+#     flash('Student accounts\' information has been successfully '
+#           'scheduled to refresh.', 'refresh_users')
+#     return redirect(url_for('.refreshusers'))
 
 
 @userblueprint.route('/rebuild_elastic_search/submit', methods=['POST'])
@@ -452,6 +451,7 @@ def notifyall_submit():
 
 @userblueprint.route('/refresh_users/submit', methods=['POST'])
 @special_access_required
+@fresh_login_required
 def refreshusers_submit():
     '''Refresh users via excel worksheet'''
     spreadsheet=request.files['refresh_users_excel']
@@ -464,6 +464,10 @@ def refreshusers_submit():
         log_content="Successful excel read"
     except:
         log_content="Invalid upload"
+    def validate(contents):
+        return '2'
+    def newstudents(contents):
+        return '1'
     if success:
         if mode=='addnew':
             try:
