@@ -10,7 +10,7 @@
 		<h2 class="title_next">Refresh Users</h2>
 		<br>
 		{{ get_messages(['refresh_users'], br_after=True) }}
-		<form action="{{ url_for('.refreshusers_submit') }}" method="post" enctype="multipart/form-data">
+		<form action="{{ url_for('.refreshusers_submit_old') }}" method="post" enctype="multipart/form-data">
 			<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
 			<p>Please upload a xlsx file with a sheet named "Students".</p>
 			<p>Required information in xlsx(in exact order): Student ID, Passport Name, Class</p>
