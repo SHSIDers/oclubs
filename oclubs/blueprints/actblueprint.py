@@ -163,7 +163,7 @@ def changeactpost_submit(activity):
 @special_access_required        
 def delete_activity(activity):
     activity.delete_activity()
-    return redirect(url_for('.allactivities'))
+    return redirect(url_for('.allactivities', club_filter='all'))
 
 
 @actblueprint.route('/<activity>/invite_hongmei')

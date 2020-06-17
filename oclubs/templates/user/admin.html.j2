@@ -84,13 +84,13 @@
 				<br>
 
 				<div class="row">
-					<div class="col-md-4">
+					<div class="col-md-2">
 						<div class="btn-group btn_content" role="group">
 							<a href="#notify_all" data-toggle="modal" data-target="#notify_all" class="btn btn-default">Notify Users</a>
 						</div>
 					</div>
 
-					<div class="col-md-4">
+					<div class="col-md-2">
 						<div class="btn-group btn_content" role="group">
 							<a href="{{ url_for('.changeuserinfo') }}" class="btn btn-default">Edit Users' Info</a>
 						</div>
@@ -99,6 +99,12 @@
 					<div class="col-md-4">
 						<div class="btn-group btn_content" role="group">
 							<a href="{{ url_for('.disableaccounts') }}" class="btn btn-default">Disable User Accounts</a>
+						</div>
+					</div>
+
+					<div class="col-md-2">
+						<div class="btn-group btn_content" role="group">
+							<a href="#refresh_users" data-toggle="modal" data-target="#refresh_users" class="btn btn-default">Refresh Users (Excel)</a>
 						</div>
 					</div>
 				</div>
@@ -248,6 +254,53 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 					<input type="submit" class="btn btn-primary" value="Notify">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div id="refresh_users" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form class="form-group" action="{{ url_for('.refreshusers_submit') }}" id="refresh_users_form" enctype="multipart/form-data" method="post">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Refresh Users (Excel)</h4>
+				</div>
+				<div class="modal-body">
+					<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+						<h5>Format requirements:</h5><br>
+						<ul class="list-group">
+							<li class="list-group-item">The document is in .xlsx format</li>
+							<li class="list-group-item">The data is written into a sheet with name 'sheet1'. Case matters.</li>
+							<li class="list-group-item">There are three columns, the headings of which are, in order 'gnumber_id', 'passport_name', 'gradeclass' (without quotes and matching case).</li>
+							<li class="list-group-item">Ascii characters are used in all fields (They will be ignored otherwise)</li>
+							<li class="list-group-item">Gradeclass looks like 10(8) or 12(1)A</li>
+							<li class="list-group-item">Gnumber has a G</li>
+							<li class="list-group-item">If in doubt, look at previous years student sheets and follow that format</li>
+							<li class="list-group-item">Warning: Weird characters often appear in these sheets and might be the cause of errors</li>
+						</ul>
+						<br>
+						<div class="input-group">
+							<label class="btn btn-default">
+								<span class="glyphicon glyphicon-upload"></span> Upload
+								<input type="file" name="refresh_users_excel" id="refresh_users_excel" accept=".xlsx" hidden>
+							</label>
+						</div>
+						<div id="refreshmode-radiobutton">
+							<label class="radio-inline active">
+								<input type="radio" name="refreshmode" id="refreshmode-addnew" value="addnew" checked=""> Add new students (Won't change existing values)
+							</label>
+							<label class="radio-inline">
+								<input type="radio" name="refreshmode" id="refreshmode-fullrefresh" value="fullrefresh"> Full update
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<input type="submit" class="btn btn-primary" value="Refresh Users">
 				</div>
 			</form>
 		</div>

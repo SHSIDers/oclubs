@@ -21,6 +21,7 @@ from oclubs.shared import (
 )
 from oclubs.exceptions import PasswordTooShort
 from oclubs.access import siteconfig, email
+from oclubs.scripts.refreshaccounts import validate, newstudents
 
 userblueprint = Blueprint('userblueprint', __name__)
 
@@ -448,3 +449,34 @@ def notifyall_submit():
         user.email_user('Notification from admin', contents)
     flash('You have successfully notified them.', 'notify_all')
     return redirect(url_for('.personal'))
+
+@userblueprint.route('/refresh_users/submit', methods=['POST'])
+@special_access_required
+def refreshusers_submit():
+    '''Refresh users via excel worksheet'''
+    spreadsheet=request.files['refresh_users_excel']
+    mode=request.form.get('refreshmode', '')
+    success=False
+    try:
+        with open(spreadsheet, 'r') as f:
+            contents = read_xlsx(f, 'sheet1', ['gnumber_id', 'passport_name', 'gradeclass'])
+        success=True
+        log_content="Successful excel read"
+    except:
+        log_content="Invalid upload"
+    if success:
+        if mode=='addnew':
+            try:
+                log_content+=newstudents(contents)
+            except:
+                log_content+='Error in execution'
+        elif mode=='fullrefresh':
+            try:
+                log_content+=validate(contents)
+                log_content+=newstudents(contents)
+            except:
+                log_content+='Error in execution'
+        else:
+            log_content+='Unknown mode'
+    return render_template('user/refreshusers.html.j2',
+                           log_content=log_content)
